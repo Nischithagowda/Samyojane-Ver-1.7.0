@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_new"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/taluk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/taluk"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/hobli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hobli"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:id="@+id/VA_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tvServiceName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_name"
+            android:textColor="#377691"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/updated_by"
+            android:textColor="@color/MAROON"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shri_smt"
+            android:textColor="@color/MAROON"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp">
+
+        <TableRow
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/raised_location"
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/txt_raiseLoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="4dp"
+                android:layout_column="3"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="5dp">
+            <TextView
+                android:id="@+id/tv_V_T_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/tvVillageName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="4dp"
+                android:layout_column="3"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/applicant_id"
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/ApplicantID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="4dp"
+                android:layout_column="3"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/applicant_name"
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/ApplicantName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_column="3"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="5dp">
+            <TextView
+                android:id="@+id/tvAppCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/applicant_category"
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:layout_gravity="center"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/ApplicantCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_column="3"/>
+            <Spinner
+                android:id="@+id/spCategory"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/black"
+                android:textAlignment="center"
+                tools:ignore="RtlCompat,UnusedAttribute"
+                android:layout_column="3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:id="@+id/TableApplicantCaste">
+            <TextView
+                android:id="@+id/tvAppCaste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/applicant_caste"
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/ApplicantCaste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_column="3"/>
+            <AutoCompleteTextView
+                android:id="@+id/autoSearchCaste"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:textCursorDrawable="@android:color/black"
+                android:completionThreshold="1"
+                android:backgroundTint="@android:color/black"
+                android:hint="@string/select_caste"
+                android:layout_column="4"/>
+
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="5dp">
+            <TextView
+                android:id="@+id/tvCreamyLayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/does_applicant_belongs_nto_creamy_layer"
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/CreamyLayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="9dp"
+                android:layout_column="3"/>
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                tools:ignore="RtlHardcoded"
+                android:layout_column="3">
+
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:checked="true"
+                    android:text="@string/yes"
+                    android:textSize="16sp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:textColor="@android:color/black" />
+
+                <RadioButton
+                    android:id="@+id/radioButton11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:checked="false"
+                    android:text="@string/no"
+                    android:textSize="16sp"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:textColor="@android:color/black" />
+            </RadioGroup>
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:id="@+id/TableReasonForCreamyLayer">
+            <TextView
+                android:id="@+id/tvReasonForCreamyLayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reason_for_creamy_layer"
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/ReasonForCreamyLayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_column="3"/>
+            <Spinner
+                android:id="@+id/spReasons"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/black"
+                android:textAlignment="center"
+                tools:ignore="RtlCompat,UnusedAttribute"
+                android:layout_column="3"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/tvAnnualIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:text="@string/annual_income_of_napplicant_family_in_rs"
+                android:layout_gravity="start"
+                android:textColor="@android:color/black" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/AnnualIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="9dp"
+                android:layout_column="3"/>
+            <EditText
+                android:id="@+id/tvIncome"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_annual_income"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:inputType="number"
+                android:layout_column="3"
+                tools:ignore="Autofill"
+                android:maxLength="7"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp"
+            android:id="@+id/TableCasteReservation">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/can_caste_reservation_nbe_given"
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/colon"
+
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_column="2"/>
+            <TextView
+                android:id="@+id/ReservationGiven"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_column="3"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:id="@+id/TableReasonForRejection">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reason_for_rejection"
+                android:textColor="@android:color/black"
+                android:layout_column="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:text="@string/colon"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/ReasonForRejection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_column="3"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="5dp"
+            tools:ignore="TooManyViews">
+
+            <TextView
+                android:id="@+id/tvRemarksColor"
+                android:text="@string/remarks"
+                android:textColor="@android:color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+
+            <TextView
+                android:text="@string/colon"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_column="2"
+                android:layout_marginStart="5dp" />
+
+            <TextView
+                android:id="@+id/Remarks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="4dp"
+                android:layout_column="3"/>
+
+            <EditText
+                android:id="@+id/tvRemarks"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_the_remarks"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:inputType="textMultiLine"
+                tools:ignore="Autofill" />
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="120sp"
+                android:layout_height="wrap_content"
+                android:text="@string/report_no"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:layout_column="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:text="@string/colon_space"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:layout_column="2"/>
+
+            <TextView
+                android:id="@+id/txt_ReportNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="5dp"
+                android:layout_column="3" />
+
+        </TableRow>
+
+    </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnDownDocs"
+                android:layout_width="110dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_background"
+                android:textAllCaps="false"
+                android:text="@string/down_docs_n_at_hq_only"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/btnViewDocs"
+                android:layout_width="110dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_background"
+                android:text="@string/view_docs_n_at_hq_only"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:layout_marginStart="40dp"
+                tools:ignore="ButtonStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/RI_Recommendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ri_recommendation"
+            android:textColor="@color/MAROON"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp">
+
+        <TableRow
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:text="@string/whether_above_va_updated_ndetails_are_correct"
+                android:textColor="@android:color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_gravity="center"
+                android:text="@string/colon"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup2"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                tools:ignore="RtlHardcoded">
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:checked="true"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:text="@string/yes"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:checked="false"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:text="@string/no"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+            </RadioGroup>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:text="@string/can_caste_reservation_nbe_given"
+                android:textColor="@android:color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_gravity="center"
+                android:text="@string/colon"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup3"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                tools:ignore="RtlHardcoded">
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:checked="true"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:text="@string/yes"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    tools:ignore="TooManyViews" />
+
+                <RadioButton
+                    android:id="@+id/radioButton22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:checked="false"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:text="@string/no"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+            </RadioGroup>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/lRejection"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:text="@string/reason_for_rejection"
+                android:textColor="@android:color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+            <TextView
+                android:text="@string/colon"
+
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_column="2"/>
+            <Spinner
+                android:id="@+id/spRejectReason1"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/black"
+                android:textAlignment="center"
+                tools:ignore="RtlCompat,UnusedAttribute"
+                android:layout_column="3"/>
+        </TableRow>
+    </TableLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="@string/back"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:background="@drawable/button_background"
+                android:layout_gravity="center"
+                tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="@string/submit_report"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:background="@drawable/button_background"
+                android:layout_gravity="center"
+                android:layout_marginStart="40dp"
+                tools:ignore="ButtonStyle" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

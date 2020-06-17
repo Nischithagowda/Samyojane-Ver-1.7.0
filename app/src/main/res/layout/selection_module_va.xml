@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_new"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="10dp"
+        app:srcCompat="@drawable/karnataka"
+        android:contentDescription="@string/todo" />
+
+    <TextView
+        android:id="@+id/Department"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:ems="20"
+        android:text="@string/government_of_karnataka"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/department_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="20"
+        android:gravity="center"
+        android:text="@string/nadakacheri"
+        android:textColor="	#8B1C42"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="140dp"
+        android:layout_height="1.5dp"
+        android:background="@drawable/background_colors"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints"
+        android:layout_gravity="center"/>
+    <!--    <TextView-->
+    <!--        android:id="@+id/txtPendingName"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text=""-->
+    <!--        android:textColor="@color/MAROON"-->
+    <!--        android:textSize="15sp"-->
+    <!--        android:textStyle="bold"/>-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        card_view:cardBackgroundColor="@android:color/transparent"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="5dp"
+        card_view:cardUseCompatPadding="true"
+        android:layout_marginTop="100dp">
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1"
+            tools:ignore="RtlHardcoded,UselessParent"
+            android:layout_gravity="center">
+
+            <RadioButton
+                android:id="@+id/rbRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:checked="false"
+                android:text="@string/regular"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:textColor="@android:color/black" />
+
+            <RadioButton
+                android:id="@+id/rbEkshana"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:checked="false"
+                android:text="@string/e_kshana"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="15dp"/>
+        </RadioGroup>
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnAddAssistant"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:text="@string/add_assistant"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:background="@drawable/button_background"
+        android:layout_gravity="center"
+        tools:ignore="ButtonStyle"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

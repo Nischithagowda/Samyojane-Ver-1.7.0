@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:background="@drawable/layout_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/validate"
+        android:textColor="@color/MAROON"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_vpn_key_black_24dp"
+        android:drawablePadding="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            tools:ignore="UselessParent"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mobile_no"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:text="@string/colon"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etMobNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textColorHint="@color/grey"
+                android:hint="@string/enter_mobile_no"
+                android:inputType="number"
+                android:textColor="@android:color/black"
+                tools:ignore="Autofill"
+                android:layout_weight="1"
+                android:digits="1234567890"
+                android:maxLength="10"
+                android:text=""
+                android:textCursorDrawable="@android:color/black"
+                android:backgroundTint="@android:color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            tools:ignore="UselessParent"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/imei_no"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:text="@string/colon"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etIMEINum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textColorHint="@color/grey"
+                android:hint="@string/enter_device_imei_num"
+                android:inputType="number"
+                android:textColor="@android:color/black"
+                tools:ignore="Autofill"
+                android:layout_weight="1"
+                android:digits="1234567890"
+                android:maxLength="17"
+                android:text=""
+                android:textCursorDrawable="@android:color/black"
+                android:backgroundTint="@android:color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            tools:ignore="UselessParent"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/btnValidate"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:text="@string/validate"
+                android:background="@drawable/button_background"
+                android:textColor="@android:color/black"
+                style="?buttonBarButtonStyle"/>
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:text="@string/cancel"
+                android:background="@drawable/button_background"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="20dp"
+                style="?buttonBarButtonStyle"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:keyWidth="9%p"
+    android:horizontalGap="0px"
+    android:verticalGap="0px"
+    android:keyHeight="50dp">
+
+    <Row>
+        <Key android:codes="33" android:keyLabel="!" android:keyEdgeFlags="left"/>
+        <Key android:codes="34" android:keyLabel="&quot;"/>
+        <Key android:codes="35" android:keyLabel="#"/>
+        <Key android:codes="38" android:keyLabel="&amp;"/>
+        <Key android:codes="40" android:keyLabel="("/>
+        <Key android:codes="41" android:keyLabel=")"/>
+        <Key android:codes="42" android:keyLabel="*"/>
+        <Key android:codes="43" android:keyLabel="+"/>
+        <Key android:codes="58" android:keyLabel=":"/>
+        <Key android:codes="59" android:keyLabel=";"/>
+        <Key android:codes="94" android:keyLabel="^" android:keyEdgeFlags="right"/>
+    </Row>
+
+    <Row>
+        <Key android:codes="3220" android:keyLabel="ಔ" android:keyEdgeFlags="left"/>
+        <Key android:codes="3216" android:keyLabel="ಐ"/>
+        <Key android:codes="3206" android:keyLabel="ಆ"/>
+        <Key android:codes="3208" android:keyLabel="ಈ"/>
+        <Key android:codes="3210" android:keyLabel="ಊ"/>
+        <Key android:codes="3245" android:keyLabel="ಭ"/>
+        <Key android:codes="3225" android:keyLabel="ಙ"/>
+        <Key android:codes="3224" android:keyLabel="ಘ"/>
+        <Key android:codes="3239" android:keyLabel="ಧ"/>
+        <Key android:codes="3229" android:keyLabel="ಝ"/>
+        <Key android:codes="3234" android:keyLabel="ಢ" android:keyEdgeFlags="right"/>
+    </Row>
+    <Row>
+        <Key android:codes="3219" android:keyLabel="ಓ" android:keyEdgeFlags="left"/>
+        <Key android:codes="3215" android:keyLabel="ಏ"/>
+        <Key android:codes="3205" android:keyLabel="ಅ"/>
+        <Key android:codes="3207" android:keyLabel="ಇ"/>
+        <Key android:codes="3209" android:keyLabel="ಉ"/>
+        <Key android:codes="3243" android:keyLabel="ಫ"/>
+        <Key android:codes="3249" android:keyLabel="ಱ"/>
+        <Key android:codes="3222" android:keyLabel="ಖ"/>
+        <Key android:codes="3237" android:keyLabel="ಥ"/>
+        <Key android:codes="3227" android:keyLabel="ಛ"/>
+        <Key android:codes="3232" android:keyLabel="ಠ" android:keyEdgeFlags="right"/>
+    </Row>
+    <Row>
+        <Key android:codes="124" android:keyLabel="|" android:keyEdgeFlags="left"/>
+        <Key android:codes="3214" android:keyLabel="ಎ"/>
+        <Key android:codes="3230" android:keyLabel="ಞ"/>
+        <Key android:codes="3235" android:keyLabel="ಣ"/>
+        <Key android:codes="92" android:keyLabel="\\"/>
+        <Key android:codes="3251" android:keyLabel="ಳ"/>
+        <Key android:codes="3254" android:keyLabel="ಶ"/>
+        <Key android:codes="3286" android:keyLabel="ೃ"/>
+        <Key android:codes="3274" android:keyLabel="ೊ"/>
+        <Key android:codes="45" android:keyLabel="-" android:keyEdgeFlags="right"/>
+        <Key android:codes="-4" android:keyIcon="@drawable/ic_subdirectory_arrow_left_black_24dp" android:keyWidth="10%p" android:keyEdgeFlags="right"/>
+    </Row>
+    <Row android:rowEdgeFlags="bottom">
+        <Key android:codes="-11" android:keyLabel="ಕಚಟ" android:keyWidth="15%p"  android:keyEdgeFlags="left"/>
+        <Key android:codes="123" android:keyLabel="{"/>
+        <Key android:codes="47" android:keyLabel="/"/>
+        <Key android:codes="32" android:keyIcon="@drawable/ic_space_bar_black_24dp" android:keyWidth="30%p" android:isRepeatable="true"/>
+        <Key android:codes="63" android:keyLabel="\?"/>
+        <Key android:codes="125" android:keyLabel="}"/>
+        <Key android:codes="-5" android:keyIcon="@drawable/ic_backspace_black_24dp" android:keyWidth="20%p" android:isRepeatable="true"/>
+    </Row>
+
+</Keyboard>

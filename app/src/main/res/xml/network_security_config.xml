@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">https://parihara.karnataka.gov.in</domain>
+        <domain includeSubdomains="true">parihara.karnataka.gov.in</domain>
+        <domain includeSubdomains="true">https://parihara.karnataka.gov.in/Service29/APTHA</domain>
+    </domain-config>
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+</network-security-config>

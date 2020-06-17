@@ -1,0 +1,442 @@
+<resources>
+    <string name="app_name">Samyojane</string>
+    <string name="select_lan">Please Select Language:</string>
+    <string name="versionCode">1.9.0</string>
+    <string name="version">Ver : </string>
+    <string name="release_date">Rele On : 01/04/2020</string>
+
+    <string name="cre_district_name">District</string>
+    <string name="cre_taluk_name">Taluk</string>
+    <string name="cre_hobli_name">Hobli</string>
+    <string name="cre_va_circle_name">VA_circle_ename</string>
+    <string name="village_table_habitation_name">HM_habitation_ename</string>
+    <string name="village_table_va_circle_name">VCM_va_circle_ename</string>
+    <string name="facility_table_name">FM_facility_edesc</string>
+    <string name="town_master_town_name">TWM_town_ename</string>
+    <string name="town_master_ward_name">WM_ward_ename</string>
+    <string name="ser_tran_service_name">Service_Name</string>
+    <string name="id_name">ID_Ename</string>
+    <string name="reasons_tbl_reason_name">Reasons</string>
+    <string name="reasons_tbl_purpose_name">Purpose</string>
+    <string name="flag1">OPRRC</string>
+    <string name="flag2">12345</string>
+
+    <string name="api_flag1">nadakacheriSAPI@2020</string>
+    <string name="api_flag2">0bd8c0857ab17b05a7f14fa354fa3676</string>
+
+    <string name="samyojane_API_url">http://164.100.133.30/Samyojane_API/</string>
+    <string name="server_url">http://218.248.32.25/RWS_TASKMGT/TSKMGT/</string>
+
+    <string name="main_url">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_LoginCredentials</string>
+    <string name="main_url_version">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Version</string>
+    <string name="url_Down_Docs">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Docs</string>
+    <string name="url_facility">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Facility_Services</string>
+    <string name="url_village_name">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Village_Name</string>
+    <string name="url_service_Tran_data">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Service_tran_data</string>
+    <string name="url_village_name_RI">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Village_Name_For_RI_Live</string>
+    <string name="url_service_Parameter_Data">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Service_Parameters_data_For_RI_Live</string>
+    <string name="SOAP_ADDRESS">http://164.100.133.30/NK_MobileApp/WebService.asmx</string>
+
+    <string name="main_url_E_Kshana">http://164.100.133.30/NKMobileAPI/api/OPRC/</string>
+    <string name="freeze_member_url">http://164.100.133.30/NKMobileAPI/api/OPRC/POSTAddRCMemberDetails/</string>
+    <string name="inactive_member_url">http://164.100.133.30/NKMobileAPI/api/OPRC/POSTUpdateRCMemberInactive/</string>
+    <string name="VA_Update_url">http://164.100.133.30/NKMobileAPI/api/OPRC/POSTUpdateRCMemberDetailsFromVA/</string>
+
+    <string name="validate_ass_login_url">http://164.100.133.30/Mob_U_ekshana/e_kshana.asmx/ValidateAssistant</string>
+    <string name="add_assistant_url">http://164.100.133.30/Mob_Rest_API/</string>
+    <string name="otp_generate_url">http://164.100.133.47/Mob_u_SMS/EKSHNA/</string>
+    <string name="test_otp_url">http://192.168.0.139/RWS_MBEKSHNA/EKSHNA/</string>
+
+    <string name="SMS_Text">You have initiated OTP for VA Assistant Registration, Your OTP is</string>
+    <string name="SMS_Text_VA_RI">You have initiated OTP for SAMYOJANE Application Login, Your OTP is</string>
+    <string name="access_denied_msg">Access Denied!Please Contact Admin</string>
+
+    <string-array name="language">
+        <item>Kannada</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="years_array">
+        <item>-- Select --</item>
+        <item> &lt; 1 Year</item>
+        <item> &gt; 5 Year</item>
+        <item>Since Birth</item>
+    </string-array>
+    <string-array name="years_array_kan">
+        <item>-- ಆಯ್ಕೆಮಾಡಿ --</item>
+        <item> &lt; 1 ವರ್ಷ</item>
+        <item> &gt; 5 ವರ್ಷ</item>
+        <item>ಹುಟ್ಟಿದಾಗಿನಿಂದ</item>
+    </string-array>
+    <string-array name="month_array">
+        <item>-- Month --</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+    </string-array>
+    <string-array name="to_array">
+        <item>-- Select --</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>PUC</item>
+        <item>Degree</item>
+    </string-array>
+    <string-array name="caste_array">
+        <item>-- Select --</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>General</item>
+        <item>Minority</item>
+    </string-array>
+    <string-array name="Yes_No_array">
+        <item>-- Select --</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="Reason_array">
+        <item>-- Reason --</item>
+        <item>Annual income more than limit</item>
+        <item>Parents are Government servants</item>
+        <item>Land more than prescribed limit</item>
+    </string-array>
+
+    <string-array name="Reason_array_kan">
+        <item>-- ಕಾರಣ --</item>
+        <item>ವಾರ್ಷಿಕ ಆದಾಯ ನಿಗದಿತ ಮಿತಿಗಿಂತ ಹೆಚ್ಚು</item>
+        <item>ಪೋಷಕರರು ಸರ್ಕಾರಿ ನೌಕರರು</item>
+        <item>ನಿಗದಿತ ಮಿತಿಗಿಂತ ಹೆಚ್ಚಿನ ಜಮೀನು</item>
+    </string-array>
+
+    <string-array name="RejectionReason">
+        <item>-- Reason --</item>
+        <item>Not resident at address so cannot verify</item>
+        <item>Does not belongs to claimed caste</item>
+        <item>Belongs to Creamy Layer</item>
+    </string-array>
+    <string-array name="Purpose_of_certificate">
+        <item>-- Select --</item>
+        <item>Education</item>
+        <item>Employment</item>
+        <item>Claim Status of Local Person</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="Non_Exist_Reason">
+        <item>-- Select --</item>
+        <item>Delete from RationCard</item>
+        <item>Expired or Dead</item>
+        <item>Other</item>
+    </string-array>
+
+    <string name="simple_ime">Samyojane</string>
+    <string name="subtype_kn_IN">Kannada (In)</string>
+    <string name="todo">TODO</string>
+    <string name="government_of_karnataka">Government of Karnataka</string>
+    <string name="nadakacheri">NADAKACHERI</string>
+    <string name="activate">Activate</string>
+    <string name="activating">Activating…</string>
+    <string name="enter_your_username">Enter the UserName</string>
+    <string name="enter_the_password">Enter the Password</string>
+    <string name="login">LogIn</string>
+    <string name="login_c">LogIn…</string>
+    <string name="village_accountant_module">Village Accountant Module</string>
+    <string name="process_request">PROCESS REQUEST</string>
+    <string name="revenue_inspector_module">Revenue Inspector Module</string>
+    <string name="district">District</string>
+    <string name="colon">:</string>
+    <string name="taluk">Taluk</string>
+    <string name="hobli">Hobli</string>
+    <string name="va_circle">VA Circle</string>
+    <string name="name">Name</string>
+    <string name="village_accountant">Village Accountant</string>
+    <string name="revenue_inspector">Revenue Inspector</string>
+    <string name="_00_00_00">00:00:00</string>
+    <string name="download">Download</string>
+    <string name="downloading">Downloading…</string>
+    <string name="proceed">Proceed</string>
+    <string name="pendency_report">Pendency Report</string>
+    <string name="new_request">New Request</string>
+    <string name="or">|</string>
+    <string name="field_report">FIELD REPORT</string>
+    <string name="service_wise_pending_status">Service wise Records</string>
+    <string name="rural">RURAL</string>
+    <string name="urban">URBAN</string>
+    <string name="total_pending">Total Pending</string>
+    <string name="village">Village</string>
+    <string name="search_by_district">Search by District</string>
+    <string name="search_by_taluk">Search by Taluk</string>
+    <string name="search_by_rcNum">Search by RationCard No.</string>
+    <string name="village_circle">Village Circle</string>
+    <string name="search_by_village_circle">Search by Village Circle</string>
+    <string name="search_by_village">Search by Village</string>
+    <string name="town">Town</string>
+    <string name="search_by_town">Search by Town</string>
+    <string name="ward">Ward</string>
+    <string name="search_by_ward">Search by Ward</string>
+    <string name="sl">Sl.</string>
+    <string name="service_name">Service Name</string>
+    <string name="back">Back</string>
+    <string name="applicant_name">Applicant Name</string>
+    <string name="id">Id</string>
+    <string name="due_date">Due Date</string>
+    <string name="document_names">Document_Names</string>
+    <string name="view">View</string>
+    <string name="report">Report</string>
+    <string name="village_circle_name">Village Circle Name</string>
+    <string name="village_name">Village Name</string>
+    <string name="village_circle_wise_pending_status">Village Circle wise</string>
+    <string name="town_name">Town Name</string>
+    <string name="town_wise_pending_status">Town wise</string>
+    <string name="ward_wise_pending_status">Ward wise</string>
+    <string name="village_wise_pending_status">Village wise</string>
+    <string name="applicant_id">Applicant Id</string>
+    <string name="indicates_overdue">Indicates Overdue</string>
+    <string name="applicant_information">APPLICANT INFORMATION</string>
+    <string name="editing_form">Editing Form</string>
+    <string name="raised_location">Raised Location</string>
+    <string name="enter_your_name">Enter Your Name</string>
+    <string name="father_husband">Father/Husband</string>
+    <string name="enter_father_name">Enter Father Name</string>
+    <string name="mother">Mother</string>
+    <string name="enter_mother_name">Enter Mother Name</string>
+    <string name="enter_father_husband_name">Enter Father/Husband Name</string>
+    <string name="id_number">ID Number</string>
+    <string name="enter_rationcard_no">Enter RationCard No.</string>
+    <string name="mobile_no">Mobile No.</string>
+    <string name="enter_mobile_no">Enter Mobile No.</string>
+    <string name="address">Address</string>
+    <string name="enter_your_address">Enter Your Address</string>
+    <string name="pin_code">PIN Code</string>
+    <string name="enter_pin_code">Enter PIN Code</string>
+    <string name="report_no">Report_No</string>
+    <string name="aadhaar_details_optional">Aadhaar Details(Optional)</string>
+    <string name="qr_code_scanner">QR Code Scanner</string>
+    <string name="uid_no">UID No.</string>
+    <string name="empty">NULL</string>
+    <string name="or_text">OR</string>
+    <string name="capture_naadhaar_card">Capture  Aadhaar Card</string>
+    <string name="certified_correct_amp_proceed"><![CDATA[certified correct & proceed]]></string>
+    <string name="updated_by">Updated by:</string>
+    <string name="shri_smt">Shri/Smt</string>
+    <string name="reason_for_rejection">Reason for rejection</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
+    <string name="can_caste_reservation_nbe_given">Can caste reservation be \ngiven</string>
+    <string name="whether_above_va_updated_ndetails_are_correct">Whether above VA updated \ndetails are correct</string>
+    <string name="whether_the_applicating_updated_ndetails_are_correct">Whether the Applicant updated \ndetails are correct</string>
+    <string name="ri_recommendation">RI Recommendation</string>
+    <string name="enter_annual_income">Enter Annual Income</string>
+    <string name="annual_income_of_napplicant_family_in_rs">Annual Income of \nApplicant Family (in Rs.)</string>
+    <string name="reason_for_creamy_layer">Reason for Creamy Layer</string>
+    <string name="does_applicant_belongs_nto_creamy_layer">Does Applicant Belongs \nto Non-Creamy Layer</string>
+    <string name="select_caste">Select Caste</string>
+    <string name="applicant_caste">Applicant Caste</string>
+    <string name="applicant_category">Applicant Category</string>
+    <string name="submit_report">submit \nReport</string>
+    <string name="number_of_years_napplicant_is_resident_nin_karnataka">Number of years Applicant \nis resident in karnataka</string>
+    <string name="category_of_napplicant_father">Category of \nApplicant Father</string>
+    <string name="caste_of_applicant_nfather">Caste of Applicant \nFather</string>
+    <string name="category_of_napplicant_mother">Category of \nApplicant Mother</string>
+    <string name="caste_of_applicant_nmother">Caste of Applicant \nMother</string>
+    <string name="category_of_applicant_nas_per_enquiry">Category of Applicant \nas per enquiry</string>
+    <string name="caste_of_applicant_nas_per_enquiry">Caste of Applicant \nas per enquiry</string>
+    <string name="remarks">Remarks</string>
+    <string name="enter_the_remarks">Enter the remarks</string>
+    <string name="enter_no_of_years">Enter No. of Years</string>
+    <string name="does_applicant_reside_at_nhis_her_stated_address">Does Applicant reside at \nhis/her stated address</string>
+    <string name="does_place_of_residence_nmatch_with_one_in_rationcard">Does place of residence \nmatch with one in \nRationCard</string>
+    <string name="purpose_for_which_certificate_nneeded">Purpose for which \nCertificate needed</string>
+    <string name="do_you_recommend_issuance_nof_residence_certificate">Do you recommend \nissuance of \nResidence Certificate</string>
+    <string name="colon_space">: </string>
+    <string name="applicant_information_ncertify_correct_or_edit_amp_certify"><![CDATA[APPLICANT INFORMATION \nCERTIFY CORRECT or EDIT & CERTIFY]]></string>
+    <string name="category">Category</string>
+    <string name="caste">Caste</string>
+    <string name="annual_income">Annual Income</string>
+    <string name="no_of_years_stayed_nas_per_applicant">No Of Years \nStayed as per Applicant</string>
+    <string name="no_of_months_stayed_nas_per_applicant">No Of Months \nStayed as per Applicant</string>
+    <string name="down_docs_n_at_hq_only">DOWN DOCS \n(at HQ only)</string>
+    <string name="view_docs_n_at_hq_only">VIEW DOCS \n(at HQ only)</string>
+    <string name="category_of_applicant">Category of Applicant</string>
+    <string name="capture_photo">Capture Photo</string>
+    <string name="update_nchanges">update \nchanges</string>
+    <string name="do_you_recommend_nissuance_of_caste_ncertificate_to_applicant">Do you recommend \nissuance of caste \nCertificate to applicant</string>
+    <string name="upload_status">Upload Status</string>
+    <string name="total_applicants_record_captured">Total Applicants record captured</string>
+    <string name="total_records_so_far_uploaded">Total Records so far Uploaded</string>
+    <string name="balance_records_to_be_uploaded">Balance Records to be Uploaded</string>
+    <string name="data_uploaded_successfully">Data Uploaded successfully</string>
+    <string name="upload">Upload</string>
+    <string name="ok">OK</string>
+    <string name="applicant_name_c">Applicant Name :</string>
+    <string name="reportNo_c">Report No :</string>
+    <string name="documents_provided">Documents Provided</string>
+    <string name="version_does_not_match">Version Does not Match.\nPlease Contact the Admin</string>
+    <string name="not_valid_user">You are not a valid user</string>
+    <string name="loading">Loading. Please wait…</string>
+    <string name="error">Error encountered.</string>
+    <string name="connection_not_available">Internet connection is Not available. \nPlease Try Again</string>
+    <string name="switch_english">Please switch to English Language</string>
+    <string name="switch_kannada">Please switch to Kannada Language</string>
+    <string name="pwd_error">Invalid UserName or Password</string>
+    <string name="server_exception">Server Exception Occurred</string>
+    <string name="no_data">No Data to verify,\nPlease Download the Data.</string>
+    <string name="gpe_is_off">Your GPS seems to be Switched Off, do you want to Switched it ON?</string>
+    <string name="want_to_exit">Are you sure?\nDo you want to Exit</string>
+    <string name="keyboard_language">Keyboard Language must be in kannada, Would you like to change the Language</string>
+    <string name="must_change_keyboard">You can\'t continue with Current the Language, Please Switch to Kannada Language</string>
+    <string name="memory_full">Memory Full.\nData cannot be downloaded.</string>
+    <string name="downloading_please_wait">Downloading. Please wait…</string>
+    <string name="no_data_to_verify">No Data to verify</string>
+    <string name="no_da_found">No Data Found</string>
+    <string name="nadakacheri_raised">Nadakacheri</string>
+    <string name="online">Online</string>
+    <string name="seva_sindhu">Seva Sindhu</string>
+    <string name="wallet">WALLET</string>
+    <string name="gramPanchayath">GramPanchayath</string>
+    <string name="not_specified">Not Specified</string>
+    <string name="data_saves_successfully">Data Saved Successfully</string>
+    <string name="select_no_years">Select No. of Years</string>
+    <string name="field_canno_null">Field Cannot be NULL</string>
+    <string name="cannot_get_location">Can\'t get your Location \nPlease Switch on the GPS</string>
+    <string name="document_not_found">Document not found</string>
+    <string name="switch_on_gps">Please switch on the GPS</string>
+    <string name="switch_on_internet">Please switch on the Internet</string>
+    <string name="select_spinner">-- Select --</string>
+    <string name="select_caste_spinner">-- Select Caste --</string>
+    <string name="select_category_spinner">-- Select Category --</string>
+    <string name="alert">Alert</string>
+    <string name="ward_name_num">Ward Name/Number</string>
+    <string name="reason_spinner">-- Reason --</string>
+    <string name="select_reason_for_rejection">Select Reason for Rejection</string>
+    <string name="incorrect_value">Incorrect value</string>
+    <string name="select_reason">Select Reason</string>
+    <string name="invalid_caste">Invalid Caste</string>
+    <string name="discard_changes">Are you sure?\nDo you want to Discard the changes</string>
+    <string name="updated_successfully">Data Updated Successfully</string>
+    <string name="saved_successfully">Data Saved Successfully</string>
+    <string name="error_creating_table">Error in creating table</string>
+    <string name="select_category">Select Category</string>
+    <string name="must_match_father_mother">Caste should match with either father of mother of Applicant</string>
+    <string name="month_spinner">-- Month --</string>
+    <string name="select_purpose">Select Purpose</string>
+    <string name="select_month">Select Month</string>
+    <string name="enter_valid_phone_num">Enter Valid Phone number</string>
+    <string name="enter_valid_pincode">Enter valid PinCode</string>
+    <string name="loading_C">Loading…</string>
+    <string name="service_not_availabel">Service not available for this Service</string>
+    <string name="certified"><![CDATA[certified correct & proceed]]></string>
+    <string name="result_not_found">Result Not Found</string>
+    <string name="internet_not_avail">!. Internet Connection Not Available</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="enable_internet">Would you like to enable it?</string>
+    <string name="no_data_to_upload">No Data to Upload</string>
+    <string name="year_name">Year</string>
+    <string name="month_name">Month</string>
+    <string name="remarks_updated_by_va">Remarks Updated by VA</string>
+    <string name="home">Home</string>
+    <string name="applicant_wise">Applicant wise</string>
+    <string name="regular">Regular</string>
+    <string name="e_kshana">e-Kshana</string>
+    <string name="urban_e_kshana">Urban e-Kshana</string>
+    <string name="fetch_details">Fetch Details</string>
+    <string name="valid_rc_num">Enter Valid RC number</string>
+    <string name="incorrect_rc_num">Incorrect RC number</string>
+    <string name="member_name">Member Name</string>
+    <string name="member_id">Member ID</string>
+    <string name="ration_card_num">Ration card No.</string>
+    <string name="family_details">Family Details</string>
+    <string name="enter_member_details">Enter Member Details</string>
+    <string name="father_husband_name">Father/Husband Name</string>
+    <string name="relationship">Relationship</string>
+    <string name="mother_name">Mother Name</string>
+    <string name="head_of_the_family_name">Head of the family \nName</string>
+    <string name="enter_hof_name">Enter HOF Name</string>
+    <string name="relationship_with_hof">Relationship with HOF</string>
+    <string name="dob">DOB</string>
+    <string name="date_format">DD/MM/YYYY</string>
+    <string name="gender">Gender</string>
+    <string name="total_income">Total Income</string>
+    <string name="religion">Religion</string>
+    <string name="residing_years">Residing Years</string>
+    <string name="non_existence">Non-existence</string>
+    <string name="save_and_proceed"><![CDATA[Save & Proceed]]></string>
+    <string name="no_town_found">No Town Found</string>
+    <string name="no_ward_found">No Ward Found</string>
+    <string name="select_town">Select Town</string>
+    <string name="select_taluk">Select Taluk</string>
+    <string name="select_ward">Select Ward</string>
+    <string name="select_title">select</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_address">Enter Address</string>
+    <string name="enter_pincode">Enter PinCode</string>
+    <string name="select_date">Select Date</string>
+    <string name="enter_total_income">Enter Total Income</string>
+    <string name="enter_remarks">Enter Remarks</string>
+    <string name="search_by_hobli">Search by Hobli</string>
+    <string name="select_hobli">Select Hobli</string>
+    <string name="addMember">Add New Member</string>
+    <string name="upload_e_kshana">Upload</string>
+    <string name="enter_reason">Enter Reason</string>
+    <string name="operator">Operator</string>
+    <string name="va_ri">VA/RI</string>
+    <string name="does_applicant_belongs_nto_non_creamy_layer">Does Applicant Belongs  \nto Non-Creamy Layer</string>
+    <string name="add_assistant">Add Assistant</string>
+    <string name="password">Password</string>
+    <string name="add">Add</string>
+    <string name="sms_serivce_error">Could not validate!Please Try Again</string>
+    <string name="service_exception">Service Exception!Please Try Again</string>
+    <string name="sms_response_empty">Please Try Again!</string>
+    <string name="invalid_user">Invalid User!</string>
+    <string name="assistant_login">Assistant Login</string>
+    <string name="invalid_username_password">Invalid Username or Password</string>
+    <string name="rc_numbers_updated_by_your_assistant">RC Numbers Updated by your Assistant</string>
+    <string name="fetch_rc_numbers">Fetch RC Numbers</string>
+    <string name="view_registered_assistants">View Registered Assistants</string>
+    <string name="assistants">Assistants</string>
+    <string name="verify_member_details">Verify Member Details</string>
+    <string name="edit_details">Edit Details</string>
+    <string name="caste_of_applicant">Caste of Applicant</string>
+    <string name="this_member_data_is_already_upoaded_cannoy_upload_it_again">This member data is already Uploaded. You cannot Update it again.</string>
+    <string name="this_member_is_inactive">This member is INACTIVE</string>
+    <string name="age">Age</string>
+    <string name="enter_age">Enter Age</string>
+    <string name="service_not_avilable_at_this_moment">Service Not Available At this Moment. Please Contact Admin for more Details.</string>
+    <string name="cannot_add_please_retry">Cannot Add. Please Retry</string>
+    <string name="this_person_was_already_added_as_your_ass">This Person was Already Added as your Assistant</string>
+    <string name="could_not_found_assistants">Could not found Assistants</string>
+    <string name="cannot_get_the_data_please_retry">Cannot Get the Data Please Retry</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="please_type_verification_code_sent_to_your_assistant_mobile_number">Please type verification code sent to your Assistant Mobile Number</string>
+    <string name="inavlid_mobile_nnum">INVALID Mobile Number</string>
+    <string name="aadhaar_num">Aadhaar No.</string>
+    <string name="enter_aadhaar_no">Enter Aadhaar No.</string>
+    <string name="assistant">Assistant</string>
+    <string name="choose_login">Choose Login</string>
+    <string name="enter_device_imei_num">Enter Device IMEI Num</string>
+    <string name="validate">Validate</string>
+    <string name="cancel">Cancel</string>
+    <string name="imei_no">IMEI No.</string>
+    <string name="error_500">Could not Load the Data!Please Contact Admin!</string>
+    <string name="invali_mobile_error">Invalid Mobile Number</string>
+    <string name="want_to_change_login_click_here_to">Want to change Login? Click Here to</string>
+    <string name="change">Change</string>
+    <string name="want_to_change_login">Are you sure?\nDo you want to change Login?</string>
+    <string name="cannot_validate_please_try_later">Cannot validate Please try later</string>
+
+</resources>

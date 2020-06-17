@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Samyojane</string>
+    <string name="select_lan">ದಯವಿಟ್ಟು ಭಾಷೆಯನ್ನು ಆರಿಸಿ:</string>
+    <string name="versionCode">1.9.0</string>
+    <string name="version">ಆವೃತ್ತಿ : </string> - ಆವೃತ್ತಿ
+    <string name="release_date">ದಿ : 01/04/2020</string>
+
+    <string name="cre_district_name">District_k</string>
+    <string name="cre_taluk_name">Taluk_k</string>
+    <string name="cre_hobli_name">Hobli_k</string>
+    <string name="cre_va_circle_name">VA_circle_kname</string>
+    <string name="village_table_habitation_name">HM_habitation_kname</string>
+    <string name="village_table_va_circle_name">VCM_va_circle_kname</string>
+    <string name="facility_table_name">FM_facility_kdesc</string>
+    <string name="town_master_town_name">TWM_town_kname</string>
+    <string name="town_master_ward_name">WM_ward_kname</string>
+    <string name="ser_tran_service_name">Service_Name_k</string>
+    <string name="id_name">ID_Kname</string>
+    <string name="reasons_tbl_reason_name">Reasons_k</string>
+    <string name="reasons_tbl_purpose_name">Purpose_k</string>
+    <string name="flag1">OPRRC</string>
+    <string name="flag2">12345</string>
+
+    <string name="api_flag1">nadakacheriSAPI@2020</string>
+    <string name="api_flag2">0bd8c0857ab17b05a7f14fa354fa3676</string>
+
+    <string name="samyojane_API_url">http://164.100.133.30/Samyojane_API/</string>
+    <string name="server_url">http://218.248.32.25/RWS_TASKMGT/TSKMGT/</string>
+
+    <string name="main_url">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_LoginCredentials</string>
+    <string name="main_url_version">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Version</string>
+    <string name="url_Down_Docs">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Docs</string>
+    <string name="url_facility">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Facility_Services</string>
+    <string name="url_village_name">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Village_Name</string>
+    <string name="url_service_Tran_data">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Service_tran_data</string>
+    <string name="url_village_name_RI">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Village_Name_For_RI_Live</string>
+    <string name="url_service_Parameter_Data">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Service_Parameters_data_For_RI_Live</string>
+    <string name="SOAP_ADDRESS">http://164.100.133.30/NK_MobileApp/WebService.asmx</string>
+
+    <string name="main_url_E_Kshana">http://164.100.133.30/NKMobileAPI/api/OPRC/</string>
+    <string name="freeze_member_url">http://164.100.133.30/NKMobileAPI/api/OPRC/POSTAddRCMemberDetails/</string>
+    <string name="inactive_member_url">http://164.100.133.30/NKMobileAPI/api/OPRC/POSTUpdateRCMemberInactive/</string>
+    <string name="VA_Update_url">http://164.100.133.30/NKMobileAPI/api/OPRC/POSTUpdateRCMemberDetailsFromVA/</string>
+
+    <string name="validate_ass_login_url">http://164.100.133.30/Mob_U_ekshana/e_kshana.asmx/ValidateAssistant</string>
+    <string name="add_assistant_url">http://164.100.133.30/Mob_Rest_API/</string>
+    <string name="otp_generate_url">http://164.100.133.47/Mob_u_SMS/EKSHNA/</string>
+    <string name="test_otp_url">http://192.168.0.139/RWS_MBEKSHNA/EKSHNA/</string>
+
+    <string name="SMS_Text">You have initiated OTP for VA Assistant Registration, Your OTP is</string>
+    <string name="SMS_Text_VA_RI">You have initiated OTP for VA/RI Login Verification , Your OTP is</string>
+    <string name="access_denied_msg">Access Denied!Please Contact Admin</string>
+
+    <string-array name="language">
+        <item>ಕನ್ನಡ</item>
+        <item>ಇಂಗ್ಲಿಷ್</item>
+    </string-array>
+    <string-array name="years_array">
+        <item>-- Select --</item>
+        <item> &lt; 1 Year</item>
+        <item> &gt; 5 Year</item>
+        <item>Since Birth</item>
+    </string-array>
+    <string-array name="years_array_kan">
+        <item>-- ಆಯ್ಕೆಮಾಡಿ --</item>
+        <item> &lt; 1 ವರ್ಷ</item>
+        <item> &gt; 5 ವರ್ಷ</item>
+        <item>ಹುಟ್ಟಿದಾಗಿನಿಂದ</item>
+    </string-array>
+    <string-array name="month_array">
+        <item>-- ತಿಂಗಳು --</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+    </string-array>
+    <string-array name="to_array">
+        <item>-- ಆಯ್ಕೆಮಾಡಿ --</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>PUC</item>
+        <item>Degree</item>
+    </string-array>
+    <string-array name="caste_array">
+        <item>-- ಆಯ್ಕೆಮಾಡಿ --</item>
+        <item>ಪರಿಶಿಷ್ಟ ಜಾತಿಗಳು</item>
+        <item>ಪರಿಶಿಷ್ಟ ಪಂಗಡಗಳು</item>
+        <item>ಜನರಲ್</item>
+        <item>ಅಲ್ಪಸಂಖ್ಯಾತರು</item>
+    </string-array>
+    <string-array name="Yes_No_array">
+        <item>-- ಆಯ್ಕೆಮಾಡಿ --</item>
+        <item>ಹೌದು</item>
+        <item>ಇಲ್ಲ</item>
+    </string-array>
+    <string-array name="Reason_array">
+        <item>-- ಕಾರಣ --</item>
+        <item>ವಾರ್ಷಿಕ ಆದಾಯ ನಿಗದಿತ ಮಿತಿಗಿಂತ ಹೆಚ್ಚು</item>
+        <item>ಪೋಷಕರರು ಸರ್ಕಾರಿ ನೌಕರರು</item>
+        <item>ನಿಗದಿತ ಮಿತಿಗಿಂತ ಹೆಚ್ಚಿನ ಜಮೀನು</item>
+    </string-array>
+
+    <string-array name="Reason_array_kan">
+        <item>-- ಕಾರಣ --</item>
+        <item>ವಾರ್ಷಿಕ ಆದಾಯ ನಿಗದಿತ ಮಿತಿಗಿಂತ ಹೆಚ್ಚು</item>
+        <item>ಪೋಷಕರರು ಸರ್ಕಾರಿ ನೌಕರರು</item>
+        <item>ನಿಗದಿತ ಮಿತಿಗಿಂತ ಹೆಚ್ಚಿನ ಜಮೀನು</item>
+    </string-array>
+
+    <string-array name="RejectionReason">
+        <item>-- ಕಾರಣ --</item>
+        <item>ವಿಳಾಸದಲ್ಲಿ ವಾಸವಿಲ್ಲದೇ ಇರುವುದರಿಂದ ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ</item>
+        <item>ನಮೂದಿಸಿದ ಜಾತಿಗೆ ಸೇರಿರುವುದಿಲ್ಲ</item>
+        <item>ಕೆನೆಪದರ ನೀತಿಗೆ ಸೇರಿರುತ್ತಾರೆ</item>
+    </string-array>
+    <string-array name="Purpose_of_certificate">
+        <item>-- ಆಯ್ಕೆಮಾಡಿ --</item>
+        <item>ವಿದ್ಯಾರ್ಹತೆ</item>
+        <item>ಉದ್ಯೋಗ</item>
+        <item>ಸ್ಥಳೀಯ ವ್ಯಕ್ತಿಯ ಸ್ಥಾನ ಕ್ಲೇಮ್ ಮಾಡಲು</item>
+        <item>ಇತರೆ</item>
+    </string-array>
+
+    <string-array name="Non_Exist_Reason">
+        <item>-- Select --</item>
+        <item>Delete from RationCard</item>
+        <item>Expired or Dead</item>
+        <item>Other</item>
+    </string-array>
+
+    <string name="simple_ime">Samyojane</string>--  ಸಂಯೋಜನೆ
+    <string name="subtype_kn_IN">Kannada (In)</string>
+    <string name="todo">TODO</string>
+    <string name="government_of_karnataka">ಕರ್ನಾಟಕ ಸರ್ಕಾರ</string>--ಕರ್ನಾಟಕ ಸರ್ಕಾರ
+    <string name="nadakacheri">ನಾಡಕಛೇರಿ</string>--ನಾಡಕಛೇರಿ
+    <string name="activate">ಸಕ್ರಿಯೆ</string>--ಸಕ್ರಿಯೆ
+    <string name="activating">ಸಕ್ರಿಯಗೊಳಿಸಲಾಗುತ್ತಿದೆ…</string>--ಸಕ್ರಿಯಗೊಳಿಸಲಾಗುತ್ತಿದೆ
+    <string name="enter_your_username">ಬಳಕೆದಾರ ಹೆಸರು ನಮೂದಿಸಿ</string>--ನಿಮ್ಮ ಬಳಕೆದಾರ ಹೆಸರು ನಮೂದಿಸಿ
+    <string name="enter_the_password">ಪಾಸ್ವರ್ಡ್ ನಮೂದಿಸಿ</string>--ಪಾಸ್ವರ್ಡ್ ನಮೂದಿಸಿ
+    <string name="login">Login</string>--ಲಾಗಿನ್
+    <string name="login_c">Login…</string>--ಲಾಗಿನ್
+    <string name="village_accountant_module">ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿ ಮಾದರಿ</string>--ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿ ಮಾದರಿ
+    <string name="process_request">ಪ್ರಕ್ರಿಯೆ ವಿನಂತಿ</string>--ಪ್ರಕ್ರಿಯೆ ವಿನಂತಿ
+    <string name="revenue_inspector_module">ಕಂದಾಯ ನಿರೀಕ್ಷಕರ ಮಾದರಿ</string>--ಕಂದಾಯ ನಿರೀಕ್ಷಕರ ಮಾದರಿ
+    <string name="district">ಜಿಲ್ಲೆ</string>-- ಜಿಲ್ಲೆ
+    <string name="colon">:</string>
+    <string name="taluk">ತಾಲ್ಲೂಕು</string>--ತಾಲ್ಲೂಕ್
+    <string name="hobli">ಹೋಬಳಿ</string>--ಹೋಬಳಿ
+    <string name="va_circle">ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿಗಳ ವೃತ್ತ</string>--ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿಗಳ ವೃತ್ತ
+    <string name="name">ಹೆಸರು</string>--ಹೆಸರು
+    <string name="village_accountant">ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿಗಳು</string>--ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿಗಳು
+    <string name="revenue_inspector">ಕಂದಾಯ ನಿರೀಕ್ಷಕರು</string>--ಕಂದಾಯ ನಿರೀಕ್ಷಕರು
+    <string name="_00_00_00">00:00:00</string>
+    <string name="download">ಡೌನ್ಲೋಡ್</string>--ಡೌನ್ಲೋಡ್
+    <string name="downloading">ಡೌನ್ಲೋಡಿಂಗ್ ಮಾಡಲಾಗುತ್ತಿದೆ…</string>--ಡೌನ್ಲೋಡಿಂಗ್ ಮಾಡಲಾಗುತ್ತಿದೆ
+    <string name="proceed">ಮುಂದುವರಿಯಿರಿ</string>--ಮುಂದುವರೆಯಲು
+    <string name="pendency_report">ಪೆಂಡೆನ್ಸಿ ವರದಿ</string>--ಪೆಂಡೆನ್ಸಿ ವರದಿ
+    <string name="new_request">ಹೊಸ ವಿನಂತಿ</string>--ಹೊಸ ವಿನಂತಿ
+    <string name="or">|</string>
+    <string name="field_report">ಕ್ಷೇತ್ರ ವರದಿ</string>--ಕ್ಷೇತ್ರ ವರದಿ
+    <string name="service_wise_pending_status">ಸೇವಾವಾರು ಬಾಕಿ ವರದಿ</string>--ಸೇವಾವಾರು ಬಾಕಿ ಸ್ಥಿತಿ
+    <string name="rural">ಗ್ರಾಮೀಣ</string>--ಗ್ರಾಮೀಣ
+    <string name="urban">ನಗರ</string>--ನಗರ
+    <string name="total_pending">ಒಟ್ಟು ಬಾಕಿ</string>--ಒಟ್ಟು ಬಾಕಿ
+    <string name="village">ಗ್ರಾಮ</string>--ಗ್ರಾಮ
+    <string name="village_circle">ಗ್ರಾಮ ವೃತ್ತ</string>--ಗ್ರಾಮ ವೃತ್ತ
+    <string name="search_by_village_circle">ಗ್ರಾಮ ವೃತ್ತವಾರು ಹುಡುಕಿ</string>--ಗ್ರಾಮ ವೃತ್ತದಿಂದ ಹುಡುಕಿ
+    <string name="search_by_village">ಗ್ರಾಮವಾರು ಹುಡುಕಿ</string>--ಗ್ರಾಮದಿಂದ ಹುಡುಕಿ
+    <string name="search_by_district">ಜಿಲ್ಲಾವಾರು ಹುಡುಕಿ</string>
+    <string name="search_by_taluk">ತಾಲ್ಲೂಕುವಾರು ಹುಡುಕಿ</string>
+    <string name="search_by_rcNum">ರೇಷನ್‌ಕಾರ್ಡ್ ಸಂಖ್ಯೆಯಿಂದ ಹುಡುಕಿ</string>
+    <string name="town">ಪಟ್ಟಣ</string>-- ಪಟ್ಟಣ
+    <string name="search_by_town">ಪಟ್ಟಣವಾರು ಹುಡುಕಿ</string>--ಪಟ್ಟಣದಿಂದ ಹುಡುಕಿ
+    <string name="ward">ವಾರ್ಡ್</string>--ವಾರ್ಡ್
+    <string name="search_by_ward">ವಾರ್ಡ್ ನಿಂದ ಹುಡುಕಿ</string>--ವಾರ್ಡ್ ನಿಂದ ಹುಡುಕಿ
+    <string name="sl">ಕ್ರ.ಸ</string>
+    <string name="service_name">ಸೇವೆಯ ಹೆಸರು</string>--ಸೇವೆಯ ಹೆಸರು
+    <string name="back">ಹಿಂದೆ</string>--ಹಿಂದೆ
+    <string name="applicant_name">ಅರ್ಜಿದಾರರ ಹೆಸರು</string>--ಅರ್ಜಿದಾರರ ಹೆಸರು
+    <string name="id">ಐಡಿ</string>--ಐಡಿ
+    <string name="due_date">ನಿಗದಿತ ದಿನಾಂಕ</string>--ನಿಗದಿತ ದಿನಾಂಕ
+    <string name="document_names">ದಾಖಲೆಯ ಹೆಸರು</string>--ದಾಖಲೆಯ ಹೆಸರು
+    <string name="view">ವೀಕ್ಷಿಸಿ</string>--ನೋಟ
+    <string name="report">ವರದಿ</string>--ವರದಿ
+    <string name="village_circle_name">ಗ್ರಾಮ ವೃತ್ತದ ಹೆಸರು</string>--ಗ್ರಾಮ ವೃತ್ತದ ಹೆಸರು
+    <string name="village_name">ಗ್ರಾಮದ ಹೆಸರು</string>--ಗ್ರಾಮದ ಹೆಸರು
+    <string name="village_circle_wise_pending_status">ಗ್ರಾಮ ವೃತ್ತವಾರು ಬಾಕಿ ಉಳಿದಿರುವ ವರದಿ</string>--ಗ್ರಾಮ ವಲಯವಾರು ಬಾಕಿ ಉಳಿದಿರುವ ಸ್ಥಿತಿ
+    <string name="town_name">ಪಟ್ಟಣದ ಹೆಸರು</string>--ಪಟ್ಟಣದ ಹೆಸರು
+    <string name="town_wise_pending_status">ಪಟ್ಟಣವಾರು ಬಾಕಿ ಉಳಿದಿರುವ ವರದಿ</string>--ಪಟ್ಟಣವಾರು ಬಾಕಿ ಉಳಿದಿರುವ ಸ್ಥಿತಿ
+    <string name="ward_wise_pending_status">ವಾರ್ಡ್ ವಾರು ಬಾಕಿ ಉಳಿದಿರುವ ವರದಿ</string>
+    <string name="village_wise_pending_status">ಗ್ರಾಮವಾರು ಬಾಕಿ ಉಳಿದಿರುವ ವರದಿ</string>--ಗ್ರಾಮವಾರು ಬಾಕಿ ಉಳಿದಿರುವ ಸ್ಥಿತಿ
+    <string name="applicant_id">ಅರ್ಜಿದಾರರ ಐಡಿ</string>--ಅರ್ಜಿದಾರರ ಐಡಿ
+    <string name="indicates_overdue">ನಿಗದಿತ ಅವಧಿ ಮೀರಿರುವ ಸೂಚನೆ</string>--ಮಿತಿಮೀರಿ ಸೂಚಿಸುತ್ತದೆ
+    <string name="applicant_information">ಅರ್ಜಿದಾರರ ವಿವರ</string>--ಅರ್ಜಿದಾರರ ಮಾಹಿತಿ
+    <string name="editing_form">ಅರ್ಜಿಯ ತಿದ್ದುಪಡಿ</string>--ಎಡಿಟಿಂಗ್ ಫಾರಂ
+    <string name="raised_location">ಅರ್ಜಿ ಸಲ್ಲಿಸಿದ ಸ್ಥಳ</string>--ಸಲ್ಲಿಸಿದ ಸ್ಥಳ
+    <string name="enter_your_name">ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>--ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ
+    <string name="father_husband">ತಂದೆ / ಗಂಡ</string>--ತಂದೆ / ಗಂಡ
+    <string name="enter_father_name">ತಂದೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>--ತಂದೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ
+    <string name="mother">ತಾಯಿ</string>--ತಾಯಿ
+    <string name="enter_mother_name">ತಾಯಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>--ತಾಯಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ
+    <string name="enter_father_husband_name">ತಂದೆ / ಗಂಡನ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="id_number">ಗುರುತಿನ ಸಂಖ್ಯೆ</string>--ಐಡಿ ನಂಬರ್
+    <string name="enter_rationcard_no">ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ</string>--ರೇಷನ್ ಕಾರ್ಡ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ
+    <string name="mobile_no">ಮೊಬೈಲ್ ಸಂಖ್ಯೆ</string>--ಮೊಬೈಲ್ ಸಂಖ್ಯೆ
+    <string name="enter_mobile_no">ಮೊಬೈಲ್ ಸಂಖ್ಯೆ  ನಮೂದಿಸಿ</string>--ಮೊಬೈಲ್ ಸಂಖ್ಯೆ  ನಮೂದಿಸಿ
+    <string name="address">ವಿಳಾಸ</string>--ವಿಳಾಸ
+    <string name="enter_your_address">ನಿಮ್ಮ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ</string>--ನಿಮ್ಮ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ
+    <string name="pin_code">ಪಿನ್ ಕೋಡ್</string>--ಪಿನ್ ಕೋಡ್
+    <string name="enter_pin_code">ಪಿನ್ ಕೋಡ್ ನಮೂದಿಸಿ</string>--ಪಿನ್ ಕೋಡ್ ನಮೂದಿಸಿ
+    <string name="report_no">ವರದಿ ಸಂಖ್ಯೆ</string>--ವರದಿ ಇಲ್ಲ
+    <string name="aadhaar_details_optional">ಆಧಾರ್ ವಿವರಗಳು (ಐಚ್ಛಿಕ)</string>--ಆಧಾರ್ ವಿವರಗಳು (ಐಚ್ಛಿಕ)
+    <string name="qr_code_scanner">ಕ್ಯೂಆರ್ ಕೋಡ್ ಸ್ಕ್ಯಾನರ್</string>--ಕ್ಯೂಆರ್ ಕೋಡ್ ಸ್ಕ್ಯಾನರ್
+    <string name="uid_no">ಆಧಾರ್ ಸಂಖ್ಯೆ</string>--ಯು ಐ ಡಿ ಸಂಖ್ಯೆ
+    <string name="empty">ಶೂನ್ಯ</string>--ಶೂನ್ಯ
+    <string name="or_text">ಅಥವಾ</string>--ಅಥವಾ
+    <string name="capture_naadhaar_card">ಆಧಾರ್ ಕಾರ್ಡ್ ಸೆರೆಹಿಡಿಯಿರಿ</string>--ಆಧಾರ್ ಕಾರ್ಡ್ ಸೆರೆಹಿಡಿಯಿರಿ
+    <string name="certified_correct_amp_proceed"><![CDATA[ಸರಿ ಎಂದು ದೃಢೀಕರಿಸಿ \nಹಾಗು ಮುಂದುವರಿಯಿರಿ]]></string>
+    <string name="updated_by">ನವೀಕರಿಸಿರುವವರು:</string>--ಇವರಿಂದ ನವೀಕರಿಸಲಾಗಿದೆ
+    <string name="shri_smt">ಶ್ರೀ/ಶ್ರೀಮತಿ</string>--ಶ್ರೀ/ಶ್ರೀಮತಿ
+    <string name="reason_for_rejection">ನಿರಾಕರಣೆಗೆ ಕಾರಣ</string>--ನಿರಾಕರಣೆಗೆ ಕಾರಣ
+    <string name="no">ಇಲ್ಲ</string>--ಇಲ್ಲ
+    <string name="yes">ಹೌದು</string>--ಹೌದು
+    <string name="can_caste_reservation_nbe_given">ಜಾತಿ ಮೀಸಲಾತಿ \nನೀಡಬಹುದೇ</string>--ಜಾತಿ ಮೀಸಲಾತಿ ನೀಡಬಹುದೇ
+    <string name="whether_above_va_updated_ndetails_are_correct">ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿಗಳಿಂದ \nನವೀಕರಿಸಲಾದ ವಿವರಗಳು \nಸರಿಯಾಗಿವೆಯೇ</string>--ಮೇಲಿನವುಗಳು ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿಗಳಿಂದ ನವೀಕರಿಸಲಾಗಿದೆಯೇ ಅಥವಾ ವಿವರಗಳು ಸರಿಯಾಗಿವೆಯೇ
+    <string name="whether_the_applicating_updated_ndetails_are_correct">ಅರ್ಜಿದಾರರಿಂದ ನವೀಕರಿಸಲಾದ \nವಿವರಗಳು ಸರಿಯಾಗಿವೆಯೇ</string>
+    <string name="ri_recommendation">ಕಂದಾಯ ನಿರೀಕ್ಷಕರ ಶಿಫಾರಸ್ಸು</string>--ಕಂದಾಯ ನಿರೀಕ್ಷಕರ ಶಿಫಾರಸ್ಸು
+    <string name="enter_annual_income">ವಾರ್ಷಿಕ ಆದಾಯವನ್ನು ನಮೂದಿಸಿ</string>--ವಾರ್ಷಿಕ ಆದಾಯವನ್ನು ನಮೂದಿಸಿ
+    <string name="annual_income_of_napplicant_family_in_rs">ಅರ್ಜಿದಾರರ ಕುಟುಂಬದ \nವಾರ್ಷಿಕ ಆದಾಯ (ರೂ )</string>--ಅರ್ಜಿದಾರರ ಕುಟುಂಬದ ವಾರ್ಷಿಕ ಆದಾಯ (ರೂ )
+    <string name="reason_for_creamy_layer">ಕೆನೆ ಪದರಕ್ಕೆ ಕಾರಣ</string>--ಕೆನೆ ಪದರಕ್ಕೆ ಕಾರಣ
+    <string name="does_applicant_belongs_nto_creamy_layer">ಅರ್ಜಿದಾರರು ಮೇಲುಸ್ಥರಕ್ಕೆ \nಸೇರಿಲ್ಲ</string>--ಅರ್ಜಿದಾರರು ಕೆನೆ ಪದರಕ್ಕೆ ಸೇರಿದವರೇ
+    <string name="select_caste">ಜಾತಿ ಆಯ್ಕೆಮಾಡಿ</string>--ಜಾತಿ ಆಯ್ಕೆಮಾಡಿ
+    <string name="applicant_caste">ಅರ್ಜಿದಾರರ ಜಾತಿ</string>--ಅರ್ಜಿದಾರರ ಜಾತಿ
+    <string name="applicant_category">ಅರ್ಜಿದಾರರ ವರ್ಗ</string>--ಅರ್ಜಿದಾರರ ವರ್ಗ
+    <string name="submit_report">ವರದಿ ಸಲ್ಲಿಸಿ</string>--ಸಲ್ಲಿಸಿ \ ವರದಿ
+    <string name="number_of_years_napplicant_is_resident_nin_karnataka">ಅರ್ಜಿದಾರರು ಕರ್ನಾಟಕದಲ್ಲಿ \nವಾಸವಿರುವ ವರ್ಷಗಳ ಸಂಖ್ಯೆ</string>--ಅರ್ಜಿದಾರರು ಕರ್ನಾಟಕದಲ್ಲಿ ವಾಸವಿರುವ ವರ್ಷಗಳ ಸಂಖ್ಯೆ
+    <string name="category_of_napplicant_father">ಅರ್ಜಿದಾರರ ತಂದೆಯ ವರ್ಗ</string>--ಅರ್ಜಿದಾರರ ತಂದೆಯ ವರ್ಗ
+    <string name="caste_of_applicant_nfather">ಅರ್ಜಿದಾರರ ತಂದೆಯ ಜಾತಿ</string>--ಅರ್ಜಿದಾರರ ತಂದೆಯ ಜಾತಿ
+    <string name="category_of_napplicant_mother">ಅರ್ಜಿದಾರರ ತಾಯಿಯ ವರ್ಗ</string>--ಅರ್ಜಿದಾರರ ತಾಯಿಯ ವರ್ಗ
+    <string name="caste_of_applicant_nmother">ಅರ್ಜಿದಾರರ ತಾಯಿಯ ಜಾತಿ</string>--ಅರ್ಜಿದಾರರ ತಾಯಿಯ ಜಾತಿ
+    <string name="category_of_applicant_nas_per_enquiry">ಅರ್ಜಿದಾರರ ಪ್ರವರ್ಗ</string>--ಅರ್ಜಿದಾರರ ಪ್ರವರ್ಗ
+    <string name="caste_of_applicant_nas_per_enquiry">ಅರ್ಜಿದಾರರ ಜಾತಿ</string>--ಅರ್ಜಿದಾರರ ಜಾತಿ
+    <string name="remarks">ಷರ</string>--ಟೀಕೆಗಳು
+    <string name="enter_the_remarks">ಷರ ನಮೂದಿಸಿ</string>--ಟೀಕೆಗಳನ್ನು ನಮೂದಿಸಿ
+    <string name="enter_no_of_years">ವರ್ಷಗಳ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>--ವರ್ಷಗಳ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ
+    <string name="does_applicant_reside_at_nhis_her_stated_address">ಅರ್ಜಿದಾರನು ಹೇಳಿಕೆ ನೀಡಿರುವ \nವಿಳಾಸದಲ್ಲಿ ವಾಸಿಸುತ್ತಿದ್ದಾನೆಯೇ</string>--ಅರ್ಜಿದಾರನು ಹೇಳಿಕೆ ನೀಡಿರುವ ವಿಳಾಸದಲ್ಲಿ ವಾಸಿಸುತ್ತಿದ್ದಾನೆಯೇ
+    <string name="does_place_of_residence_nmatch_with_one_in_rationcard">ವಾಸಸ್ಥಳ ಮತ್ತು ಆಹಾರ ಪಡಿತರ \nಚೀಟಿಯಲ್ಲಿನ ವಿಳಾಸ ಹೊಂದಾಣಿಕೆಯಾಗುತ್ತಿದೆಯೇ</string>--ವಾಸಸ್ಥಳ ಮತ್ತು ಆಹಾರ ಪಡಿತರ ಚೀಟಿಯಲ್ಲಿನ ವಿಳಾಸ ಹೊಂದಾಣಿಕೆಯಾಗುತ್ತಿದೆಯೇ
+    <string name="purpose_for_which_certificate_nneeded">ಯಾವ ಉದ್ದೇಶಕ್ಕಾಗಿ \nಪ್ರಮಾಣ ಪತ್ರ / ಅಗತ್ಯವಿದೆ</string>--ಯಾವ ಉದ್ದೇಶಕ್ಕಾಗಿ ಪ್ರಮಾಣ ಪತ್ರ / ಅಗತ್ಯಕ್ಕಾಗಿ
+    <string name="do_you_recommend_issuance_nof_residence_certificate">ವಾಸಸ್ಥಳ ಪ್ರಮಾಣ ಪತ್ರಕ್ಕಾಗಿ \nನೀವು ಶಿಫಾರಸು ಮಾಡುತ್ತೀರಾ</string>--ವಾಸಸ್ಥಳ ಪ್ರಮಾಣ ಪತ್ರಕ್ಕಾಗಿ ನೀವು ಶಿಫಾರಸು ಮಾಡುತ್ತೀರಾ
+    <string name="colon_space">: </string>
+    <string name="applicant_information_ncertify_correct_or_edit_amp_certify"><![CDATA[ಅರ್ಜಿದಾರರ ಮಾಹಿತಿ \ಸರಿಯಿದೆಯೆಂದು ಪ್ರಮಾಣೀಕರಿಸುವುದು ಅಥವಾ ತಿದ್ದುಪಡಿ ಮಾಡಿ ಪ್ರಮಾಣೀಕರಿಸುವುದು]]></string>
+
+    <string name="category">ಪ್ರವರ್ಗ</string>--  ಪ್ರವರ್ಗ
+    <string name="caste">ಜಾತಿ</string> - ಜಾತಿ
+    <string name="annual_income">ವಾರ್ಷಿಕ ಆದಾಯ</string>  - ವಾರ್ಷಿಕ ಆದಾಯ
+    <string name="no_of_years_stayed_nas_per_applicant">ಅರ್ಜಿದಾರರು ಎಷ್ಟು \nವರ್ಷದಿಂದ ವಾಸವಿದ್ದಾರೆ</string> -  ಅರ್ಜಿದಾರರು ಎಷ್ಟು ವರ್ಷದಿಂದ ವಾಸವಿದ್ದಾರೆ
+    <string name="no_of_months_stayed_nas_per_applicant">ಎಷ್ಟು ತಿಂಗಳಿನಿಂದ \nಅರ್ಜಿದಾರರು ವಾಸವಿದ್ದಾರೆ</string> ------- ಎಷ್ಟು ತಿಂಗಳಿನಿಂದ ಅರ್ಜಿದಾರರು ವಾಸವಿದ್ದಾರೆ
+    <string name="down_docs_n_at_hq_only">ದಾಖಲೆಗಳನ್ನು (ಹೆಚ್ ಕ್ಯೂ) ನಲ್ಲಿ ಡೌನ್ಲೋಡ್ ಮಾಡುವುದು</string> - ದಾಖಲೆಗಳನ್ನು (ಹೆಚ್ ಕ್ಯೂ) ನಲ್ಲಿ ಮಾತ್ರ ಡೌನ್ಲ ಲೋಡ್ ಮಾಡುವುದು.
+    <string name="view_docs_n_at_hq_only">ದಾಖಲೆಗಳನ್ನು (ಹೆಚ್ ಕ್ಯೂ) ನಲ್ಲಿ ವಿಕ್ಷಿಸುವುದು</string> - ದಾಖಲೆಗಳನ್ನು (ಹೆಚ್ ಕ್ಯೂ) ನಲ್ಲಿ ಮಾತ್ರ  ವಿಕ್ಷಿಸುವುದು
+    <string name="category_of_applicant">ಅರ್ಜಿದಾರರ ಪ್ರವರ್ಗ</string> - ಅರ್ಜಿದಾರರ ಪ್ರವರ್ಗ
+    <string name="capture_photo">ಫೋಟೋ ಸೆರೆಹಿಡಿಯುವುದು</string> - ಫೋಟೋ ಸೆರೆಹಿಡಿಯುವುದು
+    <string name="update_nchanges">ನವೀಕರಣ\nಬದಲಾವಣೆಗಳು</string> - ನವೀಕರಿಸುವುದು/ಬದಲಾವಣೆ
+    <string name="do_you_recommend_nissuance_of_caste_ncertificate_to_applicant">ಅರ್ಜಿದಾರರಿಗೆ ಜಾತಿ ಪ್ರಮಾಣ \nಪತ್ರ ವಿತರಿಸುವುದನ್ನು \nಶಿಫಾರಸ್ಸು ಮಾಡುವುದೇ</string> - ಅರ್ಜಿದಾರರಿಗೆ ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ ವಿತರಿಸುವುದನ್ನು ಶಿಫಾರಸ್ಸು ಮಾಡುವುದೇ.
+    <string name="upload_status">ಅಪ್ಲೋಡ್ ಸ್ಥಿತಿ</string> - ಅಪ್ಲೋಡ್ ಸ್ಥಿತಿ
+    <string name="total_applicants_record_captured">ಒಟ್ಟು ಸೆರೆಹಿಡಿಯಲಾದ ದಾಖಲೆಗಳು</string> - ಅರ್ಜಿದಾರರ ಎಲ್ಲಾ ದಾಖಲೆಗಳನ್ನು ಸೆರೆಹಿಡಿಯುವುದು.
+    <string name="total_records_so_far_uploaded">ಇಲ್ಲಿಯವರೆಗೆ ಅಪ್ಲೋಡ್ ಆಗಿರುವ ದಾಖಲೆಗಳು</string> -ಎಲ್ಲಾ ದಾಖಲೆಗಳನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಲಾಗಿದೆ.
+    <string name="balance_records_to_be_uploaded">ಅಪ್ಲೋಡ್ ಮಾಡಲು ಬಾಕಿ ಇರುವ ದಾಖಲೆಗಳು</string> ಅಪ್ಲೋಡ್ ಮಾಡಲು ಬಾಕಿ ಇರುವ ದಾಖಲೆಗಳು.
+
+    <string name="data_uploaded_successfully">ಡೇಟಾ ಯಶಸ್ವಿಯಾಗಿ ಅಪ್ಲೋಡ್ ಮಾಡಲಾಗಿದೆ</string> - ಡೇಟಾ ಯಶಸ್ವಿಯಾಗಿ ಅಪ್ಲೋಡ್ ಮಾಡಲಾಗಿದೆ.
+    <string name="upload">ಅಪ್ಲೋಡ್</string> ಅಪ್ಲೋಡ್
+    <string name="ok">ಸರಿ</string>  ಸರಿ
+    <string name="applicant_name_c">ಅರ್ಜಿದಾರರ ಹೆಸರು :</string> - ಅರ್ಜಿದಾರರ ಹೆಸರು
+    <string name="reportNo_c">ವರದಿ ಸಂಖ್ಯೆ :</string>
+    <string name="documents_provided">ಒದಗಿಸಿರುವ ದಾಖಲೆಗಳು</string> ದಾಖಲೆಗಳನ್ನು ಒದಗಿಸಲಾಗಿದೆ
+    <string name="version_does_not_match">ಆವೃತ್ತಿ ಹೊಂದಾಣಿಕೆಯಾಗುವುದಿಲ್ಲ.\nದಯವಿಟ್ಟು  ಸಹಾಯವಾಣಿಯನ್ನು ಸಂಪರ್ಕಿಸಿ</string> - ಆವೃತ್ತಿ ಹೊಂದಾಣಿಕೆಯಾಗುವುದಿಲ್ಲ/ ದಯವಿಟ್ಟು  ಸಹಾಯವಾಣಿಯನ್ನು ಸಂಪರ್ಕಿಸಿ.
+    <string name="not_valid_user">ನೀವು ಮಾನ್ಯ ಬಳಕೆದಾರರಲ್ಲ</string> - ನೀವು ಮಾನ್ಯ ಬಳಕೆದಾರರಲ್ಲ
+    <string name="loading">ಲೋಡ್ ಆಗುತ್ತಿದೆ. ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ…</string> - ಲೋಡ್ ಆಗುತ್ತಿದೆ. ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ
+    <string name="error">ದೋಷವಿದೆ.</string> - ದೋಷವಿದೆ
+    <string name="connection_not_available">ಅಂತರ್ಜಾಲ ಸಂಪರ್ಕ ಲಭ್ಯವಿಲ್ಲ. \nದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</string> - ಅಂತರ್ಜಾಲ ಸಂಪರ್ಕ ಲಭ್ಯವಿಲ್ಲ.
+    <string name="switch_english">ದಯವಿಟ್ಟು ಆಂಗ್ಲ ಭಾಷೆಗೆ ಬದಲಾಯಿಸಿ</string> - ದಯವಿಟ್ಟು ಆಂಗ್ಲ ಭಾಷೆಗೆ ಬದಲಾಯಿಸಿ
+    <string name="switch_kannada">ದಯವಿಟ್ಟು ಕನ್ನಡ ಭಾಷೆಗೆ ಬದಲಾಯಿಸಿ</string> ದಯವಿಟ್ಟು ಕನ್ನಡ ಭಾಷೆಗೆ ಬದಲಾಯಿಸಿ
+    <string name="pwd_error">ಬಳಕೆದಾರರ ಹೆಸರು ಅಥವಾ ಪಾಸ್ವರ್ಡ್ ಅಮಾನ್ಯವಾಗಿದೆ</string> - ಬಳಕೆದಾರರ ಅಥವಾ ಪಾಸವರ್ಡ್ ಅಮಾನ್ಯವಾಗಿದೆ.
+    <string name="server_exception">ಸರ್ವರ್ ವಿನಾಯಿತಿ ಸಂಭವಿಸಿದೆ</string> - ಸರ್ವರ್ ವಿನಾಯಿತಿ ಸಂಭವಿಸಿದೆ
+    <string name="no_data">ಪರಿಶೀಲಿಸಲು ಮಾಹಿತಿ ಇರುವುದಿಲ್ಲ,\nದಯವಿಟ್ಟು ಮಾಹಿತಿಯನ್ನು ಡೌನ್ ಲೋಡ್ ಮಾಡಿ.</string> ಪರಿಶೀಲಿಸಲು ಮಾಹಿತಿ ಇರುವುದಿಲ್ಲ. ದಯವಿಟ್ಟು ಮಾಹಿತಿಯನ್ನು ಡೌನ್ ಲೋಡ್ ಮಾಡಿ
+    <string name="gpe_is_off">ನಿಮ್ಮ ಜಿಪಿಎಸ್ ಸ್ವಿಚ್ ಆಫ್ ಆಗಿದೆ, ಜಿಪಿಎಸ್ ಸ್ವಿಚ್ ಆನ್ ಮಾಡಲು ಬಯಸುವಿರಾ?</string> - ನಿಮ್ಮ ಜಿಪಿಎಸ್ ಸ್ವಿಚ್ ಆಫ್ ಆಗಿದೆ. ಅಗತ್ಯವಿದ್ದಲ್ಲಿ ಸ್ವಿಚ್ ಆನ್ ಮಾಡಿ.
+    <string name="want_to_exit">ನೀವು ನಿರ್ಗಮಿಸಲು ಬಯಸುವಿರಾ?</string> - ಖಂಡಿತವಾಗಿಯೂ ನೀವು ನಿರ್ಗಮಿಸಲು ಬಯಸುವಿರಾ?
+    <string name="keyboard_language">ಕೀ ಬೋರ್ಡ್ ಭಾಷೆ ಕನ್ನಡ ಭಾಷೆಯಲ್ಲಿ ಇರತಕ್ಕದ್ದು, ಭಾಷೆಯನ್ನು ಬದಲಾವಣೆ ಮಾಡಲು ಬಯಸುವಿರಾ?</string> - ಕೀ ಬೋರ್ಡ್ ಭಾಷೆ ಕನ್ನಡ ಭಾಷೆಯಲ್ಲಿ ಇರತಕ್ಕದ್ದು, ಭಾಷೆಯನ್ನು ಬದಲಾವಣೆ ಮಾಡಲು ಬಯಸುವಿರಾ?
+    <string name="must_change_keyboard">ಪ್ರಸ್ತುತ ಭಾಷೆಯಲ್ಲಿ ಮುಂದುವರೆಸಲು ಆಗುವುದಿಲ್ಲ. ಭಾಷೆಯನ್ನು ಕನ್ನಡದಲ್ಲಿ ಬದಲಾಯಿಸಿ.</string> - ಪ್ರಸ್ತುತ ಭಾಷೆಯಲ್ಲಿ ಮುಂದುವರೆಸಲು ಆಗುವುದಿಲ್ಲ. ಭಾಷೆಯನ್ನು ಕನ್ನಡದಲ್ಲಿ ಬದಲಾಯಿಸಿ.
+    <string name="memory_full">ಮೆಮೊರಿ ಪೂರ್ಣವಾಗಿದೆ. \nಡೇಟಾವನ್ನು ಡೌನ್ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ.</string> ಮೆಮೊರಿ ಪೂರ್ಣವಾಗಿದೆ. ಡೇಟಾವನ್ನು ಡೌನ್ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ.
+    <string name="downloading_please_wait">ಡೌನ್ಲೋಡ್ ಕಾರ್ಯ ಪ್ರಗತಿಯಲ್ಲಿದೆ. ದಯವಿಟ್ಟು ಕಾಯಿರಿ.…</string> -ಡೌನ್ ಲೋಡ್ ಕಾರ್ಯ ಪ್ರಗತಿಯಲ್ಲಿದೆ. ದಯವಿಟ್ಟು ಕಾಯಿರಿ.
+    <string name="no_data_to_verify">ಪರಿಶೀಲಿಸಲು ಮಾಹಿತಿ ಇರುವುದಿಲ್ಲ</string> - ಮಾಹಿತಿಯನ್ನು ಪರಿಶೀಲಿಸಲು ಆಗುವುದಿಲ್ಲ
+    <string name="no_da_found">ಮಾಹಿತಿ ಲಭ್ಯವಿರುವುದಿಲ್ಲ</string> ಮಾಹಿತಿ ಲಭ್ಯವಿರುವುದಿಲ್ಲ
+    <string name="nadakacheri_raised">ನಾಡಕಛೇರಿ</string> ನಾಡಕಛೇರಿ
+    <string name="online">ಆನ್ ಲೈನ್</string> - ಆನ್ ಲೈನ್
+    <string name="seva_sindhu">ಸೇವಾ ಸಿಂಧು</string> - ಸೇವಾ ಸಿಂಧು
+    <string name="wallet">WALLET</string>
+    <string name="gramPanchayath">GramPanchayath</string>
+    <string name="not_specified">ನಿರ್ದಿಷ್ಟಪಡಿಸಿರುವುದಿಲ್ಲ</string> - ನಿರ್ದಿಷ್ಟಪಡಿಸಿರುವುದಿಲ್ಲ.
+    <string name="data_saves_successfully">ಮಾಹಿತಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಿಕೊಳ್ಳಲಾಗಿದೆ</string> - ಮಾಹಿತಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಿಕೊಳ್ಳಲಾಗಿದೆ.
+    <string name="select_no_years">ವರ್ಷಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string> - ವರ್ಷಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ
+    <string name="field_canno_null">ಕ್ಷೇತ್ರವು ಖಾಲಿ ಇರುವಂತಿಲ್ಲ.</string> - ಕ್ಷೇತ್ರವು ಖಾಲಿ ಇರುವಂತಿಲ್ಲ.
+    <string name="cannot_get_location">ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ. \nದಯವಿಟ್ಟು ಜಿಪಿಎಸ್ ನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</string> - ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ. ದಯವಿಟ್ಟು ಜಿಪಿಎಸ್ ನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ
+    <string name="document_not_found">ದಾಖಲೆಗಳ ಮಾಹಿತಿ ಇರುವುದಿಲ್ಲ</string> - ದಾಖಲೆಗಳ ಮಾಹಿತಿ ಇರುವುದಿಲ್ಲ.
+    <string name="switch_on_gps">ದಯವಿಟ್ಟು ಜಿಪಿಎಸ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</string> - . ದಯವಿಟ್ಟು ಜಿಪಿಎಸ್ ನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ
+    <string name="switch_on_internet">ದಯವಿಟ್ಟು ಇಂಟರ್ನೆಟ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</string>
+    <string name="select_spinner">-- ಆಯ್ಕೆ --</string> ಆಯ್ಕೆ
+    <string name="select_caste_spinner">-- ಜಾತಿಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ --</string> ಜಾತಿಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ
+    <string name="select_category_spinner">-- ಪ್ರವರ್ಗವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ --</string> - ಪ್ರವರ್ಗವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ
+
+    <string name="alert">ಎಚ್ಚರ</string> - ಎಚ್ಚರ
+    <string name="ward_name_num">ವಾರ್ಡ್ ಹೆಸರು ಸಂಖ್ಯೆ</string>  - ವಾರ್ಡ್ ಹೆಸರು ಮತ್ತು ಸಂಖ್ಯೆ
+    <string name="reason_spinner">-- ಕಾರಣ --</string> - ಕಾರಣ
+    <string name="select_reason_for_rejection">ತಿರಸ್ಕೃತಗೊಳಿಸಿರುವುದಕ್ಕೆ ಕಾರಣವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string> - ತಿರಸ್ಕೃತಗೊಳಿಸಿರುವುದಕ್ಕೆ ಕಾರಣವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ
+    <string name="incorrect_value">ತಪ್ಪಾಗಿರುವ ಮೌಲ್ಯ</string> - ತಪ್ಪಾಗಿರುವ ಮೌಲ್ಯ
+    <string name="select_reason">ಕಾರಣವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string> - ಕಾರಣವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ
+    <string name="invalid_caste">ಜಾತಿಯ ಹೆಸರು ಅಮಾನ್ಯವಾಗಿರುತ್ತದೆ</string>  - ಜಾತಿಯ ಹೆಸರು ಅಮಾನ್ಯವಾಗಿರುತ್ತದೆ
+    <string name="discard_changes">ಬದಲಾವಣೆ ಮಾಡಿರುವುದನ್ನು ತೆಗೆದು ಹಾಕಲು ಬಯಸುವಿರಾ?</string>-ಬದಲಾವಣೆ ಮಾಡಿರುವುದನ್ನು ತೆಗೆದು ಹಾಕಲು ಬಯಸುವಿರಾ; ಖಚಿತವೇ?
+    <string name="updated_successfully">ಮಾಹಿತಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ</string>  - ಡೇಟಾ ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ.
+    <string name="saved_successfully">ಮಾಹಿತಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದೆ</string> ಡೇಟಾ ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದೆ.
+    <string name="error_creating_table">ಪಟ್ಟಿಯನ್ನು ಸೃಜಿಸುವಾಗ ಆಗಿರುವ ತಪ್ಪುಗಳ ವಿವರ</string> - ಪಟ್ಟಿಯನ್ನು ಸೃಜಿಸುವಾಗ ಆಗಿರುವ ತಪ್ಪುಗಳ ವಿವರ.
+    <string name="select_category">ಪ್ರವರ್ಗವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string> - ಪ್ರವರ್ಗವನ್ನು ಆಯ್ಕೆ ಮಾಡುವುದು
+    <string name="must_match_father_mother">ಅರ್ಜಿದಾರರ ತಂದೆ ಅಥವಾ ತಾಯಿಯ ಜಾತಿಯೊಂದಿಗೆ ಅರ್ಜಿದಾರರ ಜಾತಿಯು ಹೊಂದಾಣಿಕೆಯಾಗಬೇಕು</string>- ಅರ್ಜಿದಾರರ ತಂದೆ ಅಥವಾ ತಾಯಿಯ ಜಾತಿಯೊಂದಿಗೆ ಅರ್ಜಿದಾರರ ಜಾತಿಯು ಹೊಂದಾಣಿಕೆಯಾಗುವುದು.
+    <string name="month_spinner">-- ತಿಂಗಳು --</string> - ಮಾಹೆ
+    <string name="select_purpose">ಉದ್ದೇಶವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string> - ಉದ್ದೇಶವನ್ನು ಆಯ್ಕೆ ಮಾಡುವುದು
+    <string name="select_month">ತಿಂಗಳು ಆಯ್ಕೆಮಾಡಿ</string> - ಮಾಹೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡುವುದು
+    <string name="enter_valid_phone_num">ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ದೂರವಾಣಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string> ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ದೂರವಾಣಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸುವುದು.
+    <string name="enter_valid_pincode">ಸರಿಯಾದ ಪಿನ್ ಕೋಡ್ ನಮೂದಿಸಿ</string>  ಸರಿಯಾದ ಪಿನ್ ಕೋಡ್ ನ್ನು ನಮೂದಿಸುವುದು.
+    <string name="loading_C">ಲೋಡಿಂಗ್…</string> - ಲೋಡಿಂಗ್
+    <string name="service_not_availabel">ಸದರಿ ಸೇವೆಗೆ  ಸೇವೆಯು ಲಭ್ಯವಿರುವುದಿಲ್ಲ</string> - ಸದರಿ ಸೇವೆಗೆ  ಸೇವೆಯು ಲಭ್ಯವಿರುವುದಿಲ್ಲ.
+    <string name="certified"><![CDATA[ಮಾಹಿತಿಯನ್ನು ಸರಿಯಾಗಿದೆ ಎಂದು ಪ್ರಮಾಣೀಕರಿಸಿ ಮುಂದುವರಿಯಿರಿ]]></string> - ಮಾಹಿತಿಯನ್ನು ಸರಿಯಾಗಿದೆ ಎಂದು ಪ್ರಮಾಣೀಕರಿಸಿ ಮುಂದುವರೆಸಿದೆ.
+    <string name="result_not_found">ಫಲಿತಾಂಶ ಕಂಡುಬಂದಿರುವುದಿಲ್ಲ</string> -  ಫಲಿತಾಂಶ ಕಂಡುಬಂದಿರುವುದಿಲ್ಲ.
+    <string name="internet_not_avail">!. ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="no_internet">ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವಿಲ್ಲ</string>
+    <string name="enable_internet">ನೀವು ಇಂಟರ್ನೆಟ್ ಸಕ್ರಿಯಗೊಳಿಸಲು ಬಯಸುವಿರಾ?</string>
+    <string name="no_data_to_upload">ಅಪ್ಲೋಡ್ ಮಾಡಲು ಮಾಹಿತಿ ಇರುವುದಿಲ್ಲ</string>
+    <string name="year_name">ವರ್ಷ</string>
+    <string name="month_name">ತಿಂಗಳು</string>
+    <string name="remarks_updated_by_va">ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿಗಳು ನವೀಕರಿಸಿರುವ \nಷರಗಳು</string>
+    <string name="home">ಮುಖಪುಟ</string>
+    <string name="applicant_wise">ಅರ್ಜಿದಾರರ ವರದಿ</string>
+    <string name="regular">Regular</string>
+    <string name="e_kshana">ಇ-ಕ್ಷಣ</string>
+    <string name="urban_e_kshana">ನಗರ ಇ-ಕ್ಷಣ</string>
+    <string name="fetch_details">ವಿವರ ಪಡೆಯಿರಿ</string>
+    <string name="valid_rc_num">ಚಾಲ್ತಿಯಲ್ಲಿರುವ ಆರ್ ಸಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ</string>
+    <string name="incorrect_rc_num">ತಪ್ಪಾಗಿರುವ ಆರ್ ಸಿ ಸಂಖ್ಯೆ</string>
+    <string name="member_name">ಸದಸ್ಯರ ಹೆಸರು</string>
+    <string name="member_id">ಸದಸ್ಯರ ಐಡಿ</string>
+    <string name="ration_card_num">ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆ</string>
+    <string name="family_details">ಕುಟುಂಬದ ವಿವರ</string>
+    <string name="enter_member_details">ಸದಸ್ಯರ ವಿವರ ನಮೂದಿಸಿ</string>
+    <string name="father_husband_name">ತಂದೆ/ಗಂಡನ ಹೆಸರು</string>
+    <string name="relationship">ಸಂಬಂಧ</string>
+    <string name="mother_name">ತಾಯಿ ಹೆಸರು</string>
+    <string name="head_of_the_family_name">ಕುಟುಂಬದ ಯಜಮಾನನ \nಹೆಸರು</string>
+    <string name="enter_hof_name">ಕುಟುಂಬದ ಯಜಮಾನನ ಹೆಸರು ನಮೂದಿಸಿ</string>
+    <string name="relationship_with_hof">ಕುಟುಂಬದ ಯಜಮಾನನೊಂದಿಗಿನ ಸಂಬಂಧ</string>
+    <string name="dob">ಜನ್ಮ ದಿನಾಂಕ</string>
+    <string name="date_format">ದಿನಾಂಕದ ನಮೂನೆ</string>
+    <string name="gender">ಲಿಂಗ</string>
+    <string name="total_income">ಒಟ್ಟು ಆದಾಯ</string>
+    <string name="religion">ಧರ್ಮ</string>
+    <string name="residing_years">ಒಟ್ಟು ವಾಸಿಸಿರುವ ವರ್ಷ</string>
+    <string name="non_existence">ಅಸ್ತಿತ್ವದಲ್ಲಿ ಇರುವರೇ</string>
+    <string name="save_and_proceed"><![CDATA[ಉಳಿಸಿ ಹಾಗೂ ಮುಂದುವರಿಯಿರಿ]]></string>
+    <string name="no_town_found">ಯಾವುದೇ ಪಟ್ಟಣ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="no_ward_found">ಯಾವುದೇ ವಾರ್ಡ್ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="select_town">ಪಟ್ಟಣ ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="select_taluk">ತಾಲ್ಲೂಕು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="select_ward">ವಾರ್ಡ್ ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="select_title">ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="enter_name">ಹೆಸರು ನಮೂದಿಸಿ</string>
+    <string name="enter_address">ವಿಳಾಸ ನಮೂದಿಸಿ</string>
+    <string name="enter_pincode">ಪಿನ್ ಕೋಡ್ ನಮೂದಿಸಿ</string>
+    <string name="select_date">ದಿನಾಂಕ ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="enter_total_income">ಒಟ್ಟು ಆದಾಯ ನಮೂದಿಸಿ</string>
+    <string name="enter_remarks">ಷರ ನಮೂದಿಸಿ</string>
+    <string name="search_by_hobli">ಹೋಬಳಿವಾರು ಹುಡುಕಿ</string>
+    <string name="select_hobli">ಹೋಬಳಿ ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="addMember">ಹೊಸ ಸದಸ್ಯರ ಸೇರ್ಪಡೆ</string>
+    <string name="upload_e_kshana">ಅಪ್ಲೋಡ್</string>
+    <string name="enter_reason">ಕಾರಣ ನಮೂದಿಸಿ</string>
+    <string name="operator">ಆಪರೇಟರ್</string>
+    <string name="va_ri">ಗ್ರಾಮಲೆಕ್ಕಾಧಿಕಾರಿ/ಕಂದಾಯ ನಿರೀಕ್ಷಕರು</string>
+    <string name="does_applicant_belongs_nto_non_creamy_layer">ಅರ್ಜಿದಾರರು ಕೆನೆ ರಹಿತ \nಪದರಕ್ಕೆ ಸೇರಿದವರೇ</string>
+    <string name="add_assistant">ಸಹಾಯಕ ಸೇರ್ಪಡೆ</string>
+    <string name="password">ಪಾಸ್ ವರ್ಡ್</string>
+    <string name="add">ಸೇರ್ಪಡೆ</string>
+    <string name="sms_serivce_error">ಮೌಲ್ಯೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ! ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="service_exception">ಸೇವೆಯಲ್ಲಿ ವಿನಾಯಿತಿ! ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="sms_response_empty">ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ!</string>
+    <string name="invalid_user">ಅಮಾನ್ಯ ಬಳಕೆದಾರ!</string>
+    <string name="assistant_login">ಸಹಾಯಕರ ಲಾಗಿನ್</string>
+    <string name="invalid_username_password">ಅಮಾನ್ಯ ಬಳಕೆದಾರರ ಹೆಸರು ಅಥವಾ ಪಾಸವರ್ಡ್</string>
+    <string name="rc_numbers_updated_by_your_assistant">ನಿಮ್ಮ ಸಹಾಯಕರಿಂದ ಅಪ್ ಡೇಟ್ ಮಾಡಲಾದ ಆರ್ ಸಿ ಸಂಖ್ಯೆಗಳು</string>
+    <string name="fetch_rc_numbers">ಪಡಿತರ ಚೀಟಿ ಸಂಖ್ಯೆಗಳ ವಿವರ ಪಡೆಯಿರಿ</string>
+    <string name="view_registered_assistants">ನೋಂದಾಯಿತ ಸಹಾಯಕರನ್ನು ವೀಕ್ಷಿಸಿ</string>
+    <string name="assistants">ಸಹಾಯಕರು</string>
+    <string name="verify_member_details">ಸದಸ್ಯರ ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ</string>
+    <string name="edit_details">ವಿವರಗಳನ್ನು ಸರಿಪಡಿಸಿ</string>
+    <string name="caste_of_applicant">ಅರ್ಜಿದಾರರ ಜಾತಿ</string>
+    <string name="this_member_data_is_already_upoaded_cannoy_upload_it_again">ಸದರಿ ಸದಸ್ಯನ ಮಾಹಿತಿಯನ್ನು ಈಗಾಗಲೇ ಅಪ್ ಲೋಡ್ ಮಾಡಲಾಗಿದೆ. ಮತ್ತೊಮ್ಮೆ ಅಪ್ ಡೇಟ್ ಮಾಡಲು ಅವಕಾಶವಿರುವುದಿಲ್ಲ.</string>
+    <string name="this_member_is_inactive">ಈ ಸದಸ್ಯನು ಸಕ್ರಿಯನಾಗಿಲ್ಲ</string>
+    <string name="age">ವಯಸ್ಸು</string>
+    <string name="enter_age">ವಯಸ್ಸು ನಮೂದಿಸಿ</string>
+    <string name="service_not_avilable_at_this_moment">ಸದರಿ ಸೇವೆಗೆ  ಸೇವೆಯು ಲಭ್ಯವಿರುವುದಿಲ್ಲ. ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ ದಯವಿಟ್ಟು ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.</string>
+    <string name="cannot_add_please_retry">ಸಹಾಯಕರನು ಸೇರಿಸಲು ಸಾಧ್ಯವಾಗುತಿಲ್ಲ. ದಯವಿಟ್ಟು ಮರುಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="this_person_was_already_added_as_your_ass">ಈ ವ್ಯಕ್ತಿಯನ್ನು ಈಗಾಗಲೇ ನಿಮ್ಮ ಸಹಾಯಕರಾಗಿ ಸೇರಿಸಲಾಗಿದೆ</string>
+    <string name="could_not_found_assistants">ಸಹಾಯಕರು ಕಂಡುಬಂದಿಲ್ಲ</string>
+    <string name="cannot_get_the_data_please_retry">ಡೇಟಾವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗುತಿಲ್ಲ. ದಯವಿಟ್ಟು ಮರುಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="verification_code">ಕೋಡ್ ಪರಿಶೀಲನೆ</string>
+    <string name="please_type_verification_code_sent_to_your_assistant_mobile_number">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸಹಾಯಕರ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಗೆ ಕಳುಹಿಸಲಾದ ಪರಿಶೀಲನಾ ಕೋಡ್ ಅನ್ನು ಟೈಪ್ ಮಾಡಿ</string>
+    <string name="inavlid_mobile_nnum">ಅಮಾನ್ಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ</string>
+    <string name="aadhaar_num">Aadhaar No.</string>
+    <string name="enter_aadhaar_no">Enter Aadhaar No.</string>
+    <string name="assistant">Assistant</string>
+    <string name="choose_login">Choose Login</string>
+    <string name="enter_device_imei_num">Enter Device IMEI Num</string>
+    <string name="validate">Validate</string>
+    <string name="cancel">Cancel</string>
+    <string name="imei_no">IMEI No.</string>
+    <string name="error_500">Could not Load the Data!Please Contact Admin!</string>
+    <string name="invali_mobile_error">Invalid Mobile Number</string>
+    <string name="want_to_change_login_click_here_to">Want to change Login? Click Here to</string>
+    <string name="change">Change</string>
+    <string name="want_to_change_login">Are you sure?\nDo you want to change Login?</string>
+    <string name="cannot_validate_please_try_later">Cannot validate Please try later</string>
+
+</resources>

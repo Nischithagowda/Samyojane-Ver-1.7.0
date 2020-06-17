@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_new"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_member_details"
+        android:textColor="@color/MAROON"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                tools:ignore="UselessParent">
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/address"
+                        android:textColor="@android:color/black"
+                        android:layout_column="1"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <EditText
+                        android:id="@+id/etAddress1"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="@android:color/black"
+                        android:hint="@string/enter_your_address"
+                        android:inputType="textMultiLine"
+                        android:textColor="@android:color/black"
+                        tools:ignore="Autofill"
+                        android:layout_marginStart="5dp"
+                        android:textSize="14sp"/>
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="5dp">
+
+                    <EditText
+                        android:id="@+id/etAddress2"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="@android:color/black"
+                        android:hint="@string/enter_your_address"
+                        android:inputType="textMultiLine"
+                        android:textColor="@android:color/black"
+                        tools:ignore="Autofill"
+                        android:layout_marginStart="5dp"
+                        android:textSize="14sp"
+                        android:layout_column="3"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+
+                    <EditText
+                        android:id="@+id/etAddress3"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="@android:color/black"
+                        android:hint="@string/enter_your_address"
+                        android:inputType="textMultiLine"
+                        android:textColor="@android:color/black"
+                        tools:ignore="Autofill"
+                        android:layout_marginStart="5dp"
+                        android:textSize="14sp"
+                        android:layout_column="3"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pin_code"
+                        android:textColor="@android:color/black"
+                        android:layout_column="1"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <EditText
+                        android:id="@+id/tvPinCode"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:hint="@string/enter_pin_code"
+                        android:textColor="@android:color/black"
+                        android:inputType="phone"
+                        android:backgroundTint="@android:color/black"
+                        tools:ignore="Autofill"
+                        android:layout_marginStart="5dp"
+                        android:textSize="14sp"
+                        android:digits="1234567890"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dob"
+                        android:textColor="@android:color/black"
+                        android:layout_column="1"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <EditText
+                        android:id="@+id/etDOB"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="@android:color/black"
+                        android:hint="@string/date_format"
+                        android:inputType="date"
+                        android:textColor="@android:color/black"
+                        tools:ignore="Autofill"
+                        android:layout_marginStart="5dp"
+                        android:textSize="14sp"
+                        android:layout_column="3" />
+
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gender"
+                        android:textColor="@android:color/black"
+                        android:layout_column="1"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <Spinner
+                        android:id="@+id/spGender"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/black"
+                        android:textAlignment="center"
+                        tools:ignore="RtlCompat,UnusedAttribute"
+                        android:layout_marginStart="5dp"/>
+
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mobile_no"
+                        android:textColor="@android:color/black"
+                        android:layout_column="1"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <EditText
+                        android:id="@+id/etMobile"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="@android:color/black"
+                        android:hint="@string/enter_mobile_no"
+                        android:inputType="number"
+                        android:textColor="@android:color/black"
+                        tools:ignore="Autofill"
+                        android:layout_marginStart="5dp"
+                        android:textSize="14sp"
+                        android:layout_column="3"
+                        android:digits="1234567890"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_income"
+                        android:textColor="@android:color/black"
+                        android:layout_column="1"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <EditText
+                        android:id="@+id/etAnnualIncome"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="@android:color/black"
+                        android:hint="@string/enter_annual_income"
+                        android:inputType="number"
+                        android:textColor="@android:color/black"
+                        tools:ignore="Autofill"
+                        android:layout_marginStart="5dp"
+                        android:textSize="14sp"
+                        android:layout_column="3"
+                        android:digits="1234567890."
+                        android:maxLength="6"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:text="@string/category_of_applicant"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <Spinner
+                        android:id="@+id/spCategory"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/black"
+                        android:textAlignment="center"
+                        tools:ignore="RtlCompat,TooManyViews,UnusedAttribute"
+                        android:layout_marginStart="5dp"
+                        android:layout_column="3" />
+
+                </TableRow>
+
+                <TableRow>
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoSearchCaste"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/black"
+                        android:textCursorDrawable="@android:color/black"
+                        android:completionThreshold="1"
+                        android:backgroundTint="@android:color/black"
+                        android:hint="@string/select_caste"
+                        android:layout_marginStart="5dp"
+                        android:layout_column="3"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:text="@string/religion"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <Spinner
+                        android:id="@+id/spReligion"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/black"
+                        android:textAlignment="center"
+                        tools:ignore="RtlCompat,UnusedAttribute"
+                        android:layout_marginStart="5dp"
+                        android:layout_column="3" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:text="@string/does_applicant_belongs_nto_non_creamy_layer"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal"
+                        android:weightSum="1"
+                        tools:ignore="RtlHardcoded"
+                        android:layout_marginStart="5dp"
+                        android:layout_column="3">
+
+                        <RadioButton
+                            android:id="@+id/radioButton1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorPrimaryDark"
+                            android:checked="true"
+                            android:text="@string/yes"
+                            android:textSize="16sp"
+                            android:scaleX="0.8"
+                            android:scaleY="0.8"
+                            android:textColor="@android:color/black" />
+
+                        <RadioButton
+                            android:id="@+id/radioButton2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:buttonTint="@color/colorPrimaryDark"
+                            android:checked="false"
+                            android:text="@string/no"
+                            android:textSize="16sp"
+                            android:scaleX="0.8"
+                            android:scaleY="0.8"
+                            android:textColor="@android:color/black" />
+                    </RadioGroup>
+                </TableRow>
+
+                <TableRow>
+
+                    <Spinner
+                        android:id="@+id/spReasons"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/black"
+                        android:textAlignment="center"
+                        tools:ignore="RtlCompat,UnusedAttribute"
+                        android:layout_marginStart="5dp"
+                        android:layout_column="3"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:text="@string/residing_years"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <EditText
+                        android:id="@+id/etYear"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:inputType="number"
+                        android:hint="@string/enter_no_of_years"
+                        android:layout_column="3"
+                        tools:ignore="Autofill"
+                        android:layout_marginStart="5dp"
+                        android:digits="1234567890"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:text="@string/remarks"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/colon_space"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@android:color/black"
+                        android:layout_column="2"/>
+
+                    <EditText
+                        android:id="@+id/tvRemarks"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/enter_the_remarks"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:inputType="textMultiLine"
+                        tools:ignore="Autofill"
+                        android:layout_marginStart="5dp" />
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/btnUpload"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="@string/upload"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                android:textColor="@android:color/black"
+                android:background="@drawable/button_background"
+                tools:ignore="ButtonStyle"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
