@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Samyojane</string>
     <string name="select_lan">Please Select Language:</string>
-    <string name="versionCode">1.9.0</string>
+    <string name="versionCode">1.9.1</string>
     <string name="version">Ver : </string>
-    <string name="release_date">Rele On : 01/04/2020</string>
+    <string name="release_date">Rele On : 17/06/2020</string>
 
     <string name="cre_district_name">District</string>
     <string name="cre_taluk_name">Taluk</string>
@@ -25,7 +25,7 @@
     <string name="api_flag2">0bd8c0857ab17b05a7f14fa354fa3676</string>
 
     <string name="samyojane_API_url">http://164.100.133.30/Samyojane_API/</string>
-    <string name="server_url">http://218.248.32.25/RWS_TASKMGT/TSKMGT/</string>
+<!--    <string name="server_url">http://218.248.32.25/RWS_TASKMGT/TSKMGT/</string>-->
 
     <string name="main_url">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_LoginCredentials</string>
     <string name="main_url_version">http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Version</string>
@@ -44,7 +44,7 @@
 
     <string name="validate_ass_login_url">http://164.100.133.30/Mob_U_ekshana/e_kshana.asmx/ValidateAssistant</string>
     <string name="add_assistant_url">http://164.100.133.30/Mob_Rest_API/</string>
-    <string name="otp_generate_url">http://164.100.133.47/Mob_u_SMS/EKSHNA/</string>
+    <string name="otp_generate_url">http://164.100.133.30/Mob_u_SMS/EKSHNA/</string>
     <string name="test_otp_url">http://192.168.0.139/RWS_MBEKSHNA/EKSHNA/</string>
 
     <string name="SMS_Text">You have initiated OTP for VA Assistant Registration, Your OTP is</string>

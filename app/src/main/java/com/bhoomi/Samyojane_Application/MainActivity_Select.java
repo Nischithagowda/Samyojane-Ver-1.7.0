@@ -66,7 +66,6 @@ import static android.Manifest.permission.SEND_SMS;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity_Select extends AppCompatActivity {
-
     CardView card_view;
     RadioGroup radioGroup;
     RadioButton rbVA_RI, rbAssistant;
@@ -192,6 +191,8 @@ public class MainActivity_Select extends AppCompatActivity {
 //                    hashMap.put("IMEI", IMEI_Num);
 //                    hashMap.put("MobNum", mob_Num);
 //                    new GetDataFromServer().execute(getString(R.string.main_url));
+                    received_OTP = "";
+                    ServOTP = "";
                     ValidateLogin(mob_Num, IMEI_Num);
                 } else {
                     buildAlert_Internet();
@@ -535,7 +536,7 @@ public class MainActivity_Select extends AppCompatActivity {
                 Log.d("message",""+message);
                 Log.d("senderNum",""+senderNum);
                 assert senderNum != null;
-                if (senderNum.equals("VK-bhoomi")){
+                if (senderNum.contains("bhoomi") || senderNum.contains("MOBKAR")){
                     assert message != null;
                     received_OTP = message.replaceAll("[^0-9]","");
                     Log.d("ServOTP",""+ServOTP);

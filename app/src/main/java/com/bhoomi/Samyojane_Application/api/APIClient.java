@@ -37,7 +37,8 @@ public class APIClient {
                 .setLenient()
                 .create();
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://parihara.karnataka.gov.in")
+                //.baseUrl("https://parihara.karnataka.gov.in")
+                .baseUrl(url)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

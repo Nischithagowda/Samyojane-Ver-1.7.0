@@ -699,8 +699,9 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         boolean get = false;
 
         for(String s1 : list){
-            if(s1.contains("Samyojane")){
-                get=true;
+            if (s1.contains("Samyojane")) {
+                get = true;
+                break;
             }
         }
         Log.d("search", String.valueOf(get));

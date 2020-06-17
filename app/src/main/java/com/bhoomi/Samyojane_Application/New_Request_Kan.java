@@ -44,6 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -1029,8 +1030,9 @@ public class New_Request_Kan extends AppCompatActivity{
         boolean get = false;
 
         for(String s1 : list){
-            if(s1.contains("Samyojane")){
-                get=true;
+            if (s1.contains("Samyojane")) {
+                get = true;
+                break;
             }
         }
         Log.d("search", String.valueOf(get));
@@ -1133,7 +1135,22 @@ public class New_Request_Kan extends AppCompatActivity{
                 database.close();
             } catch (JSONException e) {
                 e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                Log.d("JSONException", ""+e);
+                btnViewDocs.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            } catch (JsonParseException e){
+                e.printStackTrace();
+                Log.d("JsonParseException", ""+e);
+                btnViewDocs.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            } catch (NullPointerException e){
+                e.printStackTrace();
+                Log.d("NullPointerException", ""+e);
+                btnViewDocs.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
             //Toast.makeText(getApplicationContext(), "VillageNames Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
         }

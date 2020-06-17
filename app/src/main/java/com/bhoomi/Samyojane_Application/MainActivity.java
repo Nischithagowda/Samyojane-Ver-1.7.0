@@ -228,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
         //deviceId = "911623302747388";
         deviceId = IMEI_Num_Shared;
         Log.d("Device_IMEI", ""+deviceId);
+        Log.d("Mob_Num", ""+Mob_Num_Shared);
 
         //telephonyManager.getDeviceId()
         //352514086476508
