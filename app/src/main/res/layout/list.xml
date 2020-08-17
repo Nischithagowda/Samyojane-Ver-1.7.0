@@ -2,10 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
-    android:layout_height="35dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="#FDF4B9">
 
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:theme="@style/MyCheckBox"
+        android:layout_marginStart="10dp"/>
     <TextView
         android:id="@+id/sl_No"
         android:layout_width="30dp"
@@ -21,7 +27,8 @@
         android:layout_marginStart="10dp"
         android:text="@string/applicant_name"
         android:textStyle="bold"
-        android:textColor="@color/MAROON" />
+        android:textColor="@color/MAROON"
+        android:padding="4dp"/>
 
     <TextView
         android:id="@+id/gsc_first_part"

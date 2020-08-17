@@ -62,7 +62,7 @@
                 android:layout_weight="1"
                 android:digits="1234567890"
                 android:maxLength="10"
-                android:text=""
+                android:text="9141410787"
                 android:textCursorDrawable="@android:color/black"
                 android:backgroundTint="@android:color/black"/>
         </LinearLayout>
@@ -105,7 +105,7 @@
                 android:layout_weight="1"
                 android:digits="1234567890"
                 android:maxLength="17"
-                android:text=""
+                android:text="911623302747388"
                 android:textCursorDrawable="@android:color/black"
                 android:backgroundTint="@android:color/black"/>
         </LinearLayout>

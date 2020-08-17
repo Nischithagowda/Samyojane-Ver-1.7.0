@@ -137,7 +137,8 @@
                 android:inputType="textPersonName"
                 android:textColor="@android:color/black"
                 tools:ignore="Autofill"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="testva"/>
 
             <EditText
                 android:id="@+id/pwd"
@@ -149,7 +150,8 @@
                 android:inputType="textPassword"
                 android:textColor="@android:color/black"
                 tools:ignore="Autofill"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="pass"/>
 
             <Button
                 android:id="@+id/btnSubmit"

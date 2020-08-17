@@ -54,4 +54,8 @@
         <item name="colorAccent">@color/light_blue</item>
     </style>
 
+    <style name="MyCheckBox" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorControlNormal">#000</item>   <!-- normal border color change as you wish -->
+    </style>
+
 </resources>

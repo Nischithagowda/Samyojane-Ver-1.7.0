@@ -440,7 +440,6 @@ public class MainActivity_Select extends AppCompatActivity {
 
         apiInterface = APIClient.getClient(getString(R.string.otp_generate_url)).create(APIInterface.class);
         Call<OtpResponse> call = apiInterface.FnSendOtp(Constants.dept_user_name, Constants.password, mobileNumber, getString(R.string.SMS_Text_VA_RI));
-
         call.enqueue(new Callback<OtpResponse>() {
             @Override
             public void onResponse(@NotNull Call<OtpResponse> call, @NotNull Response<OtpResponse> response) {
@@ -460,7 +459,7 @@ public class MainActivity_Select extends AppCompatActivity {
                         service_Flag=1;
                         Log.d("Receiver_Flag", "service_Flag: "+service_Flag);
 
-                        if (broadcast_Flag==1){
+                        if (broadcast_Flag==1 && ServOTP!=null){
                             dialog.dismiss();
                             alertDialog.dismiss();
                             if (view.getParent() != null) {
@@ -508,8 +507,14 @@ public class MainActivity_Select extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<OtpResponse> call, @NotNull Throwable throwable) {
-                Toast.makeText(getApplicationContext(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-
+                dialog.dismiss();
+                String exp = throwable.getLocalizedMessage();
+                if (exp.equals("timeout")){
+                    displayAlert("Timeout, Please Try Again...");
+                } else {
+                    displayAlert(exp+", Please Try Again...");
+                }
+                //Toast.makeText(getApplicationContext(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
 
         });
@@ -539,13 +544,13 @@ public class MainActivity_Select extends AppCompatActivity {
                 if (senderNum.contains("bhoomi") || senderNum.contains("MOBKAR")){
                     assert message != null;
                     received_OTP = message.replaceAll("[^0-9]","");
-                    Log.d("ServOTP",""+ServOTP);
-                    Log.d("received_OTP",""+received_OTP);
+                    Log.d("ServOTP","OTP: "+ServOTP);
+                    Log.d("received_OTP","OTP: "+received_OTP);
                     c1 =  received_OTP.toCharArray();
 
                     broadcast_Flag = 1;
                     Log.d("Receiver_Flag","broadcast_Flag: "+broadcast_Flag);
-                    if (service_Flag==1) {
+                    if (service_Flag==1 && received_OTP!=null) {
                         dialog.dismiss();
                         alertDialog.dismiss();
                         if (view.getParent() != null) {

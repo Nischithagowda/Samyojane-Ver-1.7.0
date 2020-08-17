@@ -124,6 +124,17 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnPushToAnotherVA"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:text="@string/push_to_another_va"
+        android:background="@drawable/button_background"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"/>
+
     <LinearLayout
         android:id="@+id/listLayout"
         android:layout_width="match_parent"
@@ -149,9 +160,19 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
+                    android:layout_height="35dp"
                     android:orientation="horizontal"
-                    android:background="@drawable/panel_new">
+                    android:background="@drawable/panel_new"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/select"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/select"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/sl_No"

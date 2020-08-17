@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -42,6 +44,7 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
     ArrayList<String> VillageCode;
     ArrayList<String> HabitationCode;
     ArrayList<String> Option_Flag;
+    ArrayList<String> selected_items = new ArrayList<>();
     TextView app_Name;
     String applicant_name;
     String applicant_Id;
@@ -52,11 +55,14 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
     private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     Intent i;
+    DataTransferInterface dataTransferInterface;
+    Activity activity;
+    LayoutInflater inflater;
 
     Service_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name,
                          ArrayList<String> gsc_firstPart, ArrayList<String> rd_No, ArrayList<String> dueDate,
                          ArrayList<String> serviceCode, ArrayList<String> serviceName, ArrayList<String> villageCode,
-                         ArrayList<String> habitationCode, ArrayList<String> option_Flag) {
+                         ArrayList<String> habitationCode, ArrayList<String> option_Flag, Activity a, DataTransferInterface dtInterface) {
 
         this.context = context;
         this.SlNo = slNo;
@@ -69,6 +75,9 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
         this.VillageCode = villageCode;
         this.HabitationCode = habitationCode;
         this.Option_Flag = option_Flag;
+        this.activity = a;
+        this.dataTransferInterface = dtInterface;
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -236,6 +245,21 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
             }
         });
 
+        service_ViewHolder.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (service_ViewHolder.checkbox.isChecked()){
+                applicant_Id = service_ViewHolder.app_Id.getText().toString();
+                Log.d("Checked_applicant_Id", "" + applicant_Id);
+                selected_items.add(applicant_Id);
+                Log.d("selected_items", "" + selected_items);
+            } else {
+                applicant_Id = service_ViewHolder.app_Id.getText().toString();
+                Log.d("UnChecked_applicant_Id", "" + applicant_Id);
+                selected_items.remove(applicant_Id);
+                Log.d("selected_items", "" + selected_items);
+            }
+            dataTransferInterface.setValues(selected_items);
+        });
+
         return convertView;
     }
 
@@ -247,6 +271,7 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
 class Service_ViewHolder{
     TextView sl_No, app_Name, gsc_first_part, app_Id,app_dueDate, app_ServiceCode, app_ServiceName, tvVillageCode,
             tvHabitationCode, tvOption_Flag;
+    CheckBox checkbox;
     Service_ViewHolder(View view) {
         sl_No = view.findViewById(R.id.sl_No);
         app_Name = view.findViewById(R.id.app_Name);
@@ -258,5 +283,6 @@ class Service_ViewHolder{
         tvVillageCode = view.findViewById(R.id.tvVillageCode);
         tvHabitationCode = view.findViewById(R.id.tvHabitationCode);
         tvOption_Flag = view.findViewById(R.id.tvOption_Flag);
+        checkbox = view.findViewById(R.id.checkbox);
     }
 }

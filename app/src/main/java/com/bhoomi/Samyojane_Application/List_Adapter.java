@@ -91,6 +91,7 @@ public class List_Adapter extends BaseAdapter implements Filterable {
         viewHolder.tvHabitationCode.setText(HabitationCode.get(position));
         viewHolder.tvOption_Flag.setText(Option_Flag.get(position));
 
+
         viewHolder.btnEdit.setOnClickListener(v -> {
             serviceName = viewHolder.tvServiceName.getText().toString();
             item_position = String.valueOf(position);

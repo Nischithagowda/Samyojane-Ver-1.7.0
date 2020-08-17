@@ -779,7 +779,7 @@ public class MainActivity extends AppCompatActivity {
                 database.close();
                 Log.d("Get Version:", "Got the Application Version");
 
-            } catch (JSONException e) {
+            } catch (JSONException | NullPointerException e) {
                 e.printStackTrace();
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
             }

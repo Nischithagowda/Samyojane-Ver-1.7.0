@@ -14,13 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class New_Request_FirstScreen extends AppCompatActivity {
+public class New_Request_FirstScreen extends AppCompatActivity implements DataTransferInterface {
 
-    Button btnBack;
+    Button btnBack, btnPushToAnotherVA;
     TextView tvHobli, tvTaluk, tvVA_Name, tvVillageName, tvServiceName, tv_V_T_Name;
     String district, taluk, hobli, VA_Circle_Name, VA_Name;
     String district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_Name, ward_Name, town_code, ward_code;
@@ -43,10 +44,10 @@ public class New_Request_FirstScreen extends AppCompatActivity {
     ListView listView;
     Service_List_Adapter list_adapter;
     UR_Service_List_Adapter ur_service_list_adapter;
-    String item_position;
     TextView emptyTxt;
     String villageCode, service_name, village_name, habitationCode, option_Flag;
     int serviceCode;
+    ArrayList<String> selected_items;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"MissingPermission", "HardwareIds", "SetTextI18n", "ClickableViewAccessibility", "SdCardPath"})
@@ -64,6 +65,7 @@ public class New_Request_FirstScreen extends AppCompatActivity {
         tvServiceName = findViewById(R.id.tvServiceName);
         tvVillageName = findViewById(R.id.tvVillageName);
         tv_V_T_Name = findViewById(R.id.tv_V_T_Name);
+        btnPushToAnotherVA = findViewById(R.id.btnPushToAnotherVA);
 
         Intent i = getIntent();
         district_Code = i.getStringExtra("district_Code");
@@ -129,6 +131,14 @@ public class New_Request_FirstScreen extends AppCompatActivity {
         tvServiceName.setText(service_name);
 
         btnBack.setOnClickListener(v -> onBackPressed());
+
+        btnPushToAnotherVA.setOnClickListener(v -> {
+            if (selected_items.size()>0){
+
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.select_any_applicant_to_push), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -179,7 +189,8 @@ public class New_Request_FirstScreen extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
             Log.d("InDisplayIf", ""+ i);
-            list_adapter = new Service_List_Adapter(New_Request_FirstScreen.this, SlNo, Applicant_Name, GSC_FirstPart, Applicant_ID, DueDate, ServiceCode, ServiceName, VillageCode, HabitationCode, Option_Flag);
+            list_adapter = new Service_List_Adapter(New_Request_FirstScreen.this, SlNo, Applicant_Name, GSC_FirstPart,
+                    Applicant_ID, DueDate, ServiceCode, ServiceName, VillageCode, HabitationCode, Option_Flag, New_Request_FirstScreen.this, this);
             listView.setAdapter(list_adapter);
             database.close();
             //Toast.makeText(getApplicationContext(), "Rural Data Displayed Successfully", Toast.LENGTH_SHORT).show();
@@ -242,7 +253,9 @@ public class New_Request_FirstScreen extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
             Log.d("InDisplayIf", ""+ i);
-            ur_service_list_adapter = new UR_Service_List_Adapter(New_Request_FirstScreen.this, SlNo, Applicant_Name, GSC_FirstPart, Applicant_ID, DueDate, ServiceCode, ServiceName, TownName, TownCode, WardName, WardCode, Option_Flag);
+            ur_service_list_adapter = new UR_Service_List_Adapter(New_Request_FirstScreen.this, SlNo, Applicant_Name,
+                    GSC_FirstPart, Applicant_ID, DueDate, ServiceCode, ServiceName, TownName, TownCode, WardName, WardCode, Option_Flag,
+                    New_Request_FirstScreen.this, this);
             listView.setAdapter(ur_service_list_adapter);
             database.close();
             //Toast.makeText(getApplicationContext(), "Urban Data Displayed Successfully", Toast.LENGTH_SHORT).show();
@@ -279,5 +292,11 @@ public class New_Request_FirstScreen extends AppCompatActivity {
         i.putExtra("option_Flag", option_Flag);
         startActivity(i);
         finish();
+    }
+
+    @Override
+    public void setValues(ArrayList<String> al) {
+        selected_items = al;
+        Log.d("Activity_selected",""+selected_items);
     }
 }

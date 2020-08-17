@@ -18,4 +18,18 @@
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
-#-renamesourcefileattribute SourceFile
+-renamesourcefileattribute SourceFile
+
+-repackageclasses
+
+-keepclassmembernames class * {
+    native <methods>;
+}
+
+-keepclassmembers class * {
+    public <init>(android.content.Context, anroid.util.Attributeset);
+}
+
+-dontskipnonpubliclibraryclasses
+-dontusemixedcaseclassnames
+-verbose

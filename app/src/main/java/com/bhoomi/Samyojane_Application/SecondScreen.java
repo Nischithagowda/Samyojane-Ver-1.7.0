@@ -433,8 +433,9 @@ public class SecondScreen extends AppCompatActivity {
         boolean get = false;
 
         for(String s1 : list){
-            if(s1.contains("Samyojane")){
-                get=true;
+            if (s1.contains("Samyojane")) {
+                get = true;
+                break;
             }
         }
         Log.d("search", String.valueOf(get));
@@ -558,8 +559,8 @@ public class SecondScreen extends AppCompatActivity {
                 database = openHelper.getWritableDatabase();
 
                 JSONArray array = jsonObject.getJSONArray("data");
-
                 int count = array.length();
+
                 for (int i = 0; i < count; i++) {
 
                     JSONObject object = array.getJSONObject(i);
