@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -50,7 +49,7 @@
             android:layout_marginStart="10dp" />
 
         <TextView
-            android:id="@+id/RI_name"
+            android:id="@+id/VA_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/name"
@@ -67,60 +66,22 @@
         android:layout_marginTop="10dp">
 
         <TextView
-            android:id="@+id/tvServiceName"
+            android:id="@+id/tvPushApplication"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/service_name"
+            android:text="Pushing Application to another VA"
             android:textColor="#377691"
             android:layout_gravity="center"
             android:textStyle="bold"
             android:textSize="16sp"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="10dp"
-        tools:ignore="UseCompoundDrawables">
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/ic_brightness_1_red_24dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/todo" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/indicates_overdue"
+            android:text="Selected Application List"
             android:textColor="@android:color/black"
             android:layout_gravity="center"
-            android:layout_marginStart="5dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp">
-
-        <TextView
-            android:id="@+id/tv_V_T_Name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@android:color/black"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/tvVillageName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black" />
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
@@ -129,7 +90,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -149,9 +111,10 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
+                    android:layout_height="35dp"
                     android:orientation="horizontal"
-                    android:background="@drawable/panel_new">
+                    android:background="@drawable/panel_new"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/sl_No"
@@ -173,22 +136,12 @@
 
                     <TextView
                         android:id="@+id/app_Id"
-                        android:layout_width="110dp"
+                        android:layout_width="145dp"
                         android:layout_height="wrap_content"
                         android:text="@string/applicant_id"
-                        android:layout_marginStart="0dp"
+                        android:layout_marginStart="10dp"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        android:gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/app_dueDate"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/due_date"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        android:layout_marginStart="5dp" />
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -211,18 +164,44 @@
                     android:textAlignment="center"
                     android:textColor="@android:color/black"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="10dp">
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:text="@string/submit"
+                    android:background="@drawable/button_background"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    style="?android:attr/buttonBarButtonStyle"/>
+
                 <Button
                     android:id="@+id/btnBack"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="50dp"
                     android:text="@string/back"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
                     android:background="@drawable/button_background"
-                    android:layout_gravity="center"/>
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_marginStart="40dp"/>
 
             </LinearLayout>
+
+            </LinearLayout>
+
         </HorizontalScrollView>
 
     </LinearLayout>
+
+
+
 </LinearLayout>

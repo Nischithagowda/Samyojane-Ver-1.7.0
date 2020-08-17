@@ -58,6 +58,7 @@
         <activity
             android:name=".MainActivity_Select"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,183 +68,238 @@
         </activity>
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request_Kan"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".View_Docs"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SecondScreen"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Field_Report"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request_FirstScreen"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request_SecondScreen"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request_Caste_Income_Parameters"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request_Caste_Income_Parameters_Kan"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request_Caste_sc_st_certi_Parameters"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request_Caste_sc_st_certi_Parameters_Kan"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request_Resident_Parameters"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".New_Request_Resident_Parameters_Kan"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".UploadScreen"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".RI_SecondScreen"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RI_Field_Report"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".RI_Field_Report_FirstScreen"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RI_Field_Report_caste_income_parameters"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RI_Field_Report_caste_income_parameters_Kan"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RI_Field_Report_Caste_sc_st_certi_Parameters"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RI_Field_Report_Caste_sc_st_certi_Parameters_Kan"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RI_Field_Report_Resident_Parameters"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RI_UploadScreen"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".PDF_Viewer"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Village_wise_report"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".RI_VA_Circle_Wise_Report"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".RI_Village_wise_report"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Applicant_wise_report"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".RI_Applicant_wise_report"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Selection_Module"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".E_Kshana_MainScreen"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".E_Kshana_Member_Details"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".E_Kshana_Member_Details_Second"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".E_Kshana_Freeze_Member_Details"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".E_Kshana_Freeze_Member_Details_Second"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".E_Kshana_Add_Member"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Add_Assistant"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Selection_Module_VA"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".OTP_Assistant"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
         <activity
             android:name=".E_Kshana_Display_RC_Updated_VA"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".View_Assistant"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".E_Kshana_MainScreen_VA"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".E_Kshana_Member_Details_VA"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".E_Kshana_Member_Details_VA_Second"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".E_Kshana_Freeze_Member_Details_VA"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".E_Kshana_Freeze_Member_Details_VA_Second"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".E_Kshana_Freeze_Details_FOR_VA"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".OtpVerify_New"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Assistant_Login"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".PushToAnotherVA"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
     </application>
 

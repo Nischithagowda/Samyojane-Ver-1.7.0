@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#FDF4B9"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/sl_No"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/sl"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/app_Name"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/applicant_name"
+        android:textColor="@android:color/black"
+        android:padding="4dp"/>
+
+    <TextView
+        android:id="@+id/gsc_first_part"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text=""
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/app_Id"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/id"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/app_ServiceCode"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:visibility="gone"/>
+
+</LinearLayout>
+

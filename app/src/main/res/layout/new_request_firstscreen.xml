@@ -97,8 +97,7 @@
             android:text="@string/indicates_overdue"
             android:textColor="@android:color/black"
             android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            />
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -223,7 +222,7 @@
                 </ListView>
                 <TextView
                     android:id="@+id/emptyTxt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=""
                     android:background="@drawable/panel_new"
