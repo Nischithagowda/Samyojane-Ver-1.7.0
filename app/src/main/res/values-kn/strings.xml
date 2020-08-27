@@ -21,11 +21,13 @@
     <string name="reasons_tbl_purpose_name">Purpose_k</string>
     <string name="flag1">OPRRC</string>
     <string name="flag2">12345</string>
+    <string name="flag1_ekshana">nadakacheriEMobileAPI@2020</string>
+    <string name="flag2_ekshana">0bd8c0857ab17b22+5a7f14fa354fa3676</string>l
 
     <string name="api_flag1">nadakacheriSAPI@2020</string>
     <string name="api_flag2">0bd8c0857ab17b05a7f14fa354fa3676</string>
 
-    <string name="samyojane_API_url">http://164.100.133.47/Samyojane_API/</string>
+    <string name="samyojane_API_url">http://164.100.133.47/Samyojane_API/api/values/</string>
 <!--    <string name="server_url">http://218.248.32.25/RWS_TASKMGT/TSKMGT/</string>-->
 
     <string name="main_url">http://164.100.133.47/NK_MobileApp/WebService.asmx/Get_LoginCredentials</string>
@@ -39,12 +41,12 @@
     <string name="SOAP_ADDRESS">http://164.100.133.47/NK_MobileApp/WebService.asmx</string>
 
     <string name="main_url_E_Kshana">http://164.100.133.47/NKMobileAPI/api/OPRC/</string>
-    <string name="freeze_member_url">http://164.100.133.47/NKMobileAPI/api/OPRC/POSTAddRCMemberDetails/</string>
-    <string name="inactive_member_url">http://164.100.133.47/NKMobileAPI/api/OPRC/POSTUpdateRCMemberInactive/</string>
+    <string name="freeze_member_url">http://164.100.133.47/NKMobileAPI/api/OPRC/</string>
+    <string name="inactive_member_url">http://164.100.133.47/NKMobileAPI/api/OPRC/</string>
     <string name="VA_Update_url">http://164.100.133.47/NKMobileAPI/api/OPRC/POSTUpdateRCMemberDetailsFromVA/</string>
 
     <string name="validate_ass_login_url">http://164.100.133.47/Mob_U_ekshana/e_kshana.asmx/ValidateAssistant</string>
-    <string name="add_assistant_url">http://164.100.133.47/Mob_Rest_API/</string>
+    <string name="add_assistant_url">http://164.100.133.47/Mob_Rest_API/api/Values</string>
     <string name="otp_generate_url">http://164.100.133.47/Mob_u_SMS/EKSHNA/</string>
     <string name="test_otp_url">http://192.168.0.139/RWS_MBEKSHNA/EKSHNA/</string>
 
@@ -446,5 +448,13 @@
     <string name="select_any_applicant_to_push">select Any Applicant to push</string>
     <string name="select">Select</string>
     <string name="submit">Submit</string>
+    <string name="pushing_application_to_another_va">Pushing Application to another VA</string>
+    <string name="selected_application_list">Selected Application List</string>
+    <string name="confirmation_alert">Confirmation Alert</string>
+    <string name="record">Record</string>
+    <string name="records">Records</string>
+    <string name="confirm">Confirm</string>
+    <string name="are_you_sure_do_you_want_to_push_the_selected">Are you sure?\nDo you want to push the selected</string>
+    <string name="list_of_pushed_applications_for_this_village">List of Pushed Applications for this Village :</string>
 
 </resources>

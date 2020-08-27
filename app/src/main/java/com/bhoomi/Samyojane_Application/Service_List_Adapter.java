@@ -9,20 +9,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,29 +30,28 @@ import java.util.Objects;
 public class Service_List_Adapter extends BaseAdapter implements Filterable {
 
     private Context context;
-    ArrayList<String> SlNo;
-    ArrayList<String> Applicant_Name;
-    ArrayList<String> GSC_First_Part;
-    ArrayList<String> Applicant_ID;
-    ArrayList<String> DueDate;
-    ArrayList<String> ServiceCode;
-    ArrayList<String> ServiceName;
-    ArrayList<String> VillageCode;
-    ArrayList<String> HabitationCode;
-    ArrayList<String> Option_Flag;
-    ArrayList<String> selected_items = new ArrayList<>();
-    TextView app_Name;
-    String applicant_name;
-    String applicant_Id;
-    String serviceCode, serviceName, villageCode, habitationCode, town_code, ward_code;
-    String item_position;
-    String district, taluk, VA_Name, hobli,VA_Circle_Name, village_name;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_code, eng_certi,option_Flag;
+    private ArrayList<String> SlNo;
+    private ArrayList<String> Applicant_Name;
+    private ArrayList<String> GSC_First_Part;
+    private ArrayList<String> Applicant_ID;
+    private ArrayList<String> DueDate;
+    private ArrayList<String> ServiceCode;
+    private ArrayList<String> ServiceName;
+    private ArrayList<String> VillageCode;
+    private ArrayList<String> HabitationCode;
+    private ArrayList<String> Option_Flag;
+    private ArrayList<String> selected_items = new ArrayList<>();
+    private String applicant_name;
+    private String applicant_Id;
+    private String serviceCode, serviceName, villageCode, habitationCode, town_code, ward_code;
+    private String item_position;
+    private String district, taluk, VA_Name, hobli,VA_Circle_Name, village_name;
+    private String district_Code, taluk_Code, hobli_Code, va_Circle_code, eng_certi,option_Flag;
     private SQLiteOpenHelper openHelper;
-    SQLiteDatabase database;
-    Intent i;
-    DataTransferInterface dataTransferInterface;
-    Activity activity;
+    private SQLiteDatabase database;
+    private Intent i;
+    private DataTransferInterface dataTransferInterface;
+    public Activity activity;
     LayoutInflater inflater;
 
     Service_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name,
@@ -164,84 +159,79 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
         VA_Name = Field_Report.Global.VA_Name1;
         village_name = Field_Report.Global.VillageName1;
 
-        app_Name = convertView.findViewById(R.id.app_Name);
-        app_Name.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        service_ViewHolder.app_Name.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        app_Name.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-                applicant_name = service_ViewHolder.app_Name.getText().toString();
-                applicant_Id = service_ViewHolder.app_Id.getText().toString();
-                item_position = String.valueOf(position);
-                serviceCode = service_ViewHolder.app_ServiceCode.getText().toString();
-                serviceName = service_ViewHolder.app_ServiceName.getText().toString();
-                villageCode = service_ViewHolder.tvVillageCode.getText().toString();
-                habitationCode = service_ViewHolder.tvHabitationCode.getText().toString();
-                town_code = "9999";
-                ward_code = "255";
-                option_Flag = service_ViewHolder.tvOption_Flag.getText().toString();
+        service_ViewHolder.app_Name.setOnClickListener(v -> {
+            applicant_name = service_ViewHolder.app_Name.getText().toString();
+            applicant_Id = service_ViewHolder.app_Id.getText().toString();
+            item_position = String.valueOf(position);
+            serviceCode = service_ViewHolder.app_ServiceCode.getText().toString();
+            serviceName = service_ViewHolder.app_ServiceName.getText().toString();
+            villageCode = service_ViewHolder.tvVillageCode.getText().toString();
+            habitationCode = service_ViewHolder.tvHabitationCode.getText().toString();
+            town_code = "9999";
+            ward_code = "255";
+            option_Flag = service_ViewHolder.tvOption_Flag.getText().toString();
 
-                Log.d("Applicant_Name", ""+applicant_name);
-                Log.d("Applicant_Id", ""+applicant_Id);
-                Log.d("Item_Position", ""+item_position);
-                Log.d("serviceCode", ""+serviceCode);
-                Log.d("serviceName", ""+serviceName);
-                Log.d("villageCode", ""+villageCode);
-                Log.d("habitationCode", ""+habitationCode);
-                Log.d("strSearchVillageName", village_name);
-                Log.d("va_Circle_Code", va_Circle_code);
-                Log.d("town_code", ""+town_code);
-                Log.d("ward_code", ward_code);
-                Log.d("option_Flag",option_Flag);
+            Log.d("Applicant_Name", ""+applicant_name);
+            Log.d("Applicant_Id", ""+applicant_Id);
+            Log.d("Item_Position", ""+item_position);
+            Log.d("serviceCode", ""+serviceCode);
+            Log.d("serviceName", ""+serviceName);
+            Log.d("villageCode", ""+villageCode);
+            Log.d("habitationCode", ""+habitationCode);
+            Log.d("strSearchVillageName", village_name);
+            Log.d("va_Circle_Code", va_Circle_code);
+            Log.d("town_code", ""+town_code);
+            Log.d("ward_code", ward_code);
+            Log.d("option_Flag",option_Flag);
 
-                if(applicant_Id!=null) {
+            if(applicant_Id!=null) {
 
-                    openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(context);
-                    database = openHelper.getWritableDatabase();
+                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(context);
+                database = openHelper.getWritableDatabase();
 
-                    @SuppressLint("Recycle")
-                    Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
-                            + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                @SuppressLint("Recycle")
+                Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
 
-                    if (cursor.getCount() > 0) {
-                        if (cursor.moveToNext()) {
-                            eng_certi = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
-                            Log.d("Service_List", "" + eng_certi);
-                        }
+                if (cursor.getCount() > 0) {
+                    if (cursor.moveToNext()) {
+                        eng_certi = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
+                        Log.d("Service_List", "" + eng_certi);
                     }
-                    if (Objects.equals(eng_certi, "E")) {
-                        i = new Intent(context, New_Request.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    } else {
-                        i = new Intent(context, New_Request_Kan.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    }
-                    i.putExtra("applicant_name", applicant_name);
-                    i.putExtra("applicant_Id", applicant_Id);
-                    i.putExtra("serviceCode", serviceCode);
-                    i.putExtra("strSearchServiceName", serviceName);
-                    i.putExtra("villageCode", villageCode);
-                    i.putExtra("habitationCode", habitationCode);
-                    i.putExtra("district_Code", district_Code);
-                    i.putExtra("districtCode", district);
-                    i.putExtra("taluk_Code", taluk_Code);
-                    i.putExtra("taluk", taluk);
-                    i.putExtra("hobli_Code", hobli_Code);
-                    i.putExtra("hobli", hobli);
-                    i.putExtra("va_Circle_Code", va_Circle_code);
-                    i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                    i.putExtra("VA_Name", VA_Name);
-                    i.putExtra("eng_certi",eng_certi);
-                    i.putExtra("strSearchVillageName", village_name);
-                    i.putExtra("town_code", town_code);
-                    i.putExtra("ward_code", ward_code);
-                    i.putExtra("option_Flag",option_Flag);
-                    context.startActivity(i);
-                    ((Activity) context).finish();
-                    Log.d("Service", "" + serviceCode);
                 }
-                else{
-                    Toast.makeText(context, "Applicant Id Missing", Toast.LENGTH_SHORT).show();
+                if (Objects.equals(eng_certi, "E")) {
+                    i = new Intent(context, New_Request.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                } else {
+                    i = new Intent(context, New_Request_Kan.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
+                i.putExtra("applicant_name", applicant_name);
+                i.putExtra("applicant_Id", applicant_Id);
+                i.putExtra("serviceCode", serviceCode);
+                i.putExtra("strSearchServiceName", serviceName);
+                i.putExtra("villageCode", villageCode);
+                i.putExtra("habitationCode", habitationCode);
+                i.putExtra("district_Code", district_Code);
+                i.putExtra("districtCode", district);
+                i.putExtra("taluk_Code", taluk_Code);
+                i.putExtra("taluk", taluk);
+                i.putExtra("hobli_Code", hobli_Code);
+                i.putExtra("hobli", hobli);
+                i.putExtra("va_Circle_Code", va_Circle_code);
+                i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                i.putExtra("VA_Name", VA_Name);
+                i.putExtra("eng_certi",eng_certi);
+                i.putExtra("strSearchVillageName", village_name);
+                i.putExtra("town_code", town_code);
+                i.putExtra("ward_code", ward_code);
+                i.putExtra("option_Flag",option_Flag);
+                context.startActivity(i);
+                ((Activity) context).finish();
+                Log.d("Service", "" + serviceCode);
+            }
+            else{
+                Toast.makeText(context, "Applicant Id Missing", Toast.LENGTH_SHORT).show();
             }
         });
 

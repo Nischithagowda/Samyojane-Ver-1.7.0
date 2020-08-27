@@ -849,6 +849,7 @@ public class SecondScreen extends AppCompatActivity {
                     set_and_get_service_tran_data.setSCOT_annual_income(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_annual_income));
                     set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
                     set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
+                    set_and_get_service_tran_data.setST_Push_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag));
 
                     serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
 
@@ -899,7 +900,7 @@ public class SecondScreen extends AppCompatActivity {
                     database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                                 + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, Service_Name, Service_Name_k, ST_GSC_No, ST_applicant_photo, ST_GSCFirstPart, GSCFirstPart_Name" +
                                 ", ST_applicant_name, ST_DueDate, ST_Raised_Location, ST_father_name, ST_mother_name, ST_ID_NUMBER, ST_mobile_no, ST_applicant_caddress1, ST_applicant_caddress2, ST_applicant_caddress3,ST_applicant_cadd_pin, ST_ID_TYPE, ST_Eng_Certificate,"
-                                + "CST_res_category, CST_caste_as_per_app, CST_annual_income, SCOT_caste_app, SCOT_annual_income, GST_No_Years_Applied, GST_No_Mths_Applied)"
+                                + "CST_res_category, CST_caste_as_per_app, CST_annual_income, SCOT_caste_app, SCOT_annual_income, GST_No_Years_Applied, GST_No_Mths_Applied, ST_Push_Flag)"
                                 + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
                                 + set_and_get_service_tran_data.getTaluk_Code() + ","
                                 + set_and_get_service_tran_data.getHobli_Code()
@@ -933,7 +934,8 @@ public class SecondScreen extends AppCompatActivity {
                                 +set_and_get_service_tran_data.getSCOT_caste_app()+"','"
                                 +set_and_get_service_tran_data.getSCOT_annual_income() + "','"
                                 +set_and_get_service_tran_data.getGST_No_Years_Applied()+"','"
-                                +set_and_get_service_tran_data.getGST_No_Mths_Applied()+"')");
+                                +set_and_get_service_tran_data.getGST_No_Mths_Applied()+"','"
+                            +set_and_get_service_tran_data.getST_Push_Flag()+"')");
 
                     Log.d("Database", "ServiceTranTable Database Inserted " + j);
                     j++;

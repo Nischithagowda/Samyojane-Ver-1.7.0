@@ -141,7 +141,7 @@ public class Add_Assistant extends AppCompatActivity {
 
     public void getAssistant(){
         apiInterface = APIClient.getClient(getString(R.string.add_assistant_url)).create(APIInterface.class);
-        Call<String> call = apiInterface.doGetAssistant(dCode, tCode, hCode, vcCode);
+        Call<String> call = apiInterface.doGetAssistant(getString(R.string.flag1_ekshana), getString(R.string.flag2_ekshana), dCode, tCode, hCode, vcCode);
 
         call.enqueue(new Callback<String>() {
             @Override

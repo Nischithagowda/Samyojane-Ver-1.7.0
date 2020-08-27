@@ -179,7 +179,7 @@ public class OTP_Assistant extends AppCompatActivity {
     public void AddMember_Rest(String VA_Name, String assName,String assMobile,String assPass,String isVA){
 
         apiInterface = APIClient.getClient(getString(R.string.add_assistant_url)).create(APIInterface.class);
-        Call<String> call = apiInterface.doAddMember(dCode, tCode, hCode, vcCode, VA_Name, assName, assMobile, assPass, isVA);
+        Call<String> call = apiInterface.doAddMember(getString(R.string.flag1_ekshana), getString(R.string.flag2_ekshana),dCode, tCode, hCode, vcCode, VA_Name, assName, assMobile, assPass, isVA);
 
         call.enqueue(new Callback<String>() {
             @Override

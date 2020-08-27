@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,13 +23,14 @@ import java.util.Objects;
 public class New_Request_FirstScreen extends AppCompatActivity implements DataTransferInterface {
 
     Button btnBack, btnPushToAnotherVA;
-    TextView tvHobli, tvTaluk, tvVA_Name, tvVillageName, tvServiceName, tv_V_T_Name;
+    TextView tvHobli, tvTaluk, tvVA_Name, tvVillageName, tvServiceName, tv_V_T_Name, txtListPushed;
     String district, taluk, hobli, VA_Circle_Name, VA_Name;
     String district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_Name, ward_Name, town_code, ward_code;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     ArrayList<String> SlNo = new ArrayList<>();
     ArrayList<String> Applicant_Name = new ArrayList<>();
+    ArrayList<String> GSC_FirstPart = new ArrayList<>();
     ArrayList<String> Applicant_ID = new ArrayList<>();
     ArrayList<String> DueDate = new ArrayList<>();
     ArrayList<String> ServiceCode = new ArrayList<>();
@@ -40,14 +42,30 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
     ArrayList<String> TownCode = new ArrayList<>();
     ArrayList<String> WardName = new ArrayList<>();
     ArrayList<String> WardCode = new ArrayList<>();
-    ArrayList<String> GSC_FirstPart = new ArrayList<>();
-    ListView listView;
-    Service_List_Adapter list_adapter;
-    UR_Service_List_Adapter ur_service_list_adapter;
+
+    ArrayList<String> SlNo1 = new ArrayList<>();
+    ArrayList<String> Applicant_Name1 = new ArrayList<>();
+    ArrayList<String> GSC_FirstPart1 = new ArrayList<>();
+    ArrayList<String> Applicant_ID1 = new ArrayList<>();
+    ArrayList<String> DueDate1 = new ArrayList<>();
+    ArrayList<String> ServiceCode1 = new ArrayList<>();
+    ArrayList<String> ServiceName1 = new ArrayList<>();
+    ArrayList<String> VillageCode1 = new ArrayList<>();
+    ArrayList<String> HabitationCode1 = new ArrayList<>();
+    ArrayList<String> Option_Flag1 = new ArrayList<>();
+    ArrayList<String> TownName1 = new ArrayList<>();
+    ArrayList<String> TownCode1 = new ArrayList<>();
+    ArrayList<String> WardName1 = new ArrayList<>();
+    ArrayList<String> WardCode1 = new ArrayList<>();
+
+    ListView listView, list_pushed;
+    Service_List_Adapter list_adapter, list_adapter_pushed;
+    UR_Service_List_Adapter ur_service_list_adapter, ur_service_list_adapter_pushed;
     TextView emptyTxt;
     String villageCode, service_name, village_name, habitationCode, option_Flag;
     int serviceCode;
     ArrayList<String> selected_items;
+    LinearLayout listLayout_pushed;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"MissingPermission", "HardwareIds", "SetTextI18n", "ClickableViewAccessibility", "SdCardPath"})
@@ -66,6 +84,12 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         tvVillageName = findViewById(R.id.tvVillageName);
         tv_V_T_Name = findViewById(R.id.tv_V_T_Name);
         btnPushToAnotherVA = findViewById(R.id.btnPushToAnotherVA);
+        txtListPushed = findViewById(R.id.txtListPushed);
+        listLayout_pushed = findViewById(R.id.listLayout_pushed);
+        list_pushed = findViewById(R.id.list_pushed);
+
+        listLayout_pushed.setVisibility(View.GONE);
+        txtListPushed.setVisibility(View.GONE);
 
         Intent i = getIntent();
         district_Code = i.getStringExtra("district_Code");
@@ -132,11 +156,18 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
 
         btnBack.setOnClickListener(v -> onBackPressed());
 
-        btnPushToAnotherVA.setOnClickListener(v -> {
-            if (selected_items.size()>0){
+        selected_items = new ArrayList<>();
 
-            } else {
+        btnPushToAnotherVA.setOnClickListener(v -> {
+            if (selected_items.equals("") || selected_items.size()==0){
                 Toast.makeText(getApplicationContext(), getString(R.string.select_any_applicant_to_push), Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(this, PushToAnotherVA.class);
+                intent.putStringArrayListExtra("selected_items", selected_items);
+                intent.putExtra("taluk", taluk);
+                intent.putExtra("hobli", hobli);
+                intent.putExtra("VA_Name", VA_Name);
+                startActivity(intent);
             }
         });
     }
@@ -149,7 +180,61 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_FirstScreen.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
+        Cursor cursor1 = database.rawQuery("select * from "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" where "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "="+villageCode+" and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Habitation_code+"="+habitationCode+" and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"=9999 and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"=255 and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+" ='1'", null);
+
+        SlNo1.clear();
+        Applicant_Name1.clear();
+        GSC_FirstPart1.clear();
+        Applicant_ID1.clear();
+        DueDate1.clear();
+        ServiceCode1.clear();
+        ServiceName1.clear();
+        VillageCode1.clear();
+        HabitationCode1.clear();
+        Option_Flag1.clear();
+
+        if(cursor1.getCount()>0) {
+            listLayout_pushed.setVisibility(View.VISIBLE);
+            txtListPushed.setVisibility(View.VISIBLE);
+            if (cursor1.moveToFirst()) {
+                do {
+                    Log.d("InDisplayIf", ""+ i);
+                    SlNo1.add(String.valueOf(i));
+                    Applicant_Name1.add(cursor1.getString(cursor1.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name)));
+                    GSC_FirstPart1.add(cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCFirstPart_Name)));
+                    Applicant_ID1.add(cursor1.getString(cursor1.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No)));
+                    DueDate1.add(cursor1.getString(cursor1.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date)));
+                    ServiceCode1.add(cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code)));
+                    ServiceName1.add(service_name);
+                    VillageCode1.add(villageCode);
+                    HabitationCode1.add(habitationCode);
+                    Option_Flag1.add(option_Flag);
+                    i++;
+                } while (cursor1.moveToNext());
+            }
+            Log.d("InDisplayIf", ""+ i);
+            list_adapter_pushed = new Service_List_Adapter(New_Request_FirstScreen.this, SlNo1, Applicant_Name1,
+                    GSC_FirstPart1, Applicant_ID1, DueDate1, ServiceCode1, ServiceName1, VillageCode1, HabitationCode1,
+                    Option_Flag1, New_Request_FirstScreen.this, this);
+            list_pushed.setAdapter(list_adapter_pushed);
+            database.close();
+            //Toast.makeText(getApplicationContext(), "Rural Data Displayed Successfully", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            cursor1.close();
+            listLayout_pushed.setVisibility(View.GONE);
+            txtListPushed.setVisibility(View.GONE);
+            //Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_SHORT).show();
+        }
+
         Cursor cursor = database.rawQuery("select * from "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" where "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "="+villageCode+" and "
@@ -157,7 +242,8 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"=9999 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"=255 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null", null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+" is null", null);
 
         SlNo.clear();
         Applicant_Name.clear();
@@ -196,6 +282,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
             //Toast.makeText(getApplicationContext(), "Rural Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor.close();
             emptyTxt.setVisibility(View.VISIBLE);
             Log.d("InDisplayElse", ""+ i);
             emptyTxt.setText(getString(R.string.no_da_found));
@@ -211,13 +298,70 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_FirstScreen.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
+        Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" where "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code +"="+town_code+" and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code + "="+ward_code+" and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=99999 and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+" ='1'", null);
+
+        SlNo1.clear();
+        Applicant_Name1.clear();
+        GSC_FirstPart1.clear();
+        Applicant_ID1.clear();
+        DueDate1.clear();
+        ServiceCode1.clear();
+        ServiceName1.clear();
+        TownName1.clear();
+        TownCode1.clear();
+        WardName1.clear();
+        WardCode1.clear();
+        Option_Flag1.clear();
+
+        if(cursor1.getCount()>0) {
+            listLayout_pushed.setVisibility(View.GONE);
+            txtListPushed.setVisibility(View.GONE);
+            if (cursor1.moveToFirst()) {
+                do {
+                    Log.d("InDisplayIf", ""+ i);
+                    SlNo1.add(String.valueOf(i));
+                    Applicant_Name1.add(cursor1.getString(cursor1.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name)));
+                    GSC_FirstPart1.add(cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCFirstPart_Name)));
+                    Applicant_ID1.add(cursor1.getString(cursor1.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No)));
+                    DueDate1.add(cursor1.getString(cursor1.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date)));
+                    ServiceCode1.add(cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code)));
+                    ServiceName1.add(service_name);
+                    TownName1.add(town_Name);
+                    TownCode1.add(town_code);
+                    WardName1.add(ward_Name);
+                    WardCode1.add(ward_code);
+                    Option_Flag1.add(option_Flag);
+                    i++;
+                } while (cursor1.moveToNext());
+            }
+            Log.d("InDisplayIf", ""+ i);
+            ur_service_list_adapter_pushed = new UR_Service_List_Adapter(New_Request_FirstScreen.this, SlNo1, Applicant_Name1,
+                    GSC_FirstPart1, Applicant_ID1, DueDate1, ServiceCode1, ServiceName1, TownName1, TownCode1, WardName1, WardCode1, Option_Flag1,
+                    New_Request_FirstScreen.this, this);
+            list_pushed.setAdapter(ur_service_list_adapter_pushed);
+            database.close();
+            //Toast.makeText(getApplicationContext(), "Urban Data Displayed Successfully", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            cursor1.close();
+            listLayout_pushed.setVisibility(View.GONE);
+            txtListPushed.setVisibility(View.GONE);
+            //Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_SHORT).show();
+        }
+
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" where "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code +"="+town_code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code + "="+ward_code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=99999 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null", null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+" is null", null);
 
         SlNo.clear();
         Applicant_Name.clear();
@@ -261,6 +405,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
             //Toast.makeText(getApplicationContext(), "Urban Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor.close();
             emptyTxt.setVisibility(View.VISIBLE);
             Log.d("InDisplayElse", ""+ i);
             emptyTxt.setText(getString(R.string.no_da_found));

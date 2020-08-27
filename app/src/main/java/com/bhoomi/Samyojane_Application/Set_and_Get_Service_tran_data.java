@@ -4,7 +4,7 @@ public class Set_and_Get_Service_tran_data {
     private String District_Code, Taluk_Code, Hobli_Code, Village_Code, Habitation_code, Town_Code, Ward_Code, Service_Code, Service_Name, Service_Name_k, RD_No, Applicant_Name, Due_Date, Raised_Location, Father_Name, Mother, RationCard_No, Aadhar_NO, Mobile_No;
     private String Address1, Address2, Address3, Add_Pin, Eng_Certify, GSC_First_Part;
     private String UID, AadhaarPhoto;
-    private String DataUpdateFlag, ST_applicant_photo, ST_ID_TYPE;
+    private String DataUpdateFlag, ST_applicant_photo, ST_ID_TYPE, ST_Push_Flag;
     private String CST_res_category, CST_caste_as_per_app, CST_annual_income, SCOT_caste_app, SCOT_annual_income, GST_No_Years_Applied, GST_No_Mths_Applied;
 
     Set_and_Get_Service_tran_data(){}
@@ -251,5 +251,13 @@ public class Set_and_Get_Service_tran_data {
 
     void setService_Name_k(String service_Name_k) {
         Service_Name_k = service_Name_k;
+    }
+
+    public String getST_Push_Flag() {
+        return ST_Push_Flag;
+    }
+
+    public void setST_Push_Flag(String ST_Push_Flag) {
+        this.ST_Push_Flag = ST_Push_Flag;
     }
 }

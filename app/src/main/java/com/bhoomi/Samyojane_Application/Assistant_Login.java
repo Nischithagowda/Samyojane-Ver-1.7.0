@@ -184,7 +184,7 @@ public class Assistant_Login extends AppCompatActivity {
     public void ValidateAssistantLogin_Rest(String Username, String Pass){
 
         apiInterface = APIClient.getClient(getString(R.string.add_assistant_url)).create(APIInterface.class);
-        Call<String> call = apiInterface.doValidateAssistant(""+Username, ""+Pass);
+        Call<String> call = apiInterface.doValidateAssistant(getString(R.string.flag1_ekshana), getString(R.string.flag2_ekshana),""+Username, ""+Pass);
 
         call.enqueue(new Callback<String>() {
             @Override
