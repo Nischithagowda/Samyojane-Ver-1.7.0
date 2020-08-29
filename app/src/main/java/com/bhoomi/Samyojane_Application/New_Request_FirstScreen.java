@@ -1,14 +1,22 @@
 package com.bhoomi.Samyojane_Application;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +25,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class New_Request_FirstScreen extends AppCompatActivity implements DataTransferInterface {
@@ -27,7 +40,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
     String district, taluk, hobli, VA_Circle_Name, VA_Name;
     String district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_Name, ward_Name, town_code, ward_code;
     SQLiteOpenHelper openHelper;
-    SQLiteDatabase database;
+    SQLiteDatabase database, database1;
     ArrayList<String> SlNo = new ArrayList<>();
     ArrayList<String> Applicant_Name = new ArrayList<>();
     ArrayList<String> GSC_FirstPart = new ArrayList<>();
@@ -66,6 +79,9 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
     int serviceCode;
     ArrayList<String> selected_items;
     LinearLayout listLayout_pushed;
+    HashMap<String, String> hashMap_village_name;
+    ProgressDialog dialog;
+    Set_and_Get_Village_Name set_and_get_village_name;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint({"MissingPermission", "HardwareIds", "SetTextI18n", "ClickableViewAccessibility", "SdCardPath"})
@@ -111,8 +127,19 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         ward_Name = i.getStringExtra("ward_Name");
         option_Flag = i.getStringExtra("option_Flag");
 
+        hashMap_village_name = new HashMap<>();
+
+        dialog = new ProgressDialog(this, R.style.CustomDialog);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage(getString(R.string.loading));
+        dialog.setIndeterminate(true);
+        dialog.setCanceledOnTouchOutside(false);
+
         openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(New_Request_FirstScreen.this);
         database = openHelper.getWritableDatabase();
+
+        openHelper = new DataBaseHelperClass_VillageNames_DTH(New_Request_FirstScreen.this);
+        database1 = openHelper.getWritableDatabase();
 
         @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
@@ -162,14 +189,221 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
             if (selected_items.equals("") || selected_items.size()==0){
                 Toast.makeText(getApplicationContext(), getString(R.string.select_any_applicant_to_push), Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(this, PushToAnotherVA.class);
-                intent.putStringArrayListExtra("selected_items", selected_items);
-                intent.putExtra("taluk", taluk);
-                intent.putExtra("hobli", hobli);
-                intent.putExtra("VA_Name", VA_Name);
-                startActivity(intent);
+                Cursor cursor1 = database1.rawQuery("Select distinct "+getString(R.string.village_table_va_circle_name)+","
+                        +DataBaseHelperClass_VillageNames_DTH.VCM_va_circle_code+" from "
+                        +DataBaseHelperClass_VillageNames_DTH.TABLE_NAME, null);
+                if (cursor1.moveToNext()){
+                    cursor1.close();
+                    Intent intent = new Intent(New_Request_FirstScreen.this, PushToAnotherVA.class);
+                    intent.putStringArrayListExtra("selected_items", selected_items);
+                    intent.putExtra("district_Code", district_Code);
+                    intent.putExtra("taluk_Code", taluk_Code);
+                    intent.putExtra("hobli_Code", hobli_Code);
+                    intent.putExtra("districtCode", district);
+                    intent.putExtra("taluk", taluk);
+                    intent.putExtra("hobli", hobli);
+                    intent.putExtra("VA_Name", VA_Name);
+                    intent.putExtra("va_Circle_Code", va_Circle_Code);
+                    intent.putExtra("VA_Circle_Name", VA_Circle_Name);
+                    intent.putExtra("strSearchServiceName", service_name);
+                    intent.putExtra("strSearchVillageName", village_name);
+                    intent.putExtra("serviceCode", serviceCode);
+                    intent.putExtra("villageCode", String.valueOf(villageCode));
+                    intent.putExtra("habitationCode", habitationCode);
+                    intent.putExtra("option_Flag", option_Flag);
+                    intent.putExtra("town_Name", town_Name);
+                    intent.putExtra("town_code", town_code);
+                    intent.putExtra("ward_Name", ward_Name);
+                    intent.putExtra("ward_code", ward_code);
+                    startActivity(intent);
+                } else {
+                    if (isNetworkAvailable()) {
+                        if (!Objects.equals(villageCode, "99999")) {
+                            dialog.show();
+                            hashMap_village_name.put("District_Code", district_Code);
+                            hashMap_village_name.put("Taluk_Code", taluk_Code);
+                            hashMap_village_name.put("Hobli_Code", hobli_Code);
+                            Log.d("hashMap_village_name", "" + hashMap_village_name + ", URL:" + getString(R.string.url_village_name_DTH));
+                            new GetVillageNameFromServer().execute(getString(R.string.url_village_name_DTH));
+                        } else {
+                            dialog.dismiss();
+                            Intent intent = new Intent(New_Request_FirstScreen.this, PushToAnotherVA.class);
+                            intent.putStringArrayListExtra("selected_items", selected_items);
+                            intent.putExtra("district_Code", district_Code);
+                            intent.putExtra("taluk_Code", taluk_Code);
+                            intent.putExtra("hobli_Code", hobli_Code);
+                            intent.putExtra("districtCode", district);
+                            intent.putExtra("taluk", taluk);
+                            intent.putExtra("hobli", hobli);
+                            intent.putExtra("VA_Name", VA_Name);
+                            intent.putExtra("va_Circle_Code", va_Circle_Code);
+                            intent.putExtra("VA_Circle_Name", VA_Circle_Name);
+                            intent.putExtra("strSearchServiceName", service_name);
+                            intent.putExtra("strSearchVillageName", village_name);
+                            intent.putExtra("serviceCode", serviceCode);
+                            intent.putExtra("villageCode", String.valueOf(villageCode));
+                            intent.putExtra("habitationCode", habitationCode);
+                            intent.putExtra("option_Flag", option_Flag);
+                            intent.putExtra("town_Name", town_Name);
+                            intent.putExtra("town_code", town_code);
+                            intent.putExtra("ward_Name", ward_Name);
+                            intent.putExtra("ward_code", ward_code);
+                            startActivity(intent);
+                        }
+                    } else {
+                        buildAlertMessageConnection();
+                    }
+                }
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert connectivityManager != null;
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private  void buildAlertMessageConnection() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.no_internet))
+                .setMessage(getString(R.string.enable_internet))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
+                    Intent dialogIntent = new Intent(Settings.ACTION_SETTINGS);
+                    dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(dialogIntent);
+                })
+                .setNegativeButton(getString(R.string.no), (dialog, id) -> dialog.cancel()
+                );
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    class GetVillageNameFromServer extends AsyncTask<String, Void, JSONObject> {
+        JSONObject jsonObject;
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try {
+                JParserAdv jParserAdv = new JParserAdv();
+                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.url_village_name_DTH), "POST", hashMap_village_name);
+            }catch (OutOfMemoryError e){
+                runOnUiThread(() ->buildAlertForOutOfMemory());
+                Log.e("OutOfMemoryError", ""+e.toString());
+            } catch (NullPointerException e){
+                runOnUiThread(() -> {
+                    dialog.dismiss();
+                });
+                Log.e("NullPointerException", ""+e.toString());
+            }
+            return jsonObject;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+
+            try {
+
+                //dialog.incrementProgressBy(20);
+                openHelper = new DataBaseHelperClass_VillageNames_DTH(New_Request_FirstScreen.this);
+                database1 = openHelper.getWritableDatabase();
+
+                JSONArray array = jsonObject.getJSONArray("data");
+
+                truncateDatabase_village_name();
+
+                int count = array.length();
+                for (int i = 0; i < count; i++) {
+
+                    JSONObject object = array.getJSONObject(i);
+
+                    set_and_get_village_name = new Set_and_Get_Village_Name();
+                    set_and_get_village_name.setVCM_va_circle_code(object.getString(DataBaseHelperClass_VillageNames_DTH.VCM_va_circle_code));
+                    set_and_get_village_name.setVCM_va_circle_ename(object.getString(DataBaseHelperClass_VillageNames_DTH.VCM_va_circle_ename));
+                    set_and_get_village_name.setVCM_va_circle_kname(object.getString(DataBaseHelperClass_VillageNames_DTH.VCM_va_circle_kname));
+                    set_and_get_village_name.setHM_village_code(object.getString(DataBaseHelperClass_VillageNames_DTH.HM_village_code));
+                    set_and_get_village_name.setHM_habitation_code(object.getString(DataBaseHelperClass_VillageNames_DTH.HM_habitation_code));
+                    set_and_get_village_name.setHM_habitation_ename(object.getString(DataBaseHelperClass_VillageNames_DTH.HM_habitation_ename));
+                    set_and_get_village_name.setHM_habitation_kname(object.getString(DataBaseHelperClass_VillageNames_DTH.HM_habitation_kname));
+
+
+                    database1.execSQL("insert into " + DataBaseHelperClass_VillageNames_DTH.TABLE_NAME
+                            + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_code, HM_habitation_ename, HM_habitation_kname) values ("
+                            + set_and_get_village_name.getVCM_va_circle_code() +",'"+set_and_get_village_name.getVCM_va_circle_ename()+"','"+set_and_get_village_name.getVCM_va_circle_kname()+"',"
+                            + set_and_get_village_name.getHM_village_code() +","+ set_and_get_village_name.getHM_habitation_code()+",'"+ set_and_get_village_name.getHM_habitation_ename()+"','"
+                            + set_and_get_village_name.getHM_habitation_kname()+"')");
+                    Log.d("Database", "VillageNames Database Inserted");
+                    if (i==count-1){
+                        dialog.dismiss();
+                        Intent intent = new Intent(New_Request_FirstScreen.this, PushToAnotherVA.class);
+                        intent.putStringArrayListExtra("selected_items", selected_items);
+                        intent.putExtra("district_Code", district_Code);
+                        intent.putExtra("taluk_Code", taluk_Code);
+                        intent.putExtra("hobli_Code", hobli_Code);
+                        intent.putExtra("districtCode", district);
+                        intent.putExtra("taluk", taluk);
+                        intent.putExtra("hobli", hobli);
+                        intent.putExtra("VA_Name", VA_Name);
+                        intent.putExtra("va_Circle_Code", va_Circle_Code);
+                        intent.putExtra("VA_Circle_Name", VA_Circle_Name);
+                        intent.putExtra("strSearchServiceName", service_name);
+                        intent.putExtra("strSearchVillageName", village_name);
+                        intent.putExtra("serviceCode", serviceCode);
+                        intent.putExtra("villageCode", String.valueOf(villageCode));
+                        intent.putExtra("habitationCode", habitationCode);
+                        intent.putExtra("option_Flag", option_Flag);
+                        intent.putExtra("town_Name", town_Name);
+                        intent.putExtra("town_code", town_code);
+                        intent.putExtra("ward_Name", ward_Name);
+                        intent.putExtra("ward_code", ward_code);
+                        startActivity(intent);
+                    }
+                }
+                //dialog.incrementProgressBy(20);
+                //database.close();
+            } catch (JSONException e) {
+                dialog.dismiss();
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+            }catch (OutOfMemoryError e){
+                dialog.dismiss();
+                Log.e("OutOfMemoryError", ""+e.toString());
+            }catch (NullPointerException e){
+                dialog.dismiss();
+                Log.e("NullPointerException", ""+e.toString());
+            }
+            //Toast.makeText(getApplicationContext(), "VillageNames Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void truncateDatabase_village_name(){
+        //dialog.incrementProgressBy(10);
+        openHelper = new DataBaseHelperClass_VillageNames_DTH(New_Request_FirstScreen.this);
+        database1 = openHelper.getWritableDatabase();
+        @SuppressLint("Recycle")
+        Cursor cursor = database1.rawQuery("select * from "+ DataBaseHelperClass_VillageNames_DTH.TABLE_NAME, null);
+        if(cursor.getCount()>0) {
+            database1.execSQL("Delete from " + DataBaseHelperClass_VillageNames_DTH.TABLE_NAME);
+            Log.d("Database", "VillageNames Database Truncated");
+        }
+
+    }
+
+    private  void buildAlertForOutOfMemory() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.memory_full))
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok, (dialog, id) -> {
+                    super.onBackPressed();
+                    finish();
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @SuppressLint("SetTextI18n")
@@ -242,8 +476,9 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"=9999 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"=255 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+" is null", null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and ("
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+" is null or "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+"='')", null);
 
         SlNo.clear();
         Applicant_Name.clear();
@@ -360,8 +595,9 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code + "="+ward_code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=99999 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+" is null", null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and ("
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+" is null or "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag+"='')", null);
 
         SlNo.clear();
         Applicant_Name.clear();

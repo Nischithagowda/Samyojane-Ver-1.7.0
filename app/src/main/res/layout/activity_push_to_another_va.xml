@@ -86,6 +86,30 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp">
+
+        <TextView
+            android:id="@+id/tv_V_T_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvVillageName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/listLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -155,7 +179,185 @@
                     android:divider="@android:color/darker_gray"
                     android:dividerHeight="1sp"/>
 
-            <LinearLayout
+                <LinearLayout
+                    android:id="@+id/l_Rural"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/layout_background"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/l_VACircle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="10dp"
+                        tools:ignore="UselessParent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/village_circle"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/colon"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoSearchVillageCircle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textCursorDrawable="@android:color/black"
+                            android:completionThreshold="1"
+                            android:backgroundTint="@android:color/black"
+                            android:hint="@string/search_by_village"
+                            android:layout_marginStart="10dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/l_Village"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="10dp"
+                        tools:ignore="UselessParent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/village"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:text="@string/colon"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoSearchVillage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textCursorDrawable="@android:color/black"
+                            android:completionThreshold="1"
+                            android:backgroundTint="@android:color/black"
+                            android:hint="@string/search_by_village"
+                            android:layout_marginStart="10dp"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/l_Urban"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/layout_background"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/l_town"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/town"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:text="@string/colon"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoSearchTown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textCursorDrawable="@android:color/black"
+                            android:completionThreshold="1"
+                            android:backgroundTint="@android:color/black"
+                            android:hint="@string/search_by_town"
+                            android:layout_marginStart="10dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/l_ward"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ward"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:text="@string/colon"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoSearchWard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textCursorDrawable="@android:color/black"
+                            android:completionThreshold="1"
+                            android:backgroundTint="@android:color/black"
+                            android:hint="@string/search_by_ward"
+                            android:layout_marginStart="10dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

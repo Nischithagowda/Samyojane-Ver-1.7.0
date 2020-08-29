@@ -21,7 +21,7 @@
     <string name="flag1">OPRRC</string>
     <string name="flag2">12345</string>
     <string name="flag1_ekshana">nadakacheriEMobileAPI@2020</string>
-    <string name="flag2_ekshana">0bd8c0857ab17b22+5a7f14fa354fa3676</string>
+    <string name="flag2_ekshana">0bd8c0857ab17b225a7f14fa354fa3676</string>
 
     <string name="api_flag1">nadakacheriSAPI@2020</string>
     <string name="api_flag2">0bd8c0857ab17b05a7f14fa354fa3676</string>
@@ -36,6 +36,7 @@
     <string name="url_village_name">http://164.100.133.47/NK_MobileApp/WebService.asmx/Get_Village_Name</string>
     <string name="url_service_Tran_data">http://164.100.133.47/NK_MobileApp/WebService.asmx/Get_Service_tran_data</string>
     <string name="url_village_name_RI">http://164.100.133.47/NK_MobileApp/WebService.asmx/Get_Village_Name_For_RI_Live</string>
+    <string name="url_village_name_DTH">http://164.100.133.47/NK_MobileApp/WebService.asmx/Get_Village_Name_For_RI</string>
     <string name="url_service_Parameter_Data">http://164.100.133.47/NK_MobileApp/WebService.asmx/Get_Service_Parameters_data_For_RI_Live</string>
     <string name="SOAP_ADDRESS">http://164.100.133.47/NK_MobileApp/WebService.asmx</string>
 
@@ -45,7 +46,7 @@
     <string name="VA_Update_url">http://164.100.133.47/NKMobileAPI/api/OPRC/POSTUpdateRCMemberDetailsFromVA/</string>
 
     <string name="validate_ass_login_url">http://164.100.133.47/Mob_U_ekshana/e_kshana.asmx/ValidateAssistant</string>
-    <string name="add_assistant_url">http://164.100.133.47/Mob_Rest_API/api/Values</string>
+    <string name="add_assistant_url">http://164.100.133.47/Mob_Rest_API/api/Values/</string>
     <string name="otp_generate_url">http://164.100.133.47/Mob_u_SMS/EKSHNA/</string>
     <string name="test_otp_url">http://192.168.0.139/RWS_MBEKSHNA/EKSHNA/</string>
 
@@ -452,5 +453,6 @@
     <string name="confirm">Confirm</string>
     <string name="are_you_sure_do_you_want_to_push_the_selected">Are you sure?\nDo you want to push the selected</string>
     <string name="list_of_pushed_applications_for_this_village">List of Pushed Applications for this Village :</string>
+    <string name="please_select_other_village">Please Select Other Village</string>
 
 </resources>

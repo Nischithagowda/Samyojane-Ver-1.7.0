@@ -399,7 +399,7 @@ public class RI_Field_Report extends AppCompatActivity {
     public List getVillageCircleNameList(){
         openHelper=new DataBaseHelperClass_VillageNames(RI_Field_Report.this);
         database=openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("Select distinct "+getString(R.string.village_table_va_circle_name)+","
                 +DataBaseHelperClass_VillageNames.VCM_va_circle_code+" from "
                 +DataBaseHelperClass_VillageNames.TABLE_NAME+ " order by "+getString(R.string.village_table_va_circle_name), null);
@@ -428,6 +428,8 @@ public class RI_Field_Report extends AppCompatActivity {
                 }
 
             } while (cursor.moveToNext());
+        } else {
+            cursor.close();
         }
 
         return SearchVillageCircleName;
