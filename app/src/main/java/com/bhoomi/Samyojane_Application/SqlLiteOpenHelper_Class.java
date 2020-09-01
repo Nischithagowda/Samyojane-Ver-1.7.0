@@ -514,6 +514,56 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
         return townName;
     }
 
+    public List<AutoCompleteTextBox_Object> Get_TownName_DTH(int distCode, int talukCode, int hobliCode, String town_Name){
+        List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
+        try {
+            database = this.getReadableDatabase();
+            cursor = database.rawQuery("select distinct " + town_Name + "," + TWM_town_code + " from " + Table_WARD_MASTER
+                    + " inner join " + Table_TOWN_MASTER + " on " + WM_town_code + "=" + TWM_town_code + " where " + WM_district_code + "=" + distCode + " and "
+                    + WM_taluk_code + "=" + talukCode + " and "
+                    + WM_hobli_code + "=" + hobliCode, null);
+            if (cursor.getCount() > 0) {
+                if (cursor.moveToNext()) {
+                    do {
+                        objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(TWM_town_code)),cursor.getString(cursor.getColumnIndexOrThrow(town_Name))));
+                    } while (cursor.moveToNext());
+                }
+                return objects;
+            }
+        } catch (Exception e){
+            Log.d("Catch", ""+ e);
+        }
+        Log.d("Town", ""+ objects);
+        return objects;
+    }
+
+    public List<AutoCompleteTextBox_Object> Get_WardName_DTH(int dist_Code, int taluk_Code, int townCode, String ward_Name){
+        List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
+        try {
+            database = this.getReadableDatabase();
+            cursor = database.rawQuery("select * from "+Table_WARD_MASTER+" where "
+                    +WM_district_code+"="+dist_Code+" and "
+                    +WM_taluk_code+"="+taluk_Code+" and "
+                    +WM_town_code+"="+townCode, null);
+            if(cursor.getCount()>0){
+                Log.d("ward_count",""+cursor.getCount());
+                if(cursor.moveToNext()){
+                    do{
+                        objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(WM_ward_no)),(cursor.getString(cursor.getColumnIndexOrThrow(ward_Name)))));
+                    }while (cursor.moveToNext());
+                }
+            }else {
+                Log.d("wardCode", "No Ward found");
+            }
+            cursor.close();
+            database.close();
+        }catch (Exception e){
+            Log.d("Catch", String.valueOf(objects));
+        }
+        Log.d("Ward", ""+ objects);
+        return objects;
+    }
+
     public String Get_WardName_one(int distCode, int talukCode, int townCode, int wardCode){
         String wardName=null;
         database = this.getReadableDatabase();

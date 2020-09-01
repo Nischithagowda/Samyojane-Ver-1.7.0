@@ -50,6 +50,7 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
     ArrayList<String> WardName;
     ArrayList<String> WardCode;
     ArrayList<String> Option_Flag;
+    ArrayList<String> PushedList;
     ArrayList<String> selected_items = new ArrayList<>();
     TextView app_Name;
     String applicant_name;
@@ -69,7 +70,8 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
                             ArrayList<String> gsc_firstPart, ArrayList<String> rd_No, ArrayList<String> dueDate,
                             ArrayList<String> serviceCode, ArrayList<String> serviceName, ArrayList<String> townName,
                             ArrayList<String> townCode, ArrayList<String> wardName, ArrayList<String> wardCode,
-                            ArrayList<String> option_Flag, Activity a, DataTransferInterface dtInterface) {
+                            ArrayList<String> option_Flag, ArrayList<String> pushedList,
+                            Activity a, DataTransferInterface dtInterface) {
 
         this.context = context;
         this.SlNo = slNo;
@@ -84,6 +86,7 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
         this.WardName = wardName;
         this.WardCode = wardCode;
         this.Option_Flag = option_Flag;
+        this.PushedList = pushedList;
         this.activity = a;
         this.dataTransferInterface = dtInterface;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -163,7 +166,12 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
         ur_service_viewHolder.tvWardName.setText(WardName.get(position));
         ur_service_viewHolder.tvWardCode.setText(WardCode.get(position));
         ur_service_viewHolder.tvOption_Flag.setText(Option_Flag.get(position));
-
+        Log.d("PushedList.get", ""+PushedList.get(position));
+        if (PushedList.get(position).equals("1")){
+            ur_service_viewHolder.checkbox.setVisibility(View.GONE);
+        } else {
+            ur_service_viewHolder.checkbox.setVisibility(View.VISIBLE);
+        }
         district_Code = Field_Report.Global.district_Code1;
         district = Field_Report.Global.district_Name1;
         taluk_Code = Field_Report.Global.taluk_Code1;

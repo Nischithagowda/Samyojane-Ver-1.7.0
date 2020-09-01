@@ -108,4 +108,21 @@ public interface APIInterface {
             @Path("flag2") String flag2,
             @Path("MobNum") String MobNum,
             @Path("IMEI") String IMEI);
+
+    @POST("Fn_PUSH_APPLICATION/{flag1}/{flag2}/{NEW_Village_Code}/{NEW_Habitation_code}/{NEW_Town_Code}/{NEW_Ward_Code}" +
+            "/{OLD_Village_Code}/{OLD_Habitation_code}/{OLD_Town_Code}/{OLD_Ward_Code}/{Applicant_Id}/{Updated_By_VA_MobileNum}")
+    Call<String> doFn_PUSH_APPLICATION(
+            @Path("flag1") String flag1,
+            @Path("flag2") String flag2,
+            @Path("NEW_Village_Code") int NEW_Village_Code,
+            @Path("NEW_Habitation_code") int NEW_Habitation_code,
+            @Path("NEW_Town_Code") int NEW_Town_Code,
+            @Path("NEW_Ward_Code") int NEW_Ward_Code,
+            @Path("OLD_Village_Code") int OLD_Village_Code,
+            @Path("OLD_Habitation_code") int OLD_Habitation_code,
+            @Path("OLD_Town_Code") int OLD_Town_Code,
+            @Path("OLD_Ward_Code") int OLD_Ward_Code,
+            @Path("Applicant_Id") String Applicant_Id,
+            @Path("Updated_By_VA_MobileNum") String Updated_By_VA_MobileNum
+            );
 }

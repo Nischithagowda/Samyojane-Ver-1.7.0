@@ -40,6 +40,7 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
     private ArrayList<String> VillageCode;
     private ArrayList<String> HabitationCode;
     private ArrayList<String> Option_Flag;
+    private ArrayList<String> PushedList;
     private ArrayList<String> selected_items = new ArrayList<>();
     private String applicant_name;
     private String applicant_Id;
@@ -57,7 +58,8 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
     Service_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name,
                          ArrayList<String> gsc_firstPart, ArrayList<String> rd_No, ArrayList<String> dueDate,
                          ArrayList<String> serviceCode, ArrayList<String> serviceName, ArrayList<String> villageCode,
-                         ArrayList<String> habitationCode, ArrayList<String> option_Flag, Activity a, DataTransferInterface dtInterface) {
+                         ArrayList<String> habitationCode, ArrayList<String> option_Flag, ArrayList<String> pushedList,
+                         Activity a, DataTransferInterface dtInterface) {
 
         this.context = context;
         this.SlNo = slNo;
@@ -70,6 +72,7 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
         this.VillageCode = villageCode;
         this.HabitationCode = habitationCode;
         this.Option_Flag = option_Flag;
+        this.PushedList = pushedList;
         this.activity = a;
         this.dataTransferInterface = dtInterface;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -147,6 +150,11 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
         service_ViewHolder.tvVillageCode.setText(VillageCode.get(position));
         service_ViewHolder.tvHabitationCode.setText(HabitationCode.get(position));
         service_ViewHolder.tvOption_Flag.setText(Option_Flag.get(position));
+        if (PushedList.get(position).equals("1")){
+            service_ViewHolder.checkbox.setVisibility(View.GONE);
+        } else {
+            service_ViewHolder.checkbox.setVisibility(View.VISIBLE);
+        }
 
         district_Code = Field_Report.Global.district_Code1;
         district = Field_Report.Global.district_Name1;

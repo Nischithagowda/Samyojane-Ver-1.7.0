@@ -123,6 +123,49 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            tools:ignore="RtlHardcoded,UselessParent">
+
+            <RadioButton
+                android:id="@+id/radioButton_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:checked="true"
+                android:text="@string/regular"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:textColor="@android:color/black" />
+
+            <RadioButton
+                android:id="@+id/radioButton_pushed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorPrimaryDark"
+                android:checked="false"
+                android:text="@string/pushed"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:textColor="@android:color/black" />
+        </RadioGroup>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/txtListPushed"
         android:layout_width="wrap_content"
@@ -130,7 +173,8 @@
         android:layout_marginStart="10dp"
         android:text="@string/list_of_pushed_applications_for_this_village"
         android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
 
     <LinearLayout
         android:id="@+id/listLayout_pushed"
@@ -155,6 +199,7 @@
                 tools:ignore="ScrollViewSize">
 
                 <LinearLayout
+                    android:id="@+id/total_pushed_Applicants"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:orientation="horizontal"
@@ -209,7 +254,6 @@
 
     </LinearLayout>
 
-
     <Button
         android:id="@+id/btnPushToAnotherVA"
         android:layout_width="200dp"
@@ -238,13 +282,13 @@
             tools:ignore="UselessParent">
 
             <LinearLayout
-                android:id="@+id/total_Applicants"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:ignore="ScrollViewSize">
 
                 <LinearLayout
+                    android:id="@+id/total_regular_Applicants"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:orientation="horizontal"

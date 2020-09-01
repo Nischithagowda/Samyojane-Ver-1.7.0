@@ -510,7 +510,7 @@ public class MainActivity_Select extends AppCompatActivity {
                 dialog.dismiss();
                 String exp = throwable.getLocalizedMessage();
                 if (exp.equals("timeout")){
-                    displayAlert("Timeout, Please Try Again...");
+                    displayAlert(getString(R.string.time_out));
                 } else {
                     displayAlert(exp+", Please Try Again...");
                 }

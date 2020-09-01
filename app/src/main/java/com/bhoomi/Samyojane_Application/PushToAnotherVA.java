@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -27,9 +26,19 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bhoomi.Samyojane_Application.api.APIClient;
+import com.bhoomi.Samyojane_Application.api.APIInterface;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PushToAnotherVA extends AppCompatActivity {
 
@@ -44,7 +53,7 @@ public class PushToAnotherVA extends AppCompatActivity {
     ArrayList<String> Applicant_ID = new ArrayList<>();
     ListView listView;
     String district, taluk, hobli, VA_Circle_Name, VA_Name;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_Name, ward_Name, town_code, ward_code;
+    String applicant_Id, district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_Name, ward_Name, town_code, ward_code;
     String villageCode, service_name, village_name, habitationCode, option_Flag;
     PushToAnotherVA_List_Adapter list_adapter;
     AutoCompleteTextView autoSearchVillageCircle, autoSearchVillage, autoSearchTown, autoSearchWard;
@@ -52,12 +61,18 @@ public class PushToAnotherVA extends AppCompatActivity {
     List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
     List<SpinnerObject_new> objects_Village = new ArrayList<>();
     List<AutoCompleteTextBox_Object> objects_Town = new ArrayList<>();
-    String P_Village_Circle_Code = null, P_village_code = null, P_Habitation_Code = null;
-    String P_VA_CircleName, P_village_name;
+    String P_Village_Circle_Code = null, P_village_code = null, P_Habitation_Code = null, P_ward_Code=null;
+    int P_town_Code =0, serviceCode;
+    String P_VA_CircleName, P_village_name, P_town_name, P_word_name;
     String hab_Va_Circle_Code, hab_Village_Code, hab_Habitation_Code;
     private List<AutoCompleteTextBox_Object> SearchVillageCircleName = new ArrayList<>();
     private List<SpinnerObject_new> SearchVillageName = new ArrayList<>();
     ProgressDialog p_dialog;
+    SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
+    APIInterface apiInterface;
+    SharedPreferences sharedPreferences;
+    String mobile_Shared=null;
+    int count, ser_count=0;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -98,6 +113,7 @@ public class PushToAnotherVA extends AppCompatActivity {
         va_Circle_Code = i.getStringExtra("va_Circle_Code");
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
         service_name = i.getStringExtra("strSearchServiceName");
+        serviceCode = i.getIntExtra("serviceCode", 0);
         villageCode = i.getStringExtra("villageCode");
         habitationCode = i.getStringExtra("habitationCode");
         village_name = i.getStringExtra("strSearchVillageName");
@@ -107,6 +123,11 @@ public class PushToAnotherVA extends AppCompatActivity {
         ward_Name = i.getStringExtra("ward_Name");
         option_Flag = i.getStringExtra("option_Flag");
         Log.d("arrayListArrayList", ""+arrayList);
+
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        if (sharedPreferences.contains(Constants.IMEI_NUMBER) && sharedPreferences.contains(Constants.MOBILE_NUMBER) && sharedPreferences.contains(Constants.LOGIN_STATUS)) {
+            mobile_Shared = sharedPreferences.getString(Constants.MOBILE_NUMBER, "");
+        }
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(PushToAnotherVA.this);
         database = openHelper.getWritableDatabase();
@@ -140,6 +161,7 @@ public class PushToAnotherVA extends AppCompatActivity {
             l_town.setVisibility(View.VISIBLE);
             l_ward.setVisibility(View.GONE);
             l_Urban.setVisibility(View.VISIBLE);
+            GetTownName();
         }
 
         p_dialog = new ProgressDialog(this, R.style.CustomDialog);
@@ -173,17 +195,40 @@ public class PushToAnotherVA extends AppCompatActivity {
         });
 
         btnSubmit.setOnClickListener(v -> {
-            P_VA_CircleName = autoSearchVillageCircle.getText().toString();
-            P_village_name = autoSearchVillage.getText().toString();
+            if (!mobile_Shared.isEmpty()) {
+                if (!Objects.equals(villageCode, "99999")) {
+                    P_VA_CircleName = autoSearchVillageCircle.getText().toString();
+                    P_village_name = autoSearchVillage.getText().toString();
+                    P_town_Code = 9999;
+                    P_ward_Code = "255";
 
-            if (!P_VA_CircleName.isEmpty() && !P_Village_Circle_Code.isEmpty()){
-             if (!P_village_name.isEmpty() && !P_village_code.isEmpty() && !P_Habitation_Code.isEmpty()){
-                 buildAlert_Push(arrayList);
-             } else {
-                 autoSearchVillage.setError(getString(R.string.select));
-             }
+                    if (!P_VA_CircleName.isEmpty() && !P_Village_Circle_Code.isEmpty()) {
+                        if (!P_village_name.isEmpty() && !P_village_code.isEmpty() && !P_Habitation_Code.isEmpty()) {
+                            buildAlert_Push(arrayList, "Village", "" + P_village_name);
+                        } else {
+                            autoSearchVillage.setError(getString(R.string.select));
+                        }
+                    } else {
+                        autoSearchVillageCircle.setError(getString(R.string.select));
+                    }
+                } else if (!Objects.equals(town_code, "9999")) {
+                    P_village_code = "99999";
+                    P_Habitation_Code = "255";
+                    P_town_name = autoSearchTown.getText().toString();
+                    P_word_name = autoSearchWard.getText().toString();
+
+                    if (!P_town_name.isEmpty() && P_town_Code != 0) {
+                        if (!P_ward_Code.isEmpty() && !P_word_name.isEmpty()) {
+                            buildAlert_Push(arrayList, "Ward", "" + P_ward_Code);
+                        } else {
+                            autoSearchWard.setError(getString(R.string.select));
+                        }
+                    } else {
+                        autoSearchTown.setError(getString(R.string.select));
+                    }
+                }
             } else {
-                autoSearchVillageCircle.setError(getString(R.string.select));
+                Toast.makeText(this, getString(R.string.error_with_login), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -243,6 +288,45 @@ public class PushToAnotherVA extends AppCompatActivity {
             }
         });
     }
+
+    public void GetTownName(){
+        objects_Town.clear();
+        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(PushToAnotherVA.this,"str","str");
+        sqlLiteOpenHelper_class.open_Town_Ward_Tbl();
+        objects_Town = sqlLiteOpenHelper_class.Get_TownName_DTH(Integer.parseInt(district_Code), Integer.parseInt(taluk_Code), Integer.parseInt(hobli_Code), getString(R.string.town_master_town_name));
+        Log.d("AdapterValue", String.valueOf(objects_Town));
+        ArrayAdapter<AutoCompleteTextBox_Object> adapter = new ArrayAdapter<>(this, R.layout.list_item, objects_Town);
+        adapter.setDropDownViewResource(R.layout.list_item);
+        autoSearchTown.setAdapter(adapter);
+        autoSearchTown.setOnItemClickListener((parent, view, position, id) -> {
+            P_town_Code = Integer.parseInt(((AutoCompleteTextBox_Object)parent.getItemAtPosition(position)).getId());
+            Log.d("P_town_Code",""+P_town_Code);
+            l_ward.setVisibility(View.VISIBLE);
+            GetWardName(P_town_Code);
+        });
+    }
+
+    public void GetWardName(final int town_Code){
+        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(PushToAnotherVA.this,"str","str");
+        sqlLiteOpenHelper_class.open_Town_Ward_Tbl();
+        objects_Town = sqlLiteOpenHelper_class.Get_WardName_DTH(Integer.parseInt(district_Code), Integer.parseInt(taluk_Code), town_Code, getString(R.string.town_master_ward_name));
+
+        ArrayAdapter<AutoCompleteTextBox_Object> adapter = new ArrayAdapter<>(this, R.layout.list_item, objects_Town);
+        adapter.setDropDownViewResource(R.layout.list_item);
+        autoSearchWard.setAdapter(adapter);
+        autoSearchWard.setOnItemClickListener((parent, view, position, id) -> {
+            P_ward_Code = ((AutoCompleteTextBox_Object)parent.getItemAtPosition(position)).getId();
+            Log.d("ward_Code",""+P_ward_Code);
+
+            if (ward_code.equalsIgnoreCase(P_ward_Code) && town_code.equalsIgnoreCase(String.valueOf(P_town_Code))){
+                Toast.makeText(getApplicationContext(), getString(R.string.select_other_ward), Toast.LENGTH_SHORT).show();
+                autoSearchWard.setText("");
+                P_word_name = null;
+                P_ward_Code = null;
+            }
+        });
+    }
+
     public List<SpinnerObject_new> getVillageList(String Village_Circle_Code){
 
         Cursor cursor = database1.rawQuery("Select "+getString(R.string.village_table_habitation_name)+","
@@ -263,12 +347,12 @@ public class PushToAnotherVA extends AppCompatActivity {
         return SearchVillageName;
     }
 
-    private  void buildAlert_Push(ArrayList<String> arrayList) {
+    private  void buildAlert_Push(ArrayList<String> arrayList, String vill_ward, String P_vill_Town_name) {
         String str;
         if (arrayList.size()==1){
-            str = getString(R.string.are_you_sure_do_you_want_to_push_the_selected)+" "+arrayList.size()+" "+getString(R.string.record)+" to Village : "+ P_village_name;
+            str = getString(R.string.are_you_sure_do_you_want_to_push_the_selected)+" "+arrayList.size()+" "+getString(R.string.record)+" to "+vill_ward+" : "+ P_vill_Town_name;
         } else {
-            str = getString(R.string.are_you_sure_do_you_want_to_push_the_selected)+" "+arrayList.size()+" "+getString(R.string.records)+" to Village : "+ P_village_name;
+            str = getString(R.string.are_you_sure_do_you_want_to_push_the_selected)+" "+arrayList.size()+" "+getString(R.string.records)+" to "+vill_ward+" : "+ P_vill_Town_name;
         }
         final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         builder.setTitle(getString(R.string.confirmation_alert))
@@ -278,7 +362,8 @@ public class PushToAnotherVA extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.confirm), (dialog, id) -> {
                     dialog.cancel();
                     if (isNetworkAvailable()){
-
+                        dialog.cancel();
+                        push();
                     } else {
                         buildAlertMessageConnection();
                     }
@@ -287,7 +372,25 @@ public class PushToAnotherVA extends AppCompatActivity {
         final AlertDialog alert = builder.create();
         alert.show();
     }
-
+    public void push(){
+        count = arrayList.size();
+        ser_count = 0;
+        p_dialog.show();
+        for (int i=0; i<arrayList.size();i++) {
+            Log.d("ser_count",""+ser_count);
+            pushApplicationToVA(
+                    Integer.parseInt(P_village_code),
+                    Integer.parseInt(P_Habitation_Code),
+                    P_town_Code,
+                    Integer.parseInt(P_ward_Code),
+                    Integer.parseInt(villageCode),
+                    Integer.parseInt(habitationCode),
+                    Integer.parseInt(town_code),
+                    Integer.parseInt(ward_code),
+                    arrayList.get(i),
+                    mobile_Shared);
+        }
+    }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -349,6 +452,97 @@ public class PushToAnotherVA extends AppCompatActivity {
         }
     }
 
+    public void pushApplicationToVA(int NEW_Village_Code, int NEW_Habitation_code, int NEW_Town_Code, int NEW_Ward_Code,
+                                    int OLD_Village_Code, int OLD_Habitation_code, int OLD_Town_Code, int OLD_Ward_Code,
+                                    String Applicant_Id, String Updated_By_VA_MobileNum){
+        apiInterface = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface.class);
+
+        Call<String> call = apiInterface.doFn_PUSH_APPLICATION(getString(R.string.api_flag1),getString(R.string.api_flag2), NEW_Village_Code, NEW_Habitation_code, NEW_Town_Code, NEW_Ward_Code,
+                OLD_Village_Code, OLD_Habitation_code, OLD_Town_Code, OLD_Ward_Code, Applicant_Id, Updated_By_VA_MobileNum);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.d("TAG",response.code()+"");
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
+                if (response_server==null){
+                    p_dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
+                }  else if (response_server.equals(getString(R.string.access_denied_msg))){
+                    p_dialog.dismiss();
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(PushToAnotherVA.this, R.style.MyDialogTheme);
+                    builder.setTitle(getString(R.string.alert))
+                            .setMessage(getString(R.string.access_denied_msg))
+                            .setIcon(R.drawable.ic_error_black_24dp)
+                            .setCancelable(false)
+                            .setPositiveButton(getString(R.string.ok), (dialog, id) -> dialog.cancel());
+                    final AlertDialog alert = builder.create();
+                    alert.show();
+                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(16);
+                    TextView msgTxt = alert.findViewById(android.R.id.message);
+                    msgTxt.setTextSize(16);
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    Log.d("jsonObject1",""+jsonObject);
+                    //jsonObject = jsonObject.getJSONObject("data");
+                    int data = jsonObject.getInt("data");
+                    Log.d("jsonObject2",""+data);
+                    response_server = String.valueOf(data);
+                    if (response_server.equalsIgnoreCase("0")){
+                        ser_count++;
+                        Log.d("ser_count", ""+ser_count);
+                        if (count==ser_count) {
+                            Toast.makeText(getApplicationContext(), "Push Successful", Toast.LENGTH_SHORT).show();
+                            database.close();
+                            database1.close();
+                            Intent i = new Intent(PushToAnotherVA.this, New_Request_FirstScreen.class);
+                            i.putExtra("applicant_Id", applicant_Id);
+                            i.putExtra("district_Code", district_Code);
+                            i.putExtra("taluk_Code", taluk_Code);
+                            i.putExtra("hobli_Code", hobli_Code);
+                            i.putExtra("districtCode", district);
+                            i.putExtra("taluk", taluk);
+                            i.putExtra("VA_Name", VA_Name);
+                            i.putExtra("hobli", hobli);
+                            i.putExtra("va_Circle_Code", va_Circle_Code);
+                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                            i.putExtra("strSearchServiceName", service_name);
+                            i.putExtra("strSearchVillageName", village_name);
+                            i.putExtra("serviceCode", serviceCode);
+                            i.putExtra("villageCode", String.valueOf(villageCode));
+                            i.putExtra("habitationCode", habitationCode);
+                            i.putExtra("option_Flag", option_Flag);
+                            i.putExtra("town_Name", town_Name);
+                            i.putExtra("town_code", town_code);
+                            i.putExtra("ward_Name", ward_Name);
+                            i.putExtra("ward_code", ward_code);
+                            i.putExtra("pushedFlag", 1);
+                            startActivity(i);
+                            finish();
+                        }
+                    } else if (response_server.equalsIgnoreCase("1")){
+                        p_dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e){
+                    p_dialog.dismiss();
+                    Log.d("JSONException",""+e.getMessage());
+                    Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                p_dialog.dismiss();
+                call.cancel();
+                //Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
