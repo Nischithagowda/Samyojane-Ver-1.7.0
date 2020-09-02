@@ -431,9 +431,9 @@
     <string name="verification_code">ಕೋಡ್ ಪರಿಶೀಲನೆ</string>
     <string name="please_type_verification_code_sent_to_your_assistant_mobile_number">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸಹಾಯಕರ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಗೆ ಕಳುಹಿಸಲಾದ ಪರಿಶೀಲನಾ ಕೋಡ್ ಅನ್ನು ಟೈಪ್ ಮಾಡಿ</string>
     <string name="inavlid_mobile_nnum">ಅಮಾನ್ಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ</string>
-    <string name="aadhaar_num">Aadhaar No.</string>
-    <string name="enter_aadhaar_no">Enter Aadhaar No.</string>
-    <string name="assistant">Assistant</string>
+    <string name="aadhaar_num">ಆಧಾರ್ ಸಂಖ್ಯೆ</string>
+    <string name="enter_aadhaar_no">ಆಧಾರ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ</string>
+    <string name="assistant">ಸಹಾಯಕ</string>
     <string name="choose_login">Choose Login</string>
     <string name="enter_device_imei_num">Enter Device IMEI Num</string>
     <string name="validate">Validate</string>
@@ -462,6 +462,6 @@
     <string name="coultnt_push_the_data_pls_try_again">Couldn\'t Push the data, Please try again</string>
     <string name="error_with_login">Error with your Login, Please Try Logging in again!</string>
     <string name="pushed">Pushed</string>
-    <string name="time_out">Timeout, Please Try Again...</string>
+    <string name="time_out">Timeout, Please Try Again…</string>
 
 </resources>
