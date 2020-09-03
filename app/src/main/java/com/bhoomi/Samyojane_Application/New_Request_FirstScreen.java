@@ -163,6 +163,8 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         openHelper = new DataBaseHelperClass_VillageNames_DTH(New_Request_FirstScreen.this);
         database1 = openHelper.getWritableDatabase();
 
+        database1.execSQL(DataBaseHelperClass_VillageNames_DTH.CREATE_TABLE);
+
         @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
                 +getString(R.string.facility_table_name)+"='"+service_name+"'", null);
@@ -216,7 +218,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 tvVillageName.setText(town_Name+"\n"+ward_Name);
                 display_Urban_Data_AfterItemSelected();
             }
-        }else if (Objects.equals(radio_Flag, getString(R.string.pushed))){
+        }else if (Objects.equals(radio_Flag, getString(R.string.received_from_other_va))){
             btnPushToAnotherVA.setVisibility(View.GONE);
             txtListPushed.setVisibility(View.VISIBLE);
             total_regular_Applicants.setVisibility(View.GONE);

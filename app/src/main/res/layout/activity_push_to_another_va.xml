@@ -355,6 +355,46 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/l_VACircle_urban"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="10dp"
+                        tools:ignore="UselessParent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/village_circle"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/colon"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoSearchVillageCircle_urban"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textCursorDrawable="@android:color/black"
+                            android:completionThreshold="1"
+                            android:backgroundTint="@android:color/black"
+                            android:hint="@string/search_by_village"
+                            android:layout_marginStart="10dp"/>
+
+                    </LinearLayout>
+
+
                 </LinearLayout>
 
                 <LinearLayout

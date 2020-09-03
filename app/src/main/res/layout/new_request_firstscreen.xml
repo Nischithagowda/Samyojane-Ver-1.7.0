@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/colorPrimaryDark"
                 android:checked="false"
-                android:text="@string/pushed"
+                android:text="@string/received_from_other_va"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:scaleX="0.8"

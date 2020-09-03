@@ -2,9 +2,9 @@
 <resources>
     <string name="app_name">Samyojane</string>
     <string name="select_lan">ದಯವಿಟ್ಟು ಭಾಷೆಯನ್ನು ಆರಿಸಿ:</string>
-    <string name="versionCode">1.10.0</string>
-    <string name="version">ಆವೃತ್ತಿ : </string> - ಆವೃತ್ತಿ
-    <string name="release_date">ದಿ : 13/07/2020</string>
+    <string name="versionCode">2.0.0</string>
+    <string name="version">ಆವೃತ್ತಿ : </string>
+    <string name="release_date">ದಿ : 02/09/2020</string>
 
     <string name="cre_district_name">District_k</string>
     <string name="cre_taluk_name">Taluk_k</string>
@@ -328,7 +328,7 @@
     <string name="select_category_spinner">-- ಪ್ರವರ್ಗವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ --</string> - ಪ್ರವರ್ಗವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ
 
     <string name="alert">ಎಚ್ಚರ</string> - ಎಚ್ಚರ
-    <string name="ward_name_num">ವಾರ್ಡ್ ಹೆಸರು ಸಂಖ್ಯೆ</string>  - ವಾರ್ಡ್ ಹೆಸರು ಮತ್ತು ಸಂಖ್ಯೆ
+    <string name="ward_name_num">ವಾರ್ಡ್ ಹೆಸರು/ಸಂಖ್ಯೆ</string>  - ವಾರ್ಡ್ ಹೆಸರು ಮತ್ತು ಸಂಖ್ಯೆ
     <string name="reason_spinner">-- ಕಾರಣ --</string> - ಕಾರಣ
     <string name="select_reason_for_rejection">ತಿರಸ್ಕೃತಗೊಳಿಸಿರುವುದಕ್ಕೆ ಕಾರಣವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string> - ತಿರಸ್ಕೃತಗೊಳಿಸಿರುವುದಕ್ಕೆ ಕಾರಣವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ
     <string name="incorrect_value">ತಪ್ಪಾಗಿರುವ ಮೌಲ್ಯ</string> - ತಪ್ಪಾಗಿರುವ ಮೌಲ್ಯ
@@ -456,12 +456,13 @@
     <string name="records">Records</string>
     <string name="confirm">Confirm</string>
     <string name="are_you_sure_do_you_want_to_push_the_selected">Are you sure?\nDo you want to push the selected</string>
-    <string name="list_of_pushed_applications_for_this_village">List of Pushed Applications</string>
+    <string name="list_of_pushed_applications_for_this_village">List of Applications Received from Other VA</string>
     <string name="please_select_other_village">Please Select Other Village</string>
     <string name="select_other_ward">Select Other Ward</string>
     <string name="coultnt_push_the_data_pls_try_again">Couldn\'t Push the data, Please try again</string>
     <string name="error_with_login">Error with your Login, Please Try Logging in again!</string>
-    <string name="pushed">Pushed</string>
+    <string name="received_from_other_va">Received from Other VA</string>
     <string name="time_out">Timeout, Please Try Again…</string>
+    <string name="pushed_successfully">Pushed Successfully</string>
 
 </resources>
