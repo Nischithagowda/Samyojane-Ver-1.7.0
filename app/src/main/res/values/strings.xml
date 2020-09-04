@@ -460,5 +460,6 @@
     <string name="received_from_other_va">Received from Other VA</string>
     <string name="time_out">Timeout, Please Try Again…</string>
     <string name="pushed_successfully">Pushed Successfully</string>
+    <string name="to">to</string>
 
 </resources>

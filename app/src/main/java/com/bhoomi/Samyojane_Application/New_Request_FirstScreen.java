@@ -333,73 +333,15 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
             if (selected_items.equals("") || selected_items.size()==0){
                 Toast.makeText(getApplicationContext(), getString(R.string.select_any_applicant_to_push), Toast.LENGTH_SHORT).show();
             } else {
-                Cursor cursor1 = database1.rawQuery("Select distinct "+getString(R.string.village_table_va_circle_name)+","
-                        +DataBaseHelperClass_VillageNames_DTH.VCM_va_circle_code+" from "
-                        +DataBaseHelperClass_VillageNames_DTH.TABLE_NAME, null);
-                if (cursor1.moveToNext()){
-                    cursor1.close();
-                    Intent intent = new Intent(New_Request_FirstScreen.this, PushToAnotherVA.class);
-                    intent.putStringArrayListExtra("selected_items", selected_items);
-                    i.putExtra("applicant_Id", applicant_Id);
-                    intent.putExtra("district_Code", district_Code);
-                    intent.putExtra("taluk_Code", taluk_Code);
-                    intent.putExtra("hobli_Code", hobli_Code);
-                    intent.putExtra("districtCode", district);
-                    intent.putExtra("taluk", taluk);
-                    intent.putExtra("hobli", hobli);
-                    intent.putExtra("VA_Name", VA_Name);
-                    intent.putExtra("va_Circle_Code", va_Circle_Code);
-                    intent.putExtra("VA_Circle_Name", VA_Circle_Name);
-                    intent.putExtra("strSearchServiceName", service_name);
-                    intent.putExtra("strSearchVillageName", village_name);
-                    intent.putExtra("serviceCode", serviceCode);
-                    intent.putExtra("villageCode", String.valueOf(villageCode));
-                    intent.putExtra("habitationCode", habitationCode);
-                    intent.putExtra("option_Flag", option_Flag);
-                    intent.putExtra("town_Name", town_Name);
-                    intent.putExtra("town_code", town_code);
-                    intent.putExtra("ward_Name", ward_Name);
-                    intent.putExtra("ward_code", ward_code);
-                    startActivity(intent);
-                    finish();
+                if (isNetworkAvailable()) {
+                    dialog.show();
+                    hashMap_village_name.put("District_Code", district_Code);
+                    hashMap_village_name.put("Taluk_Code", taluk_Code);
+                    hashMap_village_name.put("Hobli_Code", hobli_Code);
+                    Log.d("hashMap_village_name", "" + hashMap_village_name + ", URL:" + getString(R.string.url_village_name_DTH));
+                    new GetVillageNameFromServer().execute(getString(R.string.url_village_name_DTH));
                 } else {
-                    if (isNetworkAvailable()) {
-                        if (!Objects.equals(villageCode, "99999")) {
-                            dialog.show();
-                            hashMap_village_name.put("District_Code", district_Code);
-                            hashMap_village_name.put("Taluk_Code", taluk_Code);
-                            hashMap_village_name.put("Hobli_Code", hobli_Code);
-                            Log.d("hashMap_village_name", "" + hashMap_village_name + ", URL:" + getString(R.string.url_village_name_DTH));
-                            new GetVillageNameFromServer().execute(getString(R.string.url_village_name_DTH));
-                        } else {
-                            dialog.dismiss();
-                            Intent intent = new Intent(New_Request_FirstScreen.this, PushToAnotherVA.class);
-                            intent.putStringArrayListExtra("selected_items", selected_items);
-                            intent.putExtra("district_Code", district_Code);
-                            intent.putExtra("taluk_Code", taluk_Code);
-                            intent.putExtra("hobli_Code", hobli_Code);
-                            intent.putExtra("districtCode", district);
-                            intent.putExtra("taluk", taluk);
-                            intent.putExtra("hobli", hobli);
-                            intent.putExtra("VA_Name", VA_Name);
-                            intent.putExtra("va_Circle_Code", va_Circle_Code);
-                            intent.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            intent.putExtra("strSearchServiceName", service_name);
-                            intent.putExtra("strSearchVillageName", village_name);
-                            intent.putExtra("serviceCode", serviceCode);
-                            intent.putExtra("villageCode", String.valueOf(villageCode));
-                            intent.putExtra("habitationCode", habitationCode);
-                            intent.putExtra("option_Flag", option_Flag);
-                            intent.putExtra("town_Name", town_Name);
-                            intent.putExtra("town_code", town_code);
-                            intent.putExtra("ward_Name", ward_Name);
-                            intent.putExtra("ward_code", ward_code);
-                            startActivity(intent);
-                            finish();
-                        }
-                    } else {
-                        buildAlertMessageConnection();
-                    }
+                    buildAlertMessageConnection();
                 }
             }
         });

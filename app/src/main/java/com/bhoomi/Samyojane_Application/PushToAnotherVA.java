@@ -388,9 +388,9 @@ public class PushToAnotherVA extends AppCompatActivity {
     private  void buildAlert_Push(ArrayList<String> arrayList, String vill_ward, String P_vill_Town_name) {
         String str;
         if (arrayList.size()==1){
-            str = getString(R.string.are_you_sure_do_you_want_to_push_the_selected)+" "+arrayList.size()+" "+getString(R.string.record)+" to "+vill_ward+" : "+ P_vill_Town_name;
+            str = getString(R.string.are_you_sure_do_you_want_to_push_the_selected)+" "+arrayList.size()+" "+getString(R.string.record)+" "+getString(R.string.to)+" "+vill_ward+" : "+ P_vill_Town_name;
         } else {
-            str = getString(R.string.are_you_sure_do_you_want_to_push_the_selected)+" "+arrayList.size()+" "+getString(R.string.records)+" to "+vill_ward+" : "+ P_vill_Town_name;
+            str = getString(R.string.are_you_sure_do_you_want_to_push_the_selected)+" "+arrayList.size()+" "+getString(R.string.records)+" "+getString(R.string.to)+" "+vill_ward+" : "+ P_vill_Town_name;
         }
         final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         builder.setTitle(getString(R.string.confirmation_alert))
