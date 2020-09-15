@@ -168,12 +168,12 @@
                 android:layout_gravity="center">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/want_to_change_login_click_here_to"
                     android:textColor="@android:color/black"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <Button

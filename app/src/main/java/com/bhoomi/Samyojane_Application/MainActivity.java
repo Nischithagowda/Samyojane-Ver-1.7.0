@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name, e_kshana;
     String district_k, taluk_k, hobli_k, VA_Circle_Name_k;
     String deviceId;
-    HashMap<String, String> hashMap, hashMap_assistant, hashMap_SMS;
+    HashMap<String, String> hashMap, hashMap_assistant;
     Set_and_Get_data set_and_get_data;
     Set_and_Get_Version set_and_get_version;
     String uName_get, pwd_get;
@@ -308,12 +308,9 @@ public class MainActivity extends AppCompatActivity {
                 if (Objects.equals(VC_Status, "Y")){
                     Log.d("Version_Status","Matched");
                     i=0;
-                    database.close();
-                }
-                else {
+                } else {
                     Log.d("Version_Status","Does not Match");
                     i=1;
-                    database.close();
                 }
             }
         }else {

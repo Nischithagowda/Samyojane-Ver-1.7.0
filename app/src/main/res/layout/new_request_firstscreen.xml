@@ -256,8 +256,8 @@
 
     <Button
         android:id="@+id/btnPushToAnotherVA"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
         android:text="@string/push_to_another_va"
         android:background="@drawable/button_background"
         android:textColor="@android:color/black"
