@@ -237,12 +237,10 @@ public class MainActivity_Select extends AppCompatActivity {
                 if (Objects.equals(VC_Status, "Y")){
                     Log.d("Version_Status","Matched");
                     i=0;
-                    database.close();
                 }
                 else {
                     Log.d("Version_Status","Does not Match");
                     i=1;
-                    database.close();
                 }
             }
         }else {
