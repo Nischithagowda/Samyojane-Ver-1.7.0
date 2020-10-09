@@ -393,6 +393,7 @@ public class MainActivity_Select extends AppCompatActivity {
 
                         int count = jsonArray.length();
                         if (count != 0) {
+                            //Toast.makeText(getApplicationContext(), "calling sendOtpFromServer", Toast.LENGTH_SHORT).show();
                             sendOtpFromServer(MobNum);
                         } else{
                             dialog.dismiss();
@@ -412,6 +413,7 @@ public class MainActivity_Select extends AppCompatActivity {
                     } catch (JSONException e) {
                         dialog.dismiss();
                         Log.e("JSON Parser", "Error parsing data " + e.toString());
+                        Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     } catch (NullPointerException e) {
                         dialog.dismiss();
                         runOnUiThread(runnable);
@@ -427,6 +429,7 @@ public class MainActivity_Select extends AppCompatActivity {
                 Log.d("multipleResource",""+t.getMessage());
                 dialog.dismiss();
                 call.cancel();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -443,6 +446,7 @@ public class MainActivity_Select extends AppCompatActivity {
             public void onResponse(@NotNull Call<OtpResponse> call, @NotNull Response<OtpResponse> response) {
 
                 if (response.isSuccessful()) {
+                    //Toast.makeText(getApplicationContext(), "sendOtpFromServer response came", Toast.LENGTH_SHORT).show();
                     OtpResponse otpResponse = response.body();
                     assert otpResponse != null;
                     String otpres = otpResponse.getFNGETSENDOTPResult().trim();
@@ -456,6 +460,7 @@ public class MainActivity_Select extends AppCompatActivity {
                     if (status && statusCode.equalsIgnoreCase("200")) {
                         service_Flag=1;
                         Log.d("Receiver_Flag", "service_Flag: "+service_Flag);
+                        //Toast.makeText(getApplicationContext(), "service_Flag :1", Toast.LENGTH_SHORT).show();
 
                         if (broadcast_Flag==1 && ServOTP!=null){
                             dialog.dismiss();
@@ -497,6 +502,8 @@ public class MainActivity_Select extends AppCompatActivity {
                             displayAlert(errMsg);
                         } else if (statusCode.equalsIgnoreCase("900")){
                             displayAlert(MSG);
+                        } else {
+                            Toast.makeText(getApplicationContext(), ""+status+statusCode, Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -548,6 +555,7 @@ public class MainActivity_Select extends AppCompatActivity {
 
                     broadcast_Flag = 1;
                     Log.d("Receiver_Flag","broadcast_Flag: "+broadcast_Flag);
+                    //Toast.makeText(getApplicationContext(), "broadcast_Flag :1", Toast.LENGTH_SHORT).show();
                     if (service_Flag==1 && received_OTP!=null) {
                         dialog.dismiss();
                         alertDialog.dismiss();

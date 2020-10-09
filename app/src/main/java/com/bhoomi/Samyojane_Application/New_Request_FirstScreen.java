@@ -399,7 +399,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 //dialog.incrementProgressBy(20);
                 openHelper = new DataBaseHelperClass_VillageNames_DTH(New_Request_FirstScreen.this);
                 database1 = openHelper.getWritableDatabase();
-
+                Log.d("jsonObject", "ss"+jsonObject);
                 JSONArray array = jsonObject.getJSONArray("data");
 
                 truncateDatabase_village_name();
@@ -417,13 +417,14 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                     set_and_get_village_name.setHM_habitation_code(object.getString(DataBaseHelperClass_VillageNames_DTH.HM_habitation_code));
                     set_and_get_village_name.setHM_habitation_ename(object.getString(DataBaseHelperClass_VillageNames_DTH.HM_habitation_ename));
                     set_and_get_village_name.setHM_habitation_kname(object.getString(DataBaseHelperClass_VillageNames_DTH.HM_habitation_kname));
+                    set_and_get_village_name.setRuralUrban(object.getString(DataBaseHelperClass_VillageNames_DTH.RuralUrban));
 
 
                     database1.execSQL("insert into " + DataBaseHelperClass_VillageNames_DTH.TABLE_NAME
-                            + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_code, HM_habitation_ename, HM_habitation_kname) values ("
+                            + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_code, HM_habitation_ename, HM_habitation_kname, RuralUrban) values ("
                             + set_and_get_village_name.getVCM_va_circle_code() +",'"+set_and_get_village_name.getVCM_va_circle_ename()+"','"+set_and_get_village_name.getVCM_va_circle_kname()+"',"
                             + set_and_get_village_name.getHM_village_code() +","+ set_and_get_village_name.getHM_habitation_code()+",'"+ set_and_get_village_name.getHM_habitation_ename()+"','"
-                            + set_and_get_village_name.getHM_habitation_kname()+"')");
+                            + set_and_get_village_name.getHM_habitation_kname()+"', '"+set_and_get_village_name.getRuralUrban()+"')");
                     Log.d("Database", "VillageNames Database Inserted");
                     if (i==count-1){
                         dialog.dismiss();

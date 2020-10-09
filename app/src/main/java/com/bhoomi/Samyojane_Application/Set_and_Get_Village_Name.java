@@ -3,7 +3,7 @@ package com.bhoomi.Samyojane_Application;
 public class Set_and_Get_Village_Name {
 
     private String VCM_va_circle_code, VCM_va_circle_ename, VCM_va_circle_kname,
-            HM_village_code, HM_habitation_code, HM_habitation_ename, HM_habitation_kname;
+            HM_village_code, HM_habitation_code, HM_habitation_ename, HM_habitation_kname, RuralUrban;
     Set_and_Get_Village_Name(){}
 
     void setVCM_va_circle_code(String VCM_va_circle_code) {
@@ -54,5 +54,13 @@ public class Set_and_Get_Village_Name {
     }
     String getHM_habitation_kname() {
         return HM_habitation_kname;
+    }
+
+    public String getRuralUrban() {
+        return RuralUrban;
+    }
+
+    public void setRuralUrban(String ruralUrban) {
+        RuralUrban = ruralUrban;
     }
 }

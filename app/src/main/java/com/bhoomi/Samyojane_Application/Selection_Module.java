@@ -54,7 +54,7 @@ public class Selection_Module extends AppCompatActivity {
             // find which radio button is selected
             if (checkedId == R.id.rbRegular) {
                 option_Flag = getString(R.string.regular);
-                rbRegular.setChecked(false);
+                radioGroup.clearCheck();
                 Intent i1 = new Intent(Selection_Module.this, SecondScreen.class);
                 i1.putExtra("district", district);
                 i1.putExtra("taluk", taluk);
@@ -67,7 +67,7 @@ public class Selection_Module extends AppCompatActivity {
             }
             else if (checkedId == R.id.rbEkshana) {
                 option_Flag = getString(R.string.e_kshana);
-                rbEkshana.setChecked(false);
+                radioGroup.clearCheck();
                 Intent i1 = new Intent(Selection_Module.this, E_Kshana_MainScreen.class);
                 i1.putExtra("district", district);
                 i1.putExtra("taluk", taluk);

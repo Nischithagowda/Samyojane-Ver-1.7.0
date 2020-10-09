@@ -3,6 +3,7 @@
     <domain-config cleartextTrafficPermitted="true">
 <!--        <domain includeSubdomains="true">https://parihara.karnataka.gov.in</domain>-->
 <!--        <domain includeSubdomains="true">parihara.karnataka.gov.in</domain>-->
+        <domain includeSubdomains="true">http://164.100.133.47</domain>
         <domain includeSubdomains="true">http://164.100.133.30</domain>
         <domain includeSubdomains="true">//164.100.133.30</domain>
         <domain includeSubdomains="true">http://164.100.133.30/NK_MobileApp/WebService.asmx</domain>

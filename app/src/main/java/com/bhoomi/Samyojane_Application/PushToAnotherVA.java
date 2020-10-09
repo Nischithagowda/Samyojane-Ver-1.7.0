@@ -274,7 +274,7 @@ public class PushToAnotherVA extends AppCompatActivity {
 
         Cursor cursor = database1.rawQuery("Select distinct "+getString(R.string.village_table_va_circle_name)+","
                 +DataBaseHelperClass_VillageNames_DTH.VCM_va_circle_code+" from "
-                +DataBaseHelperClass_VillageNames_DTH.TABLE_NAME+ " order by "+getString(R.string.village_table_va_circle_name), null);
+                +DataBaseHelperClass_VillageNames_DTH.TABLE_NAME+ " where "+DataBaseHelperClass_VillageNames_DTH.RuralUrban+"=1 order by "+getString(R.string.village_table_va_circle_name), null);
         if (cursor.moveToFirst()) {
             do {
                 hab_Va_Circle_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_VillageNames_DTH.VCM_va_circle_code));
@@ -337,7 +337,12 @@ public class PushToAnotherVA extends AppCompatActivity {
         autoSearchVillageCircle_urban.setAdapter(adapter);
         autoSearchVillageCircle_urban.setOnItemClickListener((parent, view, position, id) -> {
             P_Village_Circle_Code_Urban = ((AutoCompleteTextBox_Object)parent.getItemAtPosition(position)).getId();
+
+            Log.d("Village_Code3", ""+ P_village_code);
+            Log.d("Habitation_code", ""+ P_Habitation_Code);
             Log.d("P_VA_Circle_Code_Urban", ""+P_Village_Circle_Code_Urban);
+            Log.d("town_code", ""+ town_code);
+            Log.d("ward_code", ""+ ward_code);
         });
     }
 
@@ -355,6 +360,9 @@ public class PushToAnotherVA extends AppCompatActivity {
 
             Log.d("Village_Code3", ""+ P_village_code);
             Log.d("Habitation_code", ""+ P_Habitation_Code);
+            Log.d("P_Village_Circle_Code", ""+ P_Village_Circle_Code);
+            Log.d("town_code", ""+ town_code);
+            Log.d("ward_code", ""+ ward_code);
 
             if (P_village_code.equalsIgnoreCase(villageCode) && P_Habitation_Code.equalsIgnoreCase(habitationCode)){
                 Toast.makeText(getApplicationContext(), getString(R.string.please_select_other_village), Toast.LENGTH_SHORT).show();
@@ -371,7 +379,7 @@ public class PushToAnotherVA extends AppCompatActivity {
                 + DataBaseHelperClass_VillageNames_DTH.HM_habitation_code+","
                 + DataBaseHelperClass_VillageNames_DTH.HM_village_code+" from "
                 + DataBaseHelperClass_VillageNames_DTH.TABLE_NAME+" where "
-                + DataBaseHelperClass_VillageNames_DTH.VCM_va_circle_code+"="+Village_Circle_Code+" order by "+getString(R.string.village_table_va_circle_name), null);
+                + DataBaseHelperClass_VillageNames_DTH.VCM_va_circle_code+"="+Village_Circle_Code+ " and "+DataBaseHelperClass_VillageNames_DTH.RuralUrban+"=1 order by "+getString(R.string.village_table_va_circle_name), null);
         if (cursor.moveToFirst()) {
             do {
                 hab_Village_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_VillageNames_DTH.HM_village_code));
@@ -416,6 +424,17 @@ public class PushToAnotherVA extends AppCompatActivity {
         p_dialog.show();
         for (int i=0; i<arrayList.size();i++) {
             Log.d("ser_count",""+ser_count);
+            Log.d("NEW_Village_Code",""+P_village_code);
+            Log.d("NEW_Habitation_code", ""+P_Habitation_Code);
+            Log.d("NEW_Town_Code", ""+P_town_Code);
+            Log.d("NEW_Ward_Code", ""+P_ward_Code);
+            Log.d("OLD_Village_Code", ""+villageCode);
+            Log.d("OLD_Habitation_code", ""+habitationCode);
+            Log.d("OLD_Town_Code", ""+town_code);
+            Log.d("OLD_Ward_Code", ""+ward_code);
+            Log.d("Applicant_Id", ""+arrayList.get(i));
+            Log.d("Updated_By_VA_MobileNum", ""+mobile_Shared);
+
             pushApplicationToVA(
                     Integer.parseInt(P_village_code),
                     Integer.parseInt(P_Habitation_Code),

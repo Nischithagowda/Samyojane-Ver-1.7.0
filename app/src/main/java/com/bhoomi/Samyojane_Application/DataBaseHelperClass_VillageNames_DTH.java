@@ -27,6 +27,7 @@ public class DataBaseHelperClass_VillageNames_DTH  extends SQLiteOpenHelper {
     public static String VCM_va_circle_code = "VCM_va_circle_code";
     public static String VCM_va_circle_ename = "VCM_va_circle_ename";
     public static String VCM_va_circle_kname = "VCM_va_circle_kname";
+    public static String RuralUrban = "RuralUrban";
 
     private static final String DB_PATH_SUFFIX = "/databases/";
 
@@ -55,7 +56,7 @@ public class DataBaseHelperClass_VillageNames_DTH  extends SQLiteOpenHelper {
 
     public static String CREATE_TABLE ="CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("+ ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
             +VCM_va_circle_code+" int," +VCM_va_circle_ename+" TEXT,"+VCM_va_circle_kname+" TEXT,"
-            + HM_village_code+" int,"+ HM_habitation_code+" int," + HM_habitation_ename+" TEXT," +HM_habitation_kname+" TEXT)";
+            + HM_village_code+" int,"+ HM_habitation_code+" int," + HM_habitation_ename+" TEXT," +HM_habitation_kname+" TEXT, "+RuralUrban+" TEXT)";
 
     public DataBaseHelperClass_VillageNames_DTH(Context context) {
         super(context, DATABASE_NAME_town_ward, null, DATABASE_VERSION);
@@ -135,7 +136,7 @@ public class DataBaseHelperClass_VillageNames_DTH  extends SQLiteOpenHelper {
                     + WM_district_code + "=" + dist_Code + " and "
                     + WM_taluk_code + "=" + taluk_Code + " and "
                     + WM_town_code + "=" + townCode + " and "
-                    + WM_ward_no + " = " + ward_code + " order by " + va_circle_name, null);
+                    + WM_ward_no + " = " + ward_code + " and "+RuralUrban+"=2 order by " + va_circle_name, null);
             if (cursor.moveToFirst()) {
                 do {
                     objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(VCM_va_circle_code)), (cursor.getString(cursor.getColumnIndexOrThrow(va_circle_name)))));
