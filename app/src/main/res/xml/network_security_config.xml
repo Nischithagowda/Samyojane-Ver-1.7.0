@@ -6,6 +6,7 @@
         <domain includeSubdomains="true">http://164.100.133.47</domain>
         <domain includeSubdomains="true">http://164.100.133.30</domain>
         <domain includeSubdomains="true">//164.100.133.30</domain>
+        <domain includeSubdomains="true">http://103.138.196.22:8080</domain>
         <domain includeSubdomains="true">http://164.100.133.30/NK_MobileApp/WebService.asmx</domain>
     </domain-config>
     <debug-overrides>

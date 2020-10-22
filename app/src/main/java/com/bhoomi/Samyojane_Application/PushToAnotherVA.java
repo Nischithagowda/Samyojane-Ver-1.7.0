@@ -20,6 +20,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +64,7 @@ public class PushToAnotherVA extends AppCompatActivity {
     List<SpinnerObject_new> objects_Village = new ArrayList<>();
     List<AutoCompleteTextBox_Object> objects_Village_Urban = new ArrayList<>();
     List<AutoCompleteTextBox_Object> objects_Town = new ArrayList<>();
+    List<AutoCompleteTextBox_Object> objects_CheckTown = new ArrayList<>();
     String P_Village_Circle_Code = "", P_village_code = "", P_Habitation_Code = "", P_ward_Code="", P_Village_Circle_Code_Urban = "";
     int P_town_Code =0, serviceCode;
     String P_VA_CircleName="", P_village_name="", P_town_name="", P_word_name="", P_VA_CircleNameUrban="";
@@ -74,12 +77,17 @@ public class PushToAnotherVA extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String mobile_Shared=null;
     int count, ser_count=0;
+    RadioGroup radioGroup;
+    RadioButton radioButton_rural, radioButton_urban;
+    String urbanRuralFlag;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_to_another_va);
+
+        urbanRuralFlag = getString(R.string.rural);
 
         btnSubmit = findViewById(R.id.btnSubmit);
         btnBack = findViewById(R.id.btnBack);
@@ -101,6 +109,9 @@ public class PushToAnotherVA extends AppCompatActivity {
         l_Village = findViewById(R.id.l_Village);
         l_VACircle = findViewById(R.id.l_VACircle);
         l_VACircle_urban = findViewById(R.id.l_VACircle_urban);
+        radioGroup = findViewById(R.id.radioGroup);
+        radioButton_rural = findViewById(R.id.radioButton_rural);
+        radioButton_urban = findViewById(R.id.radioButton_urban);
 
         arrayList = new ArrayList<>();
 
@@ -143,29 +154,54 @@ public class PushToAnotherVA extends AppCompatActivity {
         tvVA_Name.setText(VA_Name);
         displayData_AfterItemSelected(arrayList);
 
-        if(!Objects.equals(villageCode, "99999")){
+        if(Objects.equals(option_Flag, getString(R.string.rural))){
             Log.d("Data","Rural");
             String str = getString(R.string.village_name)+" : ";
             tv_V_T_Name.setText(str);
             tvVillageName.setText(village_name);
-            l_Rural.setVisibility(View.VISIBLE);
-            l_VACircle.setVisibility(View.VISIBLE);
-            l_Village.setVisibility(View.GONE);
-            l_Urban.setVisibility(View.GONE);
-            GetVillageCircleName();
-        }else if(!Objects.equals(town_code, "9999")){
+            objects_CheckTown.clear();
+            dataBaseHelperClass_villageNames_dth = new DataBaseHelperClass_VillageNames_DTH(PushToAnotherVA.this);
+            dataBaseHelperClass_villageNames_dth.open_Town_Ward_Tbl();
+            objects_CheckTown = dataBaseHelperClass_villageNames_dth.Get_TownName_DTH(Integer.parseInt(district_Code), Integer.parseInt(taluk_Code), Integer.parseInt(hobli_Code), getString(R.string.town_master_town_name));
+            if(objects_CheckTown.size()==0){
+                radioGroup.setVisibility(View.GONE);
+                l_Rural.setVisibility(View.VISIBLE);
+                l_VACircle.setVisibility(View.VISIBLE);
+                l_Village.setVisibility(View.GONE);
+                l_Urban.setVisibility(View.GONE);
+                GetVillageCircleName();
+            }
+        }else if(Objects.equals(option_Flag, getString(R.string.urban))){
             Log.d("Data","Urban");
             String str = getString(R.string.town_name)+"                : "
                     +"\n"+getString(R.string.ward_name_num)+"    : ";
             tv_V_T_Name.setText(str);
             String str1 = town_Name+"\n"+ward_Name;
             tvVillageName.setText(str1);
+        }
+
+        if(Objects.equals(urbanRuralFlag, getString(R.string.rural))){
+            Log.d("Data","Rural");
+            l_Rural.setVisibility(View.VISIBLE);
+            l_VACircle.setVisibility(View.VISIBLE);
+            l_Village.setVisibility(View.GONE);
+            l_Urban.setVisibility(View.GONE);
+            GetVillageCircleName();
+        }else if(Objects.equals(urbanRuralFlag, getString(R.string.urban))){
+            Log.d("Data","Urban");
             l_Rural.setVisibility(View.GONE);
             l_town.setVisibility(View.VISIBLE);
             l_ward.setVisibility(View.GONE);
             l_VACircle_urban.setVisibility(View.GONE);
             l_Urban.setVisibility(View.VISIBLE);
             GetTownName();
+        } else if (urbanRuralFlag == null){
+            Log.d("Data","Rural1");
+            l_Rural.setVisibility(View.VISIBLE);
+            l_VACircle.setVisibility(View.VISIBLE);
+            l_Village.setVisibility(View.GONE);
+            l_Urban.setVisibility(View.GONE);
+            GetVillageCircleName();
         }
 
         p_dialog = new ProgressDialog(this, R.style.CustomDialog);
@@ -173,6 +209,37 @@ public class PushToAnotherVA extends AppCompatActivity {
         p_dialog.setMessage(getString(R.string.loading));
         p_dialog.setIndeterminate(true);
         p_dialog.setCanceledOnTouchOutside(false);
+
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.radioButton_rural){
+                urbanRuralFlag = getString(R.string.rural);
+                Log.d("Data","Rural");
+                l_Rural.setVisibility(View.VISIBLE);
+                l_VACircle.setVisibility(View.VISIBLE);
+                l_Village.setVisibility(View.GONE);
+                l_Urban.setVisibility(View.GONE);
+                GetVillageCircleName();
+                autoSearchTown.setText("");
+                autoSearchWard.setText("");
+                autoSearchVillageCircle_urban.setText("");
+                P_town_Code=0;
+                P_ward_Code=null;
+                P_Village_Circle_Code_Urban = null;
+            }else if (checkedId == R.id.radioButton_urban){
+                urbanRuralFlag = getString(R.string.urban);
+                Log.d("Data","Urban");
+                l_Rural.setVisibility(View.GONE);
+                l_town.setVisibility(View.VISIBLE);
+                l_ward.setVisibility(View.GONE);
+                l_VACircle_urban.setVisibility(View.GONE);
+                l_Urban.setVisibility(View.VISIBLE);
+                GetTownName();
+                autoSearchVillageCircle.setText("");
+                autoSearchVillage.setText("");
+                P_Village_Circle_Code = null;
+                P_village_code = null;
+            }
+        });
 
         autoSearchVillageCircle.setOnTouchListener((v, event) -> {
             autoSearchVillageCircle.showDropDown();
@@ -213,32 +280,67 @@ public class PushToAnotherVA extends AppCompatActivity {
 
         btnSubmit.setOnClickListener(v -> {
             if (!mobile_Shared.isEmpty()) {
-                if (!Objects.equals(villageCode, "99999")) {
+                if (Objects.equals(urbanRuralFlag, getString(R.string.rural))) {
                     P_VA_CircleName = autoSearchVillageCircle.getText().toString();
                     P_village_name = autoSearchVillage.getText().toString();
-                    P_town_Code = 9999;
-                    P_ward_Code = "255";
+                    if (!Objects.equals(option_Flag, urbanRuralFlag)){
+                        P_town_Code = 9999;
+                        P_ward_Code = "255";
+                    } else {
+                        P_town_Code = Integer.parseInt(town_code);
+                        P_ward_Code = ward_code;
+                    }
 
                     if (!P_VA_CircleName.isEmpty() && !P_Village_Circle_Code.isEmpty()) {
                         if (!P_village_name.isEmpty() && !P_village_code.isEmpty() && !P_Habitation_Code.isEmpty()) {
                             buildAlert_Push(arrayList, getString(R.string.village), "" + P_village_name);
+                            for (int ii=0; ii<arrayList.size();ii++) {
+                                Log.d("ser_count",""+ser_count);
+                                Log.d("NEW_Village_Code",""+P_village_code);
+                                Log.d("NEW_Habitation_code", ""+P_Habitation_Code);
+                                Log.d("NEW_Town_Code", ""+P_town_Code);
+                                Log.d("NEW_Ward_Code", ""+P_ward_Code);
+                                Log.d("OLD_Village_Code", ""+villageCode);
+                                Log.d("OLD_Habitation_code", ""+habitationCode);
+                                Log.d("OLD_Town_Code", ""+town_code);
+                                Log.d("OLD_Ward_Code", ""+ward_code);
+                                Log.d("Applicant_Id", ""+arrayList.get(ii));
+                                Log.d("Updated_By_VA_MobileNum", ""+mobile_Shared);
+                            }
                         } else {
                             autoSearchVillage.setError(getString(R.string.select));
                         }
                     } else {
                         autoSearchVillageCircle.setError(getString(R.string.select));
                     }
-                } else if (!Objects.equals(town_code, "9999")) {
-                    P_village_code = "99999";
-                    P_Habitation_Code = "255";
+                } else if (Objects.equals(urbanRuralFlag, getString(R.string.urban))) {
                     P_town_name = autoSearchTown.getText().toString();
                     P_word_name = autoSearchWard.getText().toString();
                     P_VA_CircleNameUrban = autoSearchVillageCircle_urban.getText().toString();
-
+                    if (!Objects.equals(option_Flag, urbanRuralFlag)){
+                        P_village_code = "99999";
+                        P_Habitation_Code = "255";
+                    } else {
+                        P_village_code = villageCode;
+                        P_Habitation_Code = habitationCode;
+                    }
                     if (!P_town_name.isEmpty() && P_town_Code != 0) {
                         if (!P_ward_Code.isEmpty() && !P_word_name.isEmpty()) {
                             if (!P_Village_Circle_Code_Urban.isEmpty() && !P_VA_CircleNameUrban.isEmpty()) {
                                 buildAlert_Push(arrayList, getString(R.string.ward_name_num), "" + P_ward_Code);
+                                for (int ii=0; ii<arrayList.size();ii++) {
+                                    Log.d("ser_count",""+ser_count);
+                                    Log.d("NEW_Village_Code",""+P_village_code);
+                                    Log.d("NEW_Habitation_code", ""+P_Habitation_Code);
+                                    Log.d("NEW_Town_Code", ""+P_town_Code);
+                                    Log.d("NEW_Ward_Code", ""+P_ward_Code);
+                                    Log.d("OLD_Village_Code", ""+villageCode);
+                                    Log.d("OLD_Habitation_code", ""+habitationCode);
+                                    Log.d("OLD_Town_Code", ""+town_code);
+                                    Log.d("OLD_Ward_Code", ""+ward_code);
+                                    Log.d("Applicant_Id", ""+arrayList.get(ii));
+                                    Log.d("Updated_By_VA_MobileNum", ""+mobile_Shared);
+                                }
                             } else {
                                 autoSearchVillageCircle_urban.setError(getString(R.string.select));
                             }
@@ -409,7 +511,7 @@ public class PushToAnotherVA extends AppCompatActivity {
                     dialog.cancel();
                     if (isNetworkAvailable()){
                         dialog.cancel();
-                        push();
+                        push(arrayList);
                     } else {
                         buildAlertMessageConnection();
                     }
@@ -418,7 +520,7 @@ public class PushToAnotherVA extends AppCompatActivity {
         final AlertDialog alert = builder.create();
         alert.show();
     }
-    public void push(){
+    public void push(ArrayList<String> arrayList){
         count = arrayList.size();
         ser_count = 0;
         p_dialog.show();
