@@ -759,7 +759,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
                             String caste_name = autoSearchCaste.getText().toString();
                             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
                             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name);
+                            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getCatCode);
                             Log.d("Caste_Code1",""+getCasteCode);
 
                         }
@@ -1369,7 +1369,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
             Log.d("Selected_Item", ""+strSearchCaste);
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste);
+            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste, num);
             Log.d("Selected_casteCode", ""+ getCasteCode);
         });
     }

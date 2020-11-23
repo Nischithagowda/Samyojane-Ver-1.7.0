@@ -393,10 +393,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         }
     }
 
-    public int GetCasteCode(String str){
+    public int GetCasteCode(String str, int catCode){
         int num=0;
         database = this.getReadableDatabase();
-        cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where CM_caste_kdesc='"+str+"' order by CM_caste_kdesc", null);
+        cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where CM_caste_kdesc='"+str+"' and CM_res_category_code = "+catCode+" order by CM_caste_kdesc", null);
         if(cursor.getCount()>0){
             if(cursor.moveToNext()){
                 num = cursor.getInt(cursor.getColumnIndex("CM_CASTE_ID"));

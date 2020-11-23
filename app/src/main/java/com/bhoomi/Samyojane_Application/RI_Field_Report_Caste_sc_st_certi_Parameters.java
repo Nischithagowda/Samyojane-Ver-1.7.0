@@ -859,7 +859,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                         String caste_name = autoSearchFatherCaste.getText().toString();
                         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                         sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                        getFatherCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name);
+                        getFatherCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getFatherCatCode);
                         Log.d("Caste_Code1",""+getFatherCasteCode);
 
                     }
@@ -875,7 +875,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                         String caste_name = autoSearchMotherCaste.getText().toString();
                         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                         sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                        getMotherCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name);
+                        getMotherCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getMotherCatCode);
                         Log.d("Caste_Code1",""+getMotherCasteCode);
 
                     }
@@ -891,7 +891,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                         String caste_name = autoSearchAPPCaste_VA.getText().toString();
                         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                         sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                        getAppCasteCode_VA = sqlLiteOpenHelper_class.GetCasteCode(caste_name);
+                        getAppCasteCode_VA = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getAppCatCode_VA);
                         Log.d("Caste_Code1",""+getAppCasteCode_VA);
 
                     }
@@ -1404,7 +1404,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
             Log.d("Selected_Item", ""+strSearchFatherCaste);
             sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(activity, RI_Field_Report_Caste_sc_st_certi_Parameters.this);
             sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            getFatherCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchFatherCaste);
+            getFatherCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchFatherCaste, num);
             Log.d("Selected_casteCode", ""+ getFatherCasteCode);
         });
     }
@@ -1450,7 +1450,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
             Log.d("Selected_Item", ""+strSearchMotherCaste);
             sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(activity, RI_Field_Report_Caste_sc_st_certi_Parameters.this);
             sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            getMotherCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchMotherCaste);
+            getMotherCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchMotherCaste, num);
             Log.d("Selected_casteCode", ""+ getMotherCasteCode);
         });
     }
@@ -1496,7 +1496,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
             Log.d("Selected_Item", ""+strSearchAppCaste_VA);
             sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(activity, RI_Field_Report_Caste_sc_st_certi_Parameters.this);
             sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            getAppCasteCode_VA = sqlLiteOpenHelper_class.GetCasteCode(strSearchAppCaste_VA);
+            getAppCasteCode_VA = sqlLiteOpenHelper_class.GetCasteCode(strSearchAppCaste_VA, num);
             if (strSearchAppCaste_VA.equals(strSearchFatherCaste) || strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
                 option3 = getString(R.string.yes);
                 radioButton3.setChecked(true);

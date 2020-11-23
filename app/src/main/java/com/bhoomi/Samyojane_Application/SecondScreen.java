@@ -907,7 +907,7 @@ public class SecondScreen extends AppCompatActivity {
                                 + "," + set_and_get_service_tran_data.getVillage_Code() + ","
                                 + set_and_get_service_tran_data.getHabitation_code()+","
                                 + set_and_get_service_tran_data.getTown_Code()+","
-                                + set_and_get_service_tran_data.getWard_Code()+","
+                                 + set_and_get_service_tran_data.getWard_Code()+","
                                 + set_and_get_service_tran_data.getService_Code() + ",'"
                                 + set_and_get_service_tran_data.getService_Name() + "','"
                                 + set_and_get_service_tran_data.getService_Name_k() + "',"

@@ -2,9 +2,9 @@
 <resources>
     <string name="app_name">Samyojane</string>
     <string name="select_lan">ದಯವಿಟ್ಟು ಭಾಷೆಯನ್ನು ಆರಿಸಿ:</string>
-    <string name="versionCode">2.1.0</string>
+    <string name="versionCode">2.4.0</string>
     <string name="version">ಆವೃತ್ತಿ : </string>
-    <string name="release_date">ದಿ : 09/10/2020</string>
+    <string name="release_date">ದಿ : 12/11/2020</string>
 
     <string name="cre_district_name">District_k</string>
     <string name="cre_taluk_name">Taluk_k</string>

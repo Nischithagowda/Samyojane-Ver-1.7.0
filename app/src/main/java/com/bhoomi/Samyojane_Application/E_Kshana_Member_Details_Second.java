@@ -1112,7 +1112,7 @@ public class E_Kshana_Member_Details_Second extends AppCompatActivity {
             Log.d("Selected_Item", ""+strSearchCaste);
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste);
+            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste, num);
             Log.d("Selected_casteCode", ""+ getCasteCode);
         });
     }

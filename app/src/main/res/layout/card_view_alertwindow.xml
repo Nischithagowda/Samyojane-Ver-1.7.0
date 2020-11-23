@@ -104,7 +104,7 @@
                 tools:ignore="Autofill"
                 android:layout_weight="1"
                 android:digits="1234567890"
-                android:maxLength="17"
+                android:maxLength="15"
                 android:text=""
                 android:textCursorDrawable="@android:color/black"
                 android:backgroundTint="@android:color/black"/>

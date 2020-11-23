@@ -523,7 +523,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
                 String caste_name = autoSearchFatherCaste.getText().toString();
                 sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
                 sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                getFatherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name);
+                getFatherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getFatherCatCode);
                 Log.d("Caste_Code1",""+getFatherCasteCode);
 
             }
@@ -539,7 +539,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
                 String caste_name = autoSearchMotherCaste.getText().toString();
                 sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
                 sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                getMotherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name);
+                getMotherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getMotherCatCode);
                 Log.d("Caste_Code1",""+getMotherCasteCode);
 
             }
@@ -555,7 +555,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
                 String caste_name = autoSearchAPPCaste_VA.getText().toString();
                 sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
                 sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                getAppCasteCode_VA = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name);
+                getAppCasteCode_VA = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getAppCatCode_VA);
                 Log.d("Caste_Code1",""+getAppCasteCode_VA);
 
             }
@@ -1111,11 +1111,11 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
         }
     }
 
-    public void GetFatherCaste(int num){
+    public void GetFatherCaste(int catCode){
         List<SpinnerObject> labels;
         sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan(activity, this);
         sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-        labels = sqlLiteOpenHelper_class_kan.GetCaste(num);
+        labels = sqlLiteOpenHelper_class_kan.GetCaste(catCode);
 
         ArrayAdapter<SpinnerObject> adapter = new ArrayAdapter<>(this, R.layout.list_item, labels);
         adapter.setDropDownViewResource(R.layout.list_item);
@@ -1125,7 +1125,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
             Log.d("Selected_Item", ""+strSearchFatherCaste);
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan(activity, New_Request_Caste_sc_st_certi_Parameters_Kan.this);
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            getFatherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchFatherCaste);
+            getFatherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchFatherCaste, catCode);
             Log.d("Selected_casteCode", ""+ getFatherCasteCode);
         });
     }
@@ -1155,11 +1155,11 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
         }
     }
 
-    public void GetMotherCaste(int num){
+    public void GetMotherCaste(int catCode){
         List<SpinnerObject> labels;
         sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan(activity, this);
         sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-        labels = sqlLiteOpenHelper_class_kan.GetCaste(num);
+        labels = sqlLiteOpenHelper_class_kan.GetCaste(catCode);
 
         ArrayAdapter<SpinnerObject> adapter = new ArrayAdapter<>(this, R.layout.list_item, labels);
         adapter.setDropDownViewResource(R.layout.list_item);
@@ -1169,7 +1169,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
             Log.d("Selected_Item", ""+strSearchMotherCaste);
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan(activity, New_Request_Caste_sc_st_certi_Parameters_Kan.this);
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            getMotherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchMotherCaste);
+            getMotherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchMotherCaste, catCode);
             Log.d("Selected_casteCode", ""+ getMotherCasteCode);
         });
     }
@@ -1199,11 +1199,11 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
         }
     }
 
-    public void GetAppCaste_VA(int num){
+    public void GetAppCaste_VA(int catCode){
         List<SpinnerObject> labels;
         sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan(activity, this);
         sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-        labels = sqlLiteOpenHelper_class_kan.GetCaste(num);
+        labels = sqlLiteOpenHelper_class_kan.GetCaste(catCode);
 
         ArrayAdapter<SpinnerObject> adapter = new ArrayAdapter<>(this, R.layout.list_item, labels);
         adapter.setDropDownViewResource(R.layout.list_item);
@@ -1225,7 +1225,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
             }
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan(activity, New_Request_Caste_sc_st_certi_Parameters_Kan.this);
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            getAppCasteCode_VA = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchAppCaste_VA);
+            getAppCasteCode_VA = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchAppCaste_VA, catCode);
             Log.d("Selected_casteCode", ""+ getAppCasteCode_VA);
         });
     }

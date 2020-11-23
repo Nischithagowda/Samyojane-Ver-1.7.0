@@ -703,11 +703,11 @@ public class E_Kshana_Freeze_Member_Details_Second extends AppCompatActivity {
         }
     }
 
-    public void GetCaste(int num){
+    public void GetCaste(int catCode){
         List<SpinnerObject> labels;
         sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
         sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-        labels = sqlLiteOpenHelper_class_kan.GetCaste(num);
+        labels = sqlLiteOpenHelper_class_kan.GetCaste(catCode);
 
         ArrayAdapter<SpinnerObject> adapter = new ArrayAdapter<>(this, R.layout.list_item, labels);
         adapter.setDropDownViewResource(R.layout.list_item);
@@ -717,7 +717,7 @@ public class E_Kshana_Freeze_Member_Details_Second extends AppCompatActivity {
             Log.d("Selected_Item", ""+strSearchCaste);
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste);
+            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste, catCode);
             Log.d("Selected_casteCode", ""+ getCasteCode);
         });
     }
