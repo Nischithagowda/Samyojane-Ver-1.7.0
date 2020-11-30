@@ -225,7 +225,13 @@ public class JParserAdv {
 
         // try parse the string to a JSON object
         try {
-            jObj = new JSONObject(result.toString());
+            String str = result.toString();
+            Log.d("result_old", ""+str);
+            if (str.contains("\\u0027")){
+                str = str.replace("\\u0027", "");
+                Log.d("result_new", ""+str);
+            }
+            jObj = new JSONObject(str);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("JSON Parser Exception", "Error parsing data " + e.getMessage());

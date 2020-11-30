@@ -889,6 +889,7 @@ public class SecondScreen extends AppCompatActivity {
                     set_and_get_service_tran_data.setService_Name_k(serviceName_k);
 
                     gsc_firstPart = set_and_get_service_tran_data.getGSC_First_Part();
+
                     if(Objects.equals(gsc_firstPart, "3")){
                         gsc_firstPart_Name = "RD003";
                     }else if(Objects.equals(gsc_firstPart, "501")){
