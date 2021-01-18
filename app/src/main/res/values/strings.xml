@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Samyojane</string>
     <string name="select_lan">Please Select Language:</string>
-    <string name="versionCode">2.4.0</string>
+    <string name="versionCode">2.5.0</string>
     <string name="version">Ver : </string>
-    <string name="release_date">Rele On : 24/11/2020</string>
+    <string name="release_date">Rele On : 28/12/2020</string>
 
     <string name="cre_district_name">District</string>
     <string name="cre_taluk_name">Taluk</string>
@@ -64,12 +64,12 @@
         <item> &gt; 5 Year</item>
         <item>Since Birth</item>
     </string-array>
-    <string-array name="years_array_kan">
-        <item>-- ಆಯ್ಕೆಮಾಡಿ --</item>
-        <item> &lt; 1 ವರ್ಷ</item>
-        <item> &gt; 5 ವರ್ಷ</item>
-        <item>ಹುಟ್ಟಿದಾಗಿನಿಂದ</item>
-    </string-array>
+<!--    <string-array name="years_array_kan">-->
+<!--        <item>&#45;&#45; ಆಯ್ಕೆಮಾಡಿ &#45;&#45;</item>-->
+<!--        <item> &lt; 1 ವರ್ಷ</item>-->
+<!--        <item> &gt; 5 ವರ್ಷ</item>-->
+<!--        <item>ಹುಟ್ಟಿದಾಗಿನಿಂದ</item>-->
+<!--    </string-array>-->
     <string-array name="month_array">
         <item>-- Month --</item>
         <item>0</item>
@@ -240,9 +240,9 @@
     <string name="reason_for_rejection">Reason for rejection</string>
     <string name="no">NO</string>
     <string name="yes">YES</string>
-    <string name="can_caste_reservation_nbe_given">Can caste reservation be \ngiven</string>
+    <string name="can_caste_reservation_nbe_given">Can caste reservation \nbe given</string>
     <string name="whether_above_va_updated_ndetails_are_correct">Whether above VA updated \ndetails are correct</string>
-    <string name="whether_the_applicating_updated_ndetails_are_correct">Whether the Applicant updated \ndetails are correct</string>
+    <string name="whether_the_applicating_updated_ndetails_are_correct">Whether the Applicant \nupdated details are \ncorrect</string>
     <string name="ri_recommendation">RI Recommendation</string>
     <string name="enter_annual_income">Enter Annual Income</string>
     <string name="annual_income_of_napplicant_family_in_rs">Annual Income of \nApplicant Family (in Rs.)</string>
@@ -252,7 +252,7 @@
     <string name="applicant_caste">Applicant Caste</string>
     <string name="applicant_category">Applicant Category</string>
     <string name="submit_report">submit \nReport</string>
-    <string name="number_of_years_napplicant_is_resident_nin_karnataka">Number of years Applicant \nis resident in karnataka</string>
+    <string name="number_of_years_napplicant_is_resident_nin_karnataka">Number of years \nApplicant is resident in \nkarnataka</string>
     <string name="category_of_napplicant_father">Category of \nApplicant Father</string>
     <string name="caste_of_applicant_nfather">Caste of Applicant \nFather</string>
     <string name="category_of_napplicant_mother">Category of \nApplicant Mother</string>
@@ -335,7 +335,7 @@
     <string name="saved_successfully">Data Saved Successfully</string>
     <string name="error_creating_table">Error in creating table</string>
     <string name="select_category">Select Category</string>
-    <string name="must_match_father_mother">Caste should match with either father of mother of Applicant</string>
+    <string name="must_match_father_mother">Caste should match with either father or mother of Applicant</string>
     <string name="month_spinner">-- Month --</string>
     <string name="select_purpose">Select Purpose</string>
     <string name="select_month">Select Month</string>

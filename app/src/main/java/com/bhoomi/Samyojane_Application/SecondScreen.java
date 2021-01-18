@@ -65,8 +65,8 @@ public class SecondScreen extends AppCompatActivity {
 
     TextView proceed, tvDistrict, tvTaluk, tvHobli, tvVA_Circle_Name, tvVA_Name, tvTimerValue, VAModule;
     Button btnDownload, btnPendency, btnUpload, btnProceed;
-    private SQLiteOpenHelper openHelper;
-    SQLiteDatabase database, database1;
+    SQLiteOpenHelper openHelper;
+    SQLiteDatabase databaseServTran, databaseFacility, databaseCredential, databaseVilNames;
     String district, taluk, hobli, VA_Circle_Name, VA_Name;
     String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     //private static final String url_service_Parameter_Data = "http://164.100.133.123:9600/Bhoomi_download/WebService.asmx/Get_Service_Parameters_data";
@@ -116,13 +116,11 @@ public class SecondScreen extends AppCompatActivity {
 //    public final String WSDL_TARGET_NAMESPACE3 = "http://tempuri.org/";  // NAMESPACE
 //    String SOAP_ADDRESS3 = "http://164.100.133.123:9600/Bhoomi_download/WebService.asmx";
 
-    @SuppressLint({"MissingPermission", "HardwareIds", "SetTextI18n"})
+    @SuppressLint("SetTextI18n")
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.second_screen);
-
-        Log.d("MissingPermissionPermi", "Enter");
 
         proceed = findViewById(R.id.proceed);
         VAModule = findViewById(R.id.VAModule);
@@ -209,38 +207,16 @@ public class SecondScreen extends AppCompatActivity {
         }
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(SecondScreen.this);
-        database = openHelper.getWritableDatabase();
+        databaseServTran = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle") Cursor cursor12 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+        Cursor cursor12 = databaseServTran.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                 +" where "+DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null",null);
         if (cursor12.getCount()>0){
             btnProceed.setVisibility(View.VISIBLE);
         }else {
+            cursor12.close();
             btnProceed.setVisibility(View.GONE);
         }
-//        btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (isNetworkAvailable()) {
-//                    new Delete_DataUpdatedFlag().execute();
-//                    openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(SecondScreen.this);
-//                    database = openHelper.getWritableDatabase();
-//                    database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "+DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=null where "
-//                            +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1");
-//                    database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_member_id+" set "+DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=null where "
-//                            +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1");
-//                }
-//                else{
-//                    Toast.makeText(getApplicationContext(), "No Internet connection", Toast.LENGTH_SHORT).show();
-//                    openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(SecondScreen.this);
-//                    database = openHelper.getWritableDatabase();
-//                    database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "+DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=null where "
-//                            +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1");
-//                    database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_member_id+" set "+DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=null where "
-//                            +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1");
-//                }
-//            }
-//        });
 
         Intent i = getIntent();
         district = i.getStringExtra("district");
@@ -274,11 +250,17 @@ public class SecondScreen extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.setMax(100);
 
+        openHelper = new DataBaseHelperClass_VillageNames(SecondScreen.this);
+        databaseVilNames = openHelper.getWritableDatabase();
+
+        openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(SecondScreen.this);
+        databaseFacility = openHelper.getWritableDatabase();
+
         openHelper = new DataBaseHelperClass_Credentials(SecondScreen.this);
-        database = openHelper.getWritableDatabase();
+        databaseCredential = openHelper.getWritableDatabase();
 
         @SuppressLint("Recycle")
-        final Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_Credentials.TABLE_NAME+" where "
+        final Cursor cursor = databaseCredential.rawQuery("select * from "+ DataBaseHelperClass_Credentials.TABLE_NAME+" where "
                 + getString(R.string.cre_district_name)+"='"+district+"' and "
                 + getString(R.string.cre_taluk_name)+"='"+taluk+"' and "
                 + getString(R.string.cre_hobli_name)+"='"+hobli+"' and "
@@ -290,10 +272,10 @@ public class SecondScreen extends AppCompatActivity {
                 hobli_Code = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_Credentials.Hobli_Code));
                 va_Circle_Code = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_Credentials.VA_circle_Code));
                 flag = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.flag)));
-                database.close();
+                databaseCredential.close();
             }
         }else {
-            database.close();
+            databaseCredential.close();
         }
 
         Log.d("VA_Circle_Code", ""+va_Circle_Code);
@@ -348,25 +330,17 @@ public class SecondScreen extends AppCompatActivity {
                 new GetServiceTrandataFromServer().execute(getString(R.string.url_service_Tran_data));
             }
             else {
-                openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(SecondScreen.this);
-                database = openHelper.getWritableDatabase();
-                @SuppressLint("Recycle")
-                Cursor cursor1=database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME, null);
+                Cursor cursor1= databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME, null);
 
                 if (cursor1.getCount()>0){
                     fData=1;
 
-                    openHelper = new DataBaseHelperClass_VillageNames(SecondScreen.this);
-                    database = openHelper.getWritableDatabase();
-                    @SuppressLint("Recycle")
-                    Cursor cursor2 = database.rawQuery("select * from "+ DataBaseHelperClass_VillageNames.TABLE_NAME, null);
+                    Cursor cursor2 = databaseVilNames.rawQuery("select * from "+ DataBaseHelperClass_VillageNames.TABLE_NAME, null);
 
                     if(cursor2.getCount()>0) {
                         vData=1;
-                        openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(SecondScreen.this);
-                        database = openHelper.getWritableDatabase();
-                        @SuppressLint("Recycle")
-                        Cursor cursor3 = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
+
+                        Cursor cursor3 = databaseServTran.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
 
                         if(cursor3.getCount()>0) {
                             tData=1;
@@ -374,25 +348,24 @@ public class SecondScreen extends AppCompatActivity {
                             //btnPendency.setVisibility(View.VISIBLE);
                             //Toast.makeText(getApplicationContext(), "Data already exist", Toast.LENGTH_SHORT).show();
                             Toast.makeText(getApplicationContext(), getString(R.string.connection_not_available), Toast.LENGTH_SHORT).show();
-                            database.close();
                         }
                         else {
+                            cursor3.close();
                             tData=0;
                             Log.d("Values", "No records Exists");
                             btnProceed.setVisibility(View.GONE);
                             //btnPendency.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), getString(R.string.no_data), Toast.LENGTH_SHORT).show();
-                            database.close();
                         }
-                    }
-                    else {
+                    } else {
+                        cursor2.close();
                         vData=0;
-                        database.close();
                     }
-                }
-                else {
+                    databaseServTran.close();
+                } else {
                     fData=0;
-                    database.close();
+                    cursor1.close();
+                    databaseServTran.close();
                     Toast.makeText(getApplicationContext(), getString(R.string.connection_not_available), Toast.LENGTH_SHORT).show();
                 }
 
@@ -500,16 +473,12 @@ public class SecondScreen extends AppCompatActivity {
 
     public void truncateDatabase_facility(){
         dialog.incrementProgressBy(5);
-        openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(SecondScreen.this);
-        database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
-        Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME, null);
+        Cursor cursor = databaseFacility.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME, null);
         if(cursor.getCount()>0) {
-            database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME);
-            database.close();
+            databaseFacility.execSQL("Delete from " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME);
             Log.d("Database", "FacilityMaster Database Truncated");
         }else {
-            database.close();
+            cursor.close();
         }
 
     }
@@ -555,9 +524,6 @@ public class SecondScreen extends AppCompatActivity {
 
                 truncateDatabase_facility();
 
-                openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(SecondScreen.this);
-                database = openHelper.getWritableDatabase();
-
                 JSONArray array = jsonObject.getJSONArray("data");
                 int count = array.length();
 
@@ -578,7 +544,7 @@ public class SecondScreen extends AppCompatActivity {
                     set_and_get_facility_services.setFM_OTC_Charges(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_OTC_Charges));
 
 
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME + "(SlNo, FM_facility_code, FM_facility_edesc, FM_facility_kdesc, FM_acronym_on_doc_eng, FM_designated_officer" +
+                    databaseFacility.execSQL("insert into " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME + "(SlNo, FM_facility_code, FM_facility_edesc, FM_facility_kdesc, FM_acronym_on_doc_eng, FM_designated_officer" +
                             ", FM_gsc_no_days, FM_facility_display, FM_sakala_service, FM_OTC_Charges) values (" + set_and_get_facility_services.getSlNo() +","+ set_and_get_facility_services.getFM_facility_code()
                             + ",'" + set_and_get_facility_services.getFM_facility_edesc() + "','" + set_and_get_facility_services.getFM_facility_kdesc() + "','" + set_and_get_facility_services.getFM_acronym_on_doc_eng() + "','" + set_and_get_facility_services.getFM_designated_officer()
                             + "'," + set_and_get_facility_services.getFM_gsc_no_days() + ",'" + set_and_get_facility_services.getFM_facility_display()+ "','" + set_and_get_facility_services.getFM_sakala_service()
@@ -587,13 +553,9 @@ public class SecondScreen extends AppCompatActivity {
 
                 }
                 dialog.incrementProgressBy(2);
-                database.close();
             } catch (JSONException e) {
                 e.printStackTrace();
-                runOnUiThread(() -> {
-                    database.close();
-                    Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
-                });
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
             }catch (OutOfMemoryError e){
                 Log.e("OutOfMemoryError", ""+e.toString());
             }catch (NullPointerException e){
@@ -605,15 +567,13 @@ public class SecondScreen extends AppCompatActivity {
 
     public void truncateDatabase_village_name(){
         dialog.incrementProgressBy(11);
-        openHelper = new DataBaseHelperClass_VillageNames(SecondScreen.this);
-        database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
-        Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_VillageNames.TABLE_NAME, null);
+
+        Cursor cursor = databaseVilNames.rawQuery("select * from "+ DataBaseHelperClass_VillageNames.TABLE_NAME, null);
         if(cursor.getCount()>0) {
-            database.execSQL("Delete from " + DataBaseHelperClass_VillageNames.TABLE_NAME);
-            database.close();
+            databaseVilNames.execSQL("Delete from " + DataBaseHelperClass_VillageNames.TABLE_NAME);
             Log.d("Database", "VillageNames Database Truncated");
-        }else {database.close();}
+        }else {
+            cursor.close();}
 
     }
 
@@ -656,8 +616,6 @@ public class SecondScreen extends AppCompatActivity {
 
                 dialog.incrementProgressBy(10);
                 truncateDatabase_village_name();
-                openHelper = new DataBaseHelperClass_VillageNames(SecondScreen.this);
-                database = openHelper.getWritableDatabase();
 
                 JSONArray array = jsonObject.getJSONArray("data");
 
@@ -676,7 +634,7 @@ public class SecondScreen extends AppCompatActivity {
                     set_and_get_village_name.setHM_habitation_kname(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_kname));
 
 
-                    database.execSQL("insert into " + DataBaseHelperClass_VillageNames.TABLE_NAME
+                    databaseVilNames.execSQL("insert into " + DataBaseHelperClass_VillageNames.TABLE_NAME
                             + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_code, HM_habitation_ename, HM_habitation_kname) values ("
                             + set_and_get_village_name.getVCM_va_circle_code() +",'"+set_and_get_village_name.getVCM_va_circle_ename()+"','"+set_and_get_village_name.getVCM_va_circle_kname()+"',"
                             + set_and_get_village_name.getHM_village_code() +","+ set_and_get_village_name.getHM_habitation_code()+",'"+ set_and_get_village_name.getHM_habitation_ename()+"','"
@@ -685,7 +643,6 @@ public class SecondScreen extends AppCompatActivity {
 
                 }
                 dialog.incrementProgressBy(10);
-                database.close();
                 final int totalProgressTime = 100;
                 final Thread t = new Thread() {
                     @Override
@@ -713,10 +670,7 @@ public class SecondScreen extends AppCompatActivity {
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                runOnUiThread(() -> {
-                    database.close();
-                    Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
-                });
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
             }catch (OutOfMemoryError e){
                 dialog.dismiss();
                 Log.e("OutOfMemoryError", ""+e.toString());
@@ -729,18 +683,12 @@ public class SecondScreen extends AppCompatActivity {
     }
 
     public void truncateDatabase_Service_Tran_data(){
-        //dialog.incrementProgressBy(10);
-        openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(SecondScreen.this);
-        database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
-        Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
+        Cursor cursor = databaseServTran.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
         if(cursor.getCount()>0) {
-            database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME);
+            databaseServTran.execSQL("Delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME);
             Log.d("Database", "ServiceTranTable Database Truncated");
-            database.close();
-        }else {
-            database.close();
         }
+        cursor.close();
 
     }
 
@@ -806,12 +754,6 @@ public class SecondScreen extends AppCompatActivity {
 
                 truncateDatabase_Service_Tran_data();
 
-                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(SecondScreen.this);
-                database = openHelper.getWritableDatabase();
-
-                openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(SecondScreen.this);
-                database1 = openHelper.getWritableDatabase();
-
                 for (int i = 0; i < count; i++) {
 
                     JSONObject object = array.getJSONObject(i);
@@ -850,41 +792,23 @@ public class SecondScreen extends AppCompatActivity {
                     set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
                     set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
                     set_and_get_service_tran_data.setST_Push_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag));
+                    set_and_get_service_tran_data.setIST_annual_income(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IST_annual_income));
 
                     serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
+                    Log.d("serviceCode", "" + serviceCode);
 
-//                    openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(SecondScreen.this);
-//                    database = openHelper.getWritableDatabase();
-
-//                    @SuppressLint("Recycle")
-//                    Cursor cursor = database1.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
-//                            +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode, null);
-//                    if (cursor.getCount()>0) {
-//                        if (cursor.moveToNext()) {
-//                            serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
-//                            Log.d("serviceName", serviceName);
-//                        }
-//                    }
-                    if(serviceCode==6){
-                        serviceName = "Caste and Income Certficate";
-                        serviceName_k = "ಜಾತಿ ಮತ್ತು ಆದಾಯ ಪ್ರಮಾಣ ಪತ್ರ ";
-                    }else if(serviceCode==7){
-                        serviceName="Caste Certificate (Cat-A)";
-                        serviceName_k = "ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಪ್ರವರ್ಗ-ಎ)";
-                    }else if(serviceCode==8){
-                        serviceName = "Caste Certificate (SC/ST)";
-                        serviceName_k ="ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಅ.ಜಾ/ಅ.ಪಂ)";
-                    }else if(serviceCode==9){
-                        serviceName = "OBC Certificate (Central)";
-                        serviceName_k= "ಹಿಂದುಳಿದ ವರ್ಗ ಪ್ರ.ಪತ್ರ (ಕೇ.ಸ)";
-                    }else if (serviceCode==10){
-                        serviceName = "Residence Certificate";
-                        serviceName_k = "ವಾಸ ಸ್ಥಳ ಪ್ರಮಾಣ ಪತ್ರ";
-                    }else {
-                        serviceName=null;
-                        serviceName_k=null;
+                    Cursor cursor = databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
+                            +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode, null);
+                    if (cursor.getCount()>0) {
+                        if (cursor.moveToNext()) {
+                            serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
+                            serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
+                            Log.d("serviceName", serviceName+", "+ serviceName_k);
+                        }
+                    } else {
+                        cursor.close();
                     }
-                    Log.d("serviceName", serviceName+", "+ serviceName_k);
+
                     set_and_get_service_tran_data.setService_Name(serviceName);
                     set_and_get_service_tran_data.setService_Name_k(serviceName_k);
 
@@ -898,10 +822,10 @@ public class SecondScreen extends AppCompatActivity {
                         gsc_firstPart_Name=null;
                     }
 //                    if(j<=1000) {
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                    databaseServTran.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                                 + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, Service_Name, Service_Name_k, ST_GSC_No, ST_applicant_photo, ST_GSCFirstPart, GSCFirstPart_Name" +
                                 ", ST_applicant_name, ST_DueDate, ST_Raised_Location, ST_father_name, ST_mother_name, ST_ID_NUMBER, ST_mobile_no, ST_applicant_caddress1, ST_applicant_caddress2, ST_applicant_caddress3,ST_applicant_cadd_pin, ST_ID_TYPE, ST_Eng_Certificate,"
-                                + "CST_res_category, CST_caste_as_per_app, CST_annual_income, SCOT_caste_app, SCOT_annual_income, GST_No_Years_Applied, GST_No_Mths_Applied, ST_Push_Flag)"
+                                + "CST_res_category, CST_caste_as_per_app, CST_annual_income, SCOT_caste_app, SCOT_annual_income, GST_No_Years_Applied, GST_No_Mths_Applied, ST_Push_Flag, IST_annual_income)"
                                 + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
                                 + set_and_get_service_tran_data.getTaluk_Code() + ","
                                 + set_and_get_service_tran_data.getHobli_Code()
@@ -930,63 +854,51 @@ public class SecondScreen extends AppCompatActivity {
                                 + set_and_get_service_tran_data.getST_ID_TYPE()+",'"
                                 + set_and_get_service_tran_data.getEng_Certify()+"','"
                                 + set_and_get_service_tran_data.getCST_res_category()+"','"
-                                +set_and_get_service_tran_data.getCST_caste_as_per_app() + "','"
+                                + set_and_get_service_tran_data.getCST_caste_as_per_app() + "','"
                                 + set_and_get_service_tran_data.getCST_annual_income()+"','"
-                                +set_and_get_service_tran_data.getSCOT_caste_app()+"','"
-                                +set_and_get_service_tran_data.getSCOT_annual_income() + "','"
-                                +set_and_get_service_tran_data.getGST_No_Years_Applied()+"','"
-                                +set_and_get_service_tran_data.getGST_No_Mths_Applied()+"','"
-                            +set_and_get_service_tran_data.getST_Push_Flag()+"')");
+                                + set_and_get_service_tran_data.getSCOT_caste_app()+"','"
+                                + set_and_get_service_tran_data.getSCOT_annual_income() + "','"
+                                + set_and_get_service_tran_data.getGST_No_Years_Applied()+"','"
+                                + set_and_get_service_tran_data.getGST_No_Mths_Applied()+"','"
+                                + set_and_get_service_tran_data.getST_Push_Flag()+"','"
+                                + set_and_get_service_tran_data.getIST_annual_income()+"')");
 
                     Log.d("Database", "ServiceTranTable Database Inserted " + j);
                     j++;
 
                 }
-                database.close();
-                database1.close();
+
                 runOnUiThread(() -> {
                     timeSwapBuff += timeInMilliseconds;
                     customHandler.removeCallbacks(updateTimerThread);
-                    openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(SecondScreen.this);
-                    database = openHelper.getWritableDatabase();
-                    @SuppressLint("Recycle")
-                    Cursor cursor3 = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
-
+                    Cursor cursor3 = databaseServTran.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
                     if(cursor3.getCount()>0) {
                         tData=1;
                         btnProceed.setVisibility(View.VISIBLE);
                         //btnPendency.setVisibility(View.VISIBLE);
                         btnDownload.setText(R.string.download);
-                        dialog.dismiss();
                         //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-                        database.close();
-                        database1.close();
                     }
                     else {
+                        cursor3.close();
                         tData=0;
                         Log.d("Values", "No records Exists");
                         Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();
                         btnDownload.setText(R.string.download);
                         btnProceed.setVisibility(View.GONE);
                         //btnPendency.setVisibility(View.GONE);
-                        dialog.dismiss();
-                        database.close();
-                        database1.close();
                     }
+                    dialog.dismiss();
                 });
             }catch (JSONException e) {
                 e.printStackTrace();
                 runOnUiThread(() -> {
                     dialog.dismiss();
-                    database.close();
-                    database1.close();
                     Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
                 });
             }catch (OutOfMemoryError e){
                 runOnUiThread(() -> {
                     dialog.dismiss();
-                    database.close();
-                    database1.close();
                     buildAlertForOutOfMemory();
                     //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
                 });
@@ -1022,10 +934,7 @@ public class SecondScreen extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected String doInBackground(String... params) {
-            openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(SecondScreen.this);
-            database = openHelper.getWritableDatabase();
-            @SuppressLint("Recycle")
-            Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+","
+            Cursor cursor = databaseServTran.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.va_Circle_Code +","
@@ -1198,7 +1107,7 @@ public class SecondScreen extends AppCompatActivity {
                                         Log.d("Request_", "UpdateServiceParameterTable" + "Data Uploaded Successfully");
                                     });
 
-                                    database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + Applicant_Id);
+                                    databaseServTran.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + Applicant_Id);
                                     Log.d("Local_Result", "A row deleted Successfully");
                                 }
                                 else {
@@ -1214,15 +1123,13 @@ public class SecondScreen extends AppCompatActivity {
                                 });
                             }
                         }while (cursor.moveToNext());
-                    }else {
-                        database.close();
                     }
 
                 } else {
                     runOnUiThread(() -> {
                         //Toast.makeText(getApplicationContext(), "There is no Updated data to Upload in Server " , Toast.LENGTH_SHORT).show();
                         Log.d("InsertServiceParaTable", "There is no Updated data to Upload in Server");
-                        database.close();
+                        cursor.close();
                     });
                 }
 

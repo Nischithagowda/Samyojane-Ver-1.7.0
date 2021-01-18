@@ -55,6 +55,7 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     public static String Service_Name = "Service_Name";
     public static String Service_Name_k = "Service_Name_k";
     public static String ST_Push_Flag = "ST_Push_Flag";
+    public static String IST_annual_income = "IST_annual_income";
 
     public static String U_RationCard_No = "ST_Upd_ID_NUMBER";
     public static String U_Mobile_No = "ST_Upd_mobile_no";
@@ -138,7 +139,7 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
             + Mobile_No+" decimal(10,0),"+Address1+" TEXT,"+Address2+" TEXT,"+Address3+" TEXT,"+ ST_applicant_cadd_pin+" int,"+ ST_applicant_photo+" TEXT, "+ ST_Eng_Certificate+" TEXT,"+ ST_GSCFirstPart+" int,"+ GSCFirstPart_Name+" TEXT,"
             + CST_res_category+ " TEXT,"+ CST_caste_as_per_app+ " TEXT,"
             + CST_annual_income + " TEXT,"+ SCOT_caste_app + " TEXT,"+ SCOT_annual_income + " TEXT,"+ GST_No_Years_Applied +" TEXT,"
-            + GST_No_Mths_Applied + " TEXT,"+ ST_Push_Flag+" TEXT," + DataUpdateFlag+" int)";
+            + GST_No_Mths_Applied + " TEXT,"+ ST_Push_Flag+" TEXT,"+ IST_annual_income+" TEXT," + DataUpdateFlag+" int)";
 
     private static String CREATE_TABLE_1 ="CREATE TABLE " + TABLE_NAME_1 +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+va_Circle_Code+" int,"+Village_Code+ " int,"+ Habitation_code +" int,"+ Town_Code+" int,"+Ward_Code+" int,"+Service_Code+" int,"+RD_No+" bigInt,"
             + Applicant_Name+" TEXT,"+ Father_Name +" TEXT,"+Mother+" TEXT,"+ U_Mobile_No+" decimal(10,0),"+U_RationCard_No+" TEXT,"+Address1+" TEXT,"

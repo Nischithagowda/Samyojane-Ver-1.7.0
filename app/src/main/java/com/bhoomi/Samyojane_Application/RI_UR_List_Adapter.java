@@ -136,7 +136,6 @@ public class RI_UR_List_Adapter  extends BaseAdapter implements Filterable {
                 openHelper=new DataBaseHelperClass_Credentials(context);
                 database=openHelper.getWritableDatabase();
 
-                @SuppressLint("Recycle")
                 Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_Credentials.TABLE_NAME+" where "+ DataBaseHelperClass_Credentials.District_Code+"="+district_Code+" and "
                         + DataBaseHelperClass_Credentials.Taluk_Code+"="+taluk_Code+" and "+DataBaseHelperClass_Credentials.Hobli_Code+"="+hobli_Code+" and "
                         + DataBaseHelperClass_Credentials.VA_circle_Code+"="+va_circle_Code, null);
@@ -146,6 +145,8 @@ public class RI_UR_List_Adapter  extends BaseAdapter implements Filterable {
                         VA_Name = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.VA_Name));
                         Log.d("VA_Name:", VA_Name);
                     }
+                } else {
+                    cursor.close();
                 }
                 Intent i = new Intent(context, RI_Field_Report_FirstScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("district_Code", district_Code);

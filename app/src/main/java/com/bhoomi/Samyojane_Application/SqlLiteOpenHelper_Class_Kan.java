@@ -1,12 +1,10 @@
 package com.bhoomi.Samyojane_Application;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -23,12 +21,8 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DB_PATH_SUFFIX = "/databases/";
-
-    private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     Cursor cursor;
-    int townCode, wardCode;
-    int town_totalCount, ward_totalCount;
 
     private static final String DATABASE_NAME_reasons = "Reasons_Master.db";
     private String Table_1_re = "CreamyLayerReasons";
@@ -46,36 +40,16 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
     private static String DATABASE_NAME_docs_type = "DOCUMENT_TYPE_MASTER.db";
     private static String Table_DOCS_Type = "DOCUMENT_TYPE_MASTER";
     private static String Doc_Code = "DTM_document_code";
-    private static String Doc_Name_E = "DTM_document_edesc";
-    private static String Doc_Name_K = "DTM_document_kdesc";
+    static String Doc_Name_E = "DTM_document_edesc";
+    static String Doc_Name_K = "DTM_document_kdesc";
 
     private static String DATABASE_NAME_town_ward = "TOWN_WARD_MASTER.db";
 
-    private static String Table_TOWN_MASTER = "TOWN_MASTER";
-    private static String TWM_district_code = "TWM_district_code";
-    private static String TWM_taluk_code = "TWM_taluk_code";
-    private static String TWM_town_code = "TWM_town_code";
-    private static String TWM_town_kname = "TWM_town_kname";
-    private static String TWM_town_ename = "TWM_town_ename";
-
-    private static String Table_WARD_MASTER = "WARD_MASTER";
-    private static String WM_district_code = "WM_district_code";
-    private static String WM_taluk_code = "WM_taluk_code";
-    private static String WM_town_code = "WM_town_code";
-    private static String WM_ward_no = "WM_ward_no";
-    private static String WM_hobli_code = "WM_hobli_code";
-    private static String WM_va_circle_code = "WM_va_circle_code";
-    private static String WM_ward_kname = "WM_ward_kname";
-    private static String WM_ward_ename = "WM_ward_ename";
-
     private static String DATABASE_Name_ID_Type = "ID_MASTER.db";
 
-    private static String ID_Master_tbl="ID_MASTER";
-    private static String ID_Code = "ID_Code";
-    private static String ID_Kname = "ID_Kname";
-    private static String ID_Ename = "ID_Ename";
+    static String ID_Master_tbl="ID_MASTER";
+    static String ID_Code = "ID_Code";
 
-    @SuppressLint("StaticFieldLeak")
     private static Context ctx;
 
     public SqlLiteOpenHelper_Class_Kan(Context context) {
@@ -115,9 +89,8 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if (cursor.moveToNext()){
                 docs_Name = cursor.getString(cursor.getColumnIndexOrThrow(Doc_Name_K));
             }
-            return docs_Name;
         }
-        else return docs_Name;
+        return docs_Name;
     }
 
     public String Get_E_DocsName(int docs_ID){
@@ -128,9 +101,8 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if (cursor.moveToNext()){
                 docs_Name = cursor.getString(cursor.getColumnIndexOrThrow(Doc_Name_E));
             }
-            return docs_Name;
         }
-        else return docs_Name;
+        return docs_Name;
     }
 
     public String GetCreamyLayerReason_BY_Code(int code, String col_name){
@@ -141,11 +113,9 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if(cursor.moveToNext()){
                 str = cursor.getString(cursor.getColumnIndexOrThrow(col_name));
             }
-            return str;
         }
-        else return str;
+        return str;
     }
-    @SuppressLint("Recycle")
     public int Get_CreamyLayerReasons(String str, String col_name){
         int num=0;
         database = this.getReadableDatabase();
@@ -154,10 +124,8 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if(cursor.moveToNext()) {
                 num = cursor.getInt(cursor.getColumnIndex(SlNo));
             }
-            return num;
         }
-        else
-            return num;
+        return num;
     }
 
     public String Get_CertificateRejectionReason_BY_Code(int code, String col_name){
@@ -168,12 +136,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if(cursor.moveToNext()){
                 str = cursor.getString(cursor.getColumnIndexOrThrow(col_name));
             }
-            return str;
         }
-        else return str;
+        return str;
     }
 
-    @SuppressLint("Recycle")
     public int Get_CertificateRejectionReason(String str, String col_name){
         int num=0;
         database = this.getReadableDatabase();
@@ -182,10 +148,8 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if(cursor.moveToNext()) {
                 num = cursor.getInt(cursor.getColumnIndex(SlNo));
             }
-            return num;
         }
-        else
-            return num;
+        return num;
     }
 
     public String Get_Purpose_BY_Code(int code, String col_name){
@@ -196,12 +160,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if(cursor.moveToNext()){
                 str = cursor.getString(cursor.getColumnIndexOrThrow(col_name));
             }
-            return str;
         }
-        else return str;
+        return str;
     }
 
-    @SuppressLint("Recycle")
     public int Get_Purpose(String str, String col_name){
         int num=0;
         database = this.getReadableDatabase();
@@ -210,13 +172,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if(cursor.moveToNext()) {
                 num = cursor.getInt(cursor.getColumnIndex(SlNo));
             }
-            return num;
         }
-        else
-            return num;
+        return num;
     }
 
-    @SuppressLint("Recycle")
     public List<SpinnerObject> Get_Category(String str, String add){
         List<SpinnerObject> objects = new ArrayList<>();
         Log.d("Category1", "Get_Category enter");
@@ -245,7 +204,6 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     public List<SpinnerObject> Get_Category_OBC(String str, String add){
         List<SpinnerObject> objects = new ArrayList<>();
         Log.d("Category1", "Get_Category enter");
@@ -277,11 +235,12 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
     public String GetCategory_BY_Code(int catCode){
         String str = "";
         database = this.getReadableDatabase();
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+ Table_CAT_MASTER+ " where RTM_res_category_code="+catCode, null);
         if(cursor.getCount()>0){
             if(cursor.moveToFirst()){
                 str = cursor.getString(cursor.getColumnIndexOrThrow("RTM_res_category_kdesc"));
+            } else {
+                cursor.close();
             }
             return str;
         }
@@ -289,7 +248,6 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         return str;
     }
 
-    @SuppressLint("Recycle")
     public int GetCategoryCode(String str){
         int num=0;
         database = this.getReadableDatabase();
@@ -304,7 +262,6 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         return num;
     }
 
-    @SuppressLint("Recycle")
     public List<SpinnerObject> Get_Category_NK(){
         List<SpinnerObject> objects = new ArrayList<>();
         Log.d("Category_NK", "Get_Category enter");
@@ -355,6 +312,28 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         return objects;
     }
 
+    public List<SpinnerObject> GetCaste_EWS(){
+        List<SpinnerObject> objects = new ArrayList<>();
+        try {
+            database = this.getReadableDatabase();
+            cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where CM_isEWS='Y' order by CM_caste_kdesc", null);
+            if(cursor.getCount()>0){
+                if(cursor.moveToNext()){
+                    do{
+                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex("CM_res_category_code")), cursor.getString(cursor.getColumnIndex("CM_caste_kdesc"))));
+                    }while (cursor.moveToNext());
+                }
+            }
+            cursor.close();
+            database.close();
+        }
+        catch (Exception e){
+            Log.d("Catch", String.valueOf(e));
+        }
+        Log.d("Caste", String.valueOf(objects));
+        return objects;
+    }
+
     public List<SpinnerObject> GetCaste_OBC(int num){
         List<SpinnerObject> objects = new ArrayList<>();
         try {
@@ -385,12 +364,11 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if(cursor.moveToNext()){
                 str = cursor.getString(cursor.getColumnIndexOrThrow("CM_caste_kdesc"));
             }
-            return str;
         }
         else {
             //Log.d("Caste_Name", str);
-            return str;
         }
+        return str;
     }
 
     public int GetCasteCode(String str, int catCode){

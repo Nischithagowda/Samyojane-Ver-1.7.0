@@ -354,6 +354,28 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
         Log.d("Caste", String.valueOf(objects));
         return objects;
     }
+
+    public List<SpinnerObject> GetCaste_EWS(){
+        List<SpinnerObject> objects = new ArrayList<>();
+        try {
+            database = this.getReadableDatabase();
+            cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where CM_isEWS='Y' order by CM_caste_edesc", null);
+            if(cursor.getCount()>0){
+                if(cursor.moveToNext()){
+                    do{
+                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex("CM_res_category_code")), cursor.getString(cursor.getColumnIndex("CM_caste_edesc"))));
+                    }while (cursor.moveToNext());
+                }
+            }
+            cursor.close();
+            database.close();
+        }
+        catch (Exception e){
+            Log.d("Catch", String.valueOf(e));
+        }
+        Log.d("Caste", String.valueOf(objects));
+        return objects;
+    }
     public List<SpinnerObject> GetCaste_OBC(int num){
         List<SpinnerObject> objects = new ArrayList<>();
         try {

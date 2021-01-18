@@ -56,7 +56,7 @@ public class RI_SecondScreen extends AppCompatActivity {
     TextView proceed, RIModule, tvDistrict, tvTaluk, tvHobli, tvRI_Name, tvTimerValue;
     Button btnDownload, btnUpload, btnProceed, btnPendency;
     private SQLiteOpenHelper openHelper;
-    SQLiteDatabase database, database3;
+    SQLiteDatabase database, database3, database1;
     String district, taluk, hobli, VA_Circle_Name, RI_Name, VA_Name;
     static  String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
 //    private static final String url_service_Tran_data_RI = "http://164.100.133.123:9600/Bhoomi_download/WebService.asmx/Get_Service_tran_data_For_RI";
@@ -643,8 +643,8 @@ public class RI_SecondScreen extends AppCompatActivity {
                 database = openHelper.getWritableDatabase();
                 truncateDatabase_Service_Parameters_tbl_data();
 
-//                openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(RI_SecondScreen.this);
-//                database1 = openHelper.getWritableDatabase();
+                openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(RI_SecondScreen.this);
+                database1 = openHelper.getWritableDatabase();
 
                 int count = array.length();
                 for (int i = 0; i < count; i++) {
@@ -689,37 +689,39 @@ public class RI_SecondScreen extends AppCompatActivity {
                     set_and_get_service_parameter.setDataUpdateFlag(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag));
 
                     serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
+                    Log.d("serviceCode", "" + serviceCode);
 
-//                    @SuppressLint("Recycle")
-//                    Cursor cursor = database1.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
-//                            +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode, null);
-//                    if (cursor.getCount()>0) {
-//                        if (cursor.moveToNext()) {
-//                            serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
-//                            serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
-//                            Log.d("serviceName", serviceName+", "+serviceName_k);
-//                        }
-//                    }
-
-                    if(serviceCode==6){
-                        serviceName = "Caste and Income Certficate";
-                        serviceName_k = "ಜಾತಿ ಮತ್ತು ಆದಾಯ ಪ್ರಮಾಣ ಪತ್ರ ";
-                    }else if(serviceCode==7){
-                        serviceName="Caste Certificate (Cat-A)";
-                        serviceName_k = "ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಪ್ರವರ್ಗ-ಎ)";
-                    }else if(serviceCode==8){
-                        serviceName = "Caste Certificate (SC/ST)";
-                        serviceName_k ="ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಅ.ಜಾ/ಅ.ಪಂ)";
-                    }else if(serviceCode==9){
-                        serviceName = "OBC Certificate (Central)";
-                        serviceName_k= "ಹಿಂದುಳಿದ ವರ್ಗ ಪ್ರ.ಪತ್ರ (ಕೇ.ಸ)";
-                    }else if (serviceCode==10){
-                        serviceName = "Residence Certificate";
-                        serviceName_k = "ವಾಸ ಸ್ಥಳ ಪ್ರಮಾಣ ಪತ್ರ";
-                    }else {
-                        serviceName=null;
-                        serviceName_k=null;
+                    Cursor cursor = database1.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
+                            +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode, null);
+                    if (cursor.getCount()>0) {
+                        if (cursor.moveToNext()) {
+                            serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
+                            serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
+                            Log.d("serviceName", serviceName+", "+ serviceName_k);
+                        }
+                    } else {
+                        cursor.close();
                     }
+
+//                    if(serviceCode==6){
+//                        serviceName = "Caste and Income Certficate";
+//                        serviceName_k = "ಜಾತಿ ಮತ್ತು ಆದಾಯ ಪ್ರಮಾಣ ಪತ್ರ ";
+//                    }else if(serviceCode==7){
+//                        serviceName="Caste Certificate (Cat-A)";
+//                        serviceName_k = "ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಪ್ರವರ್ಗ-ಎ)";
+//                    }else if(serviceCode==8){
+//                        serviceName = "Caste Certificate (SC/ST)";
+//                        serviceName_k ="ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಅ.ಜಾ/ಅ.ಪಂ)";
+//                    }else if(serviceCode==9){
+//                        serviceName = "OBC Certificate (Central)";
+//                        serviceName_k= "ಹಿಂದುಳಿದ ವರ್ಗ ಪ್ರ.ಪತ್ರ (ಕೇ.ಸ)";
+//                    }else if (serviceCode==10){
+//                        serviceName = "Residence Certificate";
+//                        serviceName_k = "ವಾಸ ಸ್ಥಳ ಪ್ರಮಾಣ ಪತ್ರ";
+//                    }else {
+//                        serviceName=null;
+//                        serviceName_k=null;
+//                    }
 
                     set_and_get_service_parameter.setService_Name(serviceName);
                     set_and_get_service_parameter.setService_Name_k(serviceName_k);

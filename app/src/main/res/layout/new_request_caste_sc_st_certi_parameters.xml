@@ -123,10 +123,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="1.2dp"
                     android:background="#FFA34C"
-                    tools:ignore="MissingConstraints"
                     tools:layout_editor_absoluteX="0dp"
                     tools:layout_editor_absoluteY="0dp"
                     android:layout_marginTop="10dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -136,7 +136,6 @@
                         android:layout_width="1.2dp"
                         android:layout_height="wrap_content"
                         android:background="#FFA34C"
-                        tools:ignore="MissingConstraints"
                         tools:layout_editor_absoluteX="0dp"
                         tools:layout_editor_absoluteY="0dp" />
 
@@ -158,14 +157,15 @@
                                 android:layout_height="wrap_content"
                                 android:layout_column="1"
                                 android:text="@string/number_of_years_napplicant_is_resident_nin_karnataka"
-                                android:textColor="@android:color/black" />
+                                android:textColor="@android:color/black"
+                                android:layout_gravity="center_vertical"/>
 
                             <TextView
                                 android:text="@string/colon"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_vertical"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:layout_column="2"/>
@@ -175,10 +175,8 @@
                                 android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@android:color/black"
-                                android:textAlignment="center"
-                                tools:ignore="RtlCompat,UnusedAttribute"
-                                android:layout_marginTop="15dp"
-                                android:layout_column="3"/>
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"/>
 
                         </TableRow>
 
@@ -189,15 +187,16 @@
                                 android:text="@string/caste_of_applicant_nfather"
                                 android:textColor="@android:color/black"
                                 android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:layout_column="1" />
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"/>
 
                             <TextView
                                 android:text="@string/colon"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_vertical"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:layout_column="2"/>
@@ -207,9 +206,16 @@
                                 android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@android:color/black"
-                                android:textAlignment="center"
-                                android:layout_marginTop="10dp"
-                                tools:ignore="RtlCompat,UnusedAttribute" />
+                                android:layout_gravity="center_vertical" />
+
+                            <TextView
+                                android:id="@+id/txtFatherCategory"
+                                android:text=""
+                                android:textColor="@android:color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"/>
 
                         </TableRow>
 
@@ -217,7 +223,7 @@
 
                             <AutoCompleteTextView
                                 android:id="@+id/autoSearchFatherCaste"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
                                 android:textColor="@android:color/black"
@@ -225,7 +231,8 @@
                                 android:completionThreshold="1"
                                 android:backgroundTint="@android:color/black"
                                 android:hint="@string/select_caste"
-                                android:layout_column="3"/>
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"/>
                         </TableRow>
 
                         <TableRow>
@@ -234,15 +241,16 @@
                                 android:text="@string/caste_of_applicant_nmother"
                                 android:textColor="@android:color/black"
                                 android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:layout_column="1" />
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"/>
 
                             <TextView
                                 android:text="@string/colon"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_vertical"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:layout_column="2"/>
@@ -252,9 +260,16 @@
                                 android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@android:color/black"
-                                android:textAlignment="center"
-                                android:layout_marginTop="10dp"
-                                tools:ignore="RtlCompat,UnusedAttribute" />
+                                android:layout_gravity="center_vertical" />
+
+                            <TextView
+                                android:id="@+id/txtMotherCategory"
+                                android:text=""
+                                android:textColor="@android:color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"/>
 
                         </TableRow>
 
@@ -262,7 +277,7 @@
 
                             <AutoCompleteTextView
                                 android:id="@+id/autoSearchMotherCaste"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
                                 android:textColor="@android:color/black"
@@ -270,7 +285,8 @@
                                 android:completionThreshold="1"
                                 android:backgroundTint="@android:color/black"
                                 android:hint="@string/select_caste"
-                                android:layout_column="3"/>
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"/>
                         </TableRow>
 
                         <TableRow>
@@ -279,15 +295,16 @@
                                 android:text="@string/caste_of_applicant_nas_per_enquiry"
                                 android:textColor="@android:color/black"
                                 android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:layout_column="1" />
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"/>
 
                             <TextView
                                 android:text="@string/colon"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_vertical"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:layout_column="2"/>
@@ -297,9 +314,16 @@
                                 android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@android:color/black"
-                                android:textAlignment="center"
-                                android:layout_marginTop="10dp"
-                                tools:ignore="RtlCompat,UnusedAttribute" />
+                                android:layout_gravity="center_vertical" />
+
+                            <TextView
+                                android:id="@+id/txtAppCategory"
+                                android:text=""
+                                android:textColor="@android:color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"/>
 
                         </TableRow>
 
@@ -307,7 +331,7 @@
 
                             <AutoCompleteTextView
                                 android:id="@+id/autoSearchAPPCaste_VA"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
                                 android:textColor="@android:color/black"
@@ -315,7 +339,8 @@
                                 android:completionThreshold="1"
                                 android:backgroundTint="@android:color/black"
                                 android:hint="@string/select_caste"
-                                android:layout_column="3"/>
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"/>
                         </TableRow>
 
                         <TableRow
@@ -334,7 +359,7 @@
                                 android:textColor="@color/colorPrimaryDark"
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_vertical"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:layout_column="2"/>
@@ -346,8 +371,10 @@
                                 android:textColor="@android:color/black"
                                 android:textSize="14sp"
                                 android:inputType="number"
-                                tools:ignore="Autofill"
-                                android:maxLength="7"/>
+                                android:autofillHints="@string/enter_annual_income"
+                                android:maxLength="7"
+                                android:imeOptions="actionNext"
+                                android:layout_gravity="center_vertical"/>
                         </TableRow>
 
                         <TableRow
@@ -358,14 +385,15 @@
                                 android:textColor="@android:color/black"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_column="1" />
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"/>
 
                             <TextView
                                 android:text="@string/colon"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_vertical"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:layout_column="2"/>
@@ -373,10 +401,10 @@
                             <RadioGroup
                                 android:id="@+id/radioGroup1"
                                 android:layout_width="140dp"
-                                android:layout_height="30dp"
+                                android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:weightSum="1"
-                                tools:ignore="RtlHardcoded">
+                                android:layout_gravity="center_vertical">
 
                                 <RadioButton
                                     android:id="@+id/radioButton1"
@@ -413,13 +441,15 @@
                                 android:textColor="@android:color/black"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_column="1" />
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"/>
 
                             <TextView
                                 android:text="@string/colon"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:layout_column="2"/>
@@ -428,8 +458,7 @@
                                 android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@android:color/black"
-                                android:textAlignment="center"
-                                tools:ignore="RtlCompat,UnusedAttribute" />
+                                android:layout_gravity="center_vertical"/>
                         </TableRow>
 
                         <TableRow
@@ -441,14 +470,15 @@
                                 android:textColor="@android:color/black"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_column="1" />
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"/>
 
                             <TextView
                                 android:text="@string/colon"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_vertical"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:layout_column="2"/>
@@ -459,8 +489,10 @@
                                 android:hint="@string/enter_the_remarks"
                                 android:textColor="@android:color/black"
                                 android:textSize="14sp"
-                                android:inputType="textMultiLine"
-                                tools:ignore="Autofill" />
+                                android:inputType="textImeMultiLine"
+                                android:imeOptions="actionDone"
+                                android:autofillHints="@string/enter_the_remarks"
+                                android:layout_gravity="center_vertical"/>
                         </TableRow>
 
                     </TableLayout>
@@ -469,7 +501,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="1.2dp"
                     android:background="#FFA34C"
-                    tools:ignore="MissingConstraints"
                     tools:layout_editor_absoluteX="0dp"
                     tools:layout_editor_absoluteY="0dp" />
         </LinearLayout>
@@ -488,9 +519,8 @@
                 android:adjustViewBounds="true"
                 android:background="@drawable/ic_person_24dp"
                 android:scaleType="fitXY"
-                tools:ignore="ContentDescription,RtlHardcoded"
                 android:layout_marginEnd="20sp"
-                android:layout_marginRight="20sp" />
+                android:contentDescription="@string/capture_photo"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -531,7 +561,7 @@
                 android:layout_gravity="center"
                 android:textColor="@android:color/black"
                 android:background="@drawable/button_background"
-                tools:ignore="ButtonStyle" />
+                style="?android:buttonBarButtonStyle"/>
 
             <Button
                 android:id="@+id/btnSave"
@@ -543,7 +573,7 @@
                 android:textColor="@android:color/black"
                 android:background="@drawable/button_background"
                 android:layout_marginStart="40dp"
-                tools:ignore="ButtonStyle" />
+                style="?android:buttonBarButtonStyle"/>
 
         </LinearLayout>
     </LinearLayout>

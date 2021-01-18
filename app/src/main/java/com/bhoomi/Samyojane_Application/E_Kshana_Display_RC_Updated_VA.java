@@ -241,11 +241,12 @@ public class E_Kshana_Display_RC_Updated_VA extends AppCompatActivity {
 
     public void truncateDatabase_RCList(){
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_E_Kshana.TABLE_RC_Numbers_VA, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_RC_Numbers_VA);
             Log.d("Database", "RCList Table Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -255,7 +256,6 @@ public class E_Kshana_Display_RC_Updated_VA extends AppCompatActivity {
         int i=1;
         Log.d("InDisplay", ""+ i);
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_RC_Numbers_VA
                 +" where " + DataBaseHelperClass_btnDownload_E_Kshana.RC_DistCode+"="+dCode+" and "
                 + DataBaseHelperClass_btnDownload_E_Kshana.RC_TalukCode+"="+tCode+" and "
@@ -289,8 +289,8 @@ public class E_Kshana_Display_RC_Updated_VA extends AppCompatActivity {
             list_adapter = new RC_VA_List_Adapter(E_Kshana_Display_RC_Updated_VA.this, SlNo, RCList, DistCode_ass, TalCode_ass, HobCode_ass, uName_get_Array);
             listView.setAdapter(list_adapter);
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
-        }
-        else{
+        } else{
+            cursor.close();
             dialog.dismiss();
             listLayout.setVisibility(View.VISIBLE);
             emptyTxt.setVisibility(View.VISIBLE);

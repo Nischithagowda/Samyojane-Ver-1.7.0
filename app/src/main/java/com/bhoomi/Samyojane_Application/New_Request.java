@@ -206,6 +206,7 @@ public class New_Request extends AppCompatActivity {
         setContentView(R.layout.new_request);
 
         optionA=getString(R.string.yes);
+        strYear = getString(R.string.select_spinner);
 
         tvTaluk = findViewById(R.id.taluk);
         tvHobli = findViewById(R.id.hobli);
@@ -530,40 +531,63 @@ public class New_Request extends AppCompatActivity {
         database = openHelper.getWritableDatabase();
 
         switch (serviceCode) {
-            case "6": {
+            case "6":
+            case "11":
+            case "34":
+            case "37": {
 
-                Service6.setVisibility(View.VISIBLE);
-                Service67.setVisibility(View.VISIBLE);
-                Service678.setVisibility(View.VISIBLE);
                 trService10.setVisibility(View.GONE);
                 Service10.setVisibility(View.GONE);
                 tr_residence.setVisibility(View.GONE);
                 iv_scst.setVisibility(View.GONE);
 
-                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request.this);
-                database = openHelper.getWritableDatabase();
-                Cursor cursor2 = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
-                        + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
-                if (cursor2.getCount() > 0) {
-                    if (cursor2.moveToFirst()) {
-                        category_code = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_res_category));
-                        caste_code = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_caste_as_per_app));
-                        amount = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_annual_income));
-                        Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
-                    }
-                } else {
-                    cursor2.close();
-                }
-                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                category_name = sqlLiteOpenHelper_class.GetCategory_BY_Code(Integer.parseInt(category_code));
-                caste_name = sqlLiteOpenHelper_class.GetCaste_BY_Code(Integer.parseInt(category_code), Integer.parseInt(caste_code));
+                if (serviceCode.equals("6")) {
+                    Service6.setVisibility(View.VISIBLE);
+                    Service67.setVisibility(View.VISIBLE);
+                    Service678.setVisibility(View.VISIBLE);
 
-                Log.d("get_Value", "" + category_name + "" + caste_name);
-                tvCategory.setText(category_name);
-                tvCaste.setText(caste_name);
+                    Cursor cursor2 = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                            + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                    if (cursor2.getCount() > 0) {
+                        if (cursor2.moveToFirst()) {
+                            category_code = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_res_category));
+                            caste_code = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_caste_as_per_app));
+                            amount = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_annual_income));
+                            Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
+                        }
+                    } else {
+                        cursor2.close();
+                    }
+                    sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                    sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                    category_name = sqlLiteOpenHelper_class.GetCategory_BY_Code(Integer.parseInt(category_code));
+                    caste_name = sqlLiteOpenHelper_class.GetCaste_BY_Code(Integer.parseInt(category_code), Integer.parseInt(caste_code));
+
+                    Log.d("get_Value", "" + category_name + "" + caste_name);
+                    tvCategory.setText(category_name);
+                    tvCaste.setText(caste_name);
+
+                } else {
+                    Service6.setVisibility(View.GONE);
+                    Service67.setVisibility(View.GONE);
+                    Service678.setVisibility(View.VISIBLE);
+
+                    Cursor cursor2 = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                            + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                    if (cursor2.getCount() > 0) {
+                        if (cursor2.moveToFirst()) {
+                            amount = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.IST_annual_income));
+                            Log.d("value1", "" + amount);
+                        }
+                    } else {
+                        cursor2.close();
+                    }
+
+                }
                 tvAmount.setText(amount);
+
                 break;
             }
             case "9":
@@ -601,8 +625,52 @@ public class New_Request extends AppCompatActivity {
                 tvCaste.setText(caste_name);
                 tvAmount.setText(amount);
                 break;
+            case "43":
+                Service6.setVisibility(View.VISIBLE);
+                Service67.setVisibility(View.VISIBLE);
+                Service678.setVisibility(View.VISIBLE);
+                trService10.setVisibility(View.GONE);
+                Service10.setVisibility(View.GONE);
+                tr_residence.setVisibility(View.GONE);
+
+                Cursor cursor5 = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                if (cursor5.getCount() > 0) {
+                    if (cursor5.moveToFirst()) {
+                        category_code = cursor5.getString(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_res_category));
+                        caste_code = cursor5.getString(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_caste_as_per_app));
+                        amount = cursor5.getString(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_annual_income));
+                        appImage = cursor5.getString(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
+                        Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
+                    }
+                } else {
+                    cursor5.close();
+                }
+
+                if (appImage != null) {
+                    iv_scst.setVisibility(View.VISIBLE);
+                    byte[] im_bytes = Base64.decode(appImage, Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(im_bytes, 0, im_bytes.length);
+                    iv_scst.setImageBitmap(bitmap);
+                } else {
+                    iv_scst.setVisibility(View.GONE);
+                }
+
+                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                category_name = sqlLiteOpenHelper_class.GetCategory_BY_Code(Integer.parseInt(category_code));
+                caste_name = sqlLiteOpenHelper_class.GetCaste_BY_Code(Integer.parseInt(category_code), Integer.parseInt(caste_code));
+
+                Log.d("get_Value", "" + category_name + "" + caste_name);
+                tvCategory.setText(category_name);
+                tvCaste.setText(caste_name);
+                tvAmount.setText(amount);
+
+                break;
             case "7":
-            case "8": {
+            case "8":
+            case "42": {
 
                 Service6.setVisibility(View.VISIBLE);
                 Service67.setVisibility(View.VISIBLE);
@@ -640,6 +708,9 @@ public class New_Request extends AppCompatActivity {
                     } else {
                         iv_scst.setVisibility(View.GONE);
                     }
+                } else if (serviceCode.equals("42")){
+                    tr_residence.setVisibility(View.GONE);
+                    iv_scst.setVisibility(View.GONE);
                 } else {
                     iv_scst.setVisibility(View.GONE);
                 }
@@ -907,11 +978,11 @@ public class New_Request extends AppCompatActivity {
                             database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
                                     + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_GSCFirstPart"
                                     + ", ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_ID_NUMBER, ST_Upd_mobile_no, ST_applicant_caddress1, ST_applicant_caddress2, ST_applicant_caddress3,ST_PinCode, ST_Eng_Certificate,"
-                                    + "VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Total_No_Years_10, NO_Months_10, Annual_Income, vLat, vLong, "
+                                    + "ST_applicant_photo, VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Total_No_Years_10, NO_Months_10, Annual_Income, vLat, vLong, "
                                     + "Can_Certificate_Given, Reason_for_Rejection, Remarks, Report_No, DataUpdateFlag)"
                                     + " values ("+district_Code+ "," +taluk_Code+ "," +hobli_Code+ "," + va_Circle_Code+ "," +villageCode+ "," +habitationCode + "," + town_code + "," + ward_code + "," +serviceCode+ "," +applicant_Id+","+GSC_FirstPart
                                     + ",'" +applicant_name+ "','" +fatherName+ "','" +motherName+ "','" +rationCardNo+ "','" +mobileNo+ "','" +address1+ "','" +address2+ "','" +address3+ "','" +add_pin+ "','" +eng_certi
-                                    + "','" +optionA+ "'," +category_code+ "," +caste_code+ ",'NO',0," +year+ "," +month+ "," +amount+ "," +latitude+ "," +longitude+ ",'YES',0,'" +remarks+ "','" +report_no
+                                    + "','"+ appImage + "','" +optionA+ "'," +category_code+ "," +caste_code+ ",'NO',0," +year+ "," +month+ "," +amount+ "," +latitude+ "," +longitude+ ",'YES',0,'" +remarks+ "','" +report_no
                                     + "', 1)");
 
                             Log.d("Database", "ServiceParameters Database Inserted");

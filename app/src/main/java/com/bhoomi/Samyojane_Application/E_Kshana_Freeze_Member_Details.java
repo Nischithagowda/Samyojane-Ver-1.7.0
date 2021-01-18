@@ -188,7 +188,6 @@ public class E_Kshana_Freeze_Member_Details extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_E_Kshana(this);
         database = openHelper.getReadableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_MemberDetails
                 +" where "+DataBaseHelperClass_btnDownload_E_Kshana.RAT_ACK_ID+"='"+rc_num+"' and "
                 +DataBaseHelperClass_btnDownload_E_Kshana.RAT_Member_ID+"="+member_ID, null);
@@ -197,9 +196,10 @@ public class E_Kshana_Freeze_Member_Details extends AppCompatActivity {
                 memberName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RAT_Member_KName));
                 memberName_Eng = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RAT_Member_Name));
             }
+        } else {
+            cursor.close();
         }
 
-        @SuppressLint("Recycle")
         Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                 +" where "+DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID+"='"+rc_num+"'",null);
 
@@ -224,6 +224,8 @@ public class E_Kshana_Freeze_Member_Details extends AppCompatActivity {
                 creamyLayer = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_CreamyLayer));
                 reasonCode_creamy = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_CreamyLayer_REPORT_VA));
             }
+        } else {
+            cursor1.close();
         }
 
         Log.d("memberName",""+memberName);

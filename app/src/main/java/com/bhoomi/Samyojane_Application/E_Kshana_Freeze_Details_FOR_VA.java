@@ -164,7 +164,6 @@ public class E_Kshana_Freeze_Details_FOR_VA extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_E_Kshana(this);
         database = openHelper.getReadableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id
                 +" where "+ DataBaseHelperClass_btnDownload_E_Kshana.RC_Num+"='"+rc_num+"' and "
                 + DataBaseHelperClass_btnDownload_E_Kshana.VAUpdated+"='Y'", null);
@@ -174,6 +173,7 @@ public class E_Kshana_Freeze_Details_FOR_VA extends AppCompatActivity {
                 Updated_MemberID = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.otc_member_id));
             }
         }else {
+            cursor1.close();
             dataEntry = "N";
         }
 
@@ -182,7 +182,6 @@ public class E_Kshana_Freeze_Details_FOR_VA extends AppCompatActivity {
 
         if (dataEntry.equals("N")) {
 
-            @SuppressLint("Recycle")
             Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                     + " where " + DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID + "='" + rc_num + "' and "
                     + DataBaseHelperClass_btnDownload_E_Kshana.RC_Member_ID + "=" + member_ID, null);
@@ -224,10 +223,11 @@ public class E_Kshana_Freeze_Details_FOR_VA extends AppCompatActivity {
                     residingYear = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_ResidentYears_VA));
                     bincom_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_EBinCom));
                 }
+            } else {
+                cursor.close();
             }
         }else if (dataEntry.equals("Y")){
 
-            @SuppressLint("Recycle")
             Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                     + " where " + DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID + "='" + rc_num + "' and "
                     + DataBaseHelperClass_btnDownload_E_Kshana.RC_Member_ID + "=" + Updated_MemberID, null);
@@ -253,9 +253,10 @@ public class E_Kshana_Freeze_Details_FOR_VA extends AppCompatActivity {
                     creamyLayer = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_CreamyLayer));
                     reasonCode_creamy = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_CreamyLayer_REPORT_VA));
                 }
+            } else {
+                cursor.close();
             }
 
-            @SuppressLint("Recycle")
             Cursor cursor2 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                     + " where " + DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID + "='" + rc_num + "' and "
                     + DataBaseHelperClass_btnDownload_E_Kshana.RC_Member_ID + "=" + member_ID, null);
@@ -278,6 +279,8 @@ public class E_Kshana_Freeze_Details_FOR_VA extends AppCompatActivity {
                     residingYear = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_ResidentYears_VA));
                     bincom_Code = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_EBinCom));
                 }
+            } else {
+                cursor2.close();
             }
         }
 

@@ -45,15 +45,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-
-@SuppressLint("Registered")
 public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
     TextView applicant_infor;
     Spinner spCategory, spReasons, spRejectReason;
     String strReason, strRejectionReason, strCategory, strSearchCaste;
     int posReason, posRejectionReason;
-    TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName;
+    TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName, tvCaste;
     String district, taluk, hobli, VA_Name,VA_Circle_Name, applicant_Id, rationCardNo, aadharNo, mobileNo, address1;
     String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     String eng_certi, GSC_FirstPart;
@@ -74,7 +72,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
     String item_position;
     String strSearchVillageName, strSearchServiceName, town_Name, ward_Name, town_code, ward_code, option_Flag;
     String villageCode, serviceCode,habitationCode;
-    TableRow lRejection;
+    TableRow lRejection, trCatCaste;
     RadioGroup radiogroup, radioGroup1;
     RadioButton radioButton1, radioButton2;
     RadioButton radioButton11, radioButton22;
@@ -92,7 +90,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
     InputMethodSubtype ims;
 
 
-    private InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
@@ -153,7 +151,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         return null;
     };
 
-    private InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "abcdefghijklmnopqrstuvwxyz";
         String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -162,7 +160,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
         for (int i = start; i < end; i++) {
             Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
-            if (source != null && blockCharacterSet.contains(("" + source.charAt(i)))) {
+            if (blockCharacterSet.contains("" + source.charAt(i))) {
                 Log.d("Blocked",""+source);
                 return "";
             }
@@ -205,6 +203,8 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         radioButton11 = findViewById(R.id.radioButton11);
         radioButton22 = findViewById(R.id.radioButton22);
         lRejection = findViewById(R.id.lRejection);
+        trCatCaste = findViewById(R.id.trCatCaste);
+        tvCaste = findViewById(R.id.tvCaste);
 
         applicant_infor= findViewById(R.id.applicant_Information);
         applicant_infor.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -215,6 +215,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         imageView.setVisibility(View.GONE);
         spReasons.setVisibility(View.GONE);
         lRejection.setVisibility(View.GONE);
+        tvCaste.setVisibility(View.GONE);
 
         Intent i = getIntent();
         district = i.getStringExtra("districtCode");
@@ -349,82 +350,147 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Caste_Income_Parameters.this);
         database = openHelper.getWritableDatabase();
+        Log.d("serviceCode", "" + serviceCode);
+        switch (serviceCode) {
+            case "6": {
+                GetCategory();
+                spCategory.setOnItemSelectedListener(new GetCategorySelected());
+                trCatCaste.setVisibility(View.VISIBLE);
 
-        if(serviceCode.equals("6")) {
-            GetCategory();
-            spCategory.setOnItemSelectedListener(new GetCategorySelected());
+                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Caste_Income_Parameters.this);
+                database = openHelper.getWritableDatabase();
 
-            openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Caste_Income_Parameters.this);
-            database = openHelper.getWritableDatabase();
-            @SuppressLint("Recycle")
-            Cursor cursor=database.rawQuery("SELECT * FROM "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
-                    +" where "+ DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"='"+serviceCode+"'"+" and "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"="+applicant_Id, null);
-            if(cursor.getCount()>0) {
-                if(cursor.moveToFirst()){
-                    category_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_res_category));
-                    caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_caste_as_per_app));
-                    amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_annual_income));
-                    GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
-                    Log.d("value1", ""+category_code+" "+caste_code+" "+amount);
+                Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                if (cursor.getCount() > 0) {
+                    if (cursor.moveToFirst()) {
+                        category_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_res_category));
+                        caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_caste_as_per_app));
+                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_annual_income));
+                        GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
+                        Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
+                    }
+                } else {
+                    cursor.close();
                 }
+                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                category_name = sqlLiteOpenHelper_class.GetCategory_BY_Code(Integer.parseInt(category_code));
+                caste_name = sqlLiteOpenHelper_class.GetCaste_BY_Code(Integer.parseInt(category_code), Integer.parseInt(caste_code));
+
+                Log.d("get_Value", "" + category_name + "" + caste_name);
+
+                tvIncome.setText(amount);
+
+                getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(category_name);
+                Log.d("Category_Code_set", "" + getCatCode);
+                GetCaste(Integer.parseInt(category_code));
+                //getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name);
+                Log.d("Category_Code_set", "" + getCasteCode);
+
+                spCategory.setSelection(getCatCode - 1);
+                autoSearchCaste.setText(caste_name);
+                strSearchCaste = caste_name;
+                break;
             }
-            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            category_name = sqlLiteOpenHelper_class.GetCategory_BY_Code(Integer.parseInt(category_code));
-            caste_name = sqlLiteOpenHelper_class.GetCaste_BY_Code(Integer.parseInt(category_code), Integer.parseInt(caste_code));
+            case "9": {
+                GetCategory_OBC();
+                spCategory.setOnItemSelectedListener(new GetCategory_OBC_Selected());
+                trCatCaste.setVisibility(View.VISIBLE);
 
-            Log.d("get_Value", ""+category_name+""+caste_name);
+                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Caste_Income_Parameters.this);
+                database = openHelper.getWritableDatabase();
 
-            tvIncome.setText(amount);
-
-            getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(category_name);
-            Log.d("Category_Code_set", ""+ getCatCode);
-            GetCaste(Integer.parseInt(category_code));
-            //getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name);
-            Log.d("Category_Code_set", ""+ getCasteCode);
-
-            spCategory.setSelection(getCatCode-1);
-            autoSearchCaste.setText(caste_name);
-            strSearchCaste = caste_name;
-        }
-        else if(serviceCode.equals("9")){
-            GetCategory_OBC();
-            spCategory.setOnItemSelectedListener(new GetCategory_OBC_Selected());
-
-            openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Caste_Income_Parameters.this);
-            database = openHelper.getWritableDatabase();
-            @SuppressLint("Recycle")
-            Cursor cursor=database.rawQuery("SELECT * FROM "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
-                    +" where "+ DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"='"+serviceCode+"'"+" and "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"="+applicant_Id, null);
-            if(cursor.getCount()>0) {
-                if(cursor.moveToFirst()){
-                    category_code = "9";
-                    caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_caste_app));
-                    amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_annual_income));
-                    GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
-                    Log.d("value1", ""+category_code+" "+caste_code+" "+amount);
+                Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                if (cursor.getCount() > 0) {
+                    if (cursor.moveToFirst()) {
+                        category_code = "9";
+                        caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_caste_app));
+                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_annual_income));
+                        GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
+                        Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
+                    }
+                } else {
+                    cursor.close();
                 }
+                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                category_name = "OBC (Central)";
+                caste_name = sqlLiteOpenHelper_class.GetCaste_OBC_BY_Code(Integer.parseInt(caste_code));
+
+                Log.d("get_Value", "" + category_name + "" + caste_name);
+
+                tvIncome.setText(amount);
+
+                getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(category_name);
+                Log.d("Category_Code", "" + getCatCode);
+                GetCaste_OBC(Integer.parseInt(caste_code));
+                //getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode_OBC(caste_name);
+                Log.d("Category_Code_OBC", "" + getCasteCode);
+
+                spCategory.setSelection(1);
+                autoSearchCaste.setText(caste_name);
+                strSearchCaste = caste_name;
+                break;
             }
-            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            category_name = "OBC (Central)";
-            caste_name = sqlLiteOpenHelper_class.GetCaste_OBC_BY_Code(Integer.parseInt(caste_code));
+            case "11":
+            case "34":
+            case "37": {
+                trCatCaste.setVisibility(View.GONE);
+                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Caste_Income_Parameters.this);
+                database = openHelper.getWritableDatabase();
+                Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                if (cursor.getCount() > 0) {
+                    if (cursor.moveToFirst()) {
+                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.IST_annual_income));
+                        GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
+                        Log.d("value1", "" + amount);
+                    }
+                } else {
+                    cursor.close();
+                }
 
-            Log.d("get_Value", ""+category_name+""+caste_name);
+                tvIncome.setText(amount);
+                break;
+            }
+            case "43":
+                trCatCaste.setVisibility(View.GONE);
+                tvCaste.setVisibility(View.VISIBLE);
+                autoSearchCaste.setVisibility(View.VISIBLE);
+                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Caste_Income_Parameters.this);
+                database = openHelper.getWritableDatabase();
+                Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                if (cursor.getCount() > 0) {
+                    if (cursor.moveToFirst()) {
+                        category_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_res_category));
+                        caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_caste_as_per_app));
+                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_annual_income));
+                        GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
+                        Log.d("value1", "" + amount);
+                    }
+                } else {
+                    cursor.close();
+                }
 
-            tvIncome.setText(amount);
+                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                caste_name = sqlLiteOpenHelper_class.GetCaste_BY_Code(Integer.parseInt(category_code), Integer.parseInt(caste_code));
 
-            getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(category_name);
-            Log.d("Category_Code", ""+ getCatCode);
-            GetCaste_OBC(Integer.parseInt(caste_code));
-            //getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode_OBC(caste_name);
-            Log.d("Category_Code_OBC", ""+ getCasteCode);
+                Log.d("get_Value", "" + "" + caste_name);
 
-            spCategory.setSelection(1);
-            autoSearchCaste.setText(caste_name);
-            strSearchCaste = caste_name;
+                getCatCode = Integer.parseInt(category_code);
+                autoSearchCaste.setText(caste_name);
+                strSearchCaste = caste_name;
+                GetCaste_EWS();
+                tvIncome.setText(amount);
+                break;
         }
 
         gpsTracker = new GPSTracker(getApplicationContext(), this);
@@ -495,86 +561,253 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
             strRemarks = tvRemarks.getText().toString();
             Log.d("Income value", ""+strRemarks);
 
-            if(Objects.equals(serviceCode, "6")){
+            switch (serviceCode) {
+                case "6":
 
-                strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-                Log.d("Selected_Item1", ""+strCategory);
-                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
-                Log.d("Category_Code1", ""+ getCatCode);
-                if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                    strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
+                    Log.d("Selected_Item1", "" + strCategory);
+                    sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                    sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                    getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
+                    Log.d("Category_Code1", "" + getCatCode);
+                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
 
+                        String caste_name = autoSearchCaste.getText().toString();
+                        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                        sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                        getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getCatCode);
+                        Log.d("Caste_Code1", "" + getCasteCode);
+
+                    }
+                    saveService_9_and_6();
+                    break;
+                case "9":
+
+                    strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
+                    Log.d("Selected Item", "" + strCategory);
+                    sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                    sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                    getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
+                    Log.d("Category_Code1", "" + getCatCode);
+                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+
+                        String caste_name = autoSearchCaste.getText().toString();
+                        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                        sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                        getCasteCode = sqlLiteOpenHelper_class.GetCasteCode_OBC(caste_name);
+                        Log.d("Caste_Code1", "" + getCasteCode);
+
+                    }
+                    saveService_9_and_6();
+                    break;
+                case "11":
+                case "34":
+                case "37":
+                    saveService_11_34_and_37();
+                    break;
+                case "43":
                     String caste_name = autoSearchCaste.getText().toString();
                     sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                     sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
                     getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getCatCode);
-                    Log.d("Caste_Code1",""+getCasteCode);
-
-                }
-
-            }else if(Objects.equals(serviceCode, "9")) {
-
-                strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-                Log.d("Selected Item", ""+strCategory);
-                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
-                Log.d("Category_Code1", ""+ getCatCode);
-                if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-
-                    String caste_name = autoSearchCaste.getText().toString();
-                    sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                    sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                    getCasteCode = sqlLiteOpenHelper_class.GetCasteCode_OBC(caste_name);
-                    Log.d("Caste_Code1",""+getCasteCode);
-
-                }
-                Log.d("Caste_Code1",""+getCasteCode);
+                    Log.d("Caste_Code1", "" + getCasteCode);
+                    saveService_43();
+                    break;
             }
 
-            if(latitude!=0.0 && longitude!=0.0) {
+        });
 
-                if(!strCategory.equals(getString(R.string.select_category_spinner))){
-                    if(!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
-                        if (getCasteCode != 0) {
-                            if (option.equals(getString(R.string.no))) {
-                                if (!strReason.equals(getString(R.string.reason_spinner))) {
-                                    if (TextUtils.isEmpty(strIncome)) {
-                                        tvIncome.setError(getString(R.string.field_canno_null));
-                                    } else {
-                                        income_len = strIncome.length();
-                                        income_Value = Integer.parseInt(strIncome);
-                                        Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+        btnBack.setOnClickListener(v -> onBackPressed());
+    }
+    public void saveService_43(){
+        if(latitude!=0.0 && longitude!=0.0) {
+            if(!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
+                if (getCasteCode != 0) {
+                    if (option.equals(getString(R.string.no))) {
+                        if (!strReason.equals(getString(R.string.reason_spinner))) {
+                            if (TextUtils.isEmpty(strIncome)) {
+                                tvIncome.setError(getString(R.string.field_canno_null));
+                            } else {
+                                income_len = strIncome.length();
+                                income_Value = Integer.parseInt(strIncome);
+                                Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
 
-                                        if (income_len >= 4 && income_Value>=1000) {
-                                            if (option1.equals(getString(R.string.no))) {
-                                                if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                                    StoreData_in_DB();
-                                                } else {
-                                                    ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
-                                                    Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
-                                                }
-                                            } else {
-                                                if (TextUtils.isEmpty(strRemarks)) {
-                                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                                } else {
-                                                    StoreData_in_DB();
-                                                }
-                                            }
+                                if (income_len >= 4 && income_Value>=1000) {
+                                    if (option1.equals(getString(R.string.no))) {
+                                        if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
+                                            StoreData_in_DB();
                                         } else {
-                                            tvIncome.setError(getString(R.string.incorrect_value));
+                                            ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
+                                            Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        if (TextUtils.isEmpty(strRemarks)) {
+                                            tvRemarks.setError(getString(R.string.field_canno_null));
+                                        } else {
+                                            StoreData_in_DB();
                                         }
                                     }
                                 } else {
-                                    ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
-                                    Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
+                                    tvIncome.setError(getString(R.string.incorrect_value));
+                                }
+                            }
+                        } else {
+                            ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
+                            Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        if (TextUtils.isEmpty(strIncome)) {
+                            tvIncome.setError(getString(R.string.field_canno_null));
+                        } else {
+
+                            income_len = strIncome.length();
+                            income_Value = Integer.parseInt(strIncome);
+                            Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                            if (income_len >= 4 && income_Value>=1000) {
+                                if (option1.equals(getString(R.string.no))) {
+                                    if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
+                                        if (TextUtils.isEmpty(strRemarks)) {
+                                            tvRemarks.setError(getString(R.string.field_canno_null));
+                                        } else {
+                                            StoreData_in_DB();
+                                        }
+                                    } else {
+                                        ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.reason_for_rejection));
+                                        Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    if (TextUtils.isEmpty(strRemarks)) {
+                                        tvRemarks.setError(getString(R.string.field_canno_null));
+                                    } else {
+                                        StoreData_in_DB();
+                                    }
                                 }
                             } else {
+                                tvIncome.setError(getString(R.string.incorrect_value));
+                            }
+                        }
+                    }
+                } else {
+                    autoSearchCaste.setError(getString(R.string.invalid_caste));
+                }
+            } else {
+                autoSearchCaste.setError(getString(R.string.select_caste));
+            }
+        } else {
+            runOnUiThread(() -> {
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_Caste_Income_Parameters.this);
+                dialog.setCancelable(false);
+                dialog.setTitle(getString(R.string.alert));
+                dialog.setMessage(getString(R.string.cannot_get_location) );
+                dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
+                    //Action for "Cancel".
+                    dialog1.cancel();
+                });
+
+                final AlertDialog alert = dialog.create();
+                alert.show();
+            });
+            //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void saveService_11_34_and_37(){
+        if(latitude!=0.0 && longitude!=0.0) {
+            if (option.equals(getString(R.string.no))) {
+                if (!strReason.equals(getString(R.string.reason_spinner))) {
+                    if (TextUtils.isEmpty(strIncome)) {
+                        tvIncome.setError(getString(R.string.field_canno_null));
+                    } else {
+                        income_len = strIncome.length();
+                        income_Value = Integer.parseInt(strIncome);
+                        Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                        if (income_len >= 4 && income_Value>=1000) {
+                            if (option1.equals(getString(R.string.no))) {
+                                if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
+                                    StoreData_in_DB();
+                                } else {
+                                    ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
+                                    Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                if (TextUtils.isEmpty(strRemarks)) {
+                                    tvRemarks.setError(getString(R.string.field_canno_null));
+                                } else {
+                                    StoreData_in_DB();
+                                }
+                            }
+                        } else {
+                            tvIncome.setError(getString(R.string.incorrect_value));
+                        }
+                    }
+                } else {
+                    ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
+                    Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (TextUtils.isEmpty(strIncome)) {
+                    tvIncome.setError(getString(R.string.field_canno_null));
+                } else {
+
+                    income_len = strIncome.length();
+                    income_Value = Integer.parseInt(strIncome);
+                    Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                    if (income_len >= 4 && income_Value>=1000) {
+                        if (option1.equals(getString(R.string.no))) {
+                            if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
+                                if (TextUtils.isEmpty(strRemarks)) {
+                                    tvRemarks.setError(getString(R.string.field_canno_null));
+                                } else {
+                                    StoreData_in_DB();
+                                }
+                            } else {
+                                ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.reason_for_rejection));
+                                Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            if (TextUtils.isEmpty(strRemarks)) {
+                                tvRemarks.setError(getString(R.string.field_canno_null));
+                            } else {
+                                StoreData_in_DB();
+                            }
+                        }
+                    } else {
+                        tvIncome.setError(getString(R.string.incorrect_value));
+                    }
+                }
+            }
+        } else {
+            runOnUiThread(() -> {
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_Caste_Income_Parameters.this);
+                dialog.setCancelable(false);
+                dialog.setTitle(getString(R.string.alert));
+                dialog.setMessage(getString(R.string.cannot_get_location) );
+                dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
+                    //Action for "Cancel".
+                    dialog1.cancel();
+                });
+
+                final AlertDialog alert = dialog.create();
+                alert.show();
+            });
+            //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void saveService_9_and_6(){
+        if(latitude!=0.0 && longitude!=0.0) {
+            if(!strCategory.equals(getString(R.string.select_category_spinner))){
+                if(!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
+                    if (getCasteCode != 0) {
+                        if (option.equals(getString(R.string.no))) {
+                            if (!strReason.equals(getString(R.string.reason_spinner))) {
                                 if (TextUtils.isEmpty(strIncome)) {
                                     tvIncome.setError(getString(R.string.field_canno_null));
                                 } else {
-
                                     income_len = strIncome.length();
                                     income_Value = Integer.parseInt(strIncome);
                                     Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
@@ -582,14 +815,10 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                                     if (income_len >= 4 && income_Value>=1000) {
                                         if (option1.equals(getString(R.string.no))) {
                                             if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                                if (TextUtils.isEmpty(strRemarks)) {
-                                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                                } else {
-                                                    StoreData_in_DB();
-                                                }
+                                                StoreData_in_DB();
                                             } else {
-                                                ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.reason_for_rejection));
-                                                Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
+                                                ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
+                                                Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
                                             if (TextUtils.isEmpty(strRemarks)) {
@@ -602,39 +831,70 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                                         tvIncome.setError(getString(R.string.incorrect_value));
                                     }
                                 }
+                            } else {
+                                ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
+                                Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
                             }
-                        }else {
-                            autoSearchCaste.setError(getString(R.string.invalid_caste));
+                        } else {
+                            if (TextUtils.isEmpty(strIncome)) {
+                                tvIncome.setError(getString(R.string.field_canno_null));
+                            } else {
+
+                                income_len = strIncome.length();
+                                income_Value = Integer.parseInt(strIncome);
+                                Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                                if (income_len >= 4 && income_Value>=1000) {
+                                    if (option1.equals(getString(R.string.no))) {
+                                        if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
+                                            if (TextUtils.isEmpty(strRemarks)) {
+                                                tvRemarks.setError(getString(R.string.field_canno_null));
+                                            } else {
+                                                StoreData_in_DB();
+                                            }
+                                        } else {
+                                            ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.reason_for_rejection));
+                                            Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        if (TextUtils.isEmpty(strRemarks)) {
+                                            tvRemarks.setError(getString(R.string.field_canno_null));
+                                        } else {
+                                            StoreData_in_DB();
+                                        }
+                                    }
+                                } else {
+                                    tvIncome.setError(getString(R.string.incorrect_value));
+                                }
+                            }
                         }
                     } else {
-                        autoSearchCaste.setError(getString(R.string.select_caste));
+                        autoSearchCaste.setError(getString(R.string.invalid_caste));
                     }
+                } else {
+                    autoSearchCaste.setError(getString(R.string.select_caste));
                 }
-                else {
-                    ((TextView)spCategory.getSelectedView()).setError(getString(R.string.select_category));
-                    Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                ((TextView)spCategory.getSelectedView()).setError(getString(R.string.select_category));
+                Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
             }
-            else {
-                runOnUiThread(() -> {
+        } else {
+            runOnUiThread(() -> {
 
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_Caste_Income_Parameters.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle("Alert");
-                    dialog.setMessage(getString(R.string.cannot_get_location) );
-                    dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
-                        //Action for "Cancel".
-                        dialog1.cancel();
-                    });
-
-                    final AlertDialog alert = dialog.create();
-                    alert.show();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_Caste_Income_Parameters.this);
+                dialog.setCancelable(false);
+                dialog.setTitle("Alert");
+                dialog.setMessage(getString(R.string.cannot_get_location) );
+                dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
+                    //Action for "Cancel".
+                    dialog1.cancel();
                 });
-                //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        btnBack.setOnClickListener(v -> onBackPressed());
+                final AlertDialog alert = dialog.create();
+                alert.show();
+            });
+            //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -701,7 +961,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         for(String s1 : list){
             if (s1.contains("Samyojane")) {
                 get = true;
-                break;
             }
         }
         Log.d("search", String.valueOf(get));
@@ -773,11 +1032,13 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         //dialog1.setProgress(20);
         openHelper = new DataBaseHelperClass_btnDownload_Docs(New_Request_Caste_Income_Parameters.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME);
             Log.d("Database", "Down_Docs Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -801,7 +1062,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
             openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Caste_Income_Parameters.this);
             database = openHelper.getWritableDatabase();
 
-            @SuppressLint("Recycle")
             Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
             if (cursor.getCount() > 0) {
@@ -856,6 +1116,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 truncateDatabase_Docs();
                 str="Success";
             } else {
+                cursor.close();
                 set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
                 set_and_get_service_parameter.setDistrict_Code(district_Code);
                 set_and_get_service_parameter.setTaluk_Code(taluk_Code);
@@ -1002,6 +1263,28 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
             sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
             getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchCaste, num);
             Log.d("Selected_casteCode", ""+ getCasteCode);
+        });
+    }
+
+    public void GetCaste_EWS(){
+        List<SpinnerObject> labels;
+        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+        sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+        labels = sqlLiteOpenHelper_class.GetCaste_EWS();
+
+        ArrayAdapter<SpinnerObject> adapter = new ArrayAdapter<>(this, R.layout.list_item, labels);
+        adapter.setDropDownViewResource(R.layout.list_item);
+        autoSearchCaste.setAdapter(adapter);
+        autoSearchCaste.setOnItemClickListener((parent, view, position, id) -> {
+            String CatCode;
+            CatCode = ((SpinnerObject)parent.getItemAtPosition(position)).getId();
+            getCatCode = Integer.parseInt(CatCode);
+            strSearchCaste = parent.getItemAtPosition(position).toString();
+            Log.d("Selected_Item", ""+strSearchCaste);
+            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+            getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchCaste, getCatCode);
+            Log.d("Selected_casteCode", "getCatCode = "+ getCatCode +", getCasteCode = "+ getCasteCode);
         });
     }
 

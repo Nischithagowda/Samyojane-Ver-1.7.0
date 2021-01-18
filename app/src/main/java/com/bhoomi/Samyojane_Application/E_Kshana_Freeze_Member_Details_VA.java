@@ -199,7 +199,6 @@ public class E_Kshana_Freeze_Member_Details_VA extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_E_Kshana(this);
         database = openHelper.getReadableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor2 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                 +" where "+DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID+"='"+rc_num+"' and "
                 + DataBaseHelperClass_btnDownload_E_Kshana.RC_Member_ID+"="+member_ID,null);
@@ -208,9 +207,10 @@ public class E_Kshana_Freeze_Member_Details_VA extends AppCompatActivity {
                 memberName = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_Applicant_KName));
                 memberName_Eng = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_Applicant_EName));
             }
+        } else {
+            cursor2.close();
         }
 
-        @SuppressLint("Recycle")
         Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                 +" where "+DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID+"='"+rc_num+"' and "
                 + DataBaseHelperClass_btnDownload_E_Kshana.RC_Member_ID+"="+Updated_MemberID,null);
@@ -236,9 +236,10 @@ public class E_Kshana_Freeze_Member_Details_VA extends AppCompatActivity {
                 creamyLayer = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_CreamyLayer));
                 reasonCode_creamy = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_CreamyLayer_REPORT_VA));
             }
+        } else {
+            cursor1.close();
         }
 
-        @SuppressLint("Recycle")
         Cursor cursor3 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                 +" where "+DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID+"='"+rc_num+"' and "
                 + DataBaseHelperClass_btnDownload_E_Kshana.RC_Member_ID+"="+member_ID,null);
@@ -250,6 +251,8 @@ public class E_Kshana_Freeze_Member_Details_VA extends AppCompatActivity {
                 father_husband_Name = cursor3.getString(cursor3.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_Father_KName));
                 motheName = cursor3.getString(cursor3.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_Mother_KName));
             }
+        } else {
+            cursor3.close();
         }
         Log.d("memberName",""+memberName);
         Log.d("districtCode",""+ districtCode +" talukCode "+talukCode+" hobliCode "

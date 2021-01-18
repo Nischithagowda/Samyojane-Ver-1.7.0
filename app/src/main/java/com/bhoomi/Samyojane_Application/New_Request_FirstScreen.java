@@ -42,7 +42,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
     String district, taluk, hobli, VA_Circle_Name, VA_Name;
     String applicant_Id, district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_Name, ward_Name, town_code, ward_code;
     SQLiteOpenHelper openHelper;
-    SQLiteDatabase database, database1;
+    SQLiteDatabase database, database1, databaseFacility;
     ArrayList<String> SlNo = new ArrayList<>();
     ArrayList<String> Applicant_Name = new ArrayList<>();
     ArrayList<String> GSC_FirstPart = new ArrayList<>();
@@ -158,7 +158,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         dialog.setCanceledOnTouchOutside(false);
 
         openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(New_Request_FirstScreen.this);
-        database = openHelper.getWritableDatabase();
+        databaseFacility = openHelper.getWritableDatabase();
 
         openHelper = new DataBaseHelperClass_VillageNames_DTH(New_Request_FirstScreen.this);
         database1 = openHelper.getWritableDatabase();
@@ -166,7 +166,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         database1.execSQL(DataBaseHelperClass_VillageNames_DTH.CREATE_TABLE);
 
         @SuppressLint("Recycle")
-        Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
+        Cursor cursor = databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
                 +getString(R.string.facility_table_name)+"='"+service_name+"'", null);
         if (cursor.getCount()>0){
             if (cursor.moveToNext()){
@@ -827,9 +827,6 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_FirstScreen.this);
                 database = openHelper.getWritableDatabase();
 
-                openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(New_Request_FirstScreen.this);
-                database1 = openHelper.getWritableDatabase();
-
                 for (int i = 0; i < count; i++) {
 
                     JSONObject object = array.getJSONObject(i);
@@ -870,27 +867,20 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                     set_and_get_service_tran_data.setST_Push_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag));
 
                     serviceCode_DB = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
+                    Log.d("serviceCode_DB", "" + serviceCode_DB);
 
-                    if(serviceCode_DB==6){
-                        serviceName = "Caste and Income Certficate";
-                        serviceName_k = "ಜಾತಿ ಮತ್ತು ಆದಾಯ ಪ್ರಮಾಣ ಪತ್ರ ";
-                    }else if(serviceCode_DB==7){
-                        serviceName="Caste Certificate (Cat-A)";
-                        serviceName_k = "ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಪ್ರವರ್ಗ-ಎ)";
-                    }else if(serviceCode_DB==8){
-                        serviceName = "Caste Certificate (SC/ST)";
-                        serviceName_k ="ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಅ.ಜಾ/ಅ.ಪಂ)";
-                    }else if(serviceCode_DB==9){
-                        serviceName = "OBC Certificate (Central)";
-                        serviceName_k= "ಹಿಂದುಳಿದ ವರ್ಗ ಪ್ರ.ಪತ್ರ (ಕೇ.ಸ)";
-                    }else if (serviceCode_DB==10){
-                        serviceName = "Residence Certificate";
-                        serviceName_k = "ವಾಸ ಸ್ಥಳ ಪ್ರಮಾಣ ಪತ್ರ";
-                    }else {
-                        serviceName=null;
-                        serviceName_k=null;
+                    Cursor cursor = databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
+                            +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode_DB, null);
+                    if (cursor.getCount()>0) {
+                        if (cursor.moveToNext()) {
+                            serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
+                            serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
+                            Log.d("serviceName", serviceName+", "+ serviceName_k);
+                        }
+                    } else {
+                        cursor.close();
                     }
-                    Log.d("serviceName", serviceName+", "+ serviceName_k);
+
                     set_and_get_service_tran_data.setService_Name(serviceName);
                     set_and_get_service_tran_data.setService_Name_k(serviceName_k);
 

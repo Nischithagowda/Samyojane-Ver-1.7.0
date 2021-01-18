@@ -5,7 +5,7 @@ public class Set_and_Get_Service_tran_data {
     private String Address1, Address2, Address3, Add_Pin, Eng_Certify, GSC_First_Part;
     private String UID, AadhaarPhoto;
     private String DataUpdateFlag, ST_applicant_photo, ST_ID_TYPE, ST_Push_Flag;
-    private String CST_res_category, CST_caste_as_per_app, CST_annual_income, SCOT_caste_app, SCOT_annual_income, GST_No_Years_Applied, GST_No_Mths_Applied;
+    private String CST_res_category, CST_caste_as_per_app, CST_annual_income, SCOT_caste_app, SCOT_annual_income, GST_No_Years_Applied, GST_No_Mths_Applied, IST_annual_income;
 
     Set_and_Get_Service_tran_data(){}
 
@@ -259,5 +259,13 @@ public class Set_and_Get_Service_tran_data {
 
     public void setST_Push_Flag(String ST_Push_Flag) {
         this.ST_Push_Flag = ST_Push_Flag;
+    }
+
+    public String getIST_annual_income() {
+        return IST_annual_income;
+    }
+
+    public void setIST_annual_income(String IST_annual_income) {
+        this.IST_annual_income = IST_annual_income;
     }
 }

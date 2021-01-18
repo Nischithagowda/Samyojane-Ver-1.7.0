@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Service_List_Adapter extends BaseAdapter implements Filterable {
@@ -108,8 +109,7 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
 
         Date c = Calendar.getInstance().getTime();
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
         String formattedDate = df.format(c);
 
         String due_Date_C = DueDate.get(position);
@@ -199,7 +199,6 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
                 openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(context);
                 database = openHelper.getWritableDatabase();
 
-                @SuppressLint("Recycle")
                 Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                         + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
 
@@ -208,6 +207,8 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
                         eng_certi = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
                         Log.d("Service_List", "" + eng_certi);
                     }
+                } else {
+                    cursor.close();
                 }
                 if (Objects.equals(eng_certi, "E")) {
                     i = new Intent(context, New_Request.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

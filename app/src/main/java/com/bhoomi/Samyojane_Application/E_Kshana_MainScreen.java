@@ -313,22 +313,24 @@ public class E_Kshana_MainScreen extends AppCompatActivity {
 
     public void truncateDatabase_MemberID(){
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id);
             Log.d("Database", "MemberID Table Truncated");
+        } else {
+            cursor.close();
         }
 
     }
 
     public void truncateDatabase_RCMemberDetails(){
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_MemberDetails, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_MemberDetails);
             Log.d("Database", "RCMemberDetails Table Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -461,11 +463,12 @@ public class E_Kshana_MainScreen extends AppCompatActivity {
 
     public void truncateDatabase_UpdatedRCMemberDetails(){
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails);
             Log.d("Database", "UpdatedRCMemberDetails Table Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -641,7 +644,6 @@ public class E_Kshana_MainScreen extends AppCompatActivity {
     public void displayAddMember(String rc_num){
         int mem_ID;
 
-        @SuppressLint("Recycle")
         Cursor cursor12 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id
                 +" where "+ DataBaseHelperClass_btnDownload_E_Kshana.RC_Num+"='"+rc_num+"' and "
                 + DataBaseHelperClass_btnDownload_E_Kshana.isDataEntered+"='N'", null);
@@ -650,16 +652,20 @@ public class E_Kshana_MainScreen extends AppCompatActivity {
                 do {
                     mem_ID = cursor12.getInt(cursor12.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.otc_member_id));
                     Log.d("mem_ID", "" + mem_ID);
-                    @SuppressLint("Recycle")
+
                     Cursor cursor2 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_MemberDetails
                     + " where "+DataBaseHelperClass_btnDownload_E_Kshana.RAT_Member_ID+"="+mem_ID+" and "
                             + DataBaseHelperClass_btnDownload_E_Kshana.RAT_ACK_ID+"='"+rc_num+"' and "
                             + DataBaseHelperClass_btnDownload_E_Kshana.RAT_IsInactive+"='null'", null);
                     if (cursor2.getCount()>0){
                         Count_Inactive++;
+                    } else {
+                        cursor2.close();
                     }
                 } while (cursor12.moveToNext());
             }
+        } else {
+            cursor12.close();
         }
 
         Log.d("Count_Inactive", ""+Count_Inactive);
@@ -675,7 +681,6 @@ public class E_Kshana_MainScreen extends AppCompatActivity {
         Log.d("InDisplay", ""+ i);
         Log.d("rc_num", rc_num);
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id+" where "
                 + DataBaseHelperClass_btnDownload_E_Kshana.RC_Num+"='"+rc_num+"'", null);
 
@@ -715,6 +720,7 @@ public class E_Kshana_MainScreen extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor.close();
             dialog.dismiss();
             emptyTxt.setVisibility(View.VISIBLE);
             Log.d("InDisplayElse", ""+ i);

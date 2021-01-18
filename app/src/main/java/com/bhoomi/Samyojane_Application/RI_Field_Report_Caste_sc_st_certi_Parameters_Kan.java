@@ -234,6 +234,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ri_field_report_caste_sc_st_certi_parameters);
 
+        strYear = getString(R.string.select_spinner);
         option2=getString(R.string.yes);
         option3=getString(R.string.yes);
         strFatherCategory=getString(R.string.select_category_spinner);
@@ -723,7 +724,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
             }
         });
 
-        adapter_Year = ArrayAdapter.createFromResource(this, R.array.years_array_kan, R.layout.spinner_item_color);
+        adapter_Year = ArrayAdapter.createFromResource(this, R.array.years_array, R.layout.spinner_item_color);
         adapter_Year.setDropDownViewResource(R.layout.spinner_item_dropdown);
         spYears.setAdapter(adapter_Year);
 
