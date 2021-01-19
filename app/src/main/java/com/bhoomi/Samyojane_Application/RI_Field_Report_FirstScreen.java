@@ -19,7 +19,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Objects;
 
-@SuppressLint("Registered")
 public class RI_Field_Report_FirstScreen extends AppCompatActivity {
 
     Button btnBack;
@@ -97,13 +96,14 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(RI_Field_Report_FirstScreen.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
                 + getString(R.string.facility_table_name)+"='"+service_name+"'", null);
         if (cursor.getCount()>0){
             if (cursor.moveToNext()){
                 serviceCode = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code));
             }
+        } else {
+            cursor.close();
         }
 
         Log.d("RI_FirstScreen", ""+district_Code);
@@ -195,7 +195,6 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_FirstScreen.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCFirstPart_Name+","
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+","
@@ -251,6 +250,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor.close();
             emptyTxt.setVisibility(View.VISIBLE);
             Log.d("InDisplayElse", ""+ i);
             linearLayout.setVisibility(View.VISIBLE);
@@ -267,7 +267,6 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_FirstScreen.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCFirstPart_Name+","+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+","
                 +" substr(ST_DueDate,0,11) as ST_DueDate from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+"="+district_Code+" and "
@@ -322,6 +321,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor.close();
             emptyTxt.setVisibility(View.VISIBLE);
             Log.d("InDisplayElse", ""+ i);
             linearLayout.setVisibility(View.VISIBLE);

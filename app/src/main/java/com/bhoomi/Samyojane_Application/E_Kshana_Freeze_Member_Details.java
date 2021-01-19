@@ -48,7 +48,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class E_Kshana_Freeze_Member_Details extends AppCompatActivity {
 
     TextView txtMemberName, txtDistrict, txtTaluk, txtHobli, txtTown, txtWard, txtAddress1, txtAddress2, txtAddress3,

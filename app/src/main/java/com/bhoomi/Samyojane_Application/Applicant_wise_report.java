@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-@SuppressLint("Registered")
 public class Applicant_wise_report extends AppCompatActivity {
 
     ArrayList<String> SlNo = new ArrayList<>();
@@ -80,7 +79,7 @@ public class Applicant_wise_report extends AppCompatActivity {
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(Applicant_wise_report.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                 + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + " is null and "
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=" + villageCode + " and "
@@ -118,6 +117,7 @@ public class Applicant_wise_report extends AppCompatActivity {
             listView.setAdapter(listAdapter);
             database.close();
         }else{
+            cursor1.close();
             Log.d("RI_Village_Wise","EnterElse1");
             emptyTxt.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
@@ -141,7 +141,7 @@ public class Applicant_wise_report extends AppCompatActivity {
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(Applicant_wise_report.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                 + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + " is null and "
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code + "=" + townCode + " and "
@@ -178,6 +178,7 @@ public class Applicant_wise_report extends AppCompatActivity {
             listView.setAdapter(listAdapter);
             database.close();
         }else{
+            cursor1.close();
             emptyTxt.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
             Log.d("InDisplayElse", ""+ i);

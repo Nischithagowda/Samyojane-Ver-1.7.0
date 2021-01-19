@@ -62,7 +62,6 @@ import java.util.Random;
  * Created by Nischitha on 08-07-2019.
  */
 
-@SuppressLint("Registered")
 public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActivity {
 
     HashMap<String, String> hashMap_Down_Docs;
@@ -111,7 +110,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
     int random;
     String report_no;
 
-    private InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
@@ -172,7 +171,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         return null;
     };
 
-    private InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "abcdefghijklmnopqrstuvwxyz";
         String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -181,7 +180,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
 
         for (int i = start; i < end; i++) {
             Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
-            if (source != null && blockCharacterSet.contains(("" + source.charAt(i)))) {
+            if (blockCharacterSet.contains("" + source.charAt(i))) {
                 Log.d("Blocked",""+source);
                 return "";
             }
@@ -390,7 +389,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+"="+applicant_Id, null);
         if(cursor.getCount()>0){
@@ -409,6 +408,8 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
                 appRejectionReason = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reason_for_Rejection));
                 remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
             }
+        } else {
+            cursor.close();
         }
 
         Log.d("Eng_Certi", eng_certi);
@@ -1025,7 +1026,6 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_caste_income_parameters_Kan.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id, null);
         if(cursor.getCount()>0){
@@ -1107,6 +1107,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
             return "Update_success";
         }
         else {
+            cursor.close();
             Log.d("Data", "StoreData_in_DB_When_Correct : Update_Failed");
             return "Update_Failed";
         }
@@ -1134,7 +1135,6 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_caste_income_parameters_Kan.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id, null);
         if(cursor.getCount()>0){
@@ -1210,6 +1210,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
             return "Update_success";
         }
         else {
+            cursor.close();
             Log.d("Data", "StoreData_in_DB_When_Wrong : Update_Failed");
             return "Update_Failed";
         }
@@ -1270,7 +1271,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
                 runOnUiThread(() -> {
                     openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters_Kan.this);
                     database = openHelper.getWritableDatabase();
-                    @SuppressLint("Recycle")
+
                     Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
 
                     if (cursor3.getCount() > 0) {
@@ -1278,6 +1279,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
                         btnViewDocs.setVisibility(View.VISIBLE);
                         //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
                     } else {
+                        cursor3.close();
                         Log.d("Values", "No records Exists");
                         btnViewDocs.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
@@ -1301,11 +1303,13 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         //dialog1.setProgress(20);
         openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters_Kan.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME);
             Log.d("Database", "Down_Docs Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }

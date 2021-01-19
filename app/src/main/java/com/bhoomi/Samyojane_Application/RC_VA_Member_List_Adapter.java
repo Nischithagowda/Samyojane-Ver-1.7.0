@@ -123,7 +123,6 @@ public class RC_VA_Member_List_Adapter extends BaseAdapter implements Filterable
             Log.d("hobCode_ass1", ""+hobCode_ass);
             Log.d("uName_get",""+uName_get);
 
-            @SuppressLint("Recycle")
             Cursor cursor = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id
                     +" where "+ DataBaseHelperClass_btnDownload_E_Kshana.RC_Num+"='"+rc_num+"' and "
                     + DataBaseHelperClass_btnDownload_E_Kshana.otc_member_id+"="+member_ID+" and "
@@ -133,6 +132,7 @@ public class RC_VA_Member_List_Adapter extends BaseAdapter implements Filterable
                     inactive = "Y";
                 }
             }else {
+                cursor.close();
                 inactive = "N";
             }
 

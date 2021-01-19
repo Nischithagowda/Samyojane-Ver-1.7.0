@@ -49,7 +49,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class E_Kshana_Member_Details_VA extends AppCompatActivity {
 
     TextView txtMemberName, txtDistrict;
@@ -199,7 +198,6 @@ public class E_Kshana_Member_Details_VA extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_E_Kshana(this);
         database = openHelper.getReadableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                 +" where "+DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID+"='"+rc_num+"' and "
                 +DataBaseHelperClass_btnDownload_E_Kshana.RC_Member_ID+"="+member_ID, null);
@@ -217,6 +215,8 @@ public class E_Kshana_Member_Details_VA extends AppCompatActivity {
                 father_husband_Name = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_Father_KName));
                 motheName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_Mother_KName));
             }
+        } else {
+            cursor.close();
         }
 
         Log.d("memberName",""+memberName);

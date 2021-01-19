@@ -68,13 +68,15 @@ public class PDF_Viewer extends AppCompatActivity {
 
         openHelper = new DataBaseHelperClass_btnDownload_Docs(this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_Docs.TABLE_NAME+" where "+DataBaseHelperClass_btnDownload_Docs.UDT_Document_Id+"="+document_ID, null);
         if(cursor.getCount()>0){
             if (cursor.moveToNext()){
                 bytes = cursor.getBlob(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_Docs.UDT_File));
                 Log.d("Blob",""+ Arrays.toString(bytes));
             }
+        } else {
+            cursor.close();
         }
         byte[] pdfAsBytes = Base64.decode(bytes, 0);
         pdfView.fromBytes(pdfAsBytes).load();

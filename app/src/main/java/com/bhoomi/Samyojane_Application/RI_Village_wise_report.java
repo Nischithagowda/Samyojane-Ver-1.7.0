@@ -20,7 +20,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Objects;
 
-@SuppressLint("Registered")
 public class RI_Village_wise_report extends AppCompatActivity {
     TextView tvHobli, tvTaluk, tvVA_Name, pendencyReport;
     static String district_Code, taluk_Code, hobli_Code, va_Circle_Code;

@@ -49,7 +49,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class E_Kshana_Member_Details extends AppCompatActivity {
 
     TextView txtMemberName, txtDistrict;
@@ -196,7 +195,6 @@ public class E_Kshana_Member_Details extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_E_Kshana(this);
         database = openHelper.getReadableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_MemberDetails
                 +" where "+DataBaseHelperClass_btnDownload_E_Kshana.RAT_ACK_ID+"='"+rc_num+"' and "
                 +DataBaseHelperClass_btnDownload_E_Kshana.RAT_Member_ID+"="+member_ID, null);
@@ -210,6 +208,8 @@ public class E_Kshana_Member_Details extends AppCompatActivity {
                 wardCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RAT_Ward_No_NK));
                 hofName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RAT_HOF_KName));
             }
+        } else {
+            cursor.close();
         }
 
         Log.d("memberName",""+memberName);

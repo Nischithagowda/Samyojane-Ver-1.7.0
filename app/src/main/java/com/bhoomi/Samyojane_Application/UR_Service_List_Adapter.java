@@ -221,7 +221,6 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
                     openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(context);
                     database = openHelper.getWritableDatabase();
 
-                    @SuppressLint("Recycle")
                     Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                             + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
 
@@ -230,6 +229,8 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
                             eng_certi = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
                             Log.d("Service_List", "" + eng_certi);
                         }
+                    } else {
+                        cursor.close();
                     }
                     if (Objects.equals(eng_certi, "E")) {
                         i = new Intent(context, New_Request.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -221,7 +221,6 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                     openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(context);
                     database = openHelper.getWritableDatabase();
 
-                    @SuppressLint("Recycle")
                     Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
                             + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "=" + applicant_Id, null);
 
@@ -230,6 +229,8 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                             eng_certi = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
                             Log.d("Service_List", "" + eng_certi);
                         }
+                    } else {
+                        cursor1.close();
                     }
 
                     switch (serviceCode) {

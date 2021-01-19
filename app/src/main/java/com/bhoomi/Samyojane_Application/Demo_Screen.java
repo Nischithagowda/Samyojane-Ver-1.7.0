@@ -25,7 +25,6 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.Arrays;
 
-@SuppressLint("Registered")
 public class Demo_Screen extends AppCompatActivity {
 
     ProgressDialog dialog;

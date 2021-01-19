@@ -259,7 +259,6 @@ public class SecondScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_Credentials(SecondScreen.this);
         databaseCredential = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         final Cursor cursor = databaseCredential.rawQuery("select * from "+ DataBaseHelperClass_Credentials.TABLE_NAME+" where "
                 + getString(R.string.cre_district_name)+"='"+district+"' and "
                 + getString(R.string.cre_taluk_name)+"='"+taluk+"' and "
@@ -275,6 +274,7 @@ public class SecondScreen extends AppCompatActivity {
                 databaseCredential.close();
             }
         }else {
+            cursor.close();
             databaseCredential.close();
         }
 

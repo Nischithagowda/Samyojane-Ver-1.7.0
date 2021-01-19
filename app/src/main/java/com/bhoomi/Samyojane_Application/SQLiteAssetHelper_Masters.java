@@ -183,7 +183,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         SQLiteDatabase.openDatabase(dbFile.getPath(), null, SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.CREATE_IF_NECESSARY);
     }
 
-    @SuppressLint("Recycle")
     public String Get_DistName_NK_Master(int distCode){
         String objects=null;
         Log.d("dist_Name", "Get_DistName_RC_Master enter");
@@ -199,7 +198,7 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
             else {
                 Log.d("dist_Name", "cursor count not greater than 0");
             }
-            Log.d("dist_Name", objects);
+            Log.d("dist_Name", ""+objects);
             cursor.close();
             database.close();
 
@@ -210,7 +209,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     public String Get_TalukName_NK_Master(int distCode, int talukCode){
         String objects=null;
         Log.d("Taluk_Name", "Get_TalukName_NK_Master enter");
@@ -227,7 +225,7 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
             else {
                 Log.d("Taluk_Name", "cursor count not greater than 0");
             }
-            Log.d("Taluk_Name", objects);
+            Log.d("Taluk_Name", ""+objects);
             cursor.close();
             database.close();
 
@@ -238,7 +236,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     public List<AutoCompleteTextBox_Object> Get_TalukName_NK_Master(int dist_code){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("taluk_Name", "Get_TalukName_NK_Master enter");
@@ -268,7 +265,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     String Get_HobliName_NK_Master(int distCode, int talukCode, int hobliCode){
         String objects=null;
         Log.d("Hobli_Name", "Get_HobliName_NK_Master enter");
@@ -286,7 +282,7 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
             else {
                 Log.d("Hobli_Name", "cursor count not greater than 0");
             }
-            Log.d("Hobli_Name", objects);
+            Log.d("Hobli_Name", ""+objects);
             cursor.close();
             database.close();
 
@@ -297,7 +293,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     List<AutoCompleteTextBox_Object> Get_HobliName_NK_Master(int dist_code, int talukCode){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("hobli_Name", "Get_HobliName_NK_Master enter");
@@ -330,7 +325,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     List<AutoCompleteTextBox_Object> Get_BinCome(){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("Bincom_Name", "Get_BinCome enter");
@@ -376,7 +370,7 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
             else {
                 Log.d("BinCom_Eng", "cursor count not greater than 0");
             }
-            Log.d("BinCom_Eng", objects);
+            Log.d("BinCom_Eng", ""+objects);
             cursor.close();
             database.close();
 
@@ -387,7 +381,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     List<AutoCompleteTextBox_Object> Get_Gender(){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("Gender", "Get_Gender enter");
@@ -432,7 +425,7 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
             else {
                 Log.d("Gender", "cursor count not greater than 0");
             }
-            Log.d("Gender", objects);
+            Log.d("Gender", ""+objects);
             cursor.close();
             database.close();
 
@@ -443,7 +436,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     List<AutoCompleteTextBox_Object> Get_Relationship(){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("Relationship_Name", "Get_Relationship enter");
@@ -487,7 +479,7 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
             else {
                 Log.d("Rel_HOF_Name", "cursor count not greater than 0");
             }
-            Log.d("Rel_HOF_Name", objects);
+            Log.d("Rel_HOF_Name", ""+objects);
             cursor.close();
             database.close();
 
@@ -498,7 +490,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     List<AutoCompleteTextBox_Object> Get_Religion(){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("Religion_Name", "Get_Religion enter");
@@ -543,7 +534,7 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
             else {
                 Log.d("Religion_Name", "cursor count not greater than 0");
             }
-            Log.d("Religion_Name", objects);
+            Log.d("Religion_Name", ""+objects);
             cursor.close();
             database.close();
 
@@ -554,7 +545,6 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
     public List<AutoCompleteTextBox_Object> Get_Salutation(){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("Salutation_Name", "Get_Salutation enter");

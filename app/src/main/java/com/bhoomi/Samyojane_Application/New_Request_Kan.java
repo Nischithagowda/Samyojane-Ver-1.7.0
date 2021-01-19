@@ -397,7 +397,6 @@ public class New_Request_Kan extends AppCompatActivity{
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Kan.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor1 = database.rawQuery("SELECT " + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + ", " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + " FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME + " where "
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code + "=" + district_Code + " and " + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code + "=" + taluk_Code
                 + " and " + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code + "=" + hobli_Code + " and " + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name + "='" + applicant_name
@@ -411,7 +410,6 @@ public class New_Request_Kan extends AppCompatActivity{
             openHelper = new DataBaseHelperClass_VillageNames(New_Request_Kan.this);
             database = openHelper.getWritableDatabase();
 
-            @SuppressLint("Recycle")
             Cursor cursor = database.rawQuery("select " + getString(R.string.village_table_habitation_name) + " from " + DataBaseHelperClass_VillageNames.TABLE_NAME
                     + " where "
                     + DataBaseHelperClass_VillageNames.HM_village_code + "='" + villageCode + "' and "
@@ -421,12 +419,13 @@ public class New_Request_Kan extends AppCompatActivity{
                     strSearchVillageName = cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_habitation_name)));
                     Log.d("VillageName", "" + strSearchVillageName);
                 }
+            } else {
+                cursor.close();
             }
 
             openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(New_Request_Kan.this);
             database = openHelper.getWritableDatabase();
 
-            @SuppressLint("Recycle")
             Cursor cursor2 = database.rawQuery("select " + getString(R.string.facility_table_name) + " from "
                     + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME + " where " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code + "=" + serviceCode, null);
             if (cursor2.getCount() > 0) {
@@ -434,12 +433,16 @@ public class New_Request_Kan extends AppCompatActivity{
                     strSearchServiceName = cursor2.getString(cursor2.getColumnIndex(getString(R.string.facility_table_name)));
                     Log.d("ServiceName", "" + strSearchServiceName);
                 }
+            } else {
+                cursor2.close();
             }
             Log.d("village_Code1", "" + villageCode);
             Log.d("habitation_Code1","" + habitationCode);
             Log.d("service_Code1", "" + serviceCode);
             Log.d("village_Name1", "" + strSearchVillageName);
             Log.d("service_Name1", "" + strSearchServiceName);
+        } else {
+            cursor1.close();
         }
         Log.d("village_Code1", "" + villageCode);
         Log.d("habitation_Code1","" + habitationCode);
@@ -454,7 +457,7 @@ public class New_Request_Kan extends AppCompatActivity{
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Kan.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                 + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name + "='" + applicant_name + "'" + " and "
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
@@ -474,6 +477,8 @@ public class New_Request_Kan extends AppCompatActivity{
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
                 GSC_FirstPart = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
             }
+        } else {
+            cursor.close();
         }
 
         sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan(this, str, str, str);
@@ -736,7 +741,7 @@ public class New_Request_Kan extends AppCompatActivity{
 
                 openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Kan.this);
                 database = openHelper.getWritableDatabase();
-                @SuppressLint("Recycle")
+
                 Cursor cursor3 = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                         + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
@@ -746,6 +751,8 @@ public class New_Request_Kan extends AppCompatActivity{
                         month = cursor3.getString(cursor3.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
                         Log.d("value1", "" + year + " " + month);
                     }
+                } else {
+                    cursor3.close();
                 }
 
                 Log.d("get_Value", "" + year + " " + month);
@@ -1193,7 +1200,7 @@ public class New_Request_Kan extends AppCompatActivity{
                 runOnUiThread(() -> {
                     openHelper = new DataBaseHelperClass_btnDownload_Docs(New_Request_Kan.this);
                     database = openHelper.getWritableDatabase();
-                    @SuppressLint("Recycle")
+
                     Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
 
                     if (cursor3.getCount() > 0) {
@@ -1201,6 +1208,7 @@ public class New_Request_Kan extends AppCompatActivity{
                         btnViewDocs.setVisibility(View.VISIBLE);
                         //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
                     } else {
+                        cursor3.close();
                         Log.d("Values", "No records Exists");
                         btnViewDocs.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
@@ -1236,11 +1244,13 @@ public class New_Request_Kan extends AppCompatActivity{
         //dialog1.setProgress(20);
         openHelper = new DataBaseHelperClass_btnDownload_Docs(New_Request_Kan.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME);
             Log.d("Database", "Down_Docs Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }

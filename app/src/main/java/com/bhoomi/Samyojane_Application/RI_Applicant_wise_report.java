@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-@SuppressLint("Registered")
 public class RI_Applicant_wise_report extends AppCompatActivity {
     ArrayList<String> SlNo = new ArrayList<>();
     ArrayList<String> GSC_No = new ArrayList<>();
@@ -77,7 +76,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Applicant_wise_report.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
                 + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + " is null and "
@@ -116,6 +115,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
             listView.setAdapter(listAdapter);
             database.close();
         }else{
+            cursor1.close();
             Log.d("RI_Village_Wise","EnterElse1");
             emptyTxt.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
@@ -139,7 +139,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Applicant_wise_report.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
                 + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + " is null and "
@@ -177,6 +177,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
             listView.setAdapter(listAdapter);
             database.close();
         }else{
+            cursor1.close();
             emptyTxt.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
             Log.d("InDisplayElse", ""+ i);

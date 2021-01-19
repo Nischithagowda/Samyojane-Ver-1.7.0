@@ -58,7 +58,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class E_Kshana_Freeze_Member_Details_Second extends AppCompatActivity {
 
 

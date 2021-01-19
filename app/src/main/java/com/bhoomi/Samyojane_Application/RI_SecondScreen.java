@@ -37,7 +37,6 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.util.HashMap;
 import java.util.Objects;
 
-@SuppressLint("Registered")
 public class RI_SecondScreen extends AppCompatActivity {
 
     //private static final String url_facility = "http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Facility_Services";
@@ -151,11 +150,12 @@ public class RI_SecondScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_SecondScreen.this);
         database3 = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle") Cursor cursor12 = database3.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
+        Cursor cursor12 = database3.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
                 +" where "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null",null);
         if (cursor12.getCount()>0){
             btnProceed.setVisibility(View.VISIBLE);
         }else {
+            cursor12.close();
             btnProceed.setVisibility(View.GONE);
         }
 
@@ -195,7 +195,6 @@ public class RI_SecondScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_Credentials(RI_SecondScreen.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         final Cursor cursor = database.rawQuery("select * from "
                 + DataBaseHelperClass_Credentials.TABLE_NAME+" where "
                 + getString(R.string.cre_district_name)+"='"+district+"' and "
@@ -213,6 +212,8 @@ public class RI_SecondScreen extends AppCompatActivity {
                 hobli_Code = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_Credentials.Hobli_Code));
                 va_Circle_Code = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_Credentials.VA_circle_Code));
             }
+        } else {
+            cursor.close();
         }
 
         Log.d("VA_Circle_Code", ""+va_Circle_Code);
@@ -301,7 +302,7 @@ public class RI_SecondScreen extends AppCompatActivity {
             else {
                 openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(RI_SecondScreen.this);
                 database = openHelper.getWritableDatabase();
-                @SuppressLint("Recycle")
+
                 Cursor cursor1=database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME, null);
 
                 if (cursor1.getCount()>0){
@@ -309,7 +310,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                     Log.d("entry", String.valueOf(fData));
                     openHelper = new DataBaseHelperClass_VillageNames(RI_SecondScreen.this);
                     database = openHelper.getWritableDatabase();
-                    @SuppressLint("Recycle")
+
                     Cursor cursor2 = database.rawQuery("select * from "+ DataBaseHelperClass_VillageNames.TABLE_NAME, null);
 
                     if(cursor2.getCount()>0) {
@@ -317,7 +318,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                         Log.d("entry", String.valueOf(vData));
                         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_SecondScreen.this);
                         database = openHelper.getWritableDatabase();
-                        @SuppressLint("Recycle")
+
                         Cursor cursor3 = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
                                 + " where "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+"="+district_Code+" and "
                                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code+"="+taluk_Code+" and "
@@ -332,6 +333,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), getString(R.string.connection_not_available), Toast.LENGTH_SHORT).show();
                         }
                         else {
+                            cursor3.close();
                             Log.d("Values", "No records Exists");
                             btnProceed.setVisibility(View.GONE);
                             //btnPendency.setVisibility(View.GONE);
@@ -340,10 +342,12 @@ public class RI_SecondScreen extends AppCompatActivity {
                         }
                     }
                     else {
+                        cursor2.close();
                         vData=0;
                     }
                 }
                 else {
+                    cursor1.close();
                     fData=0;
                     Toast.makeText(getApplicationContext(), getString(R.string.connection_not_available), Toast.LENGTH_SHORT).show();
                 }
@@ -395,11 +399,13 @@ public class RI_SecondScreen extends AppCompatActivity {
         //dialog.incrementProgressBy(10);
         openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(RI_SecondScreen.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME);
             Log.d("Database", "FacilityMaster Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -494,11 +500,13 @@ public class RI_SecondScreen extends AppCompatActivity {
         //dialog.incrementProgressBy(10);
         openHelper = new DataBaseHelperClass_VillageNames(RI_SecondScreen.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_VillageNames.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_VillageNames.TABLE_NAME);
             Log.d("Database", "VillageNames Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -589,11 +597,13 @@ public class RI_SecondScreen extends AppCompatActivity {
         //dialog.incrementProgressBy(10);
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_SecondScreen.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1);
             Log.d("Database", "ServiceParametersTable Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -787,7 +797,6 @@ public class RI_SecondScreen extends AppCompatActivity {
                     timeSwapBuff += timeInMilliseconds;
                     customHandler.removeCallbacks(updateTimerThread);
 
-                    @SuppressLint("Recycle")
                     Cursor cursor3 = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1, null);
 
                     if(cursor3.getCount()>0) {
@@ -800,6 +809,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                         //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
                     }
                     else {
+                        cursor3.close();
                         Log.d("Values", "No records Exists");
                         Toast.makeText(getApplicationContext(), getString(R.string.no_data_to_verify), Toast.LENGTH_SHORT).show();
                         tData=0;
@@ -877,7 +887,7 @@ public class RI_SecondScreen extends AppCompatActivity {
             openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_SecondScreen.this);
             database = openHelper.getWritableDatabase();
             //dialog.incrementProgressBy(10);
-            @SuppressLint("Recycle")
+
             Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+","
@@ -1024,6 +1034,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                     }
 
                 } else {
+                    cursor.close();
                     runOnUiThread(() -> {
                         //Toast.makeText(getApplicationContext(), "There is no Updated data to Upload in Server " , Toast.LENGTH_SHORT).show();
                         Log.d("Update_RI_SerParamTable", "There is no Updated data to Upload in Server");

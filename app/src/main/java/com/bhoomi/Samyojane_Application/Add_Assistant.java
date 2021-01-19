@@ -32,7 +32,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class Add_Assistant extends AppCompatActivity {
 
     ProgressDialog dialog;
@@ -237,11 +236,12 @@ public class Add_Assistant extends AppCompatActivity {
 
     public void truncateDatabase_GetAssistant(){
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_E_Kshana.TABLE_GET_Assistant, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_GET_Assistant);
             Log.d("Database", "GetAssistant Table Truncated");
+        } else {
+            cursor.close();
         }
 
     }

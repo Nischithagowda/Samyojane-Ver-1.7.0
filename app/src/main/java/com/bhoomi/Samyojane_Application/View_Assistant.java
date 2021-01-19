@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-@SuppressLint("Registered")
 public class View_Assistant extends AppCompatActivity {
 
     Button btnBack;
@@ -75,7 +74,6 @@ public class View_Assistant extends AppCompatActivity {
         int i=1;
         Log.d("InDisplay", ""+ i);
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_GET_Assistant+" where "
                 + DataBaseHelperClass_btnDownload_E_Kshana.A_Dist_code+"='"+districtCode+"' and "
                 + DataBaseHelperClass_btnDownload_E_Kshana.A_Taluk_code+"='"+talukCode+"' and "
@@ -104,6 +102,7 @@ public class View_Assistant extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor.close();
             total_Applicants.setVisibility(View.GONE);
             emptyTxt.setVisibility(View.VISIBLE);
             Log.d("InDisplayElse", ""+ i);

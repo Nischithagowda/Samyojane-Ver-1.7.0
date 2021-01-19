@@ -37,7 +37,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class E_Kshana_MainScreen_VA extends AppCompatActivity {
 
     TextView txtRCNum;
@@ -230,21 +229,23 @@ public class E_Kshana_MainScreen_VA extends AppCompatActivity {
 
     public void truncateDatabase_MemberID(){
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id);
             Log.d("Database", "MemberID Table Truncated");
+        } else {
+            cursor.close();
         }
     }
 
     public void truncateDatabase_UpdatedRCMemberDetails(){
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails);
             Log.d("Database", "UpdatedRCMemberDetails Table Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -427,7 +428,6 @@ public class E_Kshana_MainScreen_VA extends AppCompatActivity {
         Log.d("InDisplay", ""+ i);
         Log.d("rc_num", rc_num);
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id+" where "
                 + DataBaseHelperClass_btnDownload_E_Kshana.RC_Num+"='"+rc_num+"'", null);
 
@@ -470,6 +470,7 @@ public class E_Kshana_MainScreen_VA extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor.close();
             dialog.dismiss();
             emptyTxt.setVisibility(View.VISIBLE);
             Log.d("InDisplayElse", ""+ i);

@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat;
 
 import android.util.Log;
 
-@SuppressLint("Registered")
 public class GPSTracker extends Service implements LocationListener {
 
     private Context mContext;

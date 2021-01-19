@@ -165,13 +165,14 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
 
         database1.execSQL(DataBaseHelperClass_VillageNames_DTH.CREATE_TABLE);
 
-        @SuppressLint("Recycle")
         Cursor cursor = databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
                 +getString(R.string.facility_table_name)+"='"+service_name+"'", null);
         if (cursor.getCount()>0){
             if (cursor.moveToNext()){
                 serviceCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code));
             }
+        } else {
+            cursor.close();
         }
 
         Log.d("New_Request_FirstScreen", "district_Code: "+district_Code);
@@ -472,11 +473,13 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         //dialog.incrementProgressBy(10);
         openHelper = new DataBaseHelperClass_VillageNames_DTH(New_Request_FirstScreen.this);
         database1 = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database1.rawQuery("select * from "+ DataBaseHelperClass_VillageNames_DTH.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database1.execSQL("Delete from " + DataBaseHelperClass_VillageNames_DTH.TABLE_NAME);
             Log.d("Database", "VillageNames Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -996,11 +999,13 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         //dialog.incrementProgressBy(10);
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_FirstScreen.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME);
             Log.d("Database", "ServiceTranTable Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }

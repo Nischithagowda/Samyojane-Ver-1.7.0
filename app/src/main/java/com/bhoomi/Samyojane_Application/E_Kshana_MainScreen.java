@@ -47,7 +47,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class E_Kshana_MainScreen extends AppCompatActivity {
 
     EditText etRC_Num;

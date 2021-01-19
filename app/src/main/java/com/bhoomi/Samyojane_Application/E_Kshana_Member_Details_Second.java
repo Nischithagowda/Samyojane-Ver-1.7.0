@@ -62,7 +62,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class E_Kshana_Member_Details_Second extends AppCompatActivity {
 
     String SOAP_ACTION = "http://tempuri.org/KannadatoEnglish";

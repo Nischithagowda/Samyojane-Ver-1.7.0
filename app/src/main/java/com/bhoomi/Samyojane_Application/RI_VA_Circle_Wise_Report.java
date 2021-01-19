@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-@SuppressLint("Registered")
 public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
 
     TextView tvHobli, tvTaluk, tvVA_Name, pendencyReport;
@@ -87,7 +86,6 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_VA_Circle_Wise_Report.this);
         database1 = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select distinct "+getString(R.string.cre_va_circle_name)
                 +","+DataBaseHelperClass_Credentials.VA_circle_Code
                 + " from "+DataBaseHelperClass_Credentials.TABLE_NAME
@@ -101,7 +99,6 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
                     va_Circle_Name = cursor.getString(cursor.getColumnIndexOrThrow(getString(R.string.cre_va_circle_name)));
                     va_Circle_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.VA_circle_Code));
 
-                    @SuppressLint("Recycle")
                     Cursor cursor1 = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
                             + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
                             + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
@@ -137,6 +134,7 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
 
                         //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
                     } else {
+                        cursor1.close();
                         emptyTxt.setVisibility(View.VISIBLE);
                         listView.setVisibility(View.GONE);
                         Log.d("InDisplayElse123", "" + i);

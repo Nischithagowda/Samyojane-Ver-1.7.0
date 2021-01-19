@@ -25,7 +25,6 @@ import java.util.ArrayList;
  * Created by Adarsh on 06-Jun-19.
  */
 
-@SuppressLint("Registered")
 public class View_Docs extends AppCompatActivity {
 
     Button btnBack;
@@ -91,13 +90,14 @@ public class View_Docs extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(View_Docs.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
                 +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc+"='"+service_name+"'", null);
         if (cursor.getCount()>0){
             if (cursor.moveToNext()){
                 serviceCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code));
             }
+        } else {
+            cursor.close();
         }
 
         Log.d("New_Request_FirstScreen", "district_Code: "+district_Code);
@@ -127,7 +127,7 @@ public class View_Docs extends AppCompatActivity {
 
         openHelper = new DataBaseHelperClass_btnDownload_Docs(this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
 
         SlNo.clear();
@@ -163,6 +163,7 @@ public class View_Docs extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor1.close();
             emptyTxt.setVisibility(View.VISIBLE);
             emptyTxt.setText("No Data Found");
             Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_SHORT).show();

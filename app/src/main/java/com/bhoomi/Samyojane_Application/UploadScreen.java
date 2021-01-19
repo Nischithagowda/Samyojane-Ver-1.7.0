@@ -29,7 +29,6 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-@SuppressLint("Registered")
 public class UploadScreen extends AppCompatActivity {
 
 //    String SOAP_ACTION1 = "http://tempuri.org/Update_ServiceTranTable ";
@@ -98,7 +97,6 @@ public class UploadScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(UploadScreen.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         final Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1+" SP left join "
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" ST on ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"= SP."+DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No
                 +" where (ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1 and SP."
@@ -121,6 +119,7 @@ public class UploadScreen extends AppCompatActivity {
             tvNotUploaded.setText(String.valueOf(count_BalanceRecord));
         }
         else {
+            cursor.close();
             tvTotalUpload.setText("0");
             tvAlreadyUploaded.setText("0");
             tvNotUploaded.setText("0");
@@ -185,7 +184,7 @@ public class UploadScreen extends AppCompatActivity {
         protected String doInBackground(String... params) {
             openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(UploadScreen.this);
             database = openHelper.getWritableDatabase();
-            @SuppressLint("Recycle")
+
             Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+","
@@ -291,7 +290,6 @@ public class UploadScreen extends AppCompatActivity {
                                 Reason_for_Rejection = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Rejection));
                                 DataUpdateFlag = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag));
 
-                                @SuppressLint("Recycle")
                                 Cursor cursor2 = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo+" from "
                                         +DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1+ " where "
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"="+Applicant_Id, null);
@@ -302,6 +300,8 @@ public class UploadScreen extends AppCompatActivity {
                                     else {
                                         ST_applicant_photo = null;
                                     }
+                                } else {
+                                    cursor2.close();
                                 }
 
                                 SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE, OPERATION_NAME2);
@@ -410,6 +410,7 @@ public class UploadScreen extends AppCompatActivity {
                     dialog.dismiss();
 
                 } else {
+                    cursor.close();
                     runOnUiThread(() -> {
                         //Toast.makeText(getApplicationContext(), "There is no Updated data to Upload in Server " , Toast.LENGTH_SHORT).show();
                         Log.d("InsertServiceParaTable", "There is no Updated data to Upload in Server");

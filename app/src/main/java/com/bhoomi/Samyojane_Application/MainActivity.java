@@ -298,7 +298,6 @@ public class MainActivity extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_VersionCode(this);
         database = openHelper.getReadableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME
                 +" where " +DataBaseHelperClass_btnDownload_VersionCode.VersionCode+"='"+V_Code+"'", null);
         if(cursor.getCount()>0){
@@ -314,6 +313,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }else {
+            cursor.close();
             Log.d("Version_Status","Does not Match");
             i=1;
             database.close();
@@ -338,12 +338,13 @@ public class MainActivity extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_Credentials(MainActivity.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_Credentials.TABLE_NAME, null);
         if(cursor.getCount()>0){
             if(cursor.moveToFirst()){
                 getFlag = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.flag)));
             }
+        } else {
+            cursor.close();
         }
         Log.d("Flag_value",""+ getFlag);
         return getFlag;
@@ -369,7 +370,6 @@ public class MainActivity extends AppCompatActivity {
             openHelper = new DataBaseHelperClass_Credentials(MainActivity.this);
             database = openHelper.getWritableDatabase();
 
-            @SuppressLint("Recycle")
             Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_Credentials.TABLE_NAME, null);
             if (cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
@@ -377,6 +377,7 @@ public class MainActivity extends AppCompatActivity {
                     from_DB_talukCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.Taluk_Code));
                 }
             } else {
+                cursor.close();
                 from_DB_distCode = 0;
                 from_DB_talukCode = 0;
                 Log.d("Note2", "Not a valid user");
@@ -391,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
                     if (val_flag == 2) {
                         //only VA Login.
                         Log.d("val_flag", "" + val_flag);
-                        @SuppressLint("Recycle")
+
                         Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_Credentials.TABLE_NAME
                                 + " where " + DataBaseHelperClass_Credentials.District_Code + "=" + from_DB_distCode + " and "
                                 + DataBaseHelperClass_Credentials.Taluk_Code + "=" + from_DB_talukCode, null);
@@ -477,6 +478,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             str = "Database has some value";
                         } else {
+                            cursor1.close();
                             str = "Database was NULL";
                             btnActivation.setVisibility(View.VISIBLE);
                             tvAlert.setVisibility(View.VISIBLE);
@@ -485,7 +487,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (val_flag == 1) {
                         //only RI Login
                         Log.d("val_flag", "" + val_flag);
-                        @SuppressLint("Recycle")
+
                         Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_Credentials.TABLE_NAME
                                 + " where " + DataBaseHelperClass_Credentials.District_Code + "=" + from_DB_distCode + " and "
                                 + DataBaseHelperClass_Credentials.Taluk_Code + "=" + from_DB_talukCode, null);
@@ -564,6 +566,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             str = "Database has some value";
                         } else {
+                            cursor1.close();
                             str = "Database was NULL";
                             btnActivation.setVisibility(View.VISIBLE);
                             tvAlert.setVisibility(View.VISIBLE);
@@ -573,7 +576,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (val_flag == 3) {
                         //Both VA and RI login
                         Log.d("val_flag", "" + val_flag);
-                        @SuppressLint("Recycle")
+
                         Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_Credentials.TABLE_NAME
                                 + " where " + DataBaseHelperClass_Credentials.District_Code + "=" + from_DB_distCode + " and "
                                 + DataBaseHelperClass_Credentials.Taluk_Code + "=" + from_DB_talukCode, null);
@@ -693,6 +696,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             str = "Database has some value";
                         } else {
+                            cursor1.close();
                             str = "Database was NULL";
                             btnActivation.setVisibility(View.VISIBLE);
                             tvAlert.setVisibility(View.VISIBLE);
@@ -713,11 +717,13 @@ public class MainActivity extends AppCompatActivity {
     public void truncateDatabase(){
         openHelper = new DataBaseHelperClass_Credentials(MainActivity.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_Credentials.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_Credentials.TABLE_NAME);
             Log.d("Database", "Database Truncated");
+        } else {
+            cursor.close();
         }
     }
 
@@ -787,11 +793,13 @@ public class MainActivity extends AppCompatActivity {
         //dialog1.setProgress(20);
         openHelper = new DataBaseHelperClass_btnDownload_VersionCode(MainActivity.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME);
             Log.d("Database", "Down_Docs Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -809,11 +817,11 @@ public class MainActivity extends AppCompatActivity {
             }catch (NullPointerException e){
                 runOnUiThread(() -> {
                     dialog.dismiss();
-                    @SuppressLint("Recycle")
                     Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_Credentials.TABLE_NAME, null);
                     if(cursor.getCount()>0) {
                         database.execSQL("delete from " + DataBaseHelperClass_Credentials.TABLE_NAME);
                     }else {
+                        cursor.close();
                         Log.d("Database", "No Data Found");
                     }
                     Toast.makeText(getApplicationContext(), getString(R.string.invalid_user), Toast.LENGTH_SHORT).show();

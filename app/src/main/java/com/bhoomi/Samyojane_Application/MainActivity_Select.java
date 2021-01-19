@@ -227,7 +227,6 @@ public class MainActivity_Select extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_VersionCode(this);
         database = openHelper.getReadableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME
                 +" where " +DataBaseHelperClass_btnDownload_VersionCode.VersionCode+"='"+V_Code+"'", null);
         if(cursor.getCount()>0){
@@ -244,6 +243,7 @@ public class MainActivity_Select extends AppCompatActivity {
                 }
             }
         }else {
+            cursor.close();
             Log.d("Version_Status","Does not Match");
             i=1;
             database.close();
@@ -320,11 +320,13 @@ public class MainActivity_Select extends AppCompatActivity {
         //dialog1.setProgress(20);
         openHelper = new DataBaseHelperClass_btnDownload_VersionCode(MainActivity_Select.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME);
             Log.d("Database", "Down_Docs Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }
@@ -332,11 +334,13 @@ public class MainActivity_Select extends AppCompatActivity {
     public void truncateDatabase(){
         openHelper = new DataBaseHelperClass_Credentials(MainActivity_Select.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_Credentials.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_Credentials.TABLE_NAME);
             Log.d("Database", "Database Truncated");
+        } else {
+            cursor.close();
         }
     }
 

@@ -25,7 +25,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class OTP_Assistant extends AppCompatActivity {
 
     EditText etOne, etTwo, etThree, etFour;

@@ -28,7 +28,6 @@ import java.util.Objects;
  * Created by user on 28-Dec-18.
  */
 
-@SuppressLint("Registered")
 public class RI_Field_Report extends AppCompatActivity {
 
     Button btnBack;
@@ -160,7 +159,7 @@ public class RI_Field_Report extends AppCompatActivity {
 
         openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
         database=openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
@@ -173,6 +172,7 @@ public class RI_Field_Report extends AppCompatActivity {
             totalPending.setText(""+count);
         }
         else {
+            cursor.close();
             totalPending.setText("0");
         }
 
@@ -182,7 +182,7 @@ public class RI_Field_Report extends AppCompatActivity {
 
             openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
             database=openHelper.getWritableDatabase();
-            @SuppressLint("Recycle")
+
             Cursor cursor1 = database.rawQuery("select * from "
                     +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
@@ -195,6 +195,7 @@ public class RI_Field_Report extends AppCompatActivity {
                 totalPending.setText(""+count1);
             }
             else {
+                cursor1.close();
                 totalPending.setText("0");
             }
 
@@ -229,7 +230,7 @@ public class RI_Field_Report extends AppCompatActivity {
 
             openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
             database=openHelper.getWritableDatabase();
-            @SuppressLint("Recycle")
+
             Cursor cursor1 = database.rawQuery("select * from "
                     +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"=99999"+" and "
@@ -242,6 +243,7 @@ public class RI_Field_Report extends AppCompatActivity {
                 totalPending.setText(""+count1);
             }
             else {
+                cursor1.close();
                 totalPending.setText("0");
             }
 
@@ -282,7 +284,7 @@ public class RI_Field_Report extends AppCompatActivity {
 
                 openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
                 database=openHelper.getWritableDatabase();
-                @SuppressLint("Recycle")
+
                 Cursor cursor12 = database.rawQuery("select * from "
                         +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
@@ -296,6 +298,7 @@ public class RI_Field_Report extends AppCompatActivity {
                     totalPending.setText(""+ count12);
                 }
                 else {
+                    cursor12.close();
                     totalPending.setText("0");
                 }
 
@@ -332,7 +335,7 @@ public class RI_Field_Report extends AppCompatActivity {
 
                 openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
                 database=openHelper.getWritableDatabase();
-                @SuppressLint("Recycle")
+
                 Cursor cursor12 = database.rawQuery("select * from "
                         +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"=99999"+" and "
@@ -345,6 +348,7 @@ public class RI_Field_Report extends AppCompatActivity {
                     totalPending.setText(""+ count12);
                 }
                 else {
+                    cursor12.close();
                     totalPending.setText("0");
                 }
                 tvTaluk.setText(taluk);
@@ -410,7 +414,6 @@ public class RI_Field_Report extends AppCompatActivity {
                 openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
                 database=openHelper.getWritableDatabase();
 
-                @SuppressLint("Recycle")
                 Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code+"="+hab_Va_Circle_Code+" and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
@@ -423,6 +426,7 @@ public class RI_Field_Report extends AppCompatActivity {
                     SearchVillageCircleName.add(new SpinnerObject(hab_Va_Circle_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_va_circle_name)))+"-("+totalCount_va_Cir+")")));
                     Log.d("Village Names", ""+ SearchVillageCircleName);
                 }else {
+                    cursor1.close();
                     SearchVillageCircleName.add(new SpinnerObject(hab_Va_Circle_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_va_circle_name))))));
                     Log.d("Village Names", ""+ SearchVillageCircleName);
                 }
@@ -438,7 +442,7 @@ public class RI_Field_Report extends AppCompatActivity {
     public List getVillageList(String Village_Circle_Code){
         openHelper=new DataBaseHelperClass_VillageNames(RI_Field_Report.this);
         database=openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("Select "+getString(R.string.village_table_habitation_name)+","
                 + DataBaseHelperClass_VillageNames.HM_habitation_code+","
                 + DataBaseHelperClass_VillageNames.HM_village_code+" from "
@@ -452,7 +456,6 @@ public class RI_Field_Report extends AppCompatActivity {
                 openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
                 database=openHelper.getWritableDatabase();
 
-                @SuppressLint("Recycle")
                 Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
                         +" where "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"="+hab_Village_Code+" and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code+"="+hab_Habitation_Code+" and "
@@ -464,10 +467,13 @@ public class RI_Field_Report extends AppCompatActivity {
                     SearchVillageName.add(new SpinnerObject_new(hab_Village_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_habitation_name)))+"-("+totalCount_vill+")"),hab_Habitation_Code));
                     Log.d("Village Names", ""+ SearchVillageName);
                 }else {
+                    cursor1.close();
                     SearchVillageName.add(new SpinnerObject_new(hab_Village_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_habitation_name)))),hab_Habitation_Code));
                     Log.d("Village Names", "" + SearchVillageName);
                 }
             } while (cursor.moveToNext());
+        } else {
+            cursor.close();
         }
 
         return SearchVillageName;
@@ -647,7 +653,6 @@ public class RI_Field_Report extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
                 +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
@@ -692,6 +697,7 @@ public class RI_Field_Report extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor.close();
             emptyTxt.setVisibility(View.VISIBLE);
             Log.d("InDisplayElse", ""+ i);
             emptyTxt.setText(getString(R.string.no_da_found));
@@ -706,7 +712,6 @@ public class RI_Field_Report extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
                 +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
@@ -754,6 +759,7 @@ public class RI_Field_Report extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
+            cursor.close();
             emptyTxt.setVisibility(View.VISIBLE);
             Log.d("InDisplayElse", ""+ i);
             emptyTxt.setText(getString(R.string.no_da_found));

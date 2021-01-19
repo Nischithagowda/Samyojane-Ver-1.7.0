@@ -444,7 +444,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+"="+applicant_Id, null);
         if(cursor.getCount()>0){
@@ -467,6 +467,8 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
                 remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
                 appImage = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_applicant_photo));
             }
+        } else {
+            cursor.close();
         }
 
         Log.d("Eng_Certi", eng_certi);
@@ -1182,7 +1184,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id, null);
         if(cursor.getCount()>0){
@@ -1263,6 +1264,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
             return "Update_success";
         }
         else {
+            cursor.close();
             Log.d("Data", "StoreData_in_DB_When_Correct : Update_Failed");
             return "Update_Failed";
         }
@@ -1292,7 +1294,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         getCatCode = getAppCatCode_VA;
         getCasteCode = getAppCasteCode_VA;
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "=" + applicant_Id, null);
         if (cursor.getCount() > 0) {
@@ -1363,6 +1364,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
             return "Update_success";
         }
         else {
+            cursor.close();
             Log.d("Data", "StoreData_in_DB_When_Wrong : Update_Failed");
             return "Update_Failed";
         }
@@ -1624,7 +1626,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
                 runOnUiThread(() -> {
                     openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.this);
                     database = openHelper.getWritableDatabase();
-                    @SuppressLint("Recycle")
+
                     Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
 
                     if (cursor3.getCount() > 0) {
@@ -1632,6 +1634,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
                         btnViewDocs.setVisibility(View.VISIBLE);
                         //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
                     } else {
+                        cursor3.close();
                         Log.d("Values", "No records Exists");
                         btnViewDocs.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
@@ -1655,11 +1658,13 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         //dialog1.setProgress(20);
         openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME);
             Log.d("Database", "Down_Docs Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }

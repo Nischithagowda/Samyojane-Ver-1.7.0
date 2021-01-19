@@ -400,7 +400,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor1=database.rawQuery("SELECT "+DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code+", "+DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+" FROM "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" where "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+"="+district_Code+" and "+DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+"="+taluk_Code
                 +" and "+DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+"="+hobli_Code+" and "+DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+"='"+applicant_name
@@ -414,7 +413,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             openHelper = new DataBaseHelperClass_VillageNames(New_Request_SecondScreen.this);
             database = openHelper.getWritableDatabase();
 
-            @SuppressLint("Recycle")
             Cursor cursor = database.rawQuery("select "+getString(R.string.village_table_habitation_name)+" from "+ DataBaseHelperClass_VillageNames.TABLE_NAME
                     +" where "+DataBaseHelperClass_VillageNames.HM_village_code+"='"+village_Code+"' and "+DataBaseHelperClass_VillageNames.HM_habitation_code+"="+habitationCode, null);
             if(cursor.getCount()>0) {
@@ -422,12 +420,13 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                     strSearchVillageName = cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_habitation_name)));
                     Log.d("VillageName", ""+strSearchVillageName);
                 }
+            } else {
+                cursor.close();
             }
 
             openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(New_Request_SecondScreen.this);
             database = openHelper.getWritableDatabase();
 
-            @SuppressLint("Recycle")
             Cursor cursor2 = database.rawQuery("select "+getString(R.string.facility_table_name)+" from "
                     +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+service_Code, null);
             if(cursor2.getCount()>0) {
@@ -435,12 +434,16 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                     strSearchServiceName = cursor2.getString(cursor2.getColumnIndex(getString(R.string.facility_table_name)));
                     Log.d("ServiceName", ""+strSearchServiceName);
                 }
+            } else {
+                cursor2.close();
             }
             Log.d("village_Code1", ""+village_Code);
             Log.d("habitationCode1",""+habitationCode);
             Log.d("service_Code1", ""+service_Code);
             Log.d("village_Name1", ""+strSearchVillageName);
             Log.d("service_Name1", ""+strSearchServiceName);
+        } else {
+            cursor1.close();
         }
         Log.d("village_Code1", ""+village_Code);
         Log.d("habitationCode", ""+habitationCode);
@@ -455,7 +458,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor=database.rawQuery("SELECT * FROM "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                 +" where "+DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+"='"+applicant_name+"'"+" and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"="+applicant_Id, null);
@@ -475,6 +478,8 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
                 GSC_FirstPart = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
             }
+        } else {
+            cursor.close();
         }
 
 

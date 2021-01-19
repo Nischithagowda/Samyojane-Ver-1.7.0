@@ -7,9 +7,6 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bhoomi.Samyojane_Application.R;
-
-@SuppressLint("Registered")
 public class Language_selection extends AppCompatActivity {
 
     ListView listLanguage;

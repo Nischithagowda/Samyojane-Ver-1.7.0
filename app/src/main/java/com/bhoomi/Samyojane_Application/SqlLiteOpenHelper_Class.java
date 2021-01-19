@@ -31,19 +31,19 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
     int town_totalCount, ward_totalCount;
 
     private static final String DATABASE_NAME_reasons = "Reasons_Master.db";
-    private String Table_1_re = "CreamyLayerReasons";
-    private String Table_2_re = "CertificateRejectionReason";
-    private String Table_3_re = "Purpose_of_Certificate";
+    String Table_1_re = "CreamyLayerReasons";
+    String Table_2_re = "CertificateRejectionReason";
+    String Table_3_re = "Purpose_of_Certificate";
 //    private String Reasons_e = "Reasons";
 //    private String Reasons_k = "Reasons_k";
 //    private String Purpose_e = "Purpose";
 //    private String Purpose_k = "Purpose_k";
-    private String SlNo = "SlNo";
+    String SlNo = "SlNo";
 
     private static final String DATABASE_NAME_cat_caste = "CATEGORY_CASTE_MASTER.sqlite";
-    private static String Table_CAT_MASTER = "CAT_MASTER";
-    private static String Table_CASTE_EXCEPT_OBC = "CASTE_EXCEPT_OBC";
-    private static String Table_CASTE_OBC = "CASTE_OBC";
+    static String Table_CAT_MASTER = "CAT_MASTER";
+    static String Table_CASTE_EXCEPT_OBC = "CASTE_EXCEPT_OBC";
+    static String Table_CASTE_OBC = "CASTE_OBC";
 
     private static final String DATABASE_NAME_docs_type = "DOCUMENT_TYPE_MASTER.db";
     public static String Table_DOCS_Type = "DOCUMENT_TYPE_MASTER";
@@ -66,15 +66,15 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
     public static String WM_town_code = "WM_town_code";
     public static String WM_ward_no = "WM_ward_no";
     public static String WM_hobli_code = "WM_hobli_code";
-    public String WM_va_circle_code = "WM_va_circle_code";
+    //public String WM_va_circle_code = "WM_va_circle_code";
     public String WM_ward_kname = "WM_ward_kname";
     public String WM_ward_ename = "WM_ward_ename";
 
     private static final String DATABASE_Name_ID_Type = "ID_MASTER.db";
-    private static String ID_Master_tbl="ID_MASTER";
-    private static String ID_Code = "ID_Code";
-    private static String ID_Kname = "ID_Kname";
-    private static String ID_Ename = "ID_Ename";
+    static String ID_Master_tbl="ID_MASTER";
+    static String ID_Code = "ID_Code";
+//    static String ID_Kname = "ID_Kname";
+//    static String ID_Ename = "ID_Ename";
 
     @SuppressLint("StaticFieldLeak")
     private static Context ctx;
@@ -146,7 +146,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
         }
         else return str;
     }
-    @SuppressLint("Recycle")
+
     public int Get_CreamyLayerReasons(String str, String col_name){
         int num=0;
         database = this.getReadableDatabase();
@@ -174,7 +174,6 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
         else return str;
     }
 
-    @SuppressLint("Recycle")
     public int Get_CertificateRejectionReason(String str, String col_name){
         int num=0;
         database = this.getReadableDatabase();
@@ -202,7 +201,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
         else return str;
     }
 
-    @SuppressLint("Recycle")
+
     public int Get_Purpose(String str, String col_name){
         int num=0;
         database = this.getReadableDatabase();
@@ -217,7 +216,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
             return num;
     }
 
-    @SuppressLint("Recycle")
+
     public List<SpinnerObject> Get_Category(String str, String add){
         List<SpinnerObject> objects = new ArrayList<>();
         Log.d("Category1", "Get_Category enter");
@@ -246,7 +245,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
+
     public List<SpinnerObject> Get_Category_NK(){
         List<SpinnerObject> objects = new ArrayList<>();
         Log.d("Category_NK", "Get_Category enter");
@@ -275,7 +274,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
         return objects;
     }
 
-    @SuppressLint("Recycle")
+
     public List<SpinnerObject> Get_Category_OBC(String str, String add){
         List<SpinnerObject> objects = new ArrayList<>();
         Log.d("Category1", "Get_Category enter");
@@ -318,7 +317,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
         return str;
     }
 
-    @SuppressLint("Recycle")
+
     public int GetCategoryCode(String str){
         int num=0;
             database = this.getReadableDatabase();
@@ -423,6 +422,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
                             Log.d("Town_TotalCount", String.valueOf(town_totalCount));
                             objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(TWM_town_code)), (cursor.getString(cursor.getColumnIndexOrThrow(town_Name))+"-("+town_totalCount+")")));
                         }else {
+                            cursor1.close();
                             objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(TWM_town_code)),cursor.getString(cursor.getColumnIndexOrThrow(town_Name))));
                         }
                     }while (cursor.moveToNext());
@@ -490,6 +490,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
                             Log.d("Town_TotalCount", String.valueOf(town_totalCount));
                             objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndexOrThrow(TWM_town_code)), (cursor.getString(cursor.getColumnIndexOrThrow(town_Name))+"-("+town_totalCount+")")));
                         }else {
+                            cursor1.close();
                             objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndexOrThrow(TWM_town_code)),cursor.getString(cursor.getColumnIndexOrThrow(town_Name))));
                         }
                     }while (cursor.moveToNext());
@@ -624,7 +625,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
 
                         openHelper=new DataBaseHelperClass_btnDownload_ServiceTranTable(ctx);
                         database=openHelper.getWritableDatabase();
-                        @SuppressLint("Recycle")
+
                         Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" where "
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"="+townCode+" and "
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"="+wardCode+" and "
@@ -636,6 +637,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
                             Log.d("Town_TotalCount", String.valueOf(ward_totalCount));
                             objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(WM_ward_no)) , (cursor.getString(cursor.getColumnIndexOrThrow(ward_name))+":("+ward_totalCount+")")));
                         }else {
+                            cursor1.close();
                             objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(WM_ward_no)) ,cursor.getString(cursor.getColumnIndexOrThrow(ward_name))));
                         }
 
@@ -705,7 +707,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
 
                         openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(ctx);
                         database=openHelper.getWritableDatabase();
-                        @SuppressLint("Recycle")
+
                         Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"="+townCode+" and "
                                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"="+wardCode+" and "
@@ -717,6 +719,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
                             Log.d("Town_TotalCount", String.valueOf(ward_totalCount));
                             objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(WM_ward_no)),(cursor.getString(cursor.getColumnIndexOrThrow(ward_Name))+":("+ward_totalCount+")")));
                         }else {
+                            cursor1.close();
                             objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(WM_ward_no)),(cursor.getString(cursor.getColumnIndexOrThrow(ward_Name)))));
                         }
 

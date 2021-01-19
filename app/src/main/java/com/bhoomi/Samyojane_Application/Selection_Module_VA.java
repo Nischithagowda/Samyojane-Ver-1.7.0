@@ -11,7 +11,6 @@ import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-@SuppressLint("Registered")
 public class Selection_Module_VA extends AppCompatActivity {
 
     RadioGroup radioGroup;

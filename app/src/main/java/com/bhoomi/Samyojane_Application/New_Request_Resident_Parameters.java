@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-@SuppressLint("Registered")
 public class New_Request_Resident_Parameters extends AppCompatActivity {
 
     Spinner spPurpose, spRejectReason, spMonth;
@@ -277,7 +276,7 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Resident_Parameters.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor=database.rawQuery("SELECT * FROM "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                 +" where "+DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"='"+serviceCode+"'"+" and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"="+applicant_Id, null);
@@ -288,6 +287,8 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
                 GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
                 Log.d("value1", ""+year+" "+month);
             }
+        } else {
+            cursor.close();
         }
 
         Log.d("get_Value", ""+year+" "+month);
@@ -626,7 +627,6 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
             openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Resident_Parameters.this);
             database = openHelper.getWritableDatabase();
 
-            @SuppressLint("Recycle")
             Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
             if (cursor.getCount() > 0) {
@@ -681,7 +681,7 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
                 truncateDatabase_Docs();
                 str = "Success";
             } else {
-
+                cursor.close();
                 set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
                 set_and_get_service_parameter.setDistrict_Code(district_Code);
                 set_and_get_service_parameter.setTaluk_Code(taluk_Code);
@@ -777,11 +777,13 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
         //dialog1.setProgress(20);
         openHelper = new DataBaseHelperClass_btnDownload_Docs(New_Request_Resident_Parameters.this);
         database = openHelper.getWritableDatabase();
-        @SuppressLint("Recycle")
+
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
         if(cursor.getCount()>0) {
             database.execSQL("Delete from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME);
             Log.d("Database", "Down_Docs Database Truncated");
+        } else {
+            cursor.close();
         }
 
     }

@@ -27,7 +27,6 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-@SuppressLint("Registered")
 public class RI_UploadScreen extends AppCompatActivity {
 
     String SOAP_ACTION2 = "http://tempuri.org/Update_RI_ServiceParameterTable_Auto";
@@ -93,7 +92,6 @@ public class RI_UploadScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_UploadScreen.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         final Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
                 + " where "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is not null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + " is not null ", null);
@@ -112,6 +110,7 @@ public class RI_UploadScreen extends AppCompatActivity {
             tvNotUploaded.setText(String.valueOf(count_BalanceRecord));
         }
         else {
+            cursor.close();
             tvTotalUpload.setText("0");
             tvAlreadyUploaded.setText("0");
             tvNotUploaded.setText("0");
@@ -197,7 +196,7 @@ public class RI_UploadScreen extends AppCompatActivity {
         protected String doInBackground(String... params) {
             openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_UploadScreen.this);
             database = openHelper.getWritableDatabase();
-            @SuppressLint("Recycle")
+
             Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+","
@@ -366,6 +365,7 @@ public class RI_UploadScreen extends AppCompatActivity {
                     dialog.dismiss();
 
                 } else {
+                    cursor.close();
                     runOnUiThread(() -> {
                         //Toast.makeText(getApplicationContext(), "There is no Updated data to Upload in Server " , Toast.LENGTH_SHORT).show();
                         Log.d("Update_RI_SerParamTable", "There is no Updated data to Upload in Server");

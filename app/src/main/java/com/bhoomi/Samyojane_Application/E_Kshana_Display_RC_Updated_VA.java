@@ -34,7 +34,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class E_Kshana_Display_RC_Updated_VA extends AppCompatActivity {
 
     LinearLayout listLayout;

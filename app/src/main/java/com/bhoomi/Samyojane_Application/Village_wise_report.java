@@ -20,7 +20,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Objects;
 
-@SuppressLint("Registered")
 public class Village_wise_report extends AppCompatActivity {
 
     //TextView tvHobli, tvTaluk, tvVA_Name;
@@ -123,7 +122,6 @@ public class Village_wise_report extends AppCompatActivity {
             listLayout1.setVisibility(View.VISIBLE);
             displayUrbanData_AfterItemSelected();
         }else if(option_Flag==null) {
-            Log.d("option_Flag1", ""+option_Flag);
             option_Flag = getString(R.string.rural);
             txtPendingName.setText(getString(R.string.village_wise_pending_status));
             listLayout.setVisibility(View.VISIBLE);
@@ -174,7 +172,6 @@ public class Village_wise_report extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_VillageNames(Village_wise_report.this);
         database = openHelper.getWritableDatabase();
 
-        @SuppressLint("Recycle")
         Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_VillageNames.TABLE_NAME
                 +" where " +DataBaseHelperClass_VillageNames.VCM_va_circle_code+"="+va_Circle_Code
                 + " order by "+getString(R.string.village_table_habitation_name),null);
@@ -187,7 +184,6 @@ public class Village_wise_report extends AppCompatActivity {
 
                     Log.d("villageCode_l", "" + villageCode);
                     if (!villageCode.equals("99999")) {
-                        @SuppressLint("Recycle")
                         Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No
                                 + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME + " where "
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + " is null and "
@@ -220,6 +216,7 @@ public class Village_wise_report extends AppCompatActivity {
                             database.close();
                             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
                         } else {
+                            cursor.close();
                             emptyTxt.setVisibility(View.VISIBLE);
                             listView.setVisibility(View.GONE);
                             Log.d("InDisplayElse", "" + i);
@@ -237,6 +234,7 @@ public class Village_wise_report extends AppCompatActivity {
                 } while (cursor1.moveToNext());
             }
         }else{
+            cursor1.close();
             emptyTxt.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
             Log.d("InDisplayElse", ""+ i);
@@ -269,8 +267,6 @@ public class Village_wise_report extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(Village_wise_report.this);
         database1 = openHelper.getWritableDatabase();
 
-
-        @SuppressLint("Recycle")
         Cursor cursor1 = database_Asset.rawQuery("select * from "+SqlLiteOpenHelper_Class.Table_TOWN_MASTER
                 +" where "+SqlLiteOpenHelper_Class.TWM_district_code+"="+district_Code+" and "
                 +SqlLiteOpenHelper_Class.TWM_taluk_code+"="+taluk_Code,null);
@@ -282,7 +278,6 @@ public class Village_wise_report extends AppCompatActivity {
 
                     Log.d("villageCode_l", "" + townCode);
 
-                    @SuppressLint("Recycle")
                     Cursor cursor2 = database_Asset.rawQuery("select * from "+SqlLiteOpenHelper_Class.Table_WARD_MASTER
                             +" where "+SqlLiteOpenHelper_Class.WM_district_code+"="+district_Code+" and "
                             + SqlLiteOpenHelper_Class.WM_taluk_code+"="+taluk_Code+" and "
@@ -294,7 +289,6 @@ public class Village_wise_report extends AppCompatActivity {
                                 wardCode = cursor2.getString(cursor2.getColumnIndexOrThrow(SqlLiteOpenHelper_Class.WM_ward_no));
                                 wardName = cursor2.getString(cursor2.getColumnIndexOrThrow(getString(R.string.town_master_ward_name)));
 
-                                @SuppressLint("Recycle")
                                 Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No
                                         + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME + " where "
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + " is null and "
@@ -327,6 +321,7 @@ public class Village_wise_report extends AppCompatActivity {
                                     listView1.setAdapter(ward_listAdapter);
                                     //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
                                 } else {
+                                    cursor.close();
                                     emptyTxt1.setVisibility(View.VISIBLE);
                                     listView1.setVisibility(View.GONE);
                                     Log.d("InDisplayElse", "" + i);
@@ -337,6 +332,7 @@ public class Village_wise_report extends AppCompatActivity {
                             } while (cursor2.moveToNext());
                         }
                     }else{
+                        cursor2.close();
                         emptyTxt1.setVisibility(View.VISIBLE);
                         listView1.setVisibility(View.GONE);
                         Log.d("InDisplayElse", ""+ i);
@@ -347,6 +343,7 @@ public class Village_wise_report extends AppCompatActivity {
                 } while (cursor1.moveToNext());
             }
         }else{
+            cursor1.close();
             emptyTxt1.setVisibility(View.VISIBLE);
             listView1.setVisibility(View.GONE);
             Log.d("InDisplayElse", ""+ i);

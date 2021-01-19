@@ -10,7 +10,6 @@ import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-@SuppressLint("Registered")
 public class Selection_Module extends AppCompatActivity {
 
     RadioGroup radioGroup;

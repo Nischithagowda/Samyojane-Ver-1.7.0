@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-@SuppressLint("Registered")
 public class E_Kshana_Add_Member extends AppCompatActivity {
 
     String SOAP_ACTION = "http://tempuri.org/KannadatoEnglish";
@@ -177,7 +176,6 @@ public class E_Kshana_Add_Member extends AppCompatActivity {
         Log.d("hobCode_ass", ""+hobCode_ass);
         Log.d("uName_get", uName_get);
 
-        @SuppressLint("Recycle")
         Cursor cursor = database.rawQuery("Select MAX("+DataBaseHelperClass_btnDownload_E_Kshana.otc_member_id
                 +") as member_Count from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_member_id
                 +" where "+ DataBaseHelperClass_btnDownload_E_Kshana.RC_Num+"='"+rc_num+"'", null);
@@ -188,9 +186,10 @@ public class E_Kshana_Add_Member extends AppCompatActivity {
                 member_ID = ""+inc_mem_ID;
                 Log.d("member_ID", ""+member_ID);
             }
+        } else {
+            cursor.close();
         }
 
-        @SuppressLint("Recycle")
         Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                 +" where "+DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID+"='"+rc_num+"'",null);
 
@@ -215,6 +214,8 @@ public class E_Kshana_Add_Member extends AppCompatActivity {
                 creamyLayer = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_CreamyLayer));
                 reasonCode_creamy = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_CreamyLayer_REPORT_VA));
             }
+        } else {
+            cursor1.close();
         }
 
 

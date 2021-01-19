@@ -57,7 +57,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-@SuppressLint("Registered")
 public class E_Kshana_Freeze_Member_Details_VA_Second extends AppCompatActivity {
 
     String SOAP_ACTION = "http://tempuri.org/KannadatoEnglish";
@@ -223,7 +222,6 @@ public class E_Kshana_Freeze_Member_Details_VA_Second extends AppCompatActivity 
         GetReligion();
         GetCategory();
 
-        @SuppressLint("Recycle")
         Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_E_Kshana.TABLE_NAME_UpdatedMemberDetails
                 +" where "+DataBaseHelperClass_btnDownload_E_Kshana.RC_Application_ID+"='"+rc_num+"' and "
                 + DataBaseHelperClass_btnDownload_E_Kshana.RC_Member_ID+"="+member_ID,null);
@@ -239,6 +237,8 @@ public class E_Kshana_Freeze_Member_Details_VA_Second extends AppCompatActivity 
                 religionCode = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_Religion));
                 residingYear = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_E_Kshana.RC_ResidentYears_VA));
             }
+        } else {
+            cursor1.close();
         }
 
         sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
