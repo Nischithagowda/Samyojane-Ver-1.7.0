@@ -230,7 +230,8 @@
                 android:layout_column="3"/>
         </TableRow>
         <TableRow
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:id="@+id/TableApplicantCategory">
             <TextView
                 android:id="@+id/tvAppCategory"
                 android:layout_width="wrap_content"

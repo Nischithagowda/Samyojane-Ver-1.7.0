@@ -82,7 +82,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
     String option, option2, option3, option5, option1;
     Spinner spCategory, spReasons, spRejectReason1;
     AutoCompleteTextView autoSearchCaste;
-    TableRow TableApplicantCaste, TableCasteReservation, TableReasonForCreamyLayer, TableReasonForRejection, lRejection;
+    TableRow TableApplicantCategory, TableApplicantCaste, TableCasteReservation, TableReasonForCreamyLayer, TableReasonForRejection, lRejection;
     EditText tvIncome, tvRemarks;
     int income_len, income_Value;
     String strReason, strRejectionReason1, strCategory, strSearchCaste;
@@ -234,6 +234,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         spCategory = findViewById(R.id.spCategory);
         spReasons = findViewById(R.id.spReasons);
         spRejectReason1 = findViewById(R.id.spRejectReason1);
+        TableApplicantCategory = findViewById(R.id.TableApplicantCategory);
         TableApplicantCaste = findViewById(R.id.TableApplicantCaste);
         TableCasteReservation = findViewById(R.id.TableCasteReservation);
         TableReasonForCreamyLayer = findViewById(R.id.TableReasonForCreamyLayer);
@@ -279,8 +280,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
 
         Date c = Calendar.getInstance().getTime();
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
         String formattedDate = df.format(c);
 
         Log.d("formattedDate", "" + formattedDate);
@@ -320,8 +320,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         if(report_no == null){
             Date c1 = Calendar.getInstance().getTime();
 
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat df1 = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
             String formattedDate1 = df1.format(c1);
 
             Log.d("formattedDate", "" + formattedDate1);
@@ -462,20 +461,19 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         getReasonCreamyLayer = sqlLiteOpenHelper_class_kan1.GetCreamyLayerReason_BY_Code(Integer.parseInt(appReasonForCreamyLayer), getString(R.string.reasons_tbl_reason_name));
         getRejectionReason = sqlLiteOpenHelper_class_kan1.Get_CertificateRejectionReason_BY_Code(Integer.parseInt(appRejectionReason), getString(R.string.reasons_tbl_reason_name));
 
-        if(serviceCode.equals("6")) {
+        if(serviceCode.equals("9")){
+            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+            getCategory = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(Integer.parseInt(appCategory));
+            getCaste = sqlLiteOpenHelper_class_kan.GetCaste_OBC_BY_Code(Integer.parseInt(appCaste));
+        } else {
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
             getCategory = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(Integer.parseInt(appCategory));
             getCaste = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(Integer.parseInt(appCategory), Integer.parseInt(appCaste));
         }
-        else if(serviceCode.equals("9")){
-            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            getCategory = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(Integer.parseInt(appCategory));
-            getCaste = sqlLiteOpenHelper_class_kan.GetCaste_OBC_BY_Code(Integer.parseInt(appCaste));
-        }
 
-        if(appCreamyLayer.equals("YES")){
+        if(appCreamyLayer.equals("NO")){
             TableReasonForCreamyLayer.setVisibility(View.VISIBLE);
             ReasonForCreamyLayer.setVisibility(View.VISIBLE);
         }
@@ -530,6 +528,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
                 tvIncome.setVisibility(View.GONE);
                 tvRemarks.setVisibility(View.GONE);
                 radioGroup.setVisibility(View.GONE);
+                TableApplicantCategory.setVisibility(View.VISIBLE);
                 TableApplicantCaste.setVisibility(View.VISIBLE);
                 ApplicantCategory.setVisibility(View.VISIBLE);
                 ApplicantCaste.setVisibility(View.VISIBLE);
@@ -537,7 +536,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
                 ReservationGiven.setVisibility(View.VISIBLE);
                 AnnualIncome.setVisibility(View.VISIBLE);
                 TableCasteReservation.setVisibility(View.VISIBLE);
-                if(appCreamyLayer.equals("YES")){
+                if(appCreamyLayer.equals("NO")){
                     TableReasonForCreamyLayer.setVisibility(View.VISIBLE);
                     ReasonForCreamyLayer.setVisibility(View.VISIBLE);
                 }
@@ -553,6 +552,11 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
                 else{
                     TableReasonForRejection.setVisibility(View.GONE);
                     ReasonForRejection.setVisibility(View.GONE);
+                }
+
+                if (serviceCode.equals("11") || serviceCode.equals("34") || serviceCode.equals("37")){
+                    TableApplicantCategory.setVisibility(View.GONE);
+                    TableApplicantCaste.setVisibility(View.GONE);
                 }
                 tvAppCategory.setTextColor(Color.parseColor("#000000"));
                 tvAppCaste.setTextColor(Color.parseColor("#000000"));
@@ -589,6 +593,13 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
                     TableReasonForCreamyLayer.setVisibility(View.VISIBLE);
                     spReasons.setVisibility(View.VISIBLE);
                 }
+                if (serviceCode.equals("43")){
+                    TableApplicantCategory.setVisibility(View.GONE);
+                    TableApplicantCaste.setVisibility(View.VISIBLE);
+                } else if (serviceCode.equals("11") || serviceCode.equals("34") || serviceCode.equals("37")){
+                    TableApplicantCategory.setVisibility(View.GONE);
+                    TableApplicantCaste.setVisibility(View.GONE);
+                }
 
                 tvAppCategory.setTextColor(Color.parseColor("#0000ff"));
                 tvAppCaste.setTextColor(Color.parseColor("#0000ff"));
@@ -624,13 +635,25 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
             }
             return false;
         });
-        if(serviceCode.equals("6")) {
-            GetCategory();
-            spCategory.setOnItemSelectedListener(new GetCategorySelected());
-        }
-        else if(serviceCode.equals("9")){
-            GetCategory_OBC();
-            spCategory.setOnItemSelectedListener(new GetCategory_OBC_Selected());
+        switch (serviceCode) {
+            case "6":
+                GetCategory();
+                spCategory.setOnItemSelectedListener(new GetCategorySelected());
+                break;
+            case "9":
+                GetCategory_OBC();
+                spCategory.setOnItemSelectedListener(new GetCategory_OBC_Selected());
+                break;
+            case "43":
+                GetCaste_EWS();
+                break;
+            case "11":
+            case "34":
+            case "37": {
+                TableApplicantCategory.setVisibility(View.GONE);
+                TableApplicantCaste.setVisibility(View.GONE);
+                break;
+            }
         }
         spCategory.setOnTouchListener((v, event) -> {
             autoSearchCaste.setText("");
@@ -765,6 +788,8 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
 
                         }
 
+                        saveService_6_and_9();
+
                     }else if(Objects.equals(serviceCode, "9")) {
 
                         strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
@@ -783,90 +808,22 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
 
                         }
                         Log.d("Caste_Code1",""+getCasteCode);
-                    }
 
-                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-                        if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
-                            if (getCasteCode!=0) {
-                                if (option.equals(getString(R.string.no))) {
-                                    if (!strReason.equals(getString(R.string.reason_spinner))) {
-                                        if (TextUtils.isEmpty(strIncome)) {
-                                            tvIncome.setError(getString(R.string.field_canno_null));
-                                        } else {
+                        saveService_6_and_9();
 
-                                            income_len = strIncome.length();
-                                            income_Value = Integer.parseInt(strIncome);
-                                            Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+                    } else if (serviceCode.equals("43")){
+                        String caste_name = autoSearchCaste.getText().toString();
+                        if (!caste_name.equals(getString(R.string.select_caste_spinner))) {
+                            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+                            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+                            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getCatCode);
+                            Log.d("Caste_Code1", "" + getCasteCode);
 
-                                            if (income_len >= 4 && income_Value>=1000) {
-                                                if (option3.equals(getString(R.string.yes))) {
-                                                    if (TextUtils.isEmpty(strRemarks)) {
-                                                        tvRemarks.setError(getString(R.string.field_canno_null));
-                                                    } else {
-                                                        StoreData_in_DB_When_Wrong();
-                                                    }
-                                                } else {
-                                                    if (!strRejectionReason1.equals(getString(R.string.reason_spinner))) {
-                                                        if (TextUtils.isEmpty(strRemarks)) {
-                                                            tvRemarks.setError(getString(R.string.field_canno_null));
-                                                        } else {
-                                                            StoreData_in_DB_When_Wrong();
-                                                        }
-                                                    } else {
-                                                        ((TextView) spRejectReason1.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
-                                                        Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            } else {
-                                                tvIncome.setError(getString(R.string.incorrect_value));
-                                            }
-                                        }
-                                    } else {
-                                        ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
-                                        Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    if (TextUtils.isEmpty(strIncome)) {
-                                        tvIncome.setError(getString(R.string.field_canno_null));
-                                    } else {
-
-                                        income_len = strIncome.length();
-                                        income_Value = Integer.parseInt(strIncome);
-                                        Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
-
-                                        if (income_len >= 4 && income_Value>=1000) {
-                                            if (option3.equals(getString(R.string.yes))) {
-                                                if (TextUtils.isEmpty(strRemarks)) {
-                                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                                } else {
-                                                    StoreData_in_DB_When_Wrong();
-                                                }
-                                            } else {
-                                                if (!strRejectionReason1.equals(getString(R.string.reason_spinner))) {
-                                                    if (TextUtils.isEmpty(strRemarks)) {
-                                                        tvRemarks.setError(getString(R.string.field_canno_null));
-                                                    } else {
-                                                        StoreData_in_DB_When_Wrong();
-                                                    }
-                                                } else {
-                                                    ((TextView) spRejectReason1.getSelectedView()).setError(getString(R.string.reason_for_rejection));
-                                                    Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        } else {
-                                            tvIncome.setError(getString(R.string.incorrect_value));
-                                        }
-                                    }
-                                }
-                            }else {
-                                autoSearchCaste.setError(getString(R.string.invalid_caste));
-                            }
-                        } else {
-                            autoSearchCaste.setError(getString(R.string.select_caste));
                         }
-                    } else {
-                        ((TextView) spCategory.getSelectedView()).setError(getString(R.string.select_category));
-                        Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+
+                        saveService_43();
+                    } else if (serviceCode.equals("11") || serviceCode.equals("34") || serviceCode.equals("37")){
+                        saveService_11_34_and_37();
                     }
                 }
                 else {
@@ -907,6 +864,244 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
 
     }
 
+    public void saveService_11_34_and_37(){
+        if (option.equals(getString(R.string.no))) {
+            if (!strReason.equals(getString(R.string.reason_spinner))) {
+                if (TextUtils.isEmpty(strIncome)) {
+                    tvIncome.setError(getString(R.string.field_canno_null));
+                } else {
+
+                    income_len = strIncome.length();
+                    income_Value = Integer.parseInt(strIncome);
+                    Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                    if (income_len >= 4 && income_Value>=1000) {
+                        if (option3.equals(getString(R.string.yes))) {
+                            if (TextUtils.isEmpty(strRemarks)) {
+                                tvRemarks.setError(getString(R.string.field_canno_null));
+                            } else {
+                                StoreData_in_DB_When_Wrong();
+                            }
+                        } else {
+                            if (!strRejectionReason1.equals(getString(R.string.reason_spinner))) {
+                                if (TextUtils.isEmpty(strRemarks)) {
+                                    tvRemarks.setError(getString(R.string.field_canno_null));
+                                } else {
+                                    StoreData_in_DB_When_Wrong();
+                                }
+                            } else {
+                                ((TextView) spRejectReason1.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
+                                Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } else {
+                        tvIncome.setError(getString(R.string.incorrect_value));
+                    }
+                }
+            } else {
+                ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
+                Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            if (TextUtils.isEmpty(strIncome)) {
+                tvIncome.setError(getString(R.string.field_canno_null));
+            } else {
+
+                income_len = strIncome.length();
+                income_Value = Integer.parseInt(strIncome);
+                Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                if (income_len >= 4 && income_Value>=1000) {
+                    if (option3.equals(getString(R.string.yes))) {
+                        if (TextUtils.isEmpty(strRemarks)) {
+                            tvRemarks.setError(getString(R.string.field_canno_null));
+                        } else {
+                            StoreData_in_DB_When_Wrong();
+                        }
+                    } else {
+                        if (!strRejectionReason1.equals(getString(R.string.reason_spinner))) {
+                            if (TextUtils.isEmpty(strRemarks)) {
+                                tvRemarks.setError(getString(R.string.field_canno_null));
+                            } else {
+                                StoreData_in_DB_When_Wrong();
+                            }
+                        } else {
+                            ((TextView) spRejectReason1.getSelectedView()).setError(getString(R.string.reason_for_rejection));
+                            Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    tvIncome.setError(getString(R.string.incorrect_value));
+                }
+            }
+        }
+    }
+    public void saveService_43(){
+        if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
+            if (getCasteCode!=0) {
+                if (option.equals(getString(R.string.no))) {
+                    if (!strReason.equals(getString(R.string.reason_spinner))) {
+                        if (TextUtils.isEmpty(strIncome)) {
+                            tvIncome.setError(getString(R.string.field_canno_null));
+                        } else {
+
+                            income_len = strIncome.length();
+                            income_Value = Integer.parseInt(strIncome);
+                            Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                            if (income_len >= 4 && income_Value>=1000) {
+                                if (option3.equals(getString(R.string.yes))) {
+                                    if (TextUtils.isEmpty(strRemarks)) {
+                                        tvRemarks.setError(getString(R.string.field_canno_null));
+                                    } else {
+                                        StoreData_in_DB_When_Wrong();
+                                    }
+                                } else {
+                                    if (!strRejectionReason1.equals(getString(R.string.reason_spinner))) {
+                                        if (TextUtils.isEmpty(strRemarks)) {
+                                            tvRemarks.setError(getString(R.string.field_canno_null));
+                                        } else {
+                                            StoreData_in_DB_When_Wrong();
+                                        }
+                                    } else {
+                                        ((TextView) spRejectReason1.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
+                                        Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            } else {
+                                tvIncome.setError(getString(R.string.incorrect_value));
+                            }
+                        }
+                    } else {
+                        ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
+                        Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (TextUtils.isEmpty(strIncome)) {
+                        tvIncome.setError(getString(R.string.field_canno_null));
+                    } else {
+
+                        income_len = strIncome.length();
+                        income_Value = Integer.parseInt(strIncome);
+                        Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                        if (income_len >= 4 && income_Value>=1000) {
+                            if (option3.equals(getString(R.string.yes))) {
+                                if (TextUtils.isEmpty(strRemarks)) {
+                                    tvRemarks.setError(getString(R.string.field_canno_null));
+                                } else {
+                                    StoreData_in_DB_When_Wrong();
+                                }
+                            } else {
+                                if (!strRejectionReason1.equals(getString(R.string.reason_spinner))) {
+                                    if (TextUtils.isEmpty(strRemarks)) {
+                                        tvRemarks.setError(getString(R.string.field_canno_null));
+                                    } else {
+                                        StoreData_in_DB_When_Wrong();
+                                    }
+                                } else {
+                                    ((TextView) spRejectReason1.getSelectedView()).setError(getString(R.string.reason_for_rejection));
+                                    Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } else {
+                            tvIncome.setError(getString(R.string.incorrect_value));
+                        }
+                    }
+                }
+            }else {
+                autoSearchCaste.setError(getString(R.string.invalid_caste));
+            }
+        } else {
+            autoSearchCaste.setError(getString(R.string.select_caste));
+        }
+    }
+
+    public void saveService_6_and_9(){
+        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+            if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
+                if (getCasteCode!=0) {
+                    if (option.equals(getString(R.string.no))) {
+                        if (!strReason.equals(getString(R.string.reason_spinner))) {
+                            if (TextUtils.isEmpty(strIncome)) {
+                                tvIncome.setError(getString(R.string.field_canno_null));
+                            } else {
+
+                                income_len = strIncome.length();
+                                income_Value = Integer.parseInt(strIncome);
+                                Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                                if (income_len >= 4 && income_Value>=1000) {
+                                    if (option3.equals(getString(R.string.yes))) {
+                                        if (TextUtils.isEmpty(strRemarks)) {
+                                            tvRemarks.setError(getString(R.string.field_canno_null));
+                                        } else {
+                                            StoreData_in_DB_When_Wrong();
+                                        }
+                                    } else {
+                                        if (!strRejectionReason1.equals(getString(R.string.reason_spinner))) {
+                                            if (TextUtils.isEmpty(strRemarks)) {
+                                                tvRemarks.setError(getString(R.string.field_canno_null));
+                                            } else {
+                                                StoreData_in_DB_When_Wrong();
+                                            }
+                                        } else {
+                                            ((TextView) spRejectReason1.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
+                                            Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                } else {
+                                    tvIncome.setError(getString(R.string.incorrect_value));
+                                }
+                            }
+                        } else {
+                            ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
+                            Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        if (TextUtils.isEmpty(strIncome)) {
+                            tvIncome.setError(getString(R.string.field_canno_null));
+                        } else {
+
+                            income_len = strIncome.length();
+                            income_Value = Integer.parseInt(strIncome);
+                            Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                            if (income_len >= 4 && income_Value>=1000) {
+                                if (option3.equals(getString(R.string.yes))) {
+                                    if (TextUtils.isEmpty(strRemarks)) {
+                                        tvRemarks.setError(getString(R.string.field_canno_null));
+                                    } else {
+                                        StoreData_in_DB_When_Wrong();
+                                    }
+                                } else {
+                                    if (!strRejectionReason1.equals(getString(R.string.reason_spinner))) {
+                                        if (TextUtils.isEmpty(strRemarks)) {
+                                            tvRemarks.setError(getString(R.string.field_canno_null));
+                                        } else {
+                                            StoreData_in_DB_When_Wrong();
+                                        }
+                                    } else {
+                                        ((TextView) spRejectReason1.getSelectedView()).setError(getString(R.string.reason_for_rejection));
+                                        Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            } else {
+                                tvIncome.setError(getString(R.string.incorrect_value));
+                            }
+                        }
+                    }
+                }else {
+                    autoSearchCaste.setError(getString(R.string.invalid_caste));
+                }
+            } else {
+                autoSearchCaste.setError(getString(R.string.select_caste));
+            }
+        } else {
+            ((TextView) spCategory.getSelectedView()).setError(getString(R.string.select_category));
+            Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+        }
+    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void check_Kannada_Key_lang(){
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1323,7 +1518,6 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    @SuppressLint("ShowToast")
     public void GetCategory() {
         try {
             String str="CI";
@@ -1338,10 +1532,9 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
 
 
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
         }
     }
-    @SuppressLint("ShowToast")
     public void GetCategory_OBC() {
         try {
             String str="OBC";
@@ -1356,7 +1549,7 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
 
 
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
         }
     }
     public void GetCaste(int num){
@@ -1377,6 +1570,29 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
             Log.d("Selected_casteCode", ""+ getCasteCode);
         });
     }
+
+    public void GetCaste_EWS(){
+        List<SpinnerObject> labels;
+        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+        labels = sqlLiteOpenHelper_class_kan.GetCaste_EWS();
+
+        ArrayAdapter<SpinnerObject> adapter = new ArrayAdapter<>(this, R.layout.list_item, labels);
+        adapter.setDropDownViewResource(R.layout.list_item);
+        autoSearchCaste.setAdapter(adapter);
+        autoSearchCaste.setOnItemClickListener((parent, view, position, id) -> {
+            String CatCode;
+            CatCode = ((SpinnerObject)parent.getItemAtPosition(position)).getId();
+            getCatCode = Integer.parseInt(CatCode);
+            strSearchCaste = parent.getItemAtPosition(position).toString();
+            Log.d("Selected_Item", ""+strSearchCaste);
+            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste, getCatCode);
+            Log.d("Selected_casteCode", "getCatCode = "+ getCatCode +", getCasteCode = "+ getCasteCode);
+        });
+    }
+
     public class GetCategorySelected implements AdapterView.OnItemSelectedListener {
 
         @Override

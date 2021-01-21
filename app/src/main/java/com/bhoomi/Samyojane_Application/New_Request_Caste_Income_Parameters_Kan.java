@@ -1229,7 +1229,6 @@ public class New_Request_Caste_Income_Parameters_Kan extends AppCompatActivity {
             return str;
         }
 
-        @SuppressLint("ShowToast")
         public void GetCategory() {
             try {
                 String str="CI";
@@ -1244,11 +1243,10 @@ public class New_Request_Caste_Income_Parameters_Kan extends AppCompatActivity {
 
 
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
             }
         }
 
-        @SuppressLint("ShowToast")
         public void GetCategory_OBC() {
             try {
                 String str="OBC";
@@ -1263,7 +1261,7 @@ public class New_Request_Caste_Income_Parameters_Kan extends AppCompatActivity {
 
 
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
             }
         }
 

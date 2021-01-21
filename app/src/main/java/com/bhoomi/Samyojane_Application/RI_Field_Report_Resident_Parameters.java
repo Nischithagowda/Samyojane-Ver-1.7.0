@@ -253,8 +253,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
 
         Date c = Calendar.getInstance().getTime();
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
         String formattedDate = df.format(c);
 
         Log.d("formattedDate", "" + formattedDate);
@@ -294,8 +293,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         if(report_no == null){
             Date c1 = Calendar.getInstance().getTime();
 
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat df1 = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
             String formattedDate1 = df1.format(c1);
 
             Log.d("formattedDate", "" + formattedDate1);

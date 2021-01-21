@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -122,8 +123,7 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
 
         Date c = Calendar.getInstance().getTime();
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
         String formattedDate = df.format(c);
 
         String due_Date_C = DueDate.get(position);

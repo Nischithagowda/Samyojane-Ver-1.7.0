@@ -276,8 +276,7 @@ public class New_Request extends AppCompatActivity {
 
         Date c = Calendar.getInstance().getTime();
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
         String formattedDate = df.format(c);
 
         Log.d("formattedDate", "" + formattedDate);
@@ -329,8 +328,7 @@ public class New_Request extends AppCompatActivity {
         if(report_no == null){
             Date c1 = Calendar.getInstance().getTime();
 
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat df1 = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
             String formattedDate1 = df1.format(c1);
 
             Log.d("formattedDate", "" + formattedDate1);
@@ -709,7 +707,6 @@ public class New_Request extends AppCompatActivity {
                         iv_scst.setVisibility(View.GONE);
                     }
                 } else if (serviceCode.equals("42")){
-                    tr_residence.setVisibility(View.GONE);
                     iv_scst.setVisibility(View.GONE);
                 } else {
                     iv_scst.setVisibility(View.GONE);
@@ -894,70 +891,7 @@ public class New_Request extends AppCompatActivity {
                 Log.d("value", "enter first if");
                 if (Objects.equals(optionA, getString(R.string.yes))) {
                     Log.d("value", "enter second if");
-                    if(serviceCode.equals("7") || serviceCode.equals("8")){
-                        if (!strYear.equals(getString(R.string.select_spinner))) {
-                            if (TextUtils.isEmpty(remarks)) {
-                                tvRemarks.setError(getString(R.string.field_canno_null));
-                                Log.d("value", "enter third if");
-                            } else {
-                                //dialog.show();
-                                Log.d("value", "Enter Else");
-
-                                if(optionA.equals(getString(R.string.no))){
-                                    optionA="NO";
-                                }else if (optionA.equals(getString(R.string.yes))){
-                                    optionA = "YES";
-                                }
-
-                                database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
-                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "="+ applicant_Id);
-
-                                database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                                        + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_GSCFirstPart"
-                                        + ", ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_ID_NUMBER, ST_Upd_mobile_no, ST_applicant_caddress1, ST_applicant_caddress2, ST_applicant_caddress3,ST_PinCode, ST_Eng_Certificate,"
-                                        + "ST_applicant_photo,VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Num_Years_8, Total_No_Years_10, NO_Months_10, "
-                                        + "Annual_Income, vLat, vLong, Can_Certificate_Given, Reason_for_Rejection, Remarks, Report_No, DataUpdateFlag)"
-                                        + " values (" + district_Code + "," + taluk_Code + "," + hobli_Code + "," + va_Circle_Code + "," + villageCode + "," + habitationCode +"," + town_code + "," + ward_code + "," + serviceCode + "," + applicant_Id + "," + GSC_FirstPart
-                                        + ",'" + applicant_name + "','" + fatherName + "','" + motherName + "','" + rationCardNo + "','" + mobileNo + "','" + address1 + "','" + address2 + "','" + address3 + "','" + add_pin + "','" + eng_certi
-                                        + "','"+appImage+"','" + optionA + "'," + category_code + "," + caste_code + ",'NO',0,'" + strYear + "'," + year + "," + month + "," + amount + "," + latitude + "," + longitude + ",'YES',0,'" + remarks + "','" + report_no
-                                        + "', 1)");
-
-                                Log.d("Database", "ServiceParameters Database Inserted");
-                                Toast.makeText(getApplicationContext(), getString(R.string.data_saves_successfully), Toast.LENGTH_SHORT).show();
-
-                                truncateDatabase_Docs();
-
-                                Intent i1 = new Intent(New_Request.this, New_Request_FirstScreen.class);
-                                i1.putExtra("applicant_Id", applicant_Id);
-                                i1.putExtra("district_Code", district_Code);
-                                i1.putExtra("taluk_Code", taluk_Code);
-                                i1.putExtra("hobli_Code", hobli_Code);
-                                i1.putExtra("districtCode", district);
-                                i1.putExtra("taluk", taluk);
-                                i1.putExtra("VA_Name", VA_Name);
-                                i1.putExtra("hobli", hobli);
-                                i1.putExtra("va_Circle_Code", va_Circle_Code);
-                                i1.putExtra("VA_Circle_Name", VA_Circle_Name);
-                                i1.putExtra("strSearchServiceName", service_name);
-                                i1.putExtra("strSearchVillageName", village_name);
-                                i1.putExtra("serviceCode", serviceCode);
-                                i1.putExtra("villageCode", villageCode);
-                                i1.putExtra("habitationCode", habitationCode);
-                                i1.putExtra("option_Flag", option_Flag);
-                                i1.putExtra("town_Name", town_Name);
-                                i1.putExtra("town_code", town_code);
-                                i1.putExtra("ward_Name", ward_Name);
-                                i1.putExtra("ward_code", ward_code);
-
-                                startActivity(i1);
-                                finish();
-                            }
-                        }else {
-                            ((TextView) spYears.getSelectedView()).setError(getString(R.string.select_no_years));
-                            Toast.makeText(getApplicationContext(), getString(R.string.select_no_years), Toast.LENGTH_SHORT).show();
-                        }
-                    }else {
+                    if (!strYear.equals(getString(R.string.select_spinner))) {
                         if (TextUtils.isEmpty(remarks)) {
                             tvRemarks.setError(getString(R.string.field_canno_null));
                             Log.d("value", "enter third if");
@@ -978,11 +912,11 @@ public class New_Request extends AppCompatActivity {
                             database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
                                     + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_GSCFirstPart"
                                     + ", ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_ID_NUMBER, ST_Upd_mobile_no, ST_applicant_caddress1, ST_applicant_caddress2, ST_applicant_caddress3,ST_PinCode, ST_Eng_Certificate,"
-                                    + "ST_applicant_photo, VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Total_No_Years_10, NO_Months_10, Annual_Income, vLat, vLong, "
-                                    + "Can_Certificate_Given, Reason_for_Rejection, Remarks, Report_No, DataUpdateFlag)"
-                                    + " values ("+district_Code+ "," +taluk_Code+ "," +hobli_Code+ "," + va_Circle_Code+ "," +villageCode+ "," +habitationCode + "," + town_code + "," + ward_code + "," +serviceCode+ "," +applicant_Id+","+GSC_FirstPart
-                                    + ",'" +applicant_name+ "','" +fatherName+ "','" +motherName+ "','" +rationCardNo+ "','" +mobileNo+ "','" +address1+ "','" +address2+ "','" +address3+ "','" +add_pin+ "','" +eng_certi
-                                    + "','"+ appImage + "','" +optionA+ "'," +category_code+ "," +caste_code+ ",'NO',0," +year+ "," +month+ "," +amount+ "," +latitude+ "," +longitude+ ",'YES',0,'" +remarks+ "','" +report_no
+                                    + "ST_applicant_photo,VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Num_Years_8, Total_No_Years_10, NO_Months_10, "
+                                    + "Annual_Income, vLat, vLong, Can_Certificate_Given, Reason_for_Rejection, Remarks, Report_No, DataUpdateFlag)"
+                                    + " values (" + district_Code + "," + taluk_Code + "," + hobli_Code + "," + va_Circle_Code + "," + villageCode + "," + habitationCode +"," + town_code + "," + ward_code + "," + serviceCode + "," + applicant_Id + "," + GSC_FirstPart
+                                    + ",'" + applicant_name + "','" + fatherName + "','" + motherName + "','" + rationCardNo + "','" + mobileNo + "','" + address1 + "','" + address2 + "','" + address3 + "','" + add_pin + "','" + eng_certi
+                                    + "','"+appImage+"','" + optionA + "'," + category_code + "," + caste_code + ",'NO',0,'" + strYear + "'," + year + "," + month + "," + amount + "," + latitude + "," + longitude + ",'YES',0,'" + remarks + "','" + report_no
                                     + "', 1)");
 
                             Log.d("Database", "ServiceParameters Database Inserted");
@@ -1011,13 +945,16 @@ public class New_Request extends AppCompatActivity {
                             i1.putExtra("town_code", town_code);
                             i1.putExtra("ward_Name", ward_Name);
                             i1.putExtra("ward_code", ward_code);
+
                             startActivity(i1);
                             finish();
                         }
+                    } else {
+                        ((TextView) spYears.getSelectedView()).setError(getString(R.string.select_no_years));
+                        Toast.makeText(getApplicationContext(), getString(R.string.select_no_years), Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                else {
+                }  else {
                     Log.d("value", "enter second else");
                 }
             } else {

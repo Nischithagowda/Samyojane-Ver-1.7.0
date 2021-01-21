@@ -138,7 +138,7 @@
                 android:textColor="@android:color/black"
                 tools:ignore="Autofill"
                 android:layout_weight="1"
-                android:text="testva"/>
+                android:text="testri"/>
 
             <EditText
                 android:id="@+id/pwd"

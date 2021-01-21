@@ -93,7 +93,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
     InputMethodManager imm;
     InputMethodSubtype ims;
 
-    private InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
@@ -154,7 +154,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
         return null;
     };
 
-    private InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "abcdefghijklmnopqrstuvwxyz";
         String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -163,7 +163,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
 
         for (int i = start; i < end; i++) {
             Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
-            if (source != null && blockCharacterSet.contains(("" + source.charAt(i)))) {
+            if (blockCharacterSet.contains("" + source.charAt(i))) {
                 Log.d("Blocked",""+source);
                 return "";
             }
@@ -975,11 +975,8 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
             }
         } else {
             cursor1.close();
-        }
-        if(appImage==null){
             appImage=null;
         }
-
 
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
@@ -1152,7 +1149,6 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
 
     }
 
-    @SuppressLint("ShowToast")
     public void GetCategory_SCST() {
         try {
             Log.d("GetCat", "Enter GetCat Function");
@@ -1171,11 +1167,10 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
 
         } catch (Exception e) {
             Log.d("Catch", String.valueOf(e));
-            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
         }
     }
 
-    @SuppressLint("ShowToast")
     public void GetCategory_Cat_1() {
         try {
             Log.d("GetCat", "Enter GetCat Function");
@@ -1194,7 +1189,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
 
         } catch (Exception e) {
             Log.d("Catch", String.valueOf(e));
-            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
         }
     }
 

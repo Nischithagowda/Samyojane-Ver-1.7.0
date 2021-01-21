@@ -1,6 +1,5 @@
 package com.bhoomi.Samyojane_Application;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -12,15 +11,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.hardware.Camera;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -29,17 +21,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import android.telephony.SubscriptionInfo;
-import android.telephony.SubscriptionManager;
-import android.telephony.TelephonyManager;
-import android.telephony.gsm.GsmCellLocation;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -64,8 +49,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,15 +59,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
-
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.ACCESS_NETWORK_STATE;
-import static android.Manifest.permission.CAMERA;
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.READ_PHONE_STATE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
 
 /**
  * Created by Nischitha on 08-07-2019.
@@ -122,7 +96,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
     int posRejectionReason;
     int getFatherCatCode=0, getFatherCasteCode=0, getMotherCatCode=0, getMotherCasteCode=0, getAppCatCode_VA=0, getAppCasteCode_VA=0;
     Activity activity;
-    String strSearchServiceName, strSearchVillageName, strFatherCategory, strSearchFatherCaste,
+    String strFatherCategory, strSearchFatherCaste,
             strMotherCategory, strSearchMotherCaste, strAppCategory_VA, strSearchAppCaste_VA;
     GPSTracker gpsTracker;
     double latitude, longitude;
@@ -147,7 +121,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
     String reason_Code_2, codePurpose;
     String option, option1,option5;
 
-    private InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
@@ -208,7 +182,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         return null;
     };
 
-    private InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "abcdefghijklmnopqrstuvwxyz";
         String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -217,7 +191,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
 
         for (int i = start; i < end; i++) {
             Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
-            if (source != null && blockCharacterSet.contains(("" + source.charAt(i)))) {
+            if (blockCharacterSet.contains("" + source.charAt(i))) {
                 Log.d("Blocked",""+source);
                 return "";
             }
@@ -335,8 +309,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
 
         Date c = Calendar.getInstance().getTime();
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
         String formattedDate = df.format(c);
 
         Log.d("formattedDate", "" + formattedDate);
@@ -376,8 +349,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         if(report_no == null){
             Date c1 = Calendar.getInstance().getTime();
 
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat df1 = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
             String formattedDate1 = df1.format(c1);
 
             Log.d("formattedDate", "" + formattedDate1);
@@ -599,6 +571,10 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
                     TableReasonForRejection.setVisibility(View.VISIBLE);
                 }
 
+                FatherCategory.setText(n_fatherCategory);
+                MotherCategory.setText(n_motherCategory);
+                ApplicantCategory.setText(n_appCategory);
+
                 tvNoYears.setTextColor(Color.parseColor("#000000"));
                 tvFatherCategory.setTextColor(Color.parseColor("#000000"));
                 tvFatherCaste.setTextColor(Color.parseColor("#000000"));
@@ -666,12 +642,40 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
                     autoSearchAPPCaste_VA.setVisibility(View.GONE);
                 }
 
+                if (serviceCode.equals("42")){
+
+                    getFatherCatCode = Integer.parseInt(appCategory);
+                    getMotherCatCode = Integer.parseInt(appCategory);
+                    getAppCatCode_VA = Integer.parseInt(appCategory);
+
+                    FatherCategory.setVisibility(View.VISIBLE);
+                    MotherCategory.setVisibility(View.VISIBLE);
+                    ApplicantCategory.setVisibility(View.VISIBLE);
+
+                    FatherCategory.setText(n_appCategory);
+                    MotherCategory.setText(n_appCategory);
+                    ApplicantCategory.setText(n_appCategory);
+
+                    autoSearchFatherCaste.setVisibility(View.VISIBLE);
+                    TableFatherCaste.setVisibility(View.VISIBLE);
+                    GetFatherCaste(getFatherCatCode);
+
+                    TableMotherCaste.setVisibility(View.VISIBLE);
+                    autoSearchMotherCaste.setVisibility(View.VISIBLE);
+                    GetMotherCaste(getMotherCatCode);
+
+                    TableAppCaste.setVisibility(View.VISIBLE);
+                    autoSearchAPPCaste_VA.setVisibility(View.VISIBLE);
+                    GetAppCaste_VA(getAppCatCode_VA);
+                } else {
+                    tvFatherCategory.setTextColor(Color.parseColor("#0000ff"));
+                    tvMotherCategory.setTextColor(Color.parseColor("#0000ff"));
+                    tvAppCategory.setTextColor(Color.parseColor("#0000ff"));
+                }
+
                 tvNoYears.setTextColor(Color.parseColor("#0000ff"));
-                tvFatherCategory.setTextColor(Color.parseColor("#0000ff"));
                 tvFatherCaste.setTextColor(Color.parseColor("#0000ff"));
-                tvMotherCategory.setTextColor(Color.parseColor("#0000ff"));
                 tvMotherCaste.setTextColor(Color.parseColor("#0000ff"));
-                tvAppCategory.setTextColor(Color.parseColor("#0000ff"));
                 tvAppCaste.setTextColor(Color.parseColor("#0000ff"));
                 tvAnnualIncome.setTextColor(Color.parseColor("#0000ff"));
                 tvRemarksColor.setTextColor(Color.parseColor("#0000ff"));
@@ -874,159 +878,11 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
                     strRemarks = tvRemarks.getText().toString();
                     Log.d("Income value", ""+strRemarks);
 
-                    strFatherCategory = ((SpinnerObject) spFatherCategory.getSelectedItem()).getValue();
-                    Log.d("Selected_Item1", ""+strFatherCategory);
-                    sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                    sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                    getFatherCatCode = sqlLiteOpenHelper_class_kan.GetCategoryCode(strFatherCategory);
-                    Log.d("Category_Code1", ""+ getFatherCatCode);
-                    if (!strFatherCategory.equals(getString(R.string.select_category_spinner))) {
-
-                        String caste_name = autoSearchFatherCaste.getText().toString();
-                        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                        getFatherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getFatherCatCode);
-                        Log.d("Caste_Code1",""+getFatherCasteCode);
-
-                    }
-
-                    strMotherCategory = ((SpinnerObject) spMotherCategory.getSelectedItem()).getValue();
-                    Log.d("Selected_Item1", ""+strMotherCategory);
-                    sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                    sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                    getMotherCatCode = sqlLiteOpenHelper_class_kan.GetCategoryCode(strMotherCategory);
-                    Log.d("Category_Code1", ""+ getMotherCatCode);
-                    if (!strMotherCategory.equals(getString(R.string.select_category_spinner))) {
-
-                        String caste_name = autoSearchMotherCaste.getText().toString();
-                        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                        getMotherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getMotherCatCode);
-                        Log.d("Caste_Code1",""+getMotherCasteCode);
-
-                    }
-
-                    strAppCategory_VA = ((SpinnerObject) spAPPCategory_VA.getSelectedItem()).getValue();
-                    Log.d("Selected_Item1", ""+strAppCategory_VA);
-                    sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                    sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                    getAppCatCode_VA = sqlLiteOpenHelper_class_kan.GetCategoryCode(strAppCategory_VA);
-                    Log.d("Category_Code1", ""+ getAppCatCode_VA);
-                    if (!strAppCategory_VA.equals(getString(R.string.select_category_spinner))) {
-
-                        String caste_name = autoSearchAPPCaste_VA.getText().toString();
-                        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                        getAppCasteCode_VA = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getAppCatCode_VA);
-                        Log.d("Caste_Code1",""+getAppCasteCode_VA);
-
-                    }
-
                     if (!strYear.equals(getString(R.string.select_spinner))) {
-                        if(!strFatherCategory.equals(getString(R.string.select_category_spinner))) {
-                            if(!strSearchFatherCaste.equals(getString(R.string.select_caste_spinner))) {
-                                if (getFatherCasteCode!=0) {
-                                    if (!strMotherCategory.equals(getString(R.string.select_category_spinner))) {
-                                        if (!strSearchMotherCaste.equals(getString(R.string.select_caste_spinner))) {
-                                            if (getMotherCasteCode!=0) {
-                                                if (!strAppCategory_VA.equals(getString(R.string.select_category_spinner))) {
-                                                    if (!strSearchAppCaste_VA.equals(getString(R.string.select_caste_spinner))) {
-                                                        if (getAppCasteCode_VA!=0) {
-                                                            if (strSearchAppCaste_VA.equals(strSearchFatherCaste) || strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
-                                                                if (TextUtils.isEmpty(strIncome)) {
-                                                                    tvIncome.setError(getString(R.string.field_canno_null));
-                                                                } else {
-
-                                                                    income_len = strIncome.length();
-                                                                    income_Value = Integer.parseInt(strIncome);
-                                                                    Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
-
-                                                                    if (income_len >= 4 && income_Value>=1000) {
-                                                                        if (option3.equals(getString(R.string.no))) {
-                                                                            if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                                                                if (TextUtils.isEmpty(strRemarks)) {
-                                                                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                                                                } else {
-                                                                                    StoreData_in_DB_When_Wrong();
-                                                                                }
-                                                                            } else {
-                                                                                ((TextView) spRejectReason1.getSelectedView()).setError("Select Reason");
-                                                                                Toast.makeText(getApplicationContext(), "Select Reason", Toast.LENGTH_SHORT).show();
-                                                                            }
-                                                                        } else {
-                                                                            if (TextUtils.isEmpty(strRemarks)) {
-                                                                                tvRemarks.setError(getString(R.string.field_canno_null));
-                                                                            } else {
-                                                                                StoreData_in_DB_When_Wrong();
-                                                                            }
-                                                                        }
-                                                                    } else {
-                                                                        tvIncome.setError(getString(R.string.incorrect_value));
-                                                                    }
-                                                                }
-                                                            } else {
-                                                                radioButton33.setChecked(true);
-                                                                if (TextUtils.isEmpty(strIncome)) {
-                                                                    tvIncome.setError(getString(R.string.field_canno_null));
-                                                                } else {
-
-                                                                    income_len = strIncome.length();
-                                                                    income_Value = Integer.parseInt(strIncome);
-                                                                    Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
-
-                                                                    if (income_len >= 4 && income_Value>=1000) {
-                                                                        if (option3.equals(getString(R.string.no))) {
-                                                                            if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                                                                if (TextUtils.isEmpty(strRemarks)) {
-                                                                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                                                                } else {
-                                                                                    StoreData_in_DB_When_Wrong();
-                                                                                }
-                                                                            } else {
-                                                                                ((TextView) spRejectReason1.getSelectedView()).setError("Select Reason");
-                                                                                Toast.makeText(getApplicationContext(), "Select Reason", Toast.LENGTH_SHORT).show();
-                                                                            }
-                                                                        } else {
-                                                                            if (TextUtils.isEmpty(strRemarks)) {
-                                                                                tvRemarks.setError(getString(R.string.field_canno_null));
-                                                                            } else {
-                                                                                StoreData_in_DB_When_Wrong();
-                                                                            }
-                                                                        }
-                                                                    } else {
-                                                                        tvIncome.setError(getString(R.string.incorrect_value));
-                                                                    }
-                                                                }
-                                                            }
-                                                        } else {
-                                                            autoSearchAPPCaste_VA.setError(getString(R.string.invalid_caste));
-                                                        }
-                                                    } else {
-                                                        autoSearchAPPCaste_VA.setError(getString(R.string.select_caste));
-                                                    }
-                                                } else {
-                                                    ((TextView) spAPPCategory_VA.getSelectedView()).setError(getString(R.string.select_category));
-                                                    Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
-                                                }
-                                            }else {
-                                                autoSearchMotherCaste.setError(getString(R.string.invalid_caste));
-                                            }
-                                        } else {
-                                            autoSearchMotherCaste.setError(getString(R.string.select_caste));
-                                        }
-                                    } else {
-                                        ((TextView) spMotherCategory.getSelectedView()).setError(getString(R.string.select_category));
-                                        Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
-                                    }
-                                }else {
-                                    autoSearchFatherCaste.setError(getString(R.string.invalid_caste));
-                                }
-                            }else {
-                                autoSearchFatherCaste.setError(getString(R.string.select_caste));
-                            }
-                        }else {
-                            ((TextView) spFatherCategory.getSelectedView()).setError(getString(R.string.select_category));
-                            Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+                        if (serviceCode.equals("7") || serviceCode.equals("8")){
+                            saveService_7_and_8();
+                        } else if(serviceCode.equals("42")){
+                            saveService_42();
                         }
                     } else {
                         ((TextView) spYears.getSelectedView()).setError(getString(R.string.select_no_years));
@@ -1068,6 +924,211 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         });
 
         btnBack.setOnClickListener(v -> onBackPressed());
+    }
+
+    public void saveService_42(){
+        getFatherCatCode = Integer.parseInt(appCategory);
+        getMotherCatCode = Integer.parseInt(appCategory);
+        getAppCatCode_VA = Integer.parseInt(appCategory);
+
+        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+
+        String father_caste_name = autoSearchFatherCaste.getText().toString();
+        getFatherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(father_caste_name, getFatherCatCode);
+        Log.d("Caste_Code1",""+getFatherCasteCode);
+
+        String mother_caste_name = autoSearchMotherCaste.getText().toString();
+        getMotherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(mother_caste_name, getMotherCatCode);
+        Log.d("Caste_Code1",""+getMotherCasteCode);
+
+        String caste_name = autoSearchAPPCaste_VA.getText().toString();
+        getAppCasteCode_VA = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getAppCatCode_VA);
+        Log.d("Caste_Code1",""+getAppCasteCode_VA);
+
+        if(!strSearchFatherCaste.equals(getString(R.string.select_caste_spinner))) {
+            if (getFatherCasteCode!=0) {
+                if (!strSearchMotherCaste.equals(getString(R.string.select_caste_spinner))) {
+                    if (getMotherCasteCode!=0) {
+                        if (!strSearchAppCaste_VA.equals(getString(R.string.select_caste_spinner))) {
+                            if (getAppCasteCode_VA!=0) {
+                                if (!strSearchAppCaste_VA.equals(strSearchFatherCaste) && !strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
+                                    radioButton33.setChecked(true);
+                                }
+                                if (TextUtils.isEmpty(strIncome)) {
+                                    tvIncome.setError(getString(R.string.field_canno_null));
+                                } else {
+
+                                    income_len = strIncome.length();
+                                    income_Value = Integer.parseInt(strIncome);
+                                    Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                                    if (income_len >= 4 && income_Value>=1000) {
+                                        if (option3.equals(getString(R.string.no))) {
+                                            if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
+                                                if (TextUtils.isEmpty(strRemarks)) {
+                                                    tvRemarks.setError(getString(R.string.field_canno_null));
+                                                } else {
+                                                    StoreData_in_DB_When_Wrong();
+                                                }
+                                            } else {
+                                                ((TextView) spRejectReason1.getSelectedView()).setError("Select Reason");
+                                                Toast.makeText(getApplicationContext(), "Select Reason", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            if (TextUtils.isEmpty(strRemarks)) {
+                                                tvRemarks.setError(getString(R.string.field_canno_null));
+                                            } else {
+                                                StoreData_in_DB_When_Wrong();
+                                            }
+                                        }
+                                    } else {
+                                        tvIncome.setError(getString(R.string.incorrect_value));
+                                    }
+                                }
+                            } else {
+                                autoSearchAPPCaste_VA.setError(getString(R.string.invalid_caste));
+                            }
+                        } else {
+                            autoSearchAPPCaste_VA.setError(getString(R.string.select_caste));
+                        }
+                    }else {
+                        autoSearchMotherCaste.setError(getString(R.string.invalid_caste));
+                    }
+                } else {
+                    autoSearchMotherCaste.setError(getString(R.string.select_caste));
+                }
+            }else {
+                autoSearchFatherCaste.setError(getString(R.string.invalid_caste));
+            }
+        }else {
+            autoSearchFatherCaste.setError(getString(R.string.select_caste));
+        }
+    }
+
+    public void saveService_7_and_8(){
+
+        strFatherCategory = ((SpinnerObject) spFatherCategory.getSelectedItem()).getValue();
+        Log.d("Selected_Item1", ""+strFatherCategory);
+        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+        getFatherCatCode = sqlLiteOpenHelper_class_kan.GetCategoryCode(strFatherCategory);
+        Log.d("Category_Code1", ""+ getFatherCatCode);
+        if (!strFatherCategory.equals(getString(R.string.select_category_spinner))) {
+
+            String caste_name = autoSearchFatherCaste.getText().toString();
+            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+            getFatherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getFatherCatCode);
+            Log.d("Caste_Code1",""+getFatherCasteCode);
+
+        }
+
+        strMotherCategory = ((SpinnerObject) spMotherCategory.getSelectedItem()).getValue();
+        Log.d("Selected_Item1", ""+strMotherCategory);
+        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+        getMotherCatCode = sqlLiteOpenHelper_class_kan.GetCategoryCode(strMotherCategory);
+        Log.d("Category_Code1", ""+ getMotherCatCode);
+        if (!strMotherCategory.equals(getString(R.string.select_category_spinner))) {
+
+            String caste_name = autoSearchMotherCaste.getText().toString();
+            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+            getMotherCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getMotherCatCode);
+            Log.d("Caste_Code1",""+getMotherCasteCode);
+
+        }
+
+        strAppCategory_VA = ((SpinnerObject) spAPPCategory_VA.getSelectedItem()).getValue();
+        Log.d("Selected_Item1", ""+strAppCategory_VA);
+        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+        getAppCatCode_VA = sqlLiteOpenHelper_class_kan.GetCategoryCode(strAppCategory_VA);
+        Log.d("Category_Code1", ""+ getAppCatCode_VA);
+        if (!strAppCategory_VA.equals(getString(R.string.select_category_spinner))) {
+
+            String caste_name = autoSearchAPPCaste_VA.getText().toString();
+            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+            getAppCasteCode_VA = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getAppCatCode_VA);
+            Log.d("Caste_Code1",""+getAppCasteCode_VA);
+
+        }
+
+        if(!strFatherCategory.equals(getString(R.string.select_category_spinner))) {
+            if(!strSearchFatherCaste.equals(getString(R.string.select_caste_spinner))) {
+                if (getFatherCasteCode!=0) {
+                    if (!strMotherCategory.equals(getString(R.string.select_category_spinner))) {
+                        if (!strSearchMotherCaste.equals(getString(R.string.select_caste_spinner))) {
+                            if (getMotherCasteCode!=0) {
+                                if (!strAppCategory_VA.equals(getString(R.string.select_category_spinner))) {
+                                    if (!strSearchAppCaste_VA.equals(getString(R.string.select_caste_spinner))) {
+                                        if (getAppCasteCode_VA!=0) {
+                                            if (!strSearchAppCaste_VA.equals(strSearchFatherCaste) && !strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
+                                                radioButton33.setChecked(true);
+                                            }
+                                            if (TextUtils.isEmpty(strIncome)) {
+                                                tvIncome.setError(getString(R.string.field_canno_null));
+                                            } else {
+
+                                                income_len = strIncome.length();
+                                                income_Value = Integer.parseInt(strIncome);
+                                                Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                                                if (income_len >= 4 && income_Value>=1000) {
+                                                    if (option3.equals(getString(R.string.no))) {
+                                                        if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
+                                                            if (TextUtils.isEmpty(strRemarks)) {
+                                                                tvRemarks.setError(getString(R.string.field_canno_null));
+                                                            } else {
+                                                                StoreData_in_DB_When_Wrong();
+                                                            }
+                                                        } else {
+                                                            ((TextView) spRejectReason1.getSelectedView()).setError("Select Reason");
+                                                            Toast.makeText(getApplicationContext(), "Select Reason", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    } else {
+                                                        if (TextUtils.isEmpty(strRemarks)) {
+                                                            tvRemarks.setError(getString(R.string.field_canno_null));
+                                                        } else {
+                                                            StoreData_in_DB_When_Wrong();
+                                                        }
+                                                    }
+                                                } else {
+                                                    tvIncome.setError(getString(R.string.incorrect_value));
+                                                }
+                                            }
+                                        } else {
+                                            autoSearchAPPCaste_VA.setError(getString(R.string.invalid_caste));
+                                        }
+                                    } else {
+                                        autoSearchAPPCaste_VA.setError(getString(R.string.select_caste));
+                                    }
+                                } else {
+                                    ((TextView) spAPPCategory_VA.getSelectedView()).setError(getString(R.string.select_category));
+                                    Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+                                }
+                            }else {
+                                autoSearchMotherCaste.setError(getString(R.string.invalid_caste));
+                            }
+                        } else {
+                            autoSearchMotherCaste.setError(getString(R.string.select_caste));
+                        }
+                    } else {
+                        ((TextView) spMotherCategory.getSelectedView()).setError(getString(R.string.select_category));
+                        Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    autoSearchFatherCaste.setError(getString(R.string.invalid_caste));
+                }
+            }else {
+                autoSearchFatherCaste.setError(getString(R.string.select_caste));
+            }
+        }else {
+            ((TextView) spFatherCategory.getSelectedView()).setError(getString(R.string.select_category));
+            Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -1370,7 +1431,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         }
     }
 
-    @SuppressLint("ShowToast")
     public void GetCategory_SCST() {
         try {
             Log.d("GetCat", "Enter GetCat Function");
@@ -1389,11 +1449,10 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
 
         } catch (Exception e) {
             Log.d("Catch", String.valueOf(e));
-            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
         }
     }
 
-    @SuppressLint("ShowToast")
     public void GetCategory_Cat_1() {
         try {
             Log.d("GetCat", "Enter GetCat Function");
@@ -1412,7 +1471,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
 
         } catch (Exception e) {
             Log.d("Catch", String.valueOf(e));
-            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
         }
     }
 

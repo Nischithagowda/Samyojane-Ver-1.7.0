@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +19,12 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -35,7 +33,7 @@ import java.util.Objects;
 
 public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterable {
 
-    private Context context;
+    Context context;
     ArrayList<String> SlNo;
     ArrayList<String> Applicant_Name;
     ArrayList<String> GSC_First_Part;
@@ -51,11 +49,10 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
     TextView app_Name;
     String applicant_name;
     String applicant_Id;
-    String strSearchServiceName, strSearchVillageName, town_Name, ward_Name;
+    String town_Name, ward_Name;
     String villageCode, habitationCode, town_code, ward_code, option_Flag, eng_certi;
     String serviceCode;
     String district, taluk, RI_Name, hobli,VA_Circle_Name, VA_Name;
-    String distCode1, talukCode1, hobliCode1, va_Circle_code1;
     private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     String district_Code, taluk_Code, hobli_Code, va_Circle_code;
@@ -117,8 +114,7 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
 
         Date c = Calendar.getInstance().getTime();
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
         String formattedDate = df.format(c);
 
         String due_Date_C = DueDate.get(position);
@@ -131,6 +127,7 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
             Date date1 = df.parse(formattedDate);
             Date date2 = df.parse(due_Date_C);
 
+            assert date1 != null;
             if (date1.after(date2) || date1.equals(date2)) {
                 //#FFEE0808
                 ri_ur_service_viewHolder.gsc_first_part.setTextColor(Color.parseColor("#FFEE0808"));
@@ -182,181 +179,184 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
 
         app_Name = convertView.findViewById(R.id.app_Name);
         app_Name.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        app_Name.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-                applicant_name = ri_ur_service_viewHolder.app_Name.getText().toString();
-                applicant_Id = ri_ur_service_viewHolder.app_Id.getText().toString();
-                item_position = String.valueOf(position);
-                serviceCode = ri_ur_service_viewHolder.app_ServiceCode.getText().toString();
-                serviceName = ri_ur_service_viewHolder.app_ServiceName.getText().toString();
-                villageCode = "99999";
-                habitationCode = "255";
-                town_Name = ri_ur_service_viewHolder.tvTownName.getText().toString();
-                town_code = ri_ur_service_viewHolder.tvTownCode.getText().toString();
-                ward_Name = ri_ur_service_viewHolder.tvWardName.getText().toString();
-                ward_code = ri_ur_service_viewHolder.tvWardCode.getText().toString();
-                option_Flag = ri_ur_service_viewHolder.tvOption_Flag.getText().toString();
+        app_Name.setOnClickListener(v -> {
+            applicant_name = ri_ur_service_viewHolder.app_Name.getText().toString();
+            applicant_Id = ri_ur_service_viewHolder.app_Id.getText().toString();
+            item_position = String.valueOf(position);
+            serviceCode = ri_ur_service_viewHolder.app_ServiceCode.getText().toString();
+            serviceName = ri_ur_service_viewHolder.app_ServiceName.getText().toString();
+            villageCode = "99999";
+            habitationCode = "255";
+            town_Name = ri_ur_service_viewHolder.tvTownName.getText().toString();
+            town_code = ri_ur_service_viewHolder.tvTownCode.getText().toString();
+            ward_Name = ri_ur_service_viewHolder.tvWardName.getText().toString();
+            ward_code = ri_ur_service_viewHolder.tvWardCode.getText().toString();
+            option_Flag = ri_ur_service_viewHolder.tvOption_Flag.getText().toString();
 
-                openHelper=new DataBaseHelperClass_Credentials(context);
-                database=openHelper.getWritableDatabase();
+            openHelper=new DataBaseHelperClass_Credentials(context);
+            database=openHelper.getWritableDatabase();
 
-                Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_Credentials.TABLE_NAME+" where "+ DataBaseHelperClass_Credentials.District_Code+"="+district_Code+" and "
-                        + DataBaseHelperClass_Credentials.Taluk_Code+"="+taluk_Code+" and "+DataBaseHelperClass_Credentials.Hobli_Code+"="+hobli_Code+" and "
-                        + DataBaseHelperClass_Credentials.VA_circle_Code+"="+va_Circle_code, null);
+            Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_Credentials.TABLE_NAME+" where "+ DataBaseHelperClass_Credentials.District_Code+"="+district_Code+" and "
+                    + DataBaseHelperClass_Credentials.Taluk_Code+"="+taluk_Code+" and "+DataBaseHelperClass_Credentials.Hobli_Code+"="+hobli_Code+" and "
+                    + DataBaseHelperClass_Credentials.VA_circle_Code+"="+va_Circle_code, null);
 
-                if (cursor.getCount()>0){
-                    if (cursor.moveToNext()){
-                        VA_Name = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.VA_Name));
-                        Log.d("VA_Name:", VA_Name);
+            if (cursor.getCount()>0){
+                if (cursor.moveToNext()){
+                    VA_Name = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.VA_Name));
+                    Log.d("VA_Name:", VA_Name);
+                }
+            } else {
+                cursor.close();
+            }
+
+            Log.d("Applicant_Name", ""+applicant_name);
+            Log.d("Applicant_Id", ""+applicant_Id);
+            Log.d("Item_Position", ""+item_position);
+            Log.d("serviceCode", ""+serviceCode);
+            Log.d("serviceName", ""+serviceName);
+            Log.d("villageCode", ""+villageCode);
+            Log.d("habitationCode", ""+habitationCode);
+            Log.d("strSearchVillageName",""+ village_name);
+            Log.d("RI_va_Circle_code_ser",""+ va_Circle_code);
+            Log.d("RI_VA_Circle_Name_ser", ""+VA_Circle_Name);
+            Log.d("town_code", ""+town_code);
+            Log.d("ward_code", ward_code);
+            Log.d("option_Flag",option_Flag);
+
+            if(applicant_Id!=null) {
+
+                openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(context);
+                database = openHelper.getWritableDatabase();
+
+                Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "=" + applicant_Id, null);
+
+                if (cursor1.getCount() > 0) {
+                    if (cursor1.moveToNext()) {
+                        eng_certi = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
+                        Log.d("Service_List", "" + eng_certi);
                     }
+                } else {
+                    cursor1.close();
                 }
 
-                Log.d("Applicant_Name", ""+applicant_name);
-                Log.d("Applicant_Id", ""+applicant_Id);
-                Log.d("Item_Position", ""+item_position);
-                Log.d("serviceCode", ""+serviceCode);
-                Log.d("serviceName", ""+serviceName);
-                Log.d("villageCode", ""+villageCode);
-                Log.d("habitationCode", ""+habitationCode);
-                Log.d("strSearchVillageName",""+ village_name);
-                Log.d("RI_va_Circle_code_ser",""+ va_Circle_code);
-                Log.d("RI_VA_Circle_Name_ser", ""+VA_Circle_Name);
-                Log.d("town_code", ""+town_code);
-                Log.d("ward_code", ward_code);
-                Log.d("option_Flag",option_Flag);
-
-                if(applicant_Id!=null) {
-
-                    openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(context);
-                    database = openHelper.getWritableDatabase();
-
-                    Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
-                            + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "=" + applicant_Id, null);
-
-                    if (cursor1.getCount() > 0) {
-                        if (cursor1.moveToNext()) {
-                            eng_certi = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
-                            Log.d("Service_List", "" + eng_certi);
+                switch (serviceCode) {
+                    case "6":
+                    case "9":
+                    case "11":
+                    case "34":
+                    case "37":
+                    case "43":
+                    {
+                        if (Objects.equals(eng_certi, "E")) {
+                            i = new Intent(context, RI_Field_Report_caste_income_parameters.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        } else {
+                            i = new Intent(context, RI_Field_Report_caste_income_parameters_Kan.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         }
-                    } else {
-                        cursor1.close();
+                        i.putExtra("applicant_name", applicant_name);
+                        i.putExtra("applicant_Id", applicant_Id);
+                        i.putExtra("district_Code", district_Code);
+                        i.putExtra("districtCode", district);
+                        i.putExtra("taluk_Code", taluk_Code);
+                        i.putExtra("taluk", taluk);
+                        i.putExtra("RI_Name", RI_Name);
+                        i.putExtra("VA_Name", VA_Name);
+                        i.putExtra("hobli", hobli);
+                        i.putExtra("hobli_Code", hobli_Code);
+                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                        i.putExtra("strSearchServiceName", serviceName);
+                        i.putExtra("strSearchVillageName", village_name);
+                        i.putExtra("serviceCode", serviceCode);
+                        i.putExtra("villageCode", villageCode);
+                        i.putExtra("habitationCode", habitationCode);
+                        i.putExtra("va_Circle_Code", va_Circle_code);
+                        i.putExtra("town_Name", town_Name);
+                        i.putExtra("town_code", town_code);
+                        i.putExtra("ward_Name", ward_Name);
+                        i.putExtra("ward_code", ward_code);
+                        i.putExtra("option_Flag", option_Flag);
+                        i.putExtra("eng_certi",eng_certi);
+                        context.startActivity(i);
+                        ((Activity) context).finish();
+                        Log.d("Service", ""+serviceCode);
+                        Log.d("villageCode", ""+ villageCode);
+                        break;
                     }
-
-                    switch (serviceCode) {
-                        case "6":
-                        case "9":
-                        {
-                            if (Objects.equals(eng_certi, "E")) {
-                                i = new Intent(context, RI_Field_Report_caste_income_parameters.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            } else {
-                                i = new Intent(context, RI_Field_Report_caste_income_parameters_Kan.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            }
-                            i.putExtra("applicant_name", applicant_name);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("RI_Name", RI_Name);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("strSearchServiceName", serviceName);
-                            i.putExtra("strSearchVillageName", village_name);
-                            i.putExtra("serviceCode", serviceCode);
-                            i.putExtra("villageCode", villageCode);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("va_Circle_Code", va_Circle_code);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("eng_certi",eng_certi);
-                            context.startActivity(i);
-                            ((Activity) context).finish();
-                            Log.d("Service", ""+serviceCode);
-                            Log.d("villageCode", ""+String.valueOf(villageCode));
-                            break;
+                    case "7":
+                    case "8":
+                    case "42": {
+                        if (Objects.equals(eng_certi, "E")) {
+                            i = new Intent(context, RI_Field_Report_Caste_sc_st_certi_Parameters.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        } else {
+                            i = new Intent(context, RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         }
-                        case "7":
-                        case "8":{
-                            if (Objects.equals(eng_certi, "E")) {
-                                i = new Intent(context, RI_Field_Report_Caste_sc_st_certi_Parameters.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            } else {
-                                i = new Intent(context, RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            }
-                            i.putExtra("applicant_name", applicant_name);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("RI_Name", RI_Name);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("strSearchServiceName", serviceName);
-                            i.putExtra("strSearchVillageName", village_name);
-                            i.putExtra("serviceCode", serviceCode);
-                            i.putExtra("villageCode", villageCode);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("va_Circle_Code", va_Circle_code);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("eng_certi",eng_certi);
-                            context.startActivity(i);
-                            ((Activity) context).finish();
-                            Log.d("Service", ""+serviceCode);
-                            Log.d("villageCode", ""+String.valueOf(villageCode));
-                            break;
-                        }
-                        case "10": {
-                            i = new Intent(context, RI_Field_Report_Resident_Parameters.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            i.putExtra("applicant_name", applicant_name);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("RI_Name", RI_Name);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("strSearchServiceName", serviceName);
-                            i.putExtra("strSearchVillageName", village_name);
-                            i.putExtra("serviceCode", serviceCode);
-                            i.putExtra("villageCode", villageCode);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("va_Circle_Code", va_Circle_code);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("eng_certi",eng_certi);
-                            context.startActivity(i);
-                            ((Activity) context).finish();
-                            Log.d("Service", ""+serviceCode);
-                            Log.d("villageCode", ""+String.valueOf(villageCode));
-                            break;
-                        }
-                        default:
-                            Toast.makeText(context, "Service not available for this Service", Toast.LENGTH_SHORT).show();
-                            break;
+                        i.putExtra("applicant_name", applicant_name);
+                        i.putExtra("applicant_Id", applicant_Id);
+                        i.putExtra("district_Code", district_Code);
+                        i.putExtra("districtCode", district);
+                        i.putExtra("taluk_Code", taluk_Code);
+                        i.putExtra("taluk", taluk);
+                        i.putExtra("RI_Name", RI_Name);
+                        i.putExtra("VA_Name", VA_Name);
+                        i.putExtra("hobli", hobli);
+                        i.putExtra("hobli_Code", hobli_Code);
+                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                        i.putExtra("strSearchServiceName", serviceName);
+                        i.putExtra("strSearchVillageName", village_name);
+                        i.putExtra("serviceCode", serviceCode);
+                        i.putExtra("villageCode", villageCode);
+                        i.putExtra("habitationCode", habitationCode);
+                        i.putExtra("va_Circle_Code", va_Circle_code);
+                        i.putExtra("town_Name", town_Name);
+                        i.putExtra("town_code", town_code);
+                        i.putExtra("ward_Name", ward_Name);
+                        i.putExtra("ward_code", ward_code);
+                        i.putExtra("option_Flag", option_Flag);
+                        i.putExtra("eng_certi",eng_certi);
+                        context.startActivity(i);
+                        ((Activity) context).finish();
+                        Log.d("Service", ""+serviceCode);
+                        Log.d("villageCode", ""+ villageCode);
+                        break;
                     }
+                    case "10": {
+                        i = new Intent(context, RI_Field_Report_Resident_Parameters.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.putExtra("applicant_name", applicant_name);
+                        i.putExtra("applicant_Id", applicant_Id);
+                        i.putExtra("district_Code", district_Code);
+                        i.putExtra("districtCode", district);
+                        i.putExtra("taluk_Code", taluk_Code);
+                        i.putExtra("taluk", taluk);
+                        i.putExtra("RI_Name", RI_Name);
+                        i.putExtra("VA_Name", VA_Name);
+                        i.putExtra("hobli", hobli);
+                        i.putExtra("hobli_Code", hobli_Code);
+                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                        i.putExtra("strSearchServiceName", serviceName);
+                        i.putExtra("strSearchVillageName", village_name);
+                        i.putExtra("serviceCode", serviceCode);
+                        i.putExtra("villageCode", villageCode);
+                        i.putExtra("habitationCode", habitationCode);
+                        i.putExtra("va_Circle_Code", va_Circle_code);
+                        i.putExtra("town_Name", town_Name);
+                        i.putExtra("town_code", town_code);
+                        i.putExtra("ward_Name", ward_Name);
+                        i.putExtra("ward_code", ward_code);
+                        i.putExtra("option_Flag", option_Flag);
+                        i.putExtra("eng_certi",eng_certi);
+                        context.startActivity(i);
+                        ((Activity) context).finish();
+                        Log.d("Service", ""+serviceCode);
+                        Log.d("villageCode", ""+ villageCode);
+                        break;
+                    }
+                    default:
+                        Toast.makeText(context, "Service not available for this Service", Toast.LENGTH_SHORT).show();
+                        break;
                 }
-                else{
-                    Toast.makeText(context, "Applicant Id Missing", Toast.LENGTH_SHORT).show();
-                }
+            }
+            else{
+                Toast.makeText(context, "Applicant Id Missing", Toast.LENGTH_SHORT).show();
             }
         });
 

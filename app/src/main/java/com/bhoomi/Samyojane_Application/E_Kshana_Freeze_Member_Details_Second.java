@@ -685,7 +685,6 @@ public class E_Kshana_Freeze_Member_Details_Second extends AppCompatActivity {
         spReligion.setAdapter(adapter_Religion);
     }
 
-    @SuppressLint("ShowToast")
     public void GetCategory() {
         try {
             List<SpinnerObject> labels;
@@ -698,7 +697,7 @@ public class E_Kshana_Freeze_Member_Details_Second extends AppCompatActivity {
             spCategory.setAdapter(dataAdapter);
 
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
         }
     }
 
