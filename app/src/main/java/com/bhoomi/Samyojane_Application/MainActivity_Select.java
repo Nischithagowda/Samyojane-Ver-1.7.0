@@ -518,7 +518,8 @@ public class MainActivity_Select extends AppCompatActivity {
             public void onFailure(@NotNull Call<OtpResponse> call, @NotNull Throwable throwable) {
                 dialog.dismiss();
                 String exp = throwable.getLocalizedMessage();
-                if (exp.equals("timeout")){
+                assert exp != null;
+                if (exp.contains("timeout")){
                     displayAlert(getString(R.string.time_out));
                 } else {
                     displayAlert(exp+", Please Try Again...");
@@ -541,7 +542,7 @@ public class MainActivity_Select extends AppCompatActivity {
         alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(18);
     }
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (Objects.requireNonNull(intent.getAction()).equalsIgnoreCase("otp")) {
@@ -549,9 +550,8 @@ public class MainActivity_Select extends AppCompatActivity {
                 String senderNum = intent.getStringExtra("senderNum");
                 Log.d("message",""+message);
                 Log.d("senderNum",""+senderNum);
-                assert senderNum != null;
-                if (senderNum.contains("bhoomi") || senderNum.contains("MOBKAR")){
-                    assert message != null;
+                assert message != null;
+                if (message.contains("SAMYOJANE")){
                     received_OTP = message.replaceAll("[^0-9]","");
                     Log.d("ServOTP","OTP: "+ServOTP);
                     Log.d("received_OTP","OTP: "+received_OTP);
