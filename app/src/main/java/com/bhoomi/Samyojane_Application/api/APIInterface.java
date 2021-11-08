@@ -103,13 +103,6 @@ public interface APIInterface {
             @Path("Flag2") String Flag2,
             @Body JsonObject jobject);
 
-    @POST("Fn_Validate/{flag1}/{flag2}/{MobNum}/{IMEI}")
-    Call<String> doFn_Validate(
-            @Path("flag1") String flag1,
-            @Path("flag2") String flag2,
-            @Path("MobNum") String MobNum,
-            @Path("IMEI") String IMEI);
-
     @POST("Fn_PUSH_APPLICATION/{flag1}/{flag2}/{NEW_Village_Code}/{NEW_Habitation_code}/{NEW_Town_Code}/{NEW_Ward_Code}" +
             "/{OLD_Village_Code}/{OLD_Habitation_code}/{OLD_Town_Code}/{OLD_Ward_Code}/{Applicant_Id}/{Updated_By_VA_MobileNum}")
     Call<String> doFn_PUSH_APPLICATION(

@@ -39,6 +39,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bhoomi.Samyojane_Application.api.APIClient;
 import com.bhoomi.Samyojane_Application.api.APIInterface;
+import com.bhoomi.Samyojane_Application.api.APIInterface_SamyojaneAPI;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -82,6 +83,7 @@ public class MainActivity_Select extends AppCompatActivity {
     HashMap<String, String> hashMap;
     ProgressDialog dialog;
     APIInterface apiInterface;
+    APIInterface_SamyojaneAPI apiInterface_samyojaneAPI;
     TextView version, tvAlert;
     String version_Code, VC_Status;
     int version_Result;
@@ -253,67 +255,104 @@ public class MainActivity_Select extends AppCompatActivity {
         return i;
     }
 
-    @SuppressLint("StaticFieldLeak")
-    class GetVersion extends AsyncTask<String, Void, JSONObject> {
-        JSONObject jsonObject;
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JParserAdv jParserAdv = new JParserAdv();
-                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.main_url_version), "GET", hashMap);
-            } catch (NullPointerException e){
-                dialog.dismiss();
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            return jsonObject;
-        }
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
-            try{
-                openHelper = new DataBaseHelperClass_btnDownload_VersionCode(MainActivity_Select.this);
-                database = openHelper.getWritableDatabase();
+    public void GetVersion(){
+        apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
 
-                JSONArray array = jsonObject.getJSONArray("data");
+        Call<String> call = apiInterface_samyojaneAPI.doGet_Version(getString(R.string.api_flag1),getString(R.string.api_flag2));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
+                if(response_server == null){
+                    dialog.dismiss();
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity_Select.this, R.style.MyDialogTheme);
+                    builder.setTitle(getString(R.string.alert))
+                            .setMessage(getString(R.string.version_does_not_match))
+                            .setIcon(R.drawable.ic_error_black_24dp)
+                            .setCancelable(false)
+                            .setPositiveButton(getString(R.string.ok), (dialog, id) -> dialog.cancel());
+                    final AlertDialog alert = builder.create();
+                    alert.show();
+                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(16);
+                    TextView msgTxt = alert.findViewById(android.R.id.message);
+                    msgTxt.setTextSize(16);
+                } else if (response_server.equals(getString(R.string.access_denied_msg))){
+                    dialog.dismiss();
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity_Select.this, R.style.MyDialogTheme);
+                    builder.setTitle(getString(R.string.alert))
+                            .setMessage(getString(R.string.access_denied_msg))
+                            .setIcon(R.drawable.ic_error_black_24dp)
+                            .setCancelable(false)
+                            .setPositiveButton(getString(R.string.ok), (dialog, id) -> dialog.cancel());
+                    final AlertDialog alert = builder.create();
+                    alert.show();
+                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(16);
+                    TextView msgTxt = alert.findViewById(android.R.id.message);
+                    msgTxt.setTextSize(16);
+                } else {
+                    Runnable runnable = () -> Toast.makeText(getApplicationContext(), getString(R.string.error_500), Toast.LENGTH_SHORT).show();
+                    try {
+                        openHelper = new DataBaseHelperClass_btnDownload_VersionCode(MainActivity_Select.this);
+                        database = openHelper.getWritableDatabase();
 
-                int count = array.length();
-                if(count!=0) {
-                    truncateDatabase_Version();
-                    for (int i = 0; i < count; i++) {
+                        JSONObject jsonObject = new JSONObject(response_server);
+                        JSONArray array = jsonObject.getJSONArray("data");
 
-                        JSONObject object = array.getJSONObject(i);
-                        set_and_get_version = new Set_and_Get_Version();
-                        set_and_get_version.setV_code(object.getString(DataBaseHelperClass_btnDownload_VersionCode.VersionCode));
-                        set_and_get_version.setStatus(object.getString(DataBaseHelperClass_btnDownload_VersionCode.Status));
+                        int count = array.length();
+                        if(count!=0) {
+                            truncateDatabase_Version();
+                            for (int i = 0; i < count; i++) {
 
-                        database.execSQL("insert into "+DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME+"("
-                                + DataBaseHelperClass_btnDownload_VersionCode.VersionCode+","
-                                + DataBaseHelperClass_btnDownload_VersionCode.Status+") values ('"
-                                + set_and_get_version.getV_code()+"','"
-                                + set_and_get_version.getStatus()+"')");
-                        if (i==count-1) {
-                            dialog.dismiss();
-                            Log.d("Database", "VersionCode_Database Inserted");
-                            version_Result = check_Version_Code(version_Code);
-                            if(version_Result==0) {
-                                card_view.setVisibility(View.VISIBLE);
-                                tvAlert.setVisibility(View.GONE);
-                            }else {
-                                card_view.setVisibility(View.GONE);
-                                tvAlert.setVisibility(View.VISIBLE);
-                                tvAlert.setText(getString(R.string.version_does_not_match));
+                                JSONObject object = array.getJSONObject(i);
+                                set_and_get_version = new Set_and_Get_Version();
+                                set_and_get_version.setV_code(object.getString(DataBaseHelperClass_btnDownload_VersionCode.VersionCode));
+                                set_and_get_version.setStatus(object.getString(DataBaseHelperClass_btnDownload_VersionCode.Status));
+
+                                database.execSQL("insert into "+DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME+"("
+                                        + DataBaseHelperClass_btnDownload_VersionCode.VersionCode+","
+                                        + DataBaseHelperClass_btnDownload_VersionCode.Status+") values ('"
+                                        + set_and_get_version.getV_code()+"','"
+                                        + set_and_get_version.getStatus()+"')");
+                                if (i==count-1) {
+                                    dialog.dismiss();
+                                    Log.d("Database", "VersionCode_Database Inserted");
+                                    version_Result = check_Version_Code(version_Code);
+                                    if(version_Result==0) {
+                                        card_view.setVisibility(View.VISIBLE);
+                                        tvAlert.setVisibility(View.GONE);
+                                    }else {
+                                        card_view.setVisibility(View.GONE);
+                                        tvAlert.setVisibility(View.VISIBLE);
+                                        tvAlert.setText(getString(R.string.version_does_not_match));
+                                    }
+                                }
                             }
                         }
+                        database.close();
+                        Log.d("Get Version:", "Got the Application Version");
+                    } catch (JSONException e) {
+                        dialog.dismiss();
+                        Log.e("JSON Parser", "Error parsing data " + e.toString());
+                        Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    } catch (NullPointerException e) {
+                        dialog.dismiss();
+                        runOnUiThread(runnable);
+                        e.printStackTrace();
+                        Log.e("NullPointerException", "" + e.getMessage());
                     }
                 }
-                database.close();
-                Log.d("Get Version:", "Got the Application Version");
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
             }
-        }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                dialog.dismiss();
+                call.cancel();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     public void truncateDatabase_Version(){
@@ -345,9 +384,9 @@ public class MainActivity_Select extends AppCompatActivity {
     }
 
     public void ValidateLogin(String MobNum, String IMEINum){
-        apiInterface = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface.class);
+        apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
 
-        Call<String> call = apiInterface.doFn_Validate(getString(R.string.api_flag1),getString(R.string.api_flag2), MobNum, IMEINum);
+        Call<String> call = apiInterface_samyojaneAPI.doFn_Validate(getString(R.string.api_flag1),getString(R.string.api_flag2), MobNum, IMEINum);
 
         call.enqueue(new Callback<String>() {
             @Override
@@ -639,7 +678,7 @@ public class MainActivity_Select extends AppCompatActivity {
                 LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("otp"));
                 if (isNetworkAvailable()) {
                     dialog.show();
-                    new GetVersion().execute(getString(R.string.main_url));
+                    GetVersion();
                 } else {
                     version_Result = check_Version_Code(version_Code);
                     if (version_Result == 0) {

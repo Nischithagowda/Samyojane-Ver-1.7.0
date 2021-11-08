@@ -39,6 +39,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bhoomi.Samyojane_Application.api.APIClient;
+import com.bhoomi.Samyojane_Application.api.APIInterface_SamyojaneAPI;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +49,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -86,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
     InputMethodSubtype ims;
     int from_DB_distCode, from_DB_talukCode;
     String IMEI_Num_Shared, Mob_Num_Shared;
+    APIInterface_SamyojaneAPI apiInterface_samyojaneAPI;
 
     ListView listLanguage;
     ArrayAdapter<String> adapter_language;
@@ -181,7 +189,8 @@ public class MainActivity extends AppCompatActivity {
                 btnActivation.setText(getString(R.string.activating));
                 try {
                     dialog.show();
-                    new GetVersion().execute(getString(R.string.main_url_version));
+                    GetVersion();
+//                    new GetVersion().execute(getString(R.string.main_url_version));
 //                    ValidateLogin(deviceId, Mob_Num_Shared);
                     hashMap.put("IMEI", String.valueOf(deviceId));
                     Log.d("HashMap value", "" + hashMap);
@@ -247,7 +256,8 @@ public class MainActivity extends AppCompatActivity {
             //truncateDatabase();
             try {
                 dialog.show();
-                new GetVersion().execute(getString(R.string.main_url));
+                GetVersion();
+//                new GetVersion().execute(getString(R.string.main_url));
                 hashMap.put("IMEI", String.valueOf(deviceId));
                 Log.d("HashMap value", hashMap +", URL:"+getString(R.string.main_url));
                 new GetDataFromServer().execute(getString(R.string.main_url));
@@ -728,66 +738,60 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    class GetVersion extends AsyncTask<String, Void, JSONObject> {
-        JSONObject jsonObject;
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JParserAdv jParserAdv = new JParserAdv();
-                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.main_url_version), "GET", hashMap);
-            } catch (NullPointerException e){
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            return jsonObject;
-        }
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
-            try{
-                openHelper = new DataBaseHelperClass_btnDownload_VersionCode(MainActivity.this);
-                database = openHelper.getWritableDatabase();
+    public void GetVersion(){
+        apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
 
-                JSONArray array = jsonObject.getJSONArray("data");
+        Call<String> call = apiInterface_samyojaneAPI.doGet_Version(getString(R.string.api_flag1),getString(R.string.api_flag2));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
 
-                int count = array.length();
-                if(count!=0) {
-                    truncateDatabase_Version();
-                    for (int i = 0; i < count; i++) {
+                try {
+                    openHelper = new DataBaseHelperClass_btnDownload_VersionCode(MainActivity.this);
+                    database = openHelper.getWritableDatabase();
 
-                        JSONObject object = array.getJSONObject(i);
-                        set_and_get_version = new Set_and_Get_Version();
-                        set_and_get_version.setV_code(object.getString(DataBaseHelperClass_btnDownload_VersionCode.VersionCode));
-                        set_and_get_version.setStatus(object.getString(DataBaseHelperClass_btnDownload_VersionCode.Status));
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("data");
 
-                        database.execSQL("insert into "+DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME+"("
-                                + DataBaseHelperClass_btnDownload_VersionCode.VersionCode+","
-                                + DataBaseHelperClass_btnDownload_VersionCode.Status+") values ('"
-                                + set_and_get_version.getV_code()+"','"
-                                + set_and_get_version.getStatus()+"')");
-                        Log.d("Database", "VersionCode_Database Inserted");
+                    int count = array.length();
+                    if(count!=0) {
+                        truncateDatabase_Version();
+                        for (int i = 0; i < count; i++) {
+
+                            JSONObject object = array.getJSONObject(i);
+                            set_and_get_version = new Set_and_Get_Version();
+                            set_and_get_version.setV_code(object.getString(DataBaseHelperClass_btnDownload_VersionCode.VersionCode));
+                            set_and_get_version.setStatus(object.getString(DataBaseHelperClass_btnDownload_VersionCode.Status));
+
+                            database.execSQL("insert into "+DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME+"("
+                                    + DataBaseHelperClass_btnDownload_VersionCode.VersionCode+","
+                                    + DataBaseHelperClass_btnDownload_VersionCode.Status+") values ('"
+                                    + set_and_get_version.getV_code()+"','"
+                                    + set_and_get_version.getStatus()+"')");
+                        }
                     }
+                    database.close();
+                    Log.d("Get Version:", "Got the Application Version");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("JSON Parser", "Error parsing data " + e.toString());
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                    Log.e("NullPointerException", "" + e.getMessage());
                 }
-
-//                Type listType = new TypeToken<List<Set_and_Get_Version>>(){}.getType();
-//                List<Set_and_Get_Version> myModelList = new Gson().fromJson(array.toString(), listType);
-//
-//                for (Set_and_Get_Version set_and_get_version:myModelList){
-//                    database.execSQL("insert into "+DataBaseHelperClass_btnDownload_VersionCode.TABLE_NAME+"("
-//                            + DataBaseHelperClass_btnDownload_VersionCode.VersionCode+","
-//                            + DataBaseHelperClass_btnDownload_VersionCode.Status+") values ("
-//                            + set_and_get_version.getV_code()+",'"
-//                            + set_and_get_version+"')");
-//
-//                }
-                database.close();
-                Log.d("Get Version:", "Got the Application Version");
-
-            } catch (JSONException | NullPointerException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
             }
-        }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     public void truncateDatabase_Version(){
