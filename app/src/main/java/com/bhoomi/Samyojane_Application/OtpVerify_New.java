@@ -52,7 +52,21 @@ public class OtpVerify_New extends AppCompatActivity {
         received_OTP = i.getStringExtra("received_OTP");
 
         if (isNetworkAvailable()) {
-            ValidateOtpFromServer(mob_Num, received_OTP);
+            //ValidateOtpFromServer(mob_Num, received_OTP);
+
+            SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+            editor.putString(Constants.MOBILE_NUMBER, mob_Num);
+            editor.putString(Constants.IMEI_NUMBER, IMEI_Num);
+            editor.putString(Constants.OTP, received_OTP);
+            editor.putBoolean(Constants.LOGIN_STATUS, true);
+            editor.apply();
+
+            Intent intent = new Intent(OtpVerify_New.this, MainActivity.class);
+            intent.putExtra("mob_Num",mob_Num);
+            intent.putExtra("IMEI_Num",IMEI_Num);
+            startActivity(intent);
+            finish();
+
         }else {
             buildAlert_Internet();
         }

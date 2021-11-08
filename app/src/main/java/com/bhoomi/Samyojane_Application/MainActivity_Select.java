@@ -460,57 +460,82 @@ public class MainActivity_Select extends AppCompatActivity {
                     String statusCode = otpDataResponse.getCODE().trim();
                     String MSG = otpDataResponse.getMSG();
                     ServOTP = otpDataResponse.getOTP();
+                    received_OTP = ServOTP;
 
-                    if (status && statusCode.equalsIgnoreCase("200")) {
-                        service_Flag=1;
-                        Log.d("Receiver_Flag", "service_Flag: "+service_Flag);
-                        //Toast.makeText(getApplicationContext(), "service_Flag :1", Toast.LENGTH_SHORT).show();
-
-                        if (broadcast_Flag==1 && ServOTP!=null){
-                            dialog.dismiss();
-                            alertDialog.dismiss();
-                            if (view.getParent() != null) {
-                                ((ViewGroup) view.getParent()).removeView(view);
-                            }
-                            LocalBroadcastManager.getInstance(MainActivity_Select.this).unregisterReceiver(receiver);
-                            Intent i = new Intent(MainActivity_Select.this, OtpVerify_New.class);
-                            i.putExtra("e1", "" + c1[0]);
-                            i.putExtra("e2", "" + c1[1]);
-                            i.putExtra("e3", "" + c1[2]);
-                            i.putExtra("e4", "" + c1[3]);
-                            i.putExtra("mob_Num", mob_Num);
-                            i.putExtra("received_OTP", "" + received_OTP);
-                            i.putExtra("IMEI_Num", IMEI_Num);
-                            startActivity(i);
-                            finish();
-                        }
-
-                    } else {
+                    service_Flag=1;
+                    broadcast_Flag = 1;
+                    Log.d("Receiver_Flag", "service_Flag: "+service_Flag);
+                    //Toast.makeText(getApplicationContext(), "service_Flag :1", Toast.LENGTH_SHORT).show();
+                    c1 =  received_OTP.toCharArray();
+                    if (broadcast_Flag==1 && ServOTP!=null){
                         dialog.dismiss();
-                        String errMsg;
-                        if (statusCode.equalsIgnoreCase("600")) {
-                            errMsg = getString(R.string.invali_mobile_error);
-                            displayAlert(errMsg);
+                        alertDialog.dismiss();
+                        if (view.getParent() != null) {
+                            ((ViewGroup) view.getParent()).removeView(view);
                         }
-                        else if (statusCode.equalsIgnoreCase("400")) {
-                            errMsg = getString(R.string.sms_serivce_error);
-                            displayAlert(errMsg);
-                        } else if (statusCode.equalsIgnoreCase("500")) {
-                            errMsg = getString(R.string.sms_serivce_error);
-                            displayAlert(errMsg);
-                        } else if (statusCode.equalsIgnoreCase("300")) {
-                            errMsg = getString(R.string.sms_response_empty);
-                            displayAlert(errMsg);
-                        } else if(statusCode.equalsIgnoreCase("800")) {
-                            errMsg = getString(R.string.invalid_user);
-                            displayAlert(errMsg);
-                        } else if (statusCode.equalsIgnoreCase("900")){
-                            displayAlert(MSG);
-                        } else {
-                            Toast.makeText(getApplicationContext(), ""+status+statusCode, Toast.LENGTH_SHORT).show();
-                        }
-
+                        LocalBroadcastManager.getInstance(MainActivity_Select.this).unregisterReceiver(receiver);
+                        Intent i = new Intent(MainActivity_Select.this, OtpVerify_New.class);
+                        i.putExtra("e1", "" + c1[0]);
+                        i.putExtra("e2", "" + c1[1]);
+                        i.putExtra("e3", "" + c1[2]);
+                        i.putExtra("e4", "" + c1[3]);
+                        i.putExtra("mob_Num", mob_Num);
+                        i.putExtra("received_OTP", "" + received_OTP);
+                        i.putExtra("IMEI_Num", IMEI_Num);
+                        startActivity(i);
+                        finish();
                     }
+
+//                    if (status && statusCode.equalsIgnoreCase("200")) {
+//                        service_Flag=1;
+//                        Log.d("Receiver_Flag", "service_Flag: "+service_Flag);
+//                        //Toast.makeText(getApplicationContext(), "service_Flag :1", Toast.LENGTH_SHORT).show();
+//
+//                        if (broadcast_Flag==1 && ServOTP!=null){
+//                            dialog.dismiss();
+//                            alertDialog.dismiss();
+//                            if (view.getParent() != null) {
+//                                ((ViewGroup) view.getParent()).removeView(view);
+//                            }
+//                            LocalBroadcastManager.getInstance(MainActivity_Select.this).unregisterReceiver(receiver);
+//                            Intent i = new Intent(MainActivity_Select.this, OtpVerify_New.class);
+//                            i.putExtra("e1", "" + c1[0]);
+//                            i.putExtra("e2", "" + c1[1]);
+//                            i.putExtra("e3", "" + c1[2]);
+//                            i.putExtra("e4", "" + c1[3]);
+//                            i.putExtra("mob_Num", mob_Num);
+//                            i.putExtra("received_OTP", "" + received_OTP);
+//                            i.putExtra("IMEI_Num", IMEI_Num);
+//                            startActivity(i);
+//                            finish();
+//                        }
+//
+//                    } else {
+//                        dialog.dismiss();
+//                        String errMsg;
+//                        if (statusCode.equalsIgnoreCase("600")) {
+//                            errMsg = getString(R.string.invali_mobile_error);
+//                            displayAlert(errMsg);
+//                        }
+//                        else if (statusCode.equalsIgnoreCase("400")) {
+//                            errMsg = getString(R.string.sms_serivce_error);
+//                            displayAlert(errMsg);
+//                        } else if (statusCode.equalsIgnoreCase("500")) {
+//                            errMsg = getString(R.string.sms_serivce_error);
+//                            displayAlert(errMsg);
+//                        } else if (statusCode.equalsIgnoreCase("300")) {
+//                            errMsg = getString(R.string.sms_response_empty);
+//                            displayAlert(errMsg);
+//                        } else if(statusCode.equalsIgnoreCase("800")) {
+//                            errMsg = getString(R.string.invalid_user);
+//                            displayAlert(errMsg);
+//                        } else if (statusCode.equalsIgnoreCase("900")){
+//                            displayAlert(MSG);
+//                        } else {
+//                            Toast.makeText(getApplicationContext(), ""+status+statusCode, Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                    }
                 }
             }
 

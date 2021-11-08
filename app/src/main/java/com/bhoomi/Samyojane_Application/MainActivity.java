@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         pwd.setError(null);
 
+
         userName.setOnTouchListener((v, event) -> {
             imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             assert imm != null;

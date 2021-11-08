@@ -62,8 +62,9 @@ public class New_Request_SecondScreen extends AppCompatActivity{
     String raisedLoc, name, fatherName, motherName, rationCardNo, aadharNo, mobileNo, address1, address2, address3, report_No, pinCode;
     String add_pin;
     String appImage=null;
-    EditText tvName, tvFatherName, tvMotherName;
-    EditText tvRationCardNo, tvMobile, tvAddress1, tvAddress2, tvAddress3, tvPinCode;
+    EditText tvFatherName, tvMotherName;
+    TextView tvName, tvAddress1, tvAddress2, tvAddress3, tvPinCode;
+    EditText tvRationCardNo, tvMobile;
     TextView txt_raiseLoc, tvHobli, tvTaluk, tvVA_Name, tv_IDName;
     String district, taluk,hobli,va_Circle_Code,VA_Circle_Name, VA_Name, district_Code, taluk_Code, hobli_Code;
     Button btnNext, btnBack;
@@ -100,6 +101,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
     String str;
     int Id_Code;
     String Id_Name;
+    LinearLayout trID;
 
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1Hbfh667adfDEJ78";
@@ -316,6 +318,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         tvOr = findViewById(R.id.tvOr);
         txt_ReportNo = findViewById(R.id.txt_ReportNo);
         tv_for_Aadhaar = findViewById(R.id.tv_for_Aadhaar);
+        trID = findViewById(R.id.trID);
 
 //        tvName.setFilters(new InputFilter[] { filter });
 //        tvFatherName.setFilters(new InputFilter[] { filter });
@@ -330,9 +333,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
         PhoneNumberUtils.formatNumber(tvMobile.getText().toString());
         tvMobile.setFilters(new InputFilter[] {new InputFilter.LengthFilter(10)}); // 10 is max digits
-
-        PhoneNumberUtils.formatNumber(tvPinCode.getText().toString());
-        tvPinCode.setFilters(new InputFilter[] {new InputFilter.LengthFilter(6)});
 
         applicant_infor= findViewById(R.id.applicant_Information);
         applicant_infor.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -491,6 +491,12 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         Log.d("Eng_Certi", eng_certi);
         Log.d("Raised_Location: ",""+raisedLoc);
 
+        if (Id_Code == 19){
+            trID.setVisibility(View.GONE);
+        } else {
+            trID.setVisibility(View.VISIBLE);
+        }
+
         if(Objects.equals(raisedLoc, "N") || Objects.equals(raisedLoc, "S")){
             txt_raiseLoc.setText(getString(R.string.nadakacheri_raised));
         }else if(Objects.equals(raisedLoc, "P") || Objects.equals(raisedLoc, "B") || Objects.equals(raisedLoc, "K") || Objects.equals(raisedLoc, "G") || Objects.equals(raisedLoc, "I")){
@@ -524,50 +530,12 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         txt_ReportNo.setText(report_No);
 
         if (eng_certi.equals("K")){
-            tvName.setFilters(new InputFilter[] { filter_Kan });
             tvFatherName.setFilters(new InputFilter[] { filter_Kan });
             tvMotherName.setFilters(new InputFilter[] { filter_Kan });
-            tvAddress1.setFilters(new InputFilter[] { filter_Kan_Add });
-            tvAddress2.setFilters(new InputFilter[] { filter_Kan_Add });
-            tvAddress3.setFilters(new InputFilter[] { filter_Kan_Add });
         }else if (eng_certi.equals("E")){
-            tvName.setFilters(new InputFilter[] { filter_Eng });
             tvFatherName.setFilters(new InputFilter[] { filter_Eng });
             tvMotherName.setFilters(new InputFilter[] { filter_Eng });
-            tvAddress1.setFilters(new InputFilter[] { filter_Eng_Add });
-            tvAddress2.setFilters(new InputFilter[] { filter_Eng_Add });
-            tvAddress3.setFilters(new InputFilter[] { filter_Eng_Add });
         }
-        tvName.setOnTouchListener((v, event) -> {
-            if(Objects.equals(eng_certi, "K")){
-                check_Kannada_Key_lang();
-            }
-            else if(Objects.equals(eng_certi, "E")) {
-                check_English_Key_lang();
-            }
-            return false;
-        });
-
-//        tvName.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                if (eng_certi.equals("K")){
-//                    tvName.setFilters(new InputFilter[] { filter_Kan });
-//                }else if (eng_certi.equals("E")){
-//                    tvName.setFilters(new InputFilter[] { filter_Eng });
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
 
         tvFatherName.setOnTouchListener((v, event) -> {
             if(Objects.equals(eng_certi, "K")){
@@ -589,33 +557,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             return false;
         });
 
-        tvAddress1.setOnTouchListener((v, event) -> {
-            if(Objects.equals(eng_certi, "K")){
-                check_Kannada_Key_lang();
-            }
-            else if(Objects.equals(eng_certi, "E")) {
-                check_English_Key_lang();
-            }
-            return false;
-        });
-        tvAddress2.setOnTouchListener((v, event) -> {
-            if(Objects.equals(eng_certi, "K")){
-                check_Kannada_Key_lang();
-            }
-            else if(Objects.equals(eng_certi, "E")) {
-                check_English_Key_lang();
-            }
-            return false;
-        });
-        tvAddress3.setOnTouchListener((v, event) -> {
-            if(Objects.equals(eng_certi, "K")){
-                check_Kannada_Key_lang();
-            }
-            else if(Objects.equals(eng_certi, "E")) {
-                check_English_Key_lang();
-            }
-            return false;
-        });
         gpsTracker = new GPSTracker(getApplicationContext(), this);
 
         btnScan.setOnClickListener(v -> {
@@ -642,15 +583,10 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
             }
 
-            applicant_name = tvName.getText().toString();
             fatherName = tvFatherName.getText().toString();
             motherName = tvMotherName.getText().toString();
             rationCardNo =tvRationCardNo.getText().toString();
             mobileNo = tvMobile.getText().toString();
-            address1 = tvAddress1.getText().toString();
-            address2 = tvAddress2.getText().toString();
-            address3 = tvAddress3.getText().toString();
-            pinCode = tvPinCode.getText().toString();
 
             Log.d("Values", ""+applicant_name);
             Log.d("Values", ""+fatherName);
@@ -663,51 +599,35 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             Log.d("Values", ""+pinCode);
 
             if(latitude!=0.0 && longitude!=0.0) {
-                if(TextUtils.isEmpty(applicant_name)){
-                    tvName.setError(getString(R.string.field_canno_null));
-                }else {
-                    if (TextUtils.isEmpty(fatherName)) {
-                        tvFatherName.setError(getString(R.string.field_canno_null));
+                if (TextUtils.isEmpty(fatherName)) {
+                    tvFatherName.setError(getString(R.string.field_canno_null));
+                } else {
+                    if (TextUtils.isEmpty(motherName)) {
+                        tvMotherName.setError(getString(R.string.field_canno_null));
                     } else {
-                        if (TextUtils.isEmpty(motherName)) {
-                            tvMotherName.setError(getString(R.string.field_canno_null));
+                        if (TextUtils.isEmpty(rationCardNo)) {
+                            tvRationCardNo.setError(getString(R.string.field_canno_null));
                         } else {
-                            if (TextUtils.isEmpty(rationCardNo)) {
-                                tvRationCardNo.setError(getString(R.string.field_canno_null));
+                            if (TextUtils.isEmpty(mobileNo)) {
+                                tvMobile.setError(getString(R.string.field_canno_null));
                             } else {
-                                if (TextUtils.isEmpty(mobileNo)) {
-                                    tvMobile.setError(getString(R.string.field_canno_null));
+                                if (!isValidMobile(mobileNo)) {
+                                    tvMobile.setError(getString(R.string.enter_valid_phone_num));
                                 } else {
-                                    if (!isValidMobile(mobileNo)) {
-                                        tvMobile.setError(getString(R.string.enter_valid_phone_num));
-                                    } else {
-                                        if (TextUtils.isEmpty(address1)) {
-                                            tvAddress1.setError(getString(R.string.field_canno_null));
+                                    code = pinCode.charAt(0);
+                                    Log.d("code",""+code);
+                                    if (code.equals(code_Value)){
+                                        Log.d("code: ", "code value matched");
+                                        len = pinCode.length();
+                                        if (len != 6) {
+                                            tvPinCode.setError(getString(R.string.enter_valid_pincode));
                                         } else {
-                                            if (TextUtils.isEmpty(address2)) {
-                                                tvAddress2.setError(getString(R.string.field_canno_null));
-                                            } else {
-                                                if (TextUtils.isEmpty(pinCode)) {
-                                                    tvPinCode.setError(getString(R.string.field_canno_null));
-                                                } else {
-                                                    code = pinCode.charAt(0);
-                                                    Log.d("code",""+code);
-                                                    if (code.equals(code_Value)){
-                                                        Log.d("code: ", "code value matched");
-                                                        len = pinCode.length();
-                                                        if (len != 6) {
-                                                            tvPinCode.setError(getString(R.string.enter_valid_pincode));
-                                                        } else {
-                                                            CheckAadhaarDetails();
-                                                            finish();
-                                                        }
-                                                    }else {
-                                                        Log.d("code: ", "code value do not matched");
-                                                        tvPinCode.setError(getString(R.string.enter_valid_pincode));
-                                                    }
-                                                }
-                                            }
+                                            CheckAadhaarDetails();
+                                            finish();
                                         }
+                                    }else {
+                                        Log.d("code: ", "code value do not matched");
+                                        tvPinCode.setError(getString(R.string.enter_valid_pincode));
                                     }
                                 }
                             }
@@ -909,10 +829,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         motherName = tvMotherName.getText().toString();
         rationCardNo =tvRationCardNo.getText().toString();
         mobileNo = tvMobile.getText().toString();
-        address1 = tvAddress1.getText().toString();
-        address2 = tvAddress2.getText().toString();
-        address3 = tvAddress3.getText().toString();
-        pinCode = tvPinCode.getText().toString();
 
         Log.d("Values", ""+name);
         Log.d("Values", ""+fatherName);

@@ -792,7 +792,7 @@ public class SecondScreen extends AppCompatActivity {
                     set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
                     set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
                     set_and_get_service_tran_data.setST_Push_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag));
-                    set_and_get_service_tran_data.setIST_annual_income(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IST_annual_income));
+                    //set_and_get_service_tran_data.setIST_annual_income(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IST_annual_income));
 
                     serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
                     Log.d("serviceCode", "" + serviceCode);

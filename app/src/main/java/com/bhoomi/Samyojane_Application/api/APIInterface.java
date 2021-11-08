@@ -60,7 +60,8 @@ public interface APIInterface {
             @Path("flag1") String flag1,
             @Path("flag2") String flag2,
             @Path("Username") String Username,
-            @Path("Pass") String Pass);
+            @Path("Pass") String Pass
+    );
 
     @POST("AddAssistant/{flag1}/{flag2}/{A_Dist_code}/{A_Taluk_code}/{A_Hobli_code}/{A_VA_circle_code}/{A_Creator_Name}/{A_Asst_Name}/{A_Asst_MobileNo}/{A_Password}/{A_Created_By}")
     Call<String> doAddMember(

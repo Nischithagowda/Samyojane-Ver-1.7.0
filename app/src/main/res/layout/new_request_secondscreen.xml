@@ -155,13 +155,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:layout_marginStart="5dp" />
+                android:layout_marginStart="5dp"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:layout_width="120dp"
@@ -180,17 +181,13 @@
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/tvName"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:backgroundTint="@android:color/black"
-                android:hint="@string/enter_your_name"
-                android:inputType="textPersonName|textFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="14sp"
-                tools:ignore="Autofill" />
+                android:layout_marginStart="5dp"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
 
@@ -269,6 +266,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/trID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -380,49 +378,38 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/tvAddress1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/enter_your_address"
                         android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:inputType="textMultiLine"
-                        android:backgroundTint="@android:color/black"
-                        tools:ignore="Autofill" />
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="8dp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <EditText
+                    <TextView
                         android:id="@+id/tvAddress2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/enter_your_address"
                         android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:inputType="textMultiLine"
-                        android:backgroundTint="@android:color/black"
-                        tools:ignore="Autofill" />
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <EditText
+                    <TextView
                         android:id="@+id/tvAddress3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/enter_your_address"
-                        android:inputType="textMultiLine"
                         android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:backgroundTint="@android:color/black"
-                        tools:ignore="Autofill" />
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -448,16 +435,13 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/tvPinCode"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:hint="@string/enter_pin_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:inputType="phone"
-                android:backgroundTint="@android:color/black"
-                tools:ignore="Autofill" />
+                android:layout_marginStart="5dp" />
+
         </LinearLayout>
 
         <LinearLayout

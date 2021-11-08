@@ -100,6 +100,7 @@ public class New_Request_Kan extends AppCompatActivity{
     ImageView iv_scst;
     String Id_Name;
     int Id_Code;
+    TableRow trID;
 
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
@@ -246,6 +247,7 @@ public class New_Request_Kan extends AppCompatActivity{
         tr_residence = findViewById(R.id.tr_residence);
         spYears = findViewById(R.id.spYears);
         iv_scst = findViewById(R.id.iv_scst);
+        trID = findViewById(R.id.trID);
 
         txt1 = findViewById(R.id.txt1);
         txt2 = findViewById(R.id.txt2);
@@ -485,6 +487,12 @@ public class New_Request_Kan extends AppCompatActivity{
 
         Log.d("ID_Name:", ""+Id_Name);
         Log.d("Raised_Location: ",""+raisedLoc);
+
+        if (Id_Code == 19){
+            trID.setVisibility(View.GONE);
+        } else {
+            trID.setVisibility(View.VISIBLE);
+        }
 
         if(Objects.equals(raisedLoc, "N") || Objects.equals(raisedLoc, "S")){
             txt_raiseLoc.setText(getString(R.string.nadakacheri_raised));
