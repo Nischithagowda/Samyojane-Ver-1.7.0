@@ -15,7 +15,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -258,7 +257,7 @@ public class MainActivity_Select extends AppCompatActivity {
     public void GetVersion(){
         apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
 
-        Call<String> call = apiInterface_samyojaneAPI.doGet_Version(getString(R.string.api_flag1),getString(R.string.api_flag2));
+        Call<String> call = apiInterface_samyojaneAPI.doGet_Version(getString(R.string.samyojane_api_flag1),getString(R.string.samyojane_api_flag2));
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -386,7 +385,7 @@ public class MainActivity_Select extends AppCompatActivity {
     public void ValidateLogin(String MobNum, String IMEINum){
         apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
 
-        Call<String> call = apiInterface_samyojaneAPI.doFn_Validate(getString(R.string.api_flag1),getString(R.string.api_flag2), MobNum, IMEINum);
+        Call<String> call = apiInterface_samyojaneAPI.doFn_Validate(getString(R.string.samyojane_api_flag1),getString(R.string.samyojane_api_flag2), MobNum, IMEINum);
 
         call.enqueue(new Callback<String>() {
             @Override

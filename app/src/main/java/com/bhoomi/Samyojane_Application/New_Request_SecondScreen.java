@@ -614,21 +614,23 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                                 if (!isValidMobile(mobileNo)) {
                                     tvMobile.setError(getString(R.string.enter_valid_phone_num));
                                 } else {
-                                    code = pinCode.charAt(0);
-                                    Log.d("code",""+code);
-                                    if (code.equals(code_Value)){
-                                        Log.d("code: ", "code value matched");
-                                        len = pinCode.length();
-                                        if (len != 6) {
-                                            tvPinCode.setError(getString(R.string.enter_valid_pincode));
-                                        } else {
-                                            CheckAadhaarDetails();
-                                            finish();
-                                        }
-                                    }else {
-                                        Log.d("code: ", "code value do not matched");
-                                        tvPinCode.setError(getString(R.string.enter_valid_pincode));
-                                    }
+//                                    code = pinCode.charAt(0);
+//                                    Log.d("code",""+code);
+//                                    if (code.equals(code_Value)){
+//                                        Log.d("code: ", "code value matched");
+//                                        len = pinCode.length();
+//                                        if (len != 6) {
+//                                            tvPinCode.setError(getString(R.string.enter_valid_pincode));
+//                                        } else {
+//                                            CheckAadhaarDetails();
+//                                            finish();
+//                                        }
+//                                    }else {
+//                                        Log.d("code: ", "code value do not matched");
+//                                        tvPinCode.setError(getString(R.string.enter_valid_pincode));
+//                                    }
+                                    CheckAadhaarDetails();
+                                    finish();
                                 }
                             }
                         }

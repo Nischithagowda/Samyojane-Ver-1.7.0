@@ -24,8 +24,10 @@
     <string name="flag1_ekshana">nadakacheriEMobileAPI@2020</string>
     <string name="flag2_ekshana">0bd8c0857ab17b225a7f14fa354fa3676</string>l
 
-    <string name="api_flag1">nadakacheriSAMYOJANEAPI@2021</string>
-    <string name="api_flag2">0bd8c0857ab17b225a7f14fa354fa3757677</string>
+    <string name="samyojane_api_flag1">nadakacheriSAMYOJANEAPI@2021</string>
+    <string name="samyojane_api_flag2">0bd8c0857ab17b225a7f14fa354fa3757677</string>
+
+    <string name="fieldVerify_api_flag1">SAMYOJUser</string>
 
     <string name="MobAPI_New_NIC">http://164.100.133.47/MobAPI_New/api/FieldVerification/</string>
     <string name="samyojane_API_url">http://164.100.133.47/Samyojane_API/api/values/</string>

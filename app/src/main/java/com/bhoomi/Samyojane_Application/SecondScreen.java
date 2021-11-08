@@ -28,6 +28,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhoomi.Samyojane_Application.api.APIClient;
+import com.bhoomi.Samyojane_Application.api.APIInterface_NIC;
+import com.bhoomi.Samyojane_Application.api.APIInterface_SamyojaneAPI;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,33 +47,26 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SecondScreen extends AppCompatActivity {
 
 
-    //private static final String url_facility = "http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Facility_Services";
-//    private static final String url_village_name = "http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Village_Name";
-//    private static final String url_service_Tran_data = "http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Service_tran_data";
     HashMap<String, String> hashMap_facility;
     HashMap<String, String> hashMap_village_name;
     HashMap<String, String> hashMap_service_Tran_data;
-
-//    String SOAP_ACTION1 = "http://tempuri.org/Update_ServiceTranTable ";
-//    public final String OPERATION_NAME1 = "Update_ServiceTranTable";  //Method_name
-//    public final String WSDL_TARGET_NAMESPACE1 = "http://tempuri.org/";  // NAMESPACE
-//    String SOAP_ADDRESS1 = "http://164.100.133.47/NK_MobileApp/WebService.asmx";
-
     String SOAP_ACTION2 = "http://tempuri.org/Insert_ServiceParameterTable ";
     public final String OPERATION_NAME2 = "Insert_ServiceParameterTable";  //Method_name
     public final String WSDL_TARGET_NAMESPACE2 = "http://tempuri.org/";  // NAMESPACE
-    //String SOAP_ADDRESS2 = "http://164.100.133.30/NK_MobileApp/WebService.asmx";
 
     TextView proceed, tvDistrict, tvTaluk, tvHobli, tvVA_Circle_Name, tvVA_Name, tvTimerValue, VAModule;
     Button btnDownload, btnPendency, btnUpload, btnProceed;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase databaseServTran, databaseFacility, databaseCredential, databaseVilNames;
     String district, taluk, hobli, VA_Circle_Name, VA_Name;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
-    //private static final String url_service_Parameter_Data = "http://164.100.133.123:9600/Bhoomi_download/WebService.asmx/Get_Service_Parameters_data";
+    int district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     Set_and_Get_Facility_Services set_and_get_facility_services;
     Set_and_Get_Village_Name set_and_get_village_name;
     Set_and_Get_Service_tran_data set_and_get_service_tran_data;
@@ -110,11 +107,8 @@ public class SecondScreen extends AppCompatActivity {
     SoapPrimitive resultString;
     String resultFromServer;
     String IMEI_Num, mob_Num;
-
-//    String SOAP_ACTION3 = "http://tempuri.org/DeleteDataUploadedFlag ";   //Truncate_Service_Parameters_data
-//    public final String OPERATION_NAME3 = "DeleteDataUploadedFlag";  //Method_name
-//    public final String WSDL_TARGET_NAMESPACE3 = "http://tempuri.org/";  // NAMESPACE
-//    String SOAP_ADDRESS3 = "http://164.100.133.123:9600/Bhoomi_download/WebService.asmx";
+    APIInterface_SamyojaneAPI apiInterface_samyojaneAPI;
+    APIInterface_NIC apiInterface_nic;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -223,7 +217,7 @@ public class SecondScreen extends AppCompatActivity {
         taluk = i.getStringExtra("taluk");
         hobli = i.getStringExtra("hobli");
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        va_Circle_Code = i.getIntExtra("va_Circle_Code", 0);
         VA_Name = i.getStringExtra("VA_Name");
         localeName = i.getStringExtra("localeName");
         IMEI_Num = i.getStringExtra("IMEI_Num");
@@ -266,11 +260,11 @@ public class SecondScreen extends AppCompatActivity {
                 + getString(R.string.cre_va_circle_name)+"='"+VA_Circle_Name+"'", null);
         if(cursor.getCount()>0) {
             if (cursor.moveToNext()) {
-                district_Code = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_Credentials.District_Code));
-                taluk_Code = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_Credentials.Taluk_Code));
-                hobli_Code = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_Credentials.Hobli_Code));
-                va_Circle_Code = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_Credentials.VA_circle_Code));
-                flag = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.flag)));
+                district_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_Credentials.District_Code));
+                taluk_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_Credentials.Taluk_Code));
+                hobli_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_Credentials.Hobli_Code));
+                va_Circle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_Credentials.VA_circle_Code));
+                flag = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.flag));
                 databaseCredential.close();
             }
         }else {
@@ -313,21 +307,9 @@ public class SecondScreen extends AppCompatActivity {
 
                 new InsertServiceParameterTable_Server().execute();
 
-                new GetFacilityServiceFromServer().execute(getString(R.string.url_facility));
-
-                hashMap_village_name.put("District_Code", district_Code);
-                hashMap_village_name.put("Taluk_Code", taluk_Code);
-                hashMap_village_name.put("Hobli_Code", hobli_Code);
-                hashMap_village_name.put("VA_Cicle_Code", va_Circle_Code );
-                Log.d("hashMap_village_name",""+hashMap_village_name+", URL:"+getString(R.string.url_village_name));
-                new GetVillageNameFromServer().execute(getString(R.string.url_village_name));
-
-                hashMap_service_Tran_data.put("District_Code", district_Code);
-                hashMap_service_Tran_data.put("Taluk_Code", taluk_Code);
-                hashMap_service_Tran_data.put("Hobli_Code", hobli_Code);
-                hashMap_service_Tran_data.put("VA_circle_code", va_Circle_Code );
-                Log.d("hashMap_ser_Tran_data",""+hashMap_service_Tran_data+", URL:"+getString(R.string.url_service_Tran_data));
-                new GetServiceTrandataFromServer().execute(getString(R.string.url_service_Tran_data));
+                GetFacilityServiceFromServer();
+                GetVillageNameFromServer(district_Code, taluk_Code, hobli_Code, va_Circle_Code);
+                //GetServiceTrandataFromServer();
             }
             else {
                 Cursor cursor1= databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME, null);
@@ -483,86 +465,70 @@ public class SecondScreen extends AppCompatActivity {
 
     }
 
-    @SuppressLint("StaticFieldLeak")
-    class GetFacilityServiceFromServer extends AsyncTask<String, Void, JSONObject> {
-        JSONObject jsonObject;
+    public void GetFacilityServiceFromServer(){
+        apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
 
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JParserAdv jParserAdv = new JParserAdv();
-                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.url_facility), "GET", hashMap_facility);
-            }catch (OutOfMemoryError e){
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                    buildAlertForOutOfMemory();
-                    //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
-                });
-                Log.e("OutOfMemoryError", ""+e.toString());
-            }catch (NullPointerException e){
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                });
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            return jsonObject;
-        }
+        Call<String> call = apiInterface_samyojaneAPI.doFn_Get_Facility_Services(getString(R.string.samyojane_api_flag1),getString(R.string.samyojane_api_flag2));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
+                try {
 
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
+                    dialog.incrementProgressBy(5);
 
-            try {
+                    truncateDatabase_facility();
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("data");
+                    int count = array.length();
 
-                dialog.incrementProgressBy(5);
+                    for (int i = 0; i < count; i++) {
 
-                truncateDatabase_facility();
+                        JSONObject object = array.getJSONObject(i);
 
-                JSONArray array = jsonObject.getJSONArray("data");
-                int count = array.length();
-
-                for (int i = 0; i < count; i++) {
-
-                    JSONObject object = array.getJSONObject(i);
-
-                    set_and_get_facility_services = new Set_and_Get_Facility_Services();
-                    set_and_get_facility_services.setSlNo(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.SlNo));
-                    set_and_get_facility_services.setFM_facility_code(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code));
-                    set_and_get_facility_services.setFM_facility_edesc(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
-                    set_and_get_facility_services.setFM_facility_kdesc(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
-                    set_and_get_facility_services.setFM_acronym_on_doc_eng(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_acronym_on_doc_eng));
-                    set_and_get_facility_services.setFM_designated_officer(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_designated_officer));
-                    set_and_get_facility_services.setFM_gsc_no_days(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_gsc_no_days));
-                    set_and_get_facility_services.setFM_facility_display(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_display));
-                    set_and_get_facility_services.setFM_sakala_service(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_sakala_service));
-                    set_and_get_facility_services.setFM_OTC_Charges(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_OTC_Charges));
+                        set_and_get_facility_services = new Set_and_Get_Facility_Services();
+                        set_and_get_facility_services.setSlNo(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.SlNo));
+                        set_and_get_facility_services.setFM_facility_code(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code));
+                        set_and_get_facility_services.setFM_facility_edesc(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
+                        set_and_get_facility_services.setFM_facility_kdesc(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
+                        set_and_get_facility_services.setFM_acronym_on_doc_eng(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_acronym_on_doc_eng));
+                        set_and_get_facility_services.setFM_designated_officer(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_designated_officer));
+                        set_and_get_facility_services.setFM_gsc_no_days(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_gsc_no_days));
+                        set_and_get_facility_services.setFM_facility_display(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_display));
+                        set_and_get_facility_services.setFM_sakala_service(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_sakala_service));
+                        set_and_get_facility_services.setFM_OTC_Charges(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_OTC_Charges));
 
 
-                    databaseFacility.execSQL("insert into " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME + "(SlNo, FM_facility_code, FM_facility_edesc, FM_facility_kdesc, FM_acronym_on_doc_eng, FM_designated_officer" +
-                            ", FM_gsc_no_days, FM_facility_display, FM_sakala_service, FM_OTC_Charges) values (" + set_and_get_facility_services.getSlNo() +","+ set_and_get_facility_services.getFM_facility_code()
-                            + ",'" + set_and_get_facility_services.getFM_facility_edesc() + "','" + set_and_get_facility_services.getFM_facility_kdesc() + "','" + set_and_get_facility_services.getFM_acronym_on_doc_eng() + "','" + set_and_get_facility_services.getFM_designated_officer()
-                            + "'," + set_and_get_facility_services.getFM_gsc_no_days() + ",'" + set_and_get_facility_services.getFM_facility_display()+ "','" + set_and_get_facility_services.getFM_sakala_service()
-                            +"'," + set_and_get_facility_services.getFM_OTC_Charges()+ ")");
-                    Log.d("Database", "FacilityMaster Database Inserted");
+                        databaseFacility.execSQL("insert into " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME + "(SlNo, FM_facility_code, FM_facility_edesc, FM_facility_kdesc, FM_acronym_on_doc_eng, FM_designated_officer" +
+                                ", FM_gsc_no_days, FM_facility_display, FM_sakala_service, FM_OTC_Charges) values (" + set_and_get_facility_services.getSlNo() +","+ set_and_get_facility_services.getFM_facility_code()
+                                + ",'" + set_and_get_facility_services.getFM_facility_edesc() + "','" + set_and_get_facility_services.getFM_facility_kdesc() + "','" + set_and_get_facility_services.getFM_acronym_on_doc_eng() + "','" + set_and_get_facility_services.getFM_designated_officer()
+                                + "'," + set_and_get_facility_services.getFM_gsc_no_days() + ",'" + set_and_get_facility_services.getFM_facility_display()+ "','" + set_and_get_facility_services.getFM_sakala_service()
+                                +"'," + set_and_get_facility_services.getFM_OTC_Charges()+ ")");
+                        Log.d("Database", "FacilityMaster Database Inserted");
 
+                    }
+                    dialog.incrementProgressBy(2);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                }catch (OutOfMemoryError e){
+                    e.printStackTrace();
+                    Log.e("OutOfMemoryError", ""+e.toString());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                    Log.e("NullPointerException", ""+e.toString());
                 }
-                dialog.incrementProgressBy(2);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
-            }catch (OutOfMemoryError e){
-                Log.e("OutOfMemoryError", ""+e.toString());
-            }catch (NullPointerException e){
-                Log.e("NullPointerException", ""+e.toString());
             }
-            //Toast.makeText(getApplicationContext(), "FacilityMaster Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-        }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void truncateDatabase_village_name(){
@@ -577,109 +543,94 @@ public class SecondScreen extends AppCompatActivity {
 
     }
 
-    @SuppressLint("StaticFieldLeak")
-    class GetVillageNameFromServer extends AsyncTask<String, Void, JSONObject> {
-        JSONObject jsonObject;
+    public void GetVillageNameFromServer(int district_Code, int taluk_Code, int hobli_Code, int va_Circle_Code){
+        apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
 
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JParserAdv jParserAdv = new JParserAdv();
-                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.url_village_name), "POST", hashMap_village_name);
-            }catch (OutOfMemoryError e){
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                    buildAlertForOutOfMemory();
-                    //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
-                });
-                Log.e("OutOfMemoryError", ""+e.toString());
-            } catch (NullPointerException e){
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                });
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            return jsonObject;
-        }
+        Call<String> call = apiInterface_samyojaneAPI.doFn_Get_Village_Name(getString(R.string.samyojane_api_flag1),getString(R.string.samyojane_api_flag2), district_Code, taluk_Code, hobli_Code, va_Circle_Code);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
 
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
+                try {
 
-            try {
+                    dialog.incrementProgressBy(10);
+                    truncateDatabase_village_name();
 
-                dialog.incrementProgressBy(10);
-                truncateDatabase_village_name();
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("data");
 
-                JSONArray array = jsonObject.getJSONArray("data");
+                    int count = array.length();
+                    for (int i = 0; i < count; i++) {
 
-                int count = array.length();
-                for (int i = 0; i < count; i++) {
+                        JSONObject object = array.getJSONObject(i);
 
-                    JSONObject object = array.getJSONObject(i);
-
-                    set_and_get_village_name = new Set_and_Get_Village_Name();
-                    set_and_get_village_name.setVCM_va_circle_code(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_code));
-                    set_and_get_village_name.setVCM_va_circle_ename(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_ename));
-                    set_and_get_village_name.setVCM_va_circle_kname(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_kname));
-                    set_and_get_village_name.setHM_village_code(object.getString(DataBaseHelperClass_VillageNames.HM_village_code));
-                    set_and_get_village_name.setHM_habitation_code(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_code));
-                    set_and_get_village_name.setHM_habitation_ename(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_ename));
-                    set_and_get_village_name.setHM_habitation_kname(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_kname));
+                        set_and_get_village_name = new Set_and_Get_Village_Name();
+                        set_and_get_village_name.setVCM_va_circle_code(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_code));
+                        set_and_get_village_name.setVCM_va_circle_ename(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_ename));
+                        set_and_get_village_name.setVCM_va_circle_kname(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_kname));
+                        set_and_get_village_name.setHM_village_code(object.getString(DataBaseHelperClass_VillageNames.HM_village_code));
+                        set_and_get_village_name.setHM_habitation_ename(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_ename));
+                        set_and_get_village_name.setHM_habitation_kname(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_kname));
 
 
-                    databaseVilNames.execSQL("insert into " + DataBaseHelperClass_VillageNames.TABLE_NAME
-                            + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_code, HM_habitation_ename, HM_habitation_kname) values ("
-                            + set_and_get_village_name.getVCM_va_circle_code() +",'"+set_and_get_village_name.getVCM_va_circle_ename()+"','"+set_and_get_village_name.getVCM_va_circle_kname()+"',"
-                            + set_and_get_village_name.getHM_village_code() +","+ set_and_get_village_name.getHM_habitation_code()+",'"+ set_and_get_village_name.getHM_habitation_ename()+"','"
-                            + set_and_get_village_name.getHM_habitation_kname()+"')");
-                    Log.d("Database", "VillageNames Database Inserted");
+                        databaseVilNames.execSQL("insert into " + DataBaseHelperClass_VillageNames.TABLE_NAME
+                                + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_code, HM_habitation_ename, HM_habitation_kname) values ("
+                                + set_and_get_village_name.getVCM_va_circle_code() +",'"+set_and_get_village_name.getVCM_va_circle_ename()+"','"+set_and_get_village_name.getVCM_va_circle_kname()+"',"
+                                + set_and_get_village_name.getHM_village_code() +",'"+ set_and_get_village_name.getHM_habitation_ename()+"','"
+                                + set_and_get_village_name.getHM_habitation_kname()+"')");
+                        Log.d("Database", "VillageNames Database Inserted");
 
-                }
-                dialog.incrementProgressBy(10);
-                final int totalProgressTime = 100;
-                final Thread t = new Thread() {
-                    @Override
-                    public void run() {
-                        int jumpTime = 43;
+                    }
+                    dialog.incrementProgressBy(10);
+                    final int totalProgressTime = 100;
+                    final Thread t = new Thread() {
+                        @Override
+                        public void run() {
+                            int jumpTime = 43;
 
-                        while(jumpTime < totalProgressTime) {
-                            try {
-                                sleep(2000);
-                                jumpTime += 1;
-                                if(jumpTime>75){
-                                    sleep(3000);
-                                }else {
-                                    sleep(0);
+                            while(jumpTime < totalProgressTime) {
+                                try {
+                                    sleep(2000);
+                                    jumpTime += 1;
+                                    if(jumpTime>75){
+                                        sleep(3000);
+                                    }else {
+                                        sleep(0);
+                                    }
+                                    dialog.setProgress(jumpTime);
+                                } catch (InterruptedException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
                                 }
-                                dialog.setProgress(jumpTime);
-                            } catch (InterruptedException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
                             }
                         }
-                    }
-                };
-                t.start();
+                    };
+                    t.start();
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
-            }catch (OutOfMemoryError e){
-                dialog.dismiss();
-                Log.e("OutOfMemoryError", ""+e.toString());
-            }catch (NullPointerException e){
-                dialog.dismiss();
-                Log.e("NullPointerException", ""+e.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                }catch (OutOfMemoryError e){
+                    dialog.dismiss();
+                    e.printStackTrace();
+                    Log.e("OutOfMemoryError", ""+e.toString());
+                }catch (NullPointerException e){
+                    dialog.dismiss();
+                    e.printStackTrace();
+                    Log.e("NullPointerException", ""+e.toString());
+                }
             }
-            //Toast.makeText(getApplicationContext(), "VillageNames Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-        }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void truncateDatabase_Service_Tran_data(){
@@ -692,6 +643,189 @@ public class SecondScreen extends AppCompatActivity {
 
     }
 
+    public void GetServiceTrandataFromServer(String flag1, String flag2, int district_Code, int taluk_Code, int hobli_Code, String loginID, int desiCode, int va_Circle_Code){
+        apiInterface_nic = APIClient.getClient(getString(R.string.MobAPI_New_NIC)).create(APIInterface_NIC.class);
+
+        Call<String> call = apiInterface_nic.GetListForFieldVerification(flag1, flag2, district_Code, taluk_Code, hobli_Code, loginID, desiCode, va_Circle_Code);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
+
+                try {
+                    //dialog.incrementProgressBy(30);
+
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("data");
+
+                    int count = array.length();
+                    truncateDatabase_Service_Tran_data();
+
+                    for (int i = 0; i < count; i++) {
+
+                        JSONObject object = array.getJSONObject(i);
+
+                        set_and_get_service_tran_data = new Set_and_Get_Service_tran_data();
+                        set_and_get_service_tran_data.setDistrict_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code));
+                        set_and_get_service_tran_data.setTaluk_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code));
+                        set_and_get_service_tran_data.setHobli_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code));
+                        set_and_get_service_tran_data.setVillage_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code));
+                        set_and_get_service_tran_data.setHabitation_code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Habitation_code));
+                        set_and_get_service_tran_data.setTown_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code));
+                        set_and_get_service_tran_data.setWard_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
+                        set_and_get_service_tran_data.setService_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code));
+                        set_and_get_service_tran_data.setST_applicant_photo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
+                        set_and_get_service_tran_data.setRD_No(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No));
+                        set_and_get_service_tran_data.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
+                        set_and_get_service_tran_data.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date));
+                        set_and_get_service_tran_data.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
+                        set_and_get_service_tran_data.setFather_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name));
+                        set_and_get_service_tran_data.setMother(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother));
+                        set_and_get_service_tran_data.setRationCard_No(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.RationCard_No));
+                        set_and_get_service_tran_data.setAadhar_NO(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Aadhar_NO));
+                        set_and_get_service_tran_data.setMobile_No(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No));
+                        set_and_get_service_tran_data.setAddress1(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1));
+                        set_and_get_service_tran_data.setAddress2(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address2));
+                        set_and_get_service_tran_data.setAddress3(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address3));
+                        set_and_get_service_tran_data.setAdd_Pin(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_cadd_pin));
+                        set_and_get_service_tran_data.setST_ID_TYPE(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE));
+                        set_and_get_service_tran_data.setEng_Certify(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
+                        set_and_get_service_tran_data.setGSC_First_Part(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
+                        set_and_get_service_tran_data.setCST_res_category(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_res_category));
+                        set_and_get_service_tran_data.setCST_caste_as_per_app(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_caste_as_per_app));
+                        set_and_get_service_tran_data.setCST_annual_income(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_annual_income));
+                        set_and_get_service_tran_data.setSCOT_caste_app(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_caste_app));
+                        set_and_get_service_tran_data.setSCOT_annual_income(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_annual_income));
+                        set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
+                        set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
+                        set_and_get_service_tran_data.setST_Push_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Push_Flag));
+                        //set_and_get_service_tran_data.setIST_annual_income(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IST_annual_income));
+
+                        serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
+                        Log.d("serviceCode", "" + serviceCode);
+
+                        Cursor cursor = databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
+                                +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode, null);
+                        if (cursor.getCount()>0) {
+                            if (cursor.moveToNext()) {
+                                serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
+                                serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
+                                Log.d("serviceName", serviceName+", "+ serviceName_k);
+                            }
+                        } else {
+                            cursor.close();
+                        }
+
+                        set_and_get_service_tran_data.setService_Name(serviceName);
+                        set_and_get_service_tran_data.setService_Name_k(serviceName_k);
+
+                        gsc_firstPart = set_and_get_service_tran_data.getGSC_First_Part();
+
+                        if(Objects.equals(gsc_firstPart, "3")){
+                            gsc_firstPart_Name = "RD003";
+                        }else if(Objects.equals(gsc_firstPart, "501")){
+                            gsc_firstPart_Name="RD501";
+                        }else {
+                            gsc_firstPart_Name=null;
+                        }
+//                    if(j<=1000) {
+                        databaseServTran.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                                + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, Service_Name, Service_Name_k, ST_GSC_No, ST_applicant_photo, ST_GSCFirstPart, GSCFirstPart_Name" +
+                                ", ST_applicant_name, ST_DueDate, ST_Raised_Location, ST_father_name, ST_mother_name, ST_ID_NUMBER, ST_mobile_no, ST_applicant_caddress1, ST_applicant_caddress2, ST_applicant_caddress3,ST_applicant_cadd_pin, ST_ID_TYPE, ST_Eng_Certificate,"
+                                + "CST_res_category, CST_caste_as_per_app, CST_annual_income, SCOT_caste_app, SCOT_annual_income, GST_No_Years_Applied, GST_No_Mths_Applied, ST_Push_Flag, IST_annual_income)"
+                                + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
+                                + set_and_get_service_tran_data.getTaluk_Code() + ","
+                                + set_and_get_service_tran_data.getHobli_Code()
+                                + "," + set_and_get_service_tran_data.getVillage_Code() + ","
+                                + set_and_get_service_tran_data.getHabitation_code()+","
+                                + set_and_get_service_tran_data.getTown_Code()+","
+                                + set_and_get_service_tran_data.getWard_Code()+","
+                                + set_and_get_service_tran_data.getService_Code() + ",'"
+                                + set_and_get_service_tran_data.getService_Name() + "','"
+                                + set_and_get_service_tran_data.getService_Name_k() + "',"
+                                + set_and_get_service_tran_data.getRD_No()+",'"
+                                +set_and_get_service_tran_data.getST_applicant_photo()+"',"
+                                + set_and_get_service_tran_data.getGSC_First_Part() +",'"
+                                + gsc_firstPart_Name + "','"
+                                + set_and_get_service_tran_data.getApplicant_Name() + "','"
+                                + set_and_get_service_tran_data.getDue_Date() + "','"
+                                + set_and_get_service_tran_data.getRaised_Location() + "','"
+                                + set_and_get_service_tran_data.getFather_Name() + "','"
+                                + set_and_get_service_tran_data.getMother() + "','"
+                                + set_and_get_service_tran_data.getRationCard_No() + "',"
+                                + set_and_get_service_tran_data.getMobile_No() + ",'"
+                                + set_and_get_service_tran_data.getAddress1() + "','"
+                                + set_and_get_service_tran_data.getAddress2() + "','"
+                                + set_and_get_service_tran_data.getAddress3() +"','"
+                                + set_and_get_service_tran_data.getAdd_Pin()+"',"
+                                + set_and_get_service_tran_data.getST_ID_TYPE()+",'"
+                                + set_and_get_service_tran_data.getEng_Certify()+"','"
+                                + set_and_get_service_tran_data.getCST_res_category()+"','"
+                                + set_and_get_service_tran_data.getCST_caste_as_per_app() + "','"
+                                + set_and_get_service_tran_data.getCST_annual_income()+"','"
+                                + set_and_get_service_tran_data.getSCOT_caste_app()+"','"
+                                + set_and_get_service_tran_data.getSCOT_annual_income() + "','"
+                                + set_and_get_service_tran_data.getGST_No_Years_Applied()+"','"
+                                + set_and_get_service_tran_data.getGST_No_Mths_Applied()+"','"
+                                + set_and_get_service_tran_data.getST_Push_Flag()+"','"
+                                + set_and_get_service_tran_data.getIST_annual_income()+"')");
+
+                        Log.d("Database", "ServiceTranTable Database Inserted " + j);
+                        j++;
+
+                    }
+
+                    runOnUiThread(() -> {
+                        timeSwapBuff += timeInMilliseconds;
+                        customHandler.removeCallbacks(updateTimerThread);
+                        Cursor cursor3 = databaseServTran.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
+                        if(cursor3.getCount()>0) {
+                            tData=1;
+                            btnProceed.setVisibility(View.VISIBLE);
+                            //btnPendency.setVisibility(View.VISIBLE);
+                            btnDownload.setText(R.string.download);
+                            //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            cursor3.close();
+                            tData=0;
+                            Log.d("Values", "No records Exists");
+                            Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();
+                            btnDownload.setText(R.string.download);
+                            btnProceed.setVisibility(View.GONE);
+                            //btnPendency.setVisibility(View.GONE);
+                        }
+                        dialog.dismiss();
+                    });
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> {
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
+                    });
+                }catch (OutOfMemoryError e){
+                    runOnUiThread(() -> {
+                        dialog.dismiss();
+                        buildAlertForOutOfMemory();
+                        //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
+                    });
+                    Log.e("OutOfMemoryError2", ""+e.toString());
+                }catch (NullPointerException e){
+                    Log.e("NullPointerException2", ""+e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
     @SuppressLint("StaticFieldLeak")
     class GetServiceTrandataFromServer extends AsyncTask<String, Integer, JSONObject> {
         JSONObject jsonObject;
@@ -737,21 +871,6 @@ public class SecondScreen extends AppCompatActivity {
                 JSONArray array = jsonObject.getJSONArray("data");
 
                 int count = array.length();
-//                int old_num = 90;
-//                int New_num = count;
-//                int Increase;
-//                if(old_num<New_num) {
-//                    Increase = New_num - old_num;
-//                    Log.d("Increase", "+"+Increase+" = "+ New_num+"-"+ old_num);
-//                }else {
-//                    Increase = old_num-New_num;
-//                    Log.d("Increase", "+"+Increase+" = "+ old_num+"-"+ New_num);
-//                }
-//                double div = ((double)Increase/(double)New_num);
-//                Log.d("cal", ""+div+"="+Increase+"/"+New_num);
-//                final double Per_Increase = div*100;
-//                Log.d("Per_Increase", ""+Per_Increase);
-
                 truncateDatabase_Service_Tran_data();
 
                 for (int i = 0; i < count; i++) {

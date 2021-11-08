@@ -616,7 +616,7 @@ public class PushToAnotherVA extends AppCompatActivity {
                                     String Applicant_Id, String Updated_By_VA_MobileNum){
         apiInterface = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface.class);
 
-        Call<String> call = apiInterface.doFn_PUSH_APPLICATION(getString(R.string.api_flag1),getString(R.string.api_flag2), NEW_Village_Code, NEW_Habitation_code, NEW_Town_Code, NEW_Ward_Code,
+        Call<String> call = apiInterface.doFn_PUSH_APPLICATION(getString(R.string.samyojane_api_flag1),getString(R.string.samyojane_api_flag2), NEW_Village_Code, NEW_Habitation_code, NEW_Town_Code, NEW_Ward_Code,
                 OLD_Village_Code, OLD_Habitation_code, OLD_Town_Code, OLD_Ward_Code, Applicant_Id, Updated_By_VA_MobileNum);
 
         call.enqueue(new Callback<String>() {

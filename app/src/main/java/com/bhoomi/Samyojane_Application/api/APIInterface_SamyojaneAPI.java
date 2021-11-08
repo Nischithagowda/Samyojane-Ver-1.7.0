@@ -21,13 +21,6 @@ public interface APIInterface_SamyojaneAPI {
             @Path("IMEI") String IMEI
     );
 
-    @POST("Fn_GetLgnDetails/{flag1}/{flag2}/{IMEI}")
-    Call<String> doFn_GetLgnDetails(
-            @Path("flag1") String flag1,
-            @Path("flag2") String flag2,
-            @Path("IMEI") String IMEI
-    );
-
     @POST("Fn_Get_Facility_Services/{flag1}/{flag2}")
     Call<String> doFn_Get_Facility_Services(
             @Path("flag1") String flag1,
