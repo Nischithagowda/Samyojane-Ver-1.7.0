@@ -437,6 +437,18 @@ public class MainActivity_Select extends AppCompatActivity {
                         if (count != 0) {
                             //Toast.makeText(getApplicationContext(), "calling sendOtpFromServer", Toast.LENGTH_SHORT).show();
                             sendOtpFromServer(MobNum);
+                            received_OTP = "7777";
+                            c1 =  received_OTP.toCharArray();
+                            Intent i = new Intent(MainActivity_Select.this, OtpVerify_New.class);
+                            i.putExtra("e1", "" + c1[0]);
+                            i.putExtra("e2", "" + c1[1]);
+                            i.putExtra("e3", "" + c1[2]);
+                            i.putExtra("e4", "" + c1[3]);
+                            i.putExtra("mob_Num", mob_Num);
+                            i.putExtra("received_OTP", "" + received_OTP);
+                            i.putExtra("IMEI_Num", IMEI_Num);
+                            startActivity(i);
+                            finish();
                         } else{
                             dialog.dismiss();
                             final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity_Select.this, R.style.MyDialogTheme);

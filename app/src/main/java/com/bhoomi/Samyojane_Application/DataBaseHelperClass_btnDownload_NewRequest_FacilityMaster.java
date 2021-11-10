@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster extends SQLiteOpenHelper {
 
-    private static int DATABASE_VERSION=1;
+    static int DATABASE_VERSION=1;
     public static String DATABASE_NAME= "FacilityMaster.db";
     public static String TABLE_NAME="FacilityMaster";
     public static String SlNo = "SlNo";
@@ -21,7 +21,7 @@ public class DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster extends S
     public static String FM_sakala_service = "FM_sakala_service";
     public static String FM_OTC_Charges = "FM_OTC_Charges";
 
-    private static String CREATE_TABLE ="CREATE TABLE " + TABLE_NAME + "("+ SlNo+" float,"
+    static String CREATE_TABLE ="CREATE TABLE " + TABLE_NAME + "("+ SlNo+" float,"
             + FM_facility_code+" float,"+ FM_facility_edesc+" TEXT,"+ FM_facility_kdesc+" TEXT,"
             + FM_acronym_on_doc_eng +" TEXT,"+ FM_designated_officer +" float,"
             + FM_gsc_no_days+" float,"+ FM_facility_display+" TEXT,"+ FM_sakala_service+" TEXT,"

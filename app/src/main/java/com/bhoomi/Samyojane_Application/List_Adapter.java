@@ -16,22 +16,21 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class List_Adapter extends BaseAdapter implements Filterable {
-    private Context context;
+    Context context;
     ArrayList<String> SlNo;
-    private ArrayList<String> Service_Name;
-    private ArrayList<String> TotalCount;
+    ArrayList<String> Service_Name;
+    ArrayList<String> TotalCount;
     ArrayList<String> VillageName;
-    private ArrayList<String> VillageCode;
-    private ArrayList<String> HabitationCode;
+    ArrayList<String> VillageCode;
     ArrayList<String> Option_Flag;
-    String villageCode, habitationCode;
+    String villageCode;
     String district, taluk, VA_Name, hobli,VA_Circle_Name;
-    private String district_Code, taluk_Code, hobli_Code, va_Circle_code, town_code, ward_code;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_code, town_code, ward_code;
     String item_position;
     String serviceName, option_Flag;
     private String villageName;
 
-    List_Adapter(Context context, ArrayList<String > slNo, ArrayList<String> service_Name, ArrayList<String> totalCount, ArrayList<String> villageName, ArrayList<String> villageCode, ArrayList<String> habitationCode, ArrayList<String> option_Flag) {
+    List_Adapter(Context context, ArrayList<String > slNo, ArrayList<String> service_Name, ArrayList<String> totalCount, ArrayList<String> villageName, ArrayList<String> villageCode, ArrayList<String> option_Flag) {
 
         this.context=context;
         this.SlNo = slNo;
@@ -39,7 +38,6 @@ public class List_Adapter extends BaseAdapter implements Filterable {
         this.TotalCount = totalCount;
         this.VillageName = villageName;
         this.VillageCode  = villageCode;
-        this.HabitationCode = habitationCode;
         this.Option_Flag = option_Flag;
     }
 
@@ -88,7 +86,6 @@ public class List_Adapter extends BaseAdapter implements Filterable {
         viewHolder.tvTotalPendency.setText(TotalCount.get(position));
         viewHolder.tvVillageName.setText(VillageName.get(position));
         viewHolder.tvVillageCode.setText(VillageCode.get(position));
-        viewHolder.tvHabitationCode.setText(HabitationCode.get(position));
         viewHolder.tvOption_Flag.setText(Option_Flag.get(position));
 
 
@@ -97,10 +94,9 @@ public class List_Adapter extends BaseAdapter implements Filterable {
             item_position = String.valueOf(position);
             villageName = viewHolder.tvVillageName.getText().toString();
             villageCode = viewHolder.tvVillageCode.getText().toString();
-            habitationCode = viewHolder.tvHabitationCode.getText().toString();
             option_Flag = viewHolder.tvOption_Flag.getText().toString();
-            town_code = "9999";
-            ward_code = "255";
+            town_code = 9999;
+            ward_code = 255;
 
             Intent i = new Intent(context, New_Request_FirstScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("district_Code", district_Code);
@@ -114,7 +110,6 @@ public class List_Adapter extends BaseAdapter implements Filterable {
             i.putExtra("VA_Name", VA_Name);
             i.putExtra("strSearchServiceName", serviceName);
             i.putExtra("villageCode", villageCode);
-            i.putExtra("habitationCode", habitationCode);
             i.putExtra("strSearchVillageName", villageName);
             i.putExtra("town_code", town_code);
             i.putExtra("ward_code", ward_code);
@@ -124,7 +119,7 @@ public class List_Adapter extends BaseAdapter implements Filterable {
 
             Log.d("Item_Position", ""+item_position+" Service_Name :"+serviceName+" Village_Name: "+villageName);
             Log.d("district_Code", ""+district_Code+" taluk_Code :"+taluk_Code+" hobli_Code: "+hobli_Code);
-            Log.d("va_Circle_code", ""+va_Circle_code+" villageCode :"+villageCode+" habitationCode:"+habitationCode+" VA_Name: "+VA_Name);
+            Log.d("va_Circle_code", ""+va_Circle_code+" villageCode :"+villageCode+" VA_Name: "+VA_Name);
             Log.d("option_Flag", ""+option_Flag);
         });
 
@@ -137,7 +132,7 @@ public class List_Adapter extends BaseAdapter implements Filterable {
     }
 }
 class ViewHolder{
-    TextView sl_No, tvServiceName, tvTotalPendency,btnEdit, tvVillageName, tvVillageCode, tvHabitationCode, tvOption_Flag;
+    TextView sl_No, tvServiceName, tvTotalPendency,btnEdit, tvVillageName, tvVillageCode, tvOption_Flag;
     ViewHolder(View view) {
         sl_No = view.findViewById(R.id.sl_No);
         tvServiceName = view.findViewById(R.id.tvServiceName);
@@ -145,7 +140,6 @@ class ViewHolder{
         btnEdit = view.findViewById(R.id.btnEdit);
         tvVillageName = view.findViewById(R.id.tvVillageName);
         tvVillageCode = view.findViewById(R.id.tvVillageCode);
-        tvHabitationCode = view.findViewById(R.id.tvHabitationCode);
         tvOption_Flag = view.findViewById(R.id.tvOption_Flag);
     }
 }

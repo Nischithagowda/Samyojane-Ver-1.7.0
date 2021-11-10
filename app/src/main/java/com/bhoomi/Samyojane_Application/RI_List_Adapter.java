@@ -28,9 +28,8 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
     ArrayList<String> VillageCode;
     ArrayList<String> VA_Circle_Name;
     ArrayList<String> va_Circle_code;
-    ArrayList<String> HabitationCode;
     ArrayList<String> Option_Flag;
-    String villageCode, habitationCode, town_code, ward_code, option_Flag;
+    String villageCode, town_code, ward_code, option_Flag;
     String district, taluk, VA_Name, RI_Name, hobli;
     String district_Code, taluk_Code, hobli_Code;
     String item_position;
@@ -38,7 +37,7 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
     private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
 
-    RI_List_Adapter(Context context, ArrayList<String > slNo, ArrayList<String> service_Name, ArrayList<String> totalCount, ArrayList<String> VA_Circle_Name, ArrayList<String> va_Circle_code, ArrayList<String> villageName, ArrayList<String> villageCode, ArrayList<String> habitationCode, ArrayList<String> option_Flag) {
+    RI_List_Adapter(Context context, ArrayList<String > slNo, ArrayList<String> service_Name, ArrayList<String> totalCount, ArrayList<String> VA_Circle_Name, ArrayList<String> va_Circle_code, ArrayList<String> villageName, ArrayList<String> villageCode, ArrayList<String> option_Flag) {
         this.context=context;
         this.SlNo = slNo;
         this.Service_Name = service_Name;
@@ -47,7 +46,6 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
         this.va_Circle_code = va_Circle_code;
         this.VillageName = villageName;
         this.VillageCode  = villageCode;
-        this.HabitationCode = habitationCode;
         this.Option_Flag = option_Flag;
     }
 
@@ -96,7 +94,6 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
         ri_viewHolder.tvVillageCircleCode.setText(va_Circle_code.get(position));
         ri_viewHolder.tvVillageName.setText(VillageName.get(position));
         ri_viewHolder.tvVillageCode.setText(VillageCode.get(position));
-        ri_viewHolder.tvHabitationCode.setText(HabitationCode.get(position));
         ri_viewHolder.tvOption_Flag.setText(Option_Flag.get(position));
 
         Button btnEdit = convertView.findViewById(R.id.btnEdit);
@@ -107,7 +104,6 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
             va_circle_Code = ri_viewHolder.tvVillageCircleCode.getText().toString();
             villageName = ri_viewHolder.tvVillageName.getText().toString();
             villageCode = ri_viewHolder.tvVillageCode.getText().toString();
-            habitationCode = ri_viewHolder.tvHabitationCode.getText().toString();
             option_Flag = ri_viewHolder.tvOption_Flag.getText().toString();
             town_code = "9999";
             ward_code = "255";
@@ -144,7 +140,6 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
             i.putExtra("RI_Name", RI_Name);
             i.putExtra("strSearchServiceName", serviceName);
             i.putExtra("villageCode", villageCode);
-            i.putExtra("habitationCode", habitationCode);
             i.putExtra("strSearchVillageName", villageName);
             i.putExtra("town_code", town_code);
             i.putExtra("ward_code", ward_code);
@@ -163,7 +158,7 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
     }
 }
 class RI_ViewHolder{
-    TextView sl_No, tvServiceName, tvTotalPendency, tvVillageCircleName, tvVillageCircleCode, tvVillageName, tvVillageCode, tvHabitationCode, tvOption_Flag;
+    TextView sl_No, tvServiceName, tvTotalPendency, tvVillageCircleName, tvVillageCircleCode, tvVillageName, tvVillageCode, tvOption_Flag;
     RI_ViewHolder(View view) {
         sl_No = view.findViewById(R.id.sl_No);
         tvServiceName = view.findViewById(R.id.tvServiceName);
@@ -172,7 +167,6 @@ class RI_ViewHolder{
         tvVillageCircleCode = view.findViewById(R.id.tvVillageCircleCode);
         tvVillageName = view.findViewById(R.id.tvVillageName);
         tvVillageCode = view.findViewById(R.id.tvVillageCode);
-        tvHabitationCode = view.findViewById(R.id.tvHabitationCode);
         tvOption_Flag = view.findViewById(R.id.tvOption_Flag);
     }
 }

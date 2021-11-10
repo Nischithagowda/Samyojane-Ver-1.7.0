@@ -42,9 +42,9 @@ public class RI_Field_Report extends AppCompatActivity {
     private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     static String get_Village_Circle_Code;
-    static String get_village_code, get_Habitation_Code;
-    private List SearchVillageCircleName = new ArrayList<>();
-    private List SearchVillageName = new ArrayList<>();
+    static String get_village_code;
+    List<AutoCompleteTextBox_Object> SearchVillageCircleName = new ArrayList<>();
+    List<AutoCompleteTextBox_Object> SearchVillageName = new ArrayList<>();
     LinearLayout lLayoutVillage;
     LinearLayout linearLayout, listLayout, l_Rural, l_Urban, l_town, l_ward;
     TextView emptyTxt;
@@ -55,7 +55,6 @@ public class RI_Field_Report extends AppCompatActivity {
     ArrayList<String> VA_Circle_Code = new ArrayList<>();
     ArrayList<String> VillageName = new ArrayList<>();
     ArrayList<String> VillageCode = new ArrayList<>();
-    ArrayList<String> HabitationCode = new ArrayList<>();
     ArrayList<String> Option_Flag = new ArrayList<>();
     ArrayList<String> TownName = new ArrayList<>();
     ArrayList<String> TownCode = new ArrayList<>();
@@ -67,7 +66,7 @@ public class RI_Field_Report extends AppCompatActivity {
     TextView totalPending;
     int item_Position;
     String hab_Va_Circle_Code;
-    String hab_Village_Code, hab_Habitation_Code;
+    String hab_Village_Code;
     int totalCount_va_Cir, totalCount_vill, town_Code, ward_Code;
     RadioGroup radioGroup;
     RadioButton radioButton_rural, radioButton_urban;
@@ -127,7 +126,6 @@ public class RI_Field_Report extends AppCompatActivity {
         service_name = i.getStringExtra("strSearchServiceName");
         get_Village_Circle_Code = i.getStringExtra("va_Circle_Code");
         get_village_code = i.getStringExtra("villageCode");
-        get_Habitation_Code = i.getStringExtra("habitationCode");
         town_Code_1 = i.getStringExtra("town_code");
         strSearchTownName = i.getStringExtra("town_Name");
         ward_Code_1 = i.getStringExtra("ward_code");
@@ -208,7 +206,7 @@ public class RI_Field_Report extends AppCompatActivity {
                     lLayoutVillage.setVisibility(View.VISIBLE);
                     listLayout.setVisibility(View.VISIBLE);
                     linearLayout.setVisibility(View.VISIBLE);
-                    displayData_AfterItemSelected(get_village_code, get_Habitation_Code);
+                    displayData_AfterItemSelected(get_village_code);
                 }
                 else {
                     Log.d("VillageName", "Village Name was null");
@@ -309,7 +307,7 @@ public class RI_Field_Report extends AppCompatActivity {
                         lLayoutVillage.setVisibility(View.VISIBLE);
                         listLayout.setVisibility(View.VISIBLE);
                         linearLayout.setVisibility(View.VISIBLE);
-                        displayData_AfterItemSelected(get_village_code, get_Habitation_Code);
+                        displayData_AfterItemSelected(get_village_code);
                     }
                     else {
                         Log.d("VillageName", "Village Name was null");
@@ -400,7 +398,7 @@ public class RI_Field_Report extends AppCompatActivity {
 
     }
 
-    public List getVillageCircleNameList(){
+    public List<AutoCompleteTextBox_Object> getVillageCircleNameList(){
         openHelper=new DataBaseHelperClass_VillageNames(RI_Field_Report.this);
         database=openHelper.getWritableDatabase();
 
@@ -423,13 +421,12 @@ public class RI_Field_Report extends AppCompatActivity {
                 if (cursor1.getCount()>0){
                     totalCount_va_Cir = cursor1.getCount();
                     Log.d("totalCount_va_Cir", String.valueOf(totalCount_va_Cir));
-                    SearchVillageCircleName.add(new SpinnerObject(hab_Va_Circle_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_va_circle_name)))+"-("+totalCount_va_Cir+")")));
-                    Log.d("Village Names", ""+ SearchVillageCircleName);
+                    SearchVillageCircleName.add(new AutoCompleteTextBox_Object(hab_Va_Circle_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_va_circle_name)))+"-("+totalCount_va_Cir+")")));
                 }else {
                     cursor1.close();
-                    SearchVillageCircleName.add(new SpinnerObject(hab_Va_Circle_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_va_circle_name))))));
-                    Log.d("Village Names", ""+ SearchVillageCircleName);
+                    SearchVillageCircleName.add(new AutoCompleteTextBox_Object(hab_Va_Circle_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_va_circle_name))))));
                 }
+                Log.d("Village Names", ""+ SearchVillageCircleName);
 
             } while (cursor.moveToNext());
         } else {
@@ -439,38 +436,34 @@ public class RI_Field_Report extends AppCompatActivity {
         return SearchVillageCircleName;
     }
 
-    public List getVillageList(String Village_Circle_Code){
+    public List<AutoCompleteTextBox_Object> getVillageList(String Village_Circle_Code){
         openHelper=new DataBaseHelperClass_VillageNames(RI_Field_Report.this);
         database=openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("Select "+getString(R.string.village_table_habitation_name)+","
-                + DataBaseHelperClass_VillageNames.HM_habitation_code+","
                 + DataBaseHelperClass_VillageNames.HM_village_code+" from "
                 + DataBaseHelperClass_VillageNames.TABLE_NAME+" where "
                 + DataBaseHelperClass_VillageNames.VCM_va_circle_code+"="+Village_Circle_Code+" order by "+getString(R.string.village_table_va_circle_name), null);
         if (cursor.moveToFirst()) {
             do {
                 hab_Village_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_VillageNames.HM_village_code));
-                hab_Habitation_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_VillageNames.HM_habitation_code));
 
                 openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
                 database=openHelper.getWritableDatabase();
 
                 Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
                         +" where "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"="+hab_Village_Code+" and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code+"="+hab_Habitation_Code+" and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1",null);
                 if (cursor1.getCount()>0){
                     totalCount_vill = cursor1.getCount();
                     Log.d("totalCount_vill", String.valueOf(totalCount_vill));
-                    SearchVillageName.add(new SpinnerObject_new(hab_Village_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_habitation_name)))+"-("+totalCount_vill+")"),hab_Habitation_Code));
-                    Log.d("Village Names", ""+ SearchVillageName);
+                    SearchVillageName.add(new AutoCompleteTextBox_Object(hab_Village_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_habitation_name)))+"-("+totalCount_vill+")")));
                 }else {
                     cursor1.close();
-                    SearchVillageName.add(new SpinnerObject_new(hab_Village_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_habitation_name)))),hab_Habitation_Code));
-                    Log.d("Village Names", "" + SearchVillageName);
+                    SearchVillageName.add(new AutoCompleteTextBox_Object(hab_Village_Code,(cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_habitation_name))))));
                 }
+                Log.d("Village Names", ""+ SearchVillageName);
             } while (cursor.moveToNext());
         } else {
             cursor.close();
@@ -492,7 +485,6 @@ public class RI_Field_Report extends AppCompatActivity {
             String get_str = parent.getItemAtPosition(position).toString();
             Log.d("get_str",get_str);
             String[] split_str = get_str.split("-");
-            int num = split_str.length;
             for (String s : split_str) {
                 Log.d("SPLIT_STR", s);
             }
@@ -502,20 +494,6 @@ public class RI_Field_Report extends AppCompatActivity {
             Log.d("strSearchVilCircleName", strSearchVillageCircleName);
 
             get_Village_Circle_Code = ((SpinnerObject)parent.getItemAtPosition(position)).getId();
-
-//                openHelper = new DataBaseHelperClass_VillageNames(RI_Field_Report.this);
-//                database = openHelper.getWritableDatabase();
-//                @SuppressLint("Recycle")
-//                Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_VillageNames.VCM_va_circle_code+" from "+ DataBaseHelperClass_VillageNames.TABLE_NAME
-//                        +" where "+DataBaseHelperClass_VillageNames.VCM_va_circle_ename+"='"+strSearchVillageCircleName+"'", null);
-//                if(cursor.getCount()>0) {
-//                    if(cursor.moveToFirst()){
-//                        get_Village_Circle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_VillageNames.VCM_va_circle_code));
-//                        Log.d("Village_Circle_Code", ""+ get_Village_Circle_Code);
-//                    }
-//                    lLayoutVillage.setVisibility(View.VISIBLE);
-//                    GetVillageName(get_Village_Circle_Code);
-//                }
 
             lLayoutVillage.setVisibility(View.VISIBLE);
             GetVillageName(get_Village_Circle_Code);
@@ -540,10 +518,9 @@ public class RI_Field_Report extends AppCompatActivity {
         autoSearchVillage.setOnItemClickListener((parent, view, position, id) -> {
             // fetch the user selected value
 
-            String get_str = ((SpinnerObject_new)parent.getItemAtPosition(position)).getValue();
+            String get_str = ((AutoCompleteTextBox_Object)parent.getItemAtPosition(position)).getValue();
             Log.d("get_str",get_str);
             String[] split_str = get_str.split("-");
-            int num = split_str.length;
             for (String s : split_str) {
                 Log.d("SPLIT_STR", s);
             }
@@ -552,36 +529,14 @@ public class RI_Field_Report extends AppCompatActivity {
             Log.d("item_Position", String.valueOf(item_Position));
             Log.d("strSearchVilCircleName", strSearchVillageName);
 
-            get_village_code = ((SpinnerObject_new)parent.getItemAtPosition(position)).getId();
-            get_Habitation_Code = ((SpinnerObject_new)parent.getItemAtPosition(position)).getID1();
+            get_village_code = ((AutoCompleteTextBox_Object)parent.getItemAtPosition(position)).getId();
 
             Log.d("Village_Code3", ""+ get_village_code);
-            Log.d("Habitation_code", ""+ get_Habitation_Code);
             listLayout.setVisibility(View.VISIBLE);
             linearLayout.setVisibility(View.VISIBLE);
-            displayData_AfterItemSelected(get_village_code, get_Habitation_Code);
+            displayData_AfterItemSelected(get_village_code);
 
-//            openHelper = new DataBaseHelperClass_VillageNames(RI_Field_Report.this);
-//            database = openHelper.getWritableDatabase();
-//            @SuppressLint("Recycle")
-//            Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_VillageNames.HM_village_code
-//                    +","+ DataBaseHelperClass_VillageNames.HM_habitation_code+" from "+ DataBaseHelperClass_VillageNames.TABLE_NAME
-//                    +" where "+getString(R.string.village_table_habitation_name)+"='"+strSearchVillageName+"' and "
-//                    +DataBaseHelperClass_VillageNames.HM_village_code+"="+get_village_code, null);
-//            if(cursor.getCount()>0) {
-//                if(cursor.moveToFirst()){
-//                    //get_village_code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_VillageNames.HM_village_code));
-//                    get_Habitation_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_VillageNames.HM_habitation_code));
-//                    Log.d("Village_Code3", ""+ get_village_code);
-//                    Log.d("Habitation_code", ""+ get_Habitation_Code);
-//                    listLayout.setVisibility(View.VISIBLE);
-//                    linearLayout.setVisibility(View.VISIBLE);
-//                    displayData_AfterItemSelected(get_village_code, get_Habitation_Code);
-//                }
-//            }
             village_name = strSearchVillageName;
-            // create Toast with user selected value
-            //Toast.makeText(New_Request_FirstScreen.this, "Selected Item is: \t" + strSearchVillageName, Toast.LENGTH_LONG).show();
         });
     }
 
@@ -599,7 +554,6 @@ public class RI_Field_Report extends AppCompatActivity {
             String get_str = parent.getItemAtPosition(position).toString();
             Log.d("get_str",get_str);
             String[] split_str = get_str.split("-");
-            int num = split_str.length;
             for (String s : split_str) {
                 Log.d("SPLIT_STR", s);
             }
@@ -628,7 +582,6 @@ public class RI_Field_Report extends AppCompatActivity {
             String get_str = parent.getItemAtPosition(position).toString();
             Log.d("get_str",get_str);
             String[] split_str = get_str.split(":");
-            int num = split_str.length;
             for (String s : split_str) {
                 Log.d("SPLIT_STR", s);
             }
@@ -646,8 +599,7 @@ public class RI_Field_Report extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("SetTextI18n")
-    public void displayData_AfterItemSelected(String village_Code, String habitation_Code) {
+    public void displayData_AfterItemSelected(String village_Code) {
         int i=1;
         Log.d("InDisplay", ""+ i);
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
@@ -656,7 +608,6 @@ public class RI_Field_Report extends AppCompatActivity {
         Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
                 +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code+"="+habitation_Code+" and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"='"+village_Code
@@ -669,7 +620,6 @@ public class RI_Field_Report extends AppCompatActivity {
         VA_Circle_Code.clear();
         VillageName.clear();
         VillageCode.clear();
-        HabitationCode.clear();
         Option_Flag.clear();
 
         if(cursor.getCount()>0) {
@@ -685,13 +635,12 @@ public class RI_Field_Report extends AppCompatActivity {
                     VA_Circle_Code.add(String.valueOf(get_Village_Circle_Code));
                     VillageName.add(strSearchVillageName);
                     VillageCode.add(String.valueOf(get_village_code));
-                    HabitationCode.add(String.valueOf(get_Habitation_Code));
                     Option_Flag.add(option_Flag);
                     i++;
                 } while (cursor.moveToNext());
             }
             Log.d("InDisplayIf", ""+ i);
-            ri_list_adapter = new RI_List_Adapter(RI_Field_Report.this, SlNo, Service_Name, TotalCount, VACircle_Name, VA_Circle_Code, VillageName, VillageCode, HabitationCode, Option_Flag);
+            ri_list_adapter = new RI_List_Adapter(RI_Field_Report.this, SlNo, Service_Name, TotalCount, VACircle_Name, VA_Circle_Code, VillageName, VillageCode, Option_Flag);
             listView.setAdapter(ri_list_adapter);
             database.close();
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
@@ -715,7 +664,6 @@ public class RI_Field_Report extends AppCompatActivity {
         Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
                 +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code+"=255 and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"="+town_Code+" and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"="+ward_Code+" and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "

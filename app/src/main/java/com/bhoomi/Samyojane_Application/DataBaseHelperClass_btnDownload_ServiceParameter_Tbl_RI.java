@@ -19,15 +19,12 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
     public static String Hobli_Code = "ST_hobli_code";
     public static String va_Circle_Code = "ST_va_Circle_Code";
     public static String Village_Code = "ST_village_code";
-    public static String Habitation_code = "ST_habitation_code";
     public static String Town_Code = "ST_town_code";
     public static String Ward_Code = "ST_ward_no";
     public static String Service_Code = "ST_facility_code";
     public static String RD_No = "ST_GSC_No";
     public static String ST_applicant_photo = "ST_applicant_photo";
     public static String ST_Eng_Certificate = "ST_Eng_Certificate";
-    public static String ST_GSCFirstPart = "ST_GSCFirstPart";
-    public static String GSCFirstPart_Name = "GSCFirstPart_Name";
     public static String Applicant_Name = "ST_applicant_name";
     public static String Due_Date = "ST_DueDate";
     public static String Raised_Location = "ST_Raised_Location";
@@ -133,8 +130,8 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
     public static String RI_Can_Certificate_Given_as_RI = "RI_Can_Certificate_Given_as_RI";
     public static String RI_Reason_for_Rejection_as_RI = "RI_Reason_for_Rejection_as_RI";
 
-    private static String CREATE_TABLE_1 ="CREATE TABLE " + TABLE_NAME_1 +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+va_Circle_Code+" int,"+Village_Code+" int,"+Habitation_code+" int,"+ Town_Code+" int,"+Ward_Code+" int,"
-            +Service_Code+" int,"+ Service_Name+" TEXT,"+ Service_Name_k+" TEXT,"+RD_No+" bigInt,"+ST_applicant_photo+" TEXT,"+ST_Eng_Certificate+" TEXT,"+ST_GSCFirstPart+" int,"+ GSCFirstPart_Name+ " TEXT,"+ Applicant_Name+" TEXT,"
+    static String CREATE_TABLE_1 ="CREATE TABLE " + TABLE_NAME_1 +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+va_Circle_Code+" int,"+Village_Code+" int,"+ Town_Code+" int,"+Ward_Code+" int,"
+            +Service_Code+" int,"+ Service_Name+" TEXT,"+ Service_Name_k+" TEXT,"+RD_No+" bigInt,"+ST_applicant_photo+" TEXT,"+ST_Eng_Certificate+" TEXT,"+ Applicant_Name+" TEXT,"
             + Due_Date +" datetime,"+ Raised_Location +" TEXT,"
             + Applicant_Category +" int,"+Applicant_Caste +" int,"+ Belongs_Creamy_Layer_6 +" TEXT,"+ Reason_for_Creamy_Layer_6 +" int," + Annual_Income +" float,"
             + Num_Years_8+" TEXT," + App_Father_Category_8+ " int," + APP_Father_Caste_8+ " int," + App_Mother_Category_8+ " int," + APP_Mother_Caste_8+ " int,"

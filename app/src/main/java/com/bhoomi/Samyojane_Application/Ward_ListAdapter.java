@@ -15,17 +15,17 @@ import java.util.ArrayList;
 
 public class Ward_ListAdapter extends BaseAdapter implements Filterable {
 
-    private Context context;
+    Context context;
     ArrayList<String> SlNo;
     ArrayList<String> TotalCount;
-    ArrayList<String> TownCode;
+    ArrayList<Integer> TownCode;
     ArrayList<String> WardName;
-    ArrayList<String> WardCode;
-    String district, taluk, VA_Name, hobli,VA_Circle_Name, total;
-    String district_Code, taluk_Code, hobli_Code, townCode, wardName, wardCode;
+    ArrayList<Integer> WardCode;
+    String total, wardName;
+    int townCode, wardCode;
 
     Ward_ListAdapter(Context context, ArrayList<String> slNo, ArrayList<String> wardName,
-                     ArrayList<String> totalCount, ArrayList<String> townCode, ArrayList<String> wardCode){
+                     ArrayList<String> totalCount, ArrayList<Integer> townCode, ArrayList<Integer> wardCode){
         this.context = context;
         this.SlNo = slNo;
         this.WardName = wardName;
@@ -75,15 +75,14 @@ public class Ward_ListAdapter extends BaseAdapter implements Filterable {
 //        }
 
         viewHolder.btnEdit.setOnClickListener(view -> {
-            townCode = viewHolder.tvTownCode.getText().toString();
+            townCode = Integer.parseInt(viewHolder.tvTownCode.getText().toString());
             wardName = viewHolder.tvVillageName.getText().toString();
-            wardCode = viewHolder.tvVillageCode.getText().toString();
+            wardCode = Integer.parseInt(viewHolder.tvVillageCode.getText().toString());
             Log.d("townCode",""+townCode);
             Log.d("wardCode",""+wardCode);
             Log.d("wardName",""+wardName);
             Intent i = new Intent(context, Applicant_wise_report.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("villageCode","99999");
-            i.putExtra("habitationCode","255");
             i.putExtra("townCode",townCode);
             i.putExtra("wardCode",wardCode);
             context.startActivity(i);

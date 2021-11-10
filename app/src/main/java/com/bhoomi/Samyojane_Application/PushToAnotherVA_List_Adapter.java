@@ -16,15 +16,12 @@ public class PushToAnotherVA_List_Adapter extends BaseAdapter implements Filtera
     private Context context;
     private ArrayList<String> SlNo;
     private ArrayList<String> Applicant_Name;
-    private ArrayList<String> GSC_First_Part;
     private ArrayList<String> Applicant_ID;
 
-    PushToAnotherVA_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name,
-                         ArrayList<String> gsc_firstPart, ArrayList<String> rd_No) {
+    PushToAnotherVA_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name, ArrayList<String> rd_No) {
         this.context = context;
         this.SlNo = slNo;
         this.Applicant_Name = applicant_Name;
-        this.GSC_First_Part = gsc_firstPart;
         this.Applicant_ID = rd_No;
     }
 
@@ -58,7 +55,6 @@ public class PushToAnotherVA_List_Adapter extends BaseAdapter implements Filtera
 
         viewHolder.sl_No.setText(SlNo.get(position));
         viewHolder.app_Name.setText(Applicant_Name.get(position));
-        viewHolder.gsc_first_part.setText(GSC_First_Part.get(position));
         viewHolder.app_Id.setText(Applicant_ID.get(position));
 
         return convertView;
@@ -70,11 +66,10 @@ public class PushToAnotherVA_List_Adapter extends BaseAdapter implements Filtera
     }
 }
 class PushToAnotherVA_ViewHolder{
-    TextView sl_No, app_Name, gsc_first_part, app_Id;
+    TextView sl_No, app_Name, app_Id;
     PushToAnotherVA_ViewHolder(View view) {
         sl_No = view.findViewById(R.id.sl_No);
         app_Name = view.findViewById(R.id.app_Name);
-        gsc_first_part = view.findViewById(R.id.gsc_first_part);
         app_Id = view.findViewById(R.id.app_Id);
     }
 }

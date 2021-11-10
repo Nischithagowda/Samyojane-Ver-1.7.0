@@ -25,12 +25,11 @@ public class RI_Village_wise_report extends AppCompatActivity {
     static String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database, database1, database_Asset;
-    String villageName, villageCode, habitationCode, townCode, townName, wardCode, wardName;
+    String villageName, villageCode, townCode, townName, wardCode, wardName;
     ArrayList<String> SlNo = new ArrayList<>();
     ArrayList<String> TotalCount = new ArrayList<>();
     ArrayList<String> VillageName = new ArrayList<>();
     ArrayList<String> VillageCode = new ArrayList<>();
-    ArrayList<String> HabitationCode = new ArrayList<>();
     ArrayList<String> SlNo_T = new ArrayList<>();
     ArrayList<String> TotalCount_T = new ArrayList<>();
     ArrayList<String> TownCode = new ArrayList<>();
@@ -106,8 +105,8 @@ public class RI_Village_wise_report extends AppCompatActivity {
             listLayout1.setVisibility(View.VISIBLE);
             displayUrbanData_AfterItemSelected();
         }else if(option_Flag==null) {
-            Log.d("option_Flag1", ""+option_Flag);
             option_Flag = getString(R.string.rural);
+            Log.d("option_Flag1", ""+option_Flag);
             txtPendingName.setText(getString(R.string.village_wise_pending_status));
             listLayout.setVisibility(View.VISIBLE);
             listLayout.setVisibility(View.GONE);
@@ -165,18 +164,15 @@ public class RI_Village_wise_report extends AppCompatActivity {
                 do {
                     villageCode = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_VillageNames.HM_village_code));
                     villageName = cursor1.getString(cursor1.getColumnIndexOrThrow(getString(R.string.village_table_habitation_name)));
-                    habitationCode = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_VillageNames.HM_habitation_code));
 
                     Log.d("villageCode_l", "" + villageCode);
-                    Log.d("habitationCode_l", "" + habitationCode);
 
                     if (!villageCode.equals("99999")){
                     Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
                             + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
                             + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
                             + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag +" is null and "
-                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code + "=" + villageCode + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code + "=" + habitationCode, null);
+                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code + "=" + villageCode , null);
 
                     if (cursor.getCount() > 0) {
 
@@ -192,13 +188,12 @@ public class RI_Village_wise_report extends AppCompatActivity {
                                     VillageName.add(villageName);
                                     TotalCount.add(cursor.getString(cursor.getColumnIndex("TotalCount")));
                                     VillageCode.add(String.valueOf(villageCode));
-                                    HabitationCode.add(String.valueOf(habitationCode));
                                     i++;
                                 }
                             } while (cursor.moveToNext());
                         }
                         Log.d("InDisplayIf", "" + i);
-                        list_adapter = new RI_Village_ListAdapter(RI_Village_wise_report.this, SlNo, VillageName, TotalCount, VillageCode, HabitationCode);
+                        list_adapter = new RI_Village_ListAdapter(RI_Village_wise_report.this, SlNo, VillageName, TotalCount, VillageCode);
                         listView.setAdapter(list_adapter);
                         database.close();
                     }else {

@@ -53,8 +53,8 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
     int posReason, posRejectionReason;
     TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName, tvCaste;
     String district, taluk, hobli, VA_Name,VA_Circle_Name, applicant_Id, rationCardNo, aadharNo, mobileNo, address1;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
-    String eng_certi, GSC_FirstPart;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_code, ward_code;
+    String eng_certi;
     ArrayAdapter<CharSequence> adapter_rejection_reason, adapter_reason;
     Button btnCamera, btnSave, btnBack;
     private static final int CAMERA_REQUEST = 1;
@@ -70,8 +70,8 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
     GPSTracker gpsTracker;
     double latitude, longitude;
     String item_position;
-    String strSearchVillageName, strSearchServiceName, town_Name, ward_Name, town_code, ward_code, option_Flag;
-    String villageCode, serviceCode,habitationCode;
+    String strSearchVillageName, strSearchServiceName, town_Name, ward_Name, option_Flag;
+    String villageCode, serviceCode;
     TableRow lRejection, trCatCaste;
     RadioGroup radiogroup, radioGroup1;
     RadioButton radioButton1, radioButton2;
@@ -220,11 +220,11 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         Intent i = getIntent();
         district = i.getStringExtra("districtCode");
         taluk = i.getStringExtra("taluk");
-        district_Code = i.getStringExtra("district_Code");
-        taluk_Code = i.getStringExtra("taluk_Code");
-        hobli_Code = i.getStringExtra("hobli_Code");
+        district_Code = i.getIntExtra("district_Code", 0);
+        taluk_Code = i.getIntExtra("taluk_Code", 0);
+        hobli_Code = i.getIntExtra("hobli_Code", 0);
         hobli = i.getStringExtra("hobli");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        va_Circle_Code = i.getIntExtra("va_Circle_Code", 0);
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
         applicant_Id = i.getStringExtra("applicant_Id");
         VA_Name = i.getStringExtra("VA_Name");
@@ -236,14 +236,13 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         strSearchVillageName = i.getStringExtra("strSearchVillageName");
         strSearchServiceName =i.getStringExtra("strSearchServiceName");
         villageCode = i.getStringExtra("villageCode");
-        habitationCode = i.getStringExtra("habitationCode");
         serviceCode = i.getStringExtra("serviceCode");
         service_name = i.getStringExtra("strSearchServiceName");
         village_name = i.getStringExtra("strSearchVillageName");
         eng_certi = i.getStringExtra("eng_certi");
-        town_code = i.getStringExtra("town_code");
+        town_code = i.getIntExtra("town_code", 0);
         town_Name = i.getStringExtra("town_Name");
-        ward_code = i.getStringExtra("ward_code");
+        ward_code = i.getIntExtra("ward_code", 0);
         ward_Name = i.getStringExtra("ward_Name");
         option_Flag = i.getStringExtra("option_Flag");
 
@@ -255,7 +254,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         Log.d("Village_NameCasteIncome", ""+village_name);
         Log.d("Service_NameCasteIncome", ""+service_name);
         Log.d("villageCodeCasteIncome", ""+villageCode);
-        Log.d("HabitationCodeCaste", ""+habitationCode);
         Log.d("serviceCodeCasteIncome", ""+serviceCode);
         Log.d("eng_certi",""+ eng_certi);
         Log.d( "town_code: ",""+town_code);
@@ -362,13 +360,12 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
                 Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                         + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
                 if (cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
-                        category_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_res_category));
-                        caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_caste_as_per_app));
-                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_annual_income));
-                        GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
+                        category_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
+                        caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
                         Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
                     }
                 } else {
@@ -404,13 +401,12 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
                 Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                         + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
                 if (cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         category_code = "9";
-                        caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_caste_app));
-                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_annual_income));
-                        GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
+                        caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
                         Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
                     }
                 } else {
@@ -444,11 +440,10 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 database = openHelper.getWritableDatabase();
                 Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                         + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
                 if (cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
-                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.IST_annual_income));
-                        GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
+                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
                         Log.d("value1", "" + amount);
                     }
                 } else {
@@ -466,13 +461,12 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 database = openHelper.getWritableDatabase();
                 Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                         + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "='" + serviceCode + "'" + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                        +DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
                 if (cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
-                        category_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_res_category));
-                        caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_caste_as_per_app));
-                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CST_annual_income));
-                        GSC_FirstPart = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
+                        category_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
+                        caste_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+                        amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
                         Log.d("value1", "" + amount);
                     }
                 } else {
@@ -1014,7 +1008,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                     i.putExtra("strSearchVillageName", village_name);
                     i.putExtra("serviceCode", serviceCode);
                     i.putExtra("villageCode", String.valueOf(villageCode));
-                    i.putExtra("habitationCode",habitationCode);
                     i.putExtra("option_Flag", option_Flag);
                     i.putExtra("town_Name", town_Name);
                     i.putExtra("town_code", town_code);
@@ -1063,12 +1056,12 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
             database = openHelper.getWritableDatabase();
 
             Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
             if (cursor.getCount() > 0) {
 
                 database.execSQL("update "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "="+ applicant_Id);
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "="+ applicant_Id);
 
                 database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='"+"NO"+"',"
@@ -1076,7 +1069,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Caste + "=" + getCasteCode + ","
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Belongs_Creamy_Layer_6 + "='" + option + "',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Creamy_Layer_6 + "=" + reason_Code_1 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Annual_Income + "='" + strIncome + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + "='" + strIncome + "',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Photo + "='" + store + "',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.vLat + "=" + latitude + ","
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.vLong + "=" + longitude + ","
@@ -1084,7 +1077,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Rejection + "=" + reason_Code_2 + ","
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks + "='" + strRemarks + "',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1" + " where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id);
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'");
 
                 Log.d("Database", "ServiceParameters Database Updated");
                 Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
@@ -1104,7 +1097,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 i.putExtra("strSearchVillageName", village_name);
                 i.putExtra("serviceCode", serviceCode);
                 i.putExtra("villageCode", String.valueOf(villageCode));
-                i.putExtra("habitationCode", habitationCode);
                 i.putExtra("option_Flag", option_Flag);
                 i.putExtra("town_Name", town_Name);
                 i.putExtra("town_code", town_code);
@@ -1123,13 +1115,11 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 set_and_get_service_parameter.setHobli_Code(hobli_Code);
                 set_and_get_service_parameter.setVa_Circle_Code(va_Circle_Code);
                 set_and_get_service_parameter.setVillage_Code(String.valueOf(villageCode));
-                set_and_get_service_parameter.setHabitation_code(habitationCode);
                 set_and_get_service_parameter.setTown_Code(town_code);
                 set_and_get_service_parameter.setWard_Code(ward_code);
                 set_and_get_service_parameter.setService_Code(String.valueOf(serviceCode));
                 set_and_get_service_parameter.setRD_No(applicant_Id);
                 set_and_get_service_parameter.setEng_Certify(eng_certi);
-                set_and_get_service_parameter.setGSC_First_Part(GSC_FirstPart);
                 set_and_get_service_parameter.setAPP_Category_6(String.valueOf(getCatCode));
                 set_and_get_service_parameter.setApp_Caste_6(String.valueOf(getCasteCode));
                 set_and_get_service_parameter.setRbOption_6(option);
@@ -1144,10 +1134,10 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
                 database.execSQL("update "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "="+ applicant_Id);
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "="+ applicant_Id);
 
                 database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                        + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_Eng_Certificate, ST_GSCFirstPart," +
+                        + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_Eng_Certificate," +
                         " VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Annual_Income, Remarks," +
                         " Photo, vLat, vLong, Can_Certificate_Given, Reason_for_Rejection, DataUpdateFlag)" +
                         " values ("
@@ -1156,13 +1146,11 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                         + set_and_get_service_parameter.getHobli_Code() + ","
                         + set_and_get_service_parameter.getVa_Circle_Code() + ","
                         + set_and_get_service_parameter.getVillage_Code()+","
-                        + set_and_get_service_parameter.getHabitation_code()+","
                         + set_and_get_service_parameter.getTown_Code() + ","
                         + set_and_get_service_parameter.getWard_Code() + ","
                         + set_and_get_service_parameter.getService_Code() + ","
                         + set_and_get_service_parameter.getRD_No() + ",'"
-                        + set_and_get_service_parameter.getEng_Certify() + "',"
-                        + set_and_get_service_parameter.getGSC_First_Part() + ",'"
+                        + set_and_get_service_parameter.getEng_Certify() + "','"
                         + "NO" + "',"
                         + set_and_get_service_parameter.getAPP_Category_6()+","
                         + set_and_get_service_parameter.getApp_Caste_6() + ",'"
@@ -1194,7 +1182,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 i.putExtra("strSearchVillageName", village_name);
                 i.putExtra("serviceCode", serviceCode);
                 i.putExtra("villageCode", String.valueOf(villageCode));
-                i.putExtra("habitationCode",habitationCode);
                 i.putExtra("option_Flag", option_Flag);
                 i.putExtra("town_Name", town_Name);
                 i.putExtra("town_code", town_code);

@@ -43,7 +43,7 @@ public class UploadScreen extends AppCompatActivity {
     Button btnUpload, btnok;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    String VA_Accepts_Applicant_information,name, fatherName, motherName,Mobile_No,RationCard_No, Address1, Address2, Address3, PinCode, Eng_Certif, GSC_FirstPart, Report_No, Aadhar_NO, Aadhaar_Photo, DataUpdateFlag, District_Code, Taluk_Code, Hobli_Code, Village_Circle_code, Village_Code, Habitation_Code, Town_Code, Ward_Code, Service_Code,Applicant_Id;
+    String VA_Accepts_Applicant_information,name, fatherName, motherName,Mobile_No,RationCard_No, Address1, Address2, Address3, PinCode, Eng_Certif, Report_No, Aadhar_NO, Aadhaar_Photo, DataUpdateFlag, District_Code, Taluk_Code, Hobli_Code, Village_Code, Town_Code, Ward_Code, Service_Code,Applicant_Id;
     String Annual_Income, Photo, vLat, vLong;
     ProgressDialog dialog;
     TextView tvTotalUpload, tvAlreadyUploaded, tvNotUploaded, tvAfterUploaded;
@@ -98,7 +98,7 @@ public class UploadScreen extends AppCompatActivity {
         database = openHelper.getWritableDatabase();
 
         final Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1+" SP left join "
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" ST on ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"= SP."+DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" ST on ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +"= SP."+DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo
                 +" where (ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1 and SP."
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1) or SP."+ DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1", null);
 
@@ -188,24 +188,21 @@ public class UploadScreen extends AppCompatActivity {
             Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.va_Circle_Code +","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Habitation_code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+","
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name+","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother+","
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name +","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode+","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.UID+","
@@ -225,7 +222,7 @@ public class UploadScreen extends AppCompatActivity {
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Reside_At_Stated_Address_10+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Place_Match_With_RationCard_10+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Pur_for_Cert_Code_10+","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Annual_Income+","
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Photo+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.vLat+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.vLong+","
@@ -245,17 +242,15 @@ public class UploadScreen extends AppCompatActivity {
                                 District_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code));
                                 Taluk_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code));
                                 Hobli_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code));
-                                Village_Circle_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.va_Circle_Code));
                                 Village_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code));
-                                Habitation_Code = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Habitation_code));
                                 Town_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code));
                                 Ward_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
                                 Service_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code));
-                                Applicant_Id = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No));
+                                Applicant_Id = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo));
                                 VA_Accepts_Applicant_information = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information));
                                 name = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
                                 fatherName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name));
-                                motherName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother));
+                                motherName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name));
                                 Mobile_No = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No));
                                 RationCard_No = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No));
                                 Address1 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1));
@@ -263,7 +258,6 @@ public class UploadScreen extends AppCompatActivity {
                                 Address3 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Address3));
                                 PinCode = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode));
                                 Eng_Certif = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
-                                GSC_FirstPart = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
                                 Report_No = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No));
                                 Aadhar_NO = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UID));
                                 Aadhaar_Photo = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AadhaarPhoto));
@@ -282,7 +276,7 @@ public class UploadScreen extends AppCompatActivity {
                                 Reside_At_Stated_Address_10=cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Reside_At_Stated_Address_10));
                                 Place_Match_With_RationCard_10=cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Place_Match_With_RationCard_10));
                                 Pur_for_Cert_Code_10= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Pur_for_Cert_Code_10));
-                                Annual_Income= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Annual_Income));
+                                Annual_Income= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
                                 Photo = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Photo));
                                 vLat = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.vLat));
                                 vLong = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.vLong));
@@ -292,7 +286,7 @@ public class UploadScreen extends AppCompatActivity {
 
                                 Cursor cursor2 = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo+" from "
                                         +DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1+ " where "
-                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"="+Applicant_Id, null);
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +"='"+Applicant_Id+"'", null);
                                 if (cursor2.getCount()>0){
                                     if (cursor2.moveToFirst()){
                                         ST_applicant_photo = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
@@ -309,9 +303,7 @@ public class UploadScreen extends AppCompatActivity {
                                 request.addProperty("District_Code", District_Code);
                                 request.addProperty("Taluk_Code", Taluk_Code);
                                 request.addProperty("Hobli_Code", Hobli_Code);
-                                request.addProperty("va_Circle_Code", Village_Circle_code);
                                 request.addProperty("Village_Code", Village_Code);
-                                request.addProperty("Habitation_code",Habitation_Code);
                                 request.addProperty("Town_Code",Town_Code);
                                 request.addProperty("Ward_Code",Ward_Code);
                                 request.addProperty("Service_Code", Service_Code);
@@ -327,7 +319,6 @@ public class UploadScreen extends AppCompatActivity {
                                 request.addProperty("Address3", Address3);
                                 request.addProperty("PinCode", PinCode);
                                 request.addProperty("ST_Eng_Certificate",Eng_Certif);
-                                request.addProperty("ST_GSCFirstPart", GSC_FirstPart);
                                 request.addProperty("Report_No", Report_No);
                                 request.addProperty("Aadhar_NO", Aadhar_NO);
                                 request.addProperty("Aadhaar_Photo", Aadhaar_Photo);
@@ -388,7 +379,7 @@ public class UploadScreen extends AppCompatActivity {
 
                                     });
 
-                                    database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + Applicant_Id);
+                                    database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + Applicant_Id + "'");
                                     Log.d("Local_Result", "A row deleted Successfully");
                                 }
                                 else {

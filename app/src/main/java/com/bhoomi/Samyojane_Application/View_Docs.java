@@ -38,7 +38,7 @@ public class View_Docs extends AppCompatActivity {
     TextView emptyTxt;
     ListView listView;
     Docs_List_Adapter list_adapter;
-    String villageCode, service_name, village_name, habitationCode;
+    String villageCode, service_name, village_name;
     int serviceCode;
     String docs_Name;
     int docs_ID;
@@ -78,7 +78,6 @@ public class View_Docs extends AppCompatActivity {
         VA_Name = i.getStringExtra("VA_Name");
         service_name = i.getStringExtra("strSearchServiceName");
         villageCode = i.getStringExtra("villageCode");
-        habitationCode = i.getStringExtra("habitationCode");
         village_name = i.getStringExtra("strSearchVillageName");
         applicant_name = i.getStringExtra("applicant_name");
         applicant_Id = i.getStringExtra("applicant_Id");
@@ -106,7 +105,6 @@ public class View_Docs extends AppCompatActivity {
         Log.d("New_Request_FirstScreen", "village_name: "+village_name);
         Log.d("New_Request_FirstScreen", "serviceCode: "+serviceCode);
         Log.d("New_Request_FirstScreen", "villageCode: "+villageCode);
-        Log.d("New_Request_FirstScreen", "habitationCode: "+habitationCode);
         Log.d("New_Request_FirstScreen","report_no: "+ report_no);
 
         tvTaluk.setText(taluk);

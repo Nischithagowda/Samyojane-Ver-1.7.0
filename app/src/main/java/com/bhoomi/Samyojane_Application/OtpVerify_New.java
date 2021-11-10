@@ -59,6 +59,8 @@ public class OtpVerify_New extends AppCompatActivity {
             editor.putString(Constants.IMEI_NUMBER, IMEI_Num);
             editor.putString(Constants.OTP, received_OTP);
             editor.putBoolean(Constants.LOGIN_STATUS, true);
+            editor.putInt(Constants.DesiCode_VA, 22);
+            editor.putInt(Constants.DesiCode_RI, 19);
             editor.apply();
 
             Intent intent = new Intent(OtpVerify_New.this, MainActivity.class);
@@ -116,6 +118,8 @@ public class OtpVerify_New extends AppCompatActivity {
                         editor.putString(Constants.IMEI_NUMBER, IMEI_Num);
                         editor.putString(Constants.OTP, received_OTP);
                         editor.putBoolean(Constants.LOGIN_STATUS, true);
+                        editor.putInt(Constants.DesiCode_VA, 22);
+                        editor.putInt(Constants.DesiCode_RI, 19);
                         editor.apply();
 
                         Intent i = new Intent(OtpVerify_New.this, MainActivity.class);

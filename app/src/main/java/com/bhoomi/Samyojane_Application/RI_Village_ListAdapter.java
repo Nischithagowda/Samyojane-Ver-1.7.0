@@ -19,18 +19,16 @@ public class RI_Village_ListAdapter extends BaseAdapter implements Filterable {
     ArrayList<String> TotalCount;
     ArrayList<String> VillageName;
     ArrayList<String> VillageCode;
-    ArrayList<String> HabitationCode;
     String district, taluk, VA_Name, hobli,VA_Circle_Name, total;
-    String district_Code, taluk_Code, hobli_Code, villageName, villageCode, habitationCode;
+    String district_Code, taluk_Code, hobli_Code, villageName, villageCode;
 
     RI_Village_ListAdapter(Context context, ArrayList<String> slNo, ArrayList<String> villageName,
-                        ArrayList<String> totalCount, ArrayList<String> villageCode, ArrayList<String> habitationCode){
+                        ArrayList<String> totalCount, ArrayList<String> villageCode){
         this.context = context;
         this.SlNo = slNo;
         this.TotalCount = totalCount;
         this.VillageName = villageName;
         this.VillageCode = villageCode;
-        this.HabitationCode = habitationCode;
     }
     @Override
     public int getCount() {
@@ -64,28 +62,18 @@ public class RI_Village_ListAdapter extends BaseAdapter implements Filterable {
         viewHolder.tvTotalPendency.setText(TotalCount.get(position));
         viewHolder.tvVillageName.setText(VillageName.get(position));
         viewHolder.tvVillageCode.setText(VillageCode.get(position));
-        viewHolder.tvHabitationCodeCode.setText(HabitationCode.get(position));
 
         total = TotalCount.get(position);
-//        if(total.equals("0"))
-//        {
-//            viewHolder.btnEdit.setVisibility(View.GONE);
-//        }else {
-//            viewHolder.btnEdit.setVisibility(View.VISIBLE);
-//        }
 
         viewHolder.btnEdit.setOnClickListener(view -> {
             villageName = viewHolder.tvVillageName.getText().toString();
             villageCode = viewHolder.tvVillageCode.getText().toString();
-            habitationCode = viewHolder.tvHabitationCodeCode.getText().toString();
 
             Log.d("villageCode_Vill",""+villageCode);
             Log.d("VillageName_Vill",""+VillageName);
-            Log.d("habitationCode_Vill",""+habitationCode);
 
             Intent i = new Intent(context, RI_Applicant_wise_report.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("villageCode",villageCode);
-            i.putExtra("habitationCode",habitationCode);
             i.putExtra("townCode","9999");
             i.putExtra("wardCode","255");
             context.startActivity(i);
@@ -103,13 +91,12 @@ public class RI_Village_ListAdapter extends BaseAdapter implements Filterable {
 }
 
 class RI_Village_ViewHolder{
-    TextView sl_No, tvTotalPendency,btnEdit, tvVillageName, tvVillageCode, tvHabitationCodeCode;
+    TextView sl_No, tvTotalPendency,btnEdit, tvVillageName, tvVillageCode;
     RI_Village_ViewHolder(View view){
         sl_No = view.findViewById(R.id.sl_No);
         tvTotalPendency = view.findViewById(R.id.tvTotalPendency);
         btnEdit = view.findViewById(R.id.btnEdit);
         tvVillageName = view.findViewById(R.id.tvVillageName);
         tvVillageCode = view.findViewById(R.id.tvVillageCode);
-        tvHabitationCodeCode = view.findViewById(R.id.tvHabitationCodeCode);
     }
 }

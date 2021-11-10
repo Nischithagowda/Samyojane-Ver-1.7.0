@@ -29,14 +29,12 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
     SQLiteDatabase database;
     ArrayList<String> SlNo = new ArrayList<>();
     ArrayList<String> Appication_Name = new ArrayList<>();
-    ArrayList<String> GSC_FirstPart = new ArrayList<>();
     ArrayList<String> Applicant_ID = new ArrayList<>();
     ArrayList<String> DueDate = new ArrayList<>();
     ArrayList<String> ServiceCode = new ArrayList<>();
     ArrayList<String> ServiceName = new ArrayList<>();
     ArrayList<String> VillageCode = new ArrayList<>();
     ArrayList<String> VillageName = new ArrayList<>();
-    ArrayList<String> HabitationCode = new ArrayList<>();
     ArrayList<String> Option_Flag = new ArrayList<>();
     ArrayList<String> TownName = new ArrayList<>();
     ArrayList<String> TownCode = new ArrayList<>();
@@ -46,9 +44,8 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
     RI_Service_List_Adapter ri_service_list_adapter;
     RI_UR_Service_List_Adapter ri_ur_service_list_adapter;
     LinearLayout linearLayout;
-    String item_position;
     TextView emptyTxt;
-    String village_name, service_name, habitationCode, town_Name, ward_Name, town_code, ward_code,option_Flag;
+    String village_name, service_name, town_Name, ward_Name, town_code, ward_code,option_Flag;
     String serviceCode, villageCode;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -84,7 +81,6 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         RI_Name = i.getStringExtra("RI_Name");
         VA_Name = i.getStringExtra("VA_Name");
         villageCode = i.getStringExtra("villageCode");
-        habitationCode = i.getStringExtra("habitationCode");
         village_name = i.getStringExtra("strSearchVillageName");
         service_name = i.getStringExtra("strSearchServiceName");
         town_code = i.getStringExtra("town_code");
@@ -111,61 +107,11 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         Log.d("RI_FirstScreen",""+hobli_Code+"RI_Name :"+RI_Name+" VA_Name :"+VA_Name+" VillageName :"+village_name+"ServiceName:"+service_name);
         Log.d("RI_FirstScreen", "serviceCode: "+serviceCode);
         Log.d("RI_FirstScreen", "villageCode: "+villageCode+"\nVA_Circle_Name :"+VA_Circle_Name+"\nva_Circle_Code"+va_Circle_Code);
-        Log.d("RI_FirstScreen", "habitationCode: "+habitationCode);
         Log.d("RI_FirstScreen", "town_code: "+town_code);
         Log.d("RI_FirstScreen", "town_Name: "+town_Name);
         Log.d("RI_FirstScreen", "ward_code: "+ward_code);
         Log.d("RI_FirstScreen", "ward_Name: "+ward_Name);
         Log.d("RI_FirstScreen", "option_Flag: "+option_Flag);
-//        FileInputStream fis=null;
-//        FileOutputStream fos=null;
-//
-//        try
-//        {
-////            fis=new FileInputStream("/data/data/" + getPackageName() + "/databases/Village_Names.db");
-////            fos=new FileOutputStream("/sdcard/Samyojane/databases/Village_Names.db");
-////
-////            fis=new FileInputStream("/data/data/" + getPackageName() + "/databases/FacilityMaster.db");
-////            fos=new FileOutputStream("/sdcard/Samyojane/databases/FacilityMaster.db");
-//
-//            fis=new FileInputStream("/data/data/" + getPackageName() + "/databases/ServiceTranTable.db");
-//            fos=new FileOutputStream("/sdcard/Samyojane/databases/ServiceTranTable.db");
-//
-//            while(true)
-//            {
-//                int ii=fis.read();
-//                if(ii!=-1)
-//                {fos.write(ii);}
-//                else
-//                {break;}
-//            }
-//            fos.flush();
-//            Log.d("DB_dump", "OK");
-//            //Toast.makeText(this, "DB dump OK", Toast.LENGTH_LONG).show();
-//        }
-//        catch(Exception e)
-//        {
-//            e.printStackTrace();
-//            Log.d("DB_dump", "ERROR");
-//            //Toast.makeText(this, "DB dump ERROR", Toast.LENGTH_LONG).show();
-//        }
-//        finally
-//        {
-//            try
-//            {
-//                if (fos != null) {
-//                    fos.close();
-//                }
-//                if (fis != null) {
-//                    fis.close();
-//                }
-//            }
-//            catch(IOException ioe)
-//            {
-//                Log.d("Exception", ioe.getMessage());
-//            }
-//        }
-
         tvTaluk.setText(taluk);
         tvHobli.setText(hobli);
         tvRI_Name.setText(RI_Name);
@@ -195,7 +141,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_FirstScreen.this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCFirstPart_Name+","
+        Cursor cursor = database.rawQuery("select "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+","
                 +" substr(ST_DueDate,0,11) as ST_DueDate from "
@@ -205,7 +151,6 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+"="+hobli_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code+"="+va_Circle_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"="+villageCode+" and "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code+"="+habitationCode+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"=255 and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code+"="+serviceCode+" and "
@@ -213,14 +158,12 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
 
         SlNo.clear();
         Appication_Name.clear();
-        GSC_FirstPart.clear();
         Applicant_ID.clear();
         DueDate.clear();
         ServiceCode.clear();
         ServiceName.clear();
         VillageCode.clear();
         VillageName.clear();
-        HabitationCode.clear();
         Option_Flag.clear();
 
         if(cursor.getCount()>0) {
@@ -231,20 +174,18 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
                     Log.d("InDisplayIf", ""+ i);
                     SlNo.add(String.valueOf(i));
                     Appication_Name.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name)));
-                    GSC_FirstPart.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCFirstPart_Name)));
                     Applicant_ID.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No)));
                     DueDate.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date)));
                     ServiceCode.add(String.valueOf(serviceCode));
                     ServiceName.add(service_name);
                     VillageCode.add(String.valueOf(villageCode));
                     VillageName.add(village_name);
-                    HabitationCode.add(habitationCode);
                     Option_Flag.add(option_Flag);
                     i++;
                 } while (cursor.moveToNext());
             }
             Log.d("InDisplayIf", ""+ i);
-            ri_service_list_adapter = new RI_Service_List_Adapter(RI_Field_Report_FirstScreen.this, SlNo, Appication_Name, GSC_FirstPart, Applicant_ID, DueDate, ServiceCode, ServiceName, VillageCode, HabitationCode, VillageName, Option_Flag);
+            ri_service_list_adapter = new RI_Service_List_Adapter(RI_Field_Report_FirstScreen.this, SlNo, Appication_Name, Applicant_ID, DueDate, ServiceCode, ServiceName, VillageCode, VillageName, Option_Flag);
             listView.setAdapter(ri_service_list_adapter);
             database.close();
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
@@ -267,13 +208,12 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_FirstScreen.this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCFirstPart_Name+","+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+","
+        Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+","
                 +" substr(ST_DueDate,0,11) as ST_DueDate from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+"="+district_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code+"="+taluk_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+"="+hobli_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"=99999 and "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code+"=255 and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"="+town_code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"="+ward_code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code+"="+serviceCode+" and "
@@ -282,7 +222,6 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
 
         SlNo.clear();
         Appication_Name.clear();
-        GSC_FirstPart.clear();
         Applicant_ID.clear();
         DueDate.clear();
         ServiceCode.clear();
@@ -301,7 +240,6 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
                     Log.d("InDisplayIf", ""+ i);
                     SlNo.add(String.valueOf(i));
                     Appication_Name.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name)));
-                    GSC_FirstPart.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCFirstPart_Name)));
                     Applicant_ID.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No)));
                     DueDate.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date)));
                     ServiceCode.add(String.valueOf(serviceCode));
@@ -315,7 +253,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
             Log.d("InDisplayIf", ""+ i);
-            ri_ur_service_list_adapter = new RI_UR_Service_List_Adapter(RI_Field_Report_FirstScreen.this, SlNo, Appication_Name, GSC_FirstPart, Applicant_ID, DueDate, ServiceCode, ServiceName, TownName, TownCode, WardName, WardCode, Option_Flag);
+            ri_ur_service_list_adapter = new RI_UR_Service_List_Adapter(RI_Field_Report_FirstScreen.this, SlNo, Appication_Name, Applicant_ID, DueDate, ServiceCode, ServiceName, TownName, TownCode, WardName, WardCode, Option_Flag);
             listView.setAdapter(ri_ur_service_list_adapter);
             database.close();
             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
@@ -348,7 +286,6 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         i.putExtra("strSearchServiceName", service_name);
         i.putExtra("strSearchVillageName", village_name);
         i.putExtra("villageCode", villageCode);
-        i.putExtra("habitationCode",habitationCode);
         i.putExtra("town_Name", town_Name);
         i.putExtra("town_code", town_code);
         i.putExtra("ward_Name", ward_Name);

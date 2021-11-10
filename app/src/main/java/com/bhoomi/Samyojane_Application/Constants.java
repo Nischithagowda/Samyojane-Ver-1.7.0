@@ -9,6 +9,9 @@ public class Constants {
     public static final String MOBILE_NUMBER = "MOBILE_NUMBER";
     public static final String LOGIN_STATUS = "login_status";
     public static final String OTP = "OTP";
+    public static final String DesiCode_VA = "DesiCode_VA";
+    public static final String DesiCode_RI = "DesiCode_RI";
+    public static final String uName_get = "uName_get";
 
     public static final String SHARED_PREF = "shared_pref";
     public static final String LANGUAGE = "language";

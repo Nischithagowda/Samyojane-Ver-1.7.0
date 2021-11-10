@@ -15,17 +15,15 @@ public class Applicant_ListAdapter extends BaseAdapter implements Filterable {
 
     private Context context;
     ArrayList<String> SlNo;
-    ArrayList<String> GSC_No;
     ArrayList<String> ApplicantID;
     ArrayList<String> ApplicantName;
     ArrayList<String> ServiceName;
     ArrayList<String> ServiceCode;
 
-    Applicant_ListAdapter(Context context, ArrayList<String> slNo, ArrayList<String> gsc, ArrayList<String> applicantID,
+    Applicant_ListAdapter(Context context, ArrayList<String> slNo, ArrayList<String> applicantID,
                           ArrayList<String> applicantName, ArrayList<String> serviceName, ArrayList<String> serviceCode){
         this.context = context;
         this.SlNo = slNo;
-        this.GSC_No = gsc;
         this.ApplicantID = applicantID;
         this.ApplicantName = applicantName;
         this.ServiceName = serviceName;
@@ -64,7 +62,6 @@ public class Applicant_ListAdapter extends BaseAdapter implements Filterable {
         viewHolder.tvApplicantName.setText(ApplicantName.get(position));
         viewHolder.tvServiceName.setText(ServiceName.get(position));
         viewHolder.tvServiceCode.setText(ServiceCode.get(position));
-        viewHolder.tvGSC.setText(GSC_No.get(position));
         return convertView;
     }
 
@@ -75,10 +72,9 @@ public class Applicant_ListAdapter extends BaseAdapter implements Filterable {
 }
 
 class Applicant_ViewHolder{
-    TextView sl_No, tvApplicantID, tvApplicantName, tvServiceName, tvServiceCode, tvGSC;
+    TextView sl_No, tvApplicantID, tvApplicantName, tvServiceName, tvServiceCode;
     Applicant_ViewHolder(View view){
         sl_No = view.findViewById(R.id.sl_No);
-        tvGSC = view.findViewById(R.id.tvGSC);
         tvApplicantID = view.findViewById(R.id.tvApplicantID);
         tvApplicantName = view.findViewById(R.id.tvApplicantName);
         tvServiceName = view.findViewById(R.id.tvServiceName);

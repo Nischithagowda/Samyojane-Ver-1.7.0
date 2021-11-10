@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DataBaseHelperClass_VillageNames_DTH  extends SQLiteOpenHelper {
 
-    private static int DATABASE_VERSION=1;
+    static int DATABASE_VERSION=1;
     public static String TABLE_NAME = "Village_Names";
     public static String ID = "ID";
     public static String HM_village_code = "HM_village_code";
@@ -56,7 +56,7 @@ public class DataBaseHelperClass_VillageNames_DTH  extends SQLiteOpenHelper {
 
     public static String CREATE_TABLE ="CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("+ ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
             +VCM_va_circle_code+" int," +VCM_va_circle_ename+" TEXT,"+VCM_va_circle_kname+" TEXT,"
-            + HM_village_code+" int,"+ HM_habitation_code+" int," + HM_habitation_ename+" TEXT," +HM_habitation_kname+" TEXT, "+RuralUrban+" TEXT)";
+            + HM_village_code+" int,"+ HM_habitation_code+" int,"+ HM_habitation_ename+" TEXT," +HM_habitation_kname+" TEXT, "+RuralUrban+" TEXT)";
 
     public DataBaseHelperClass_VillageNames_DTH(Context context) {
         super(context, DATABASE_NAME_town_ward, null, DATABASE_VERSION);
@@ -127,7 +127,7 @@ public class DataBaseHelperClass_VillageNames_DTH  extends SQLiteOpenHelper {
         return objects;
     }
 
-    public List<AutoCompleteTextBox_Object> getVillageCircleNameList_DTH(int dist_Code, int taluk_Code, int townCode, String ward_code, String va_circle_name){
+    public List<AutoCompleteTextBox_Object> getVillageCircleNameList_DTH(int dist_Code, int taluk_Code, int townCode, int ward_code, String va_circle_name){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         try {
             database = this.getReadableDatabase();

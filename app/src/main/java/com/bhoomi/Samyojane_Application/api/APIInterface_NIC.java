@@ -2,6 +2,7 @@ package com.bhoomi.Samyojane_Application.api;
 
 import com.bhoomi.Samyojane_Application.UpdateStatusCLASS;
 import com.bhoomi.Samyojane_Application.UpdateVillageTownWardCLASS;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -14,7 +15,7 @@ import retrofit2.http.Path;
  **/
 public interface APIInterface_NIC {
     @GET("GetListForFieldVerification/{Flag1}/{Flag2}/{District}/{Taluk}/{Hobli}/{loginid}/{Desicode}/{VACircleCode}")
-    Call<String> GetListForFieldVerification(
+    Call<JsonObject> GetListForFieldVerification(
             @Path("Flag1") String Flag1,
             @Path("Flag2") String Flag2,
             @Path("District") int District,

@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 
 public class UR_List_Adapter extends BaseAdapter implements Filterable {
-    private Context context;
+    Context context;
     ArrayList<String> SlNo;
     ArrayList<String> Service_Name;
     ArrayList<String> TotalCount;
@@ -31,8 +31,8 @@ public class UR_List_Adapter extends BaseAdapter implements Filterable {
     ArrayList<String> WardCode;
     ArrayList<String> Option_Flag;
     Button btnEdit;
-    String district, taluk, VA_Name, hobli, VA_Circle_Name, town_Name, ward_Name, serviceName;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_code, villageCode, habitationCode, town_code, ward_code;
+    String district, taluk, VA_Name, hobli, VA_Circle_Name, town_Name, ward_Name, serviceName, villageCode, town_code, ward_code;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_code;
     String item_position,option_Flag;
 
     UR_List_Adapter(Context context, ArrayList<String > slNo, ArrayList<String> service_Name, ArrayList<String> totalCount, ArrayList<String> townName, ArrayList<String> townCode, ArrayList<String> wardName, ArrayList<String> wardCode, ArrayList<String> option_Flag) {
@@ -98,48 +98,43 @@ public class UR_List_Adapter extends BaseAdapter implements Filterable {
         ur_viewHolder.tvOption_Flag.setText(Option_Flag.get(position));
 
         btnEdit = convertView.findViewById(R.id.btnEdit);
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                serviceName = ur_viewHolder.tvServiceName.getText().toString();
-                item_position = String.valueOf(position);
-                town_Name = ur_viewHolder.tvTownName.getText().toString();
-                town_code = ur_viewHolder.tvTownCode.getText().toString();
-                ward_Name = ur_viewHolder.tvWardName.getText().toString();
-                ward_code = ur_viewHolder.tvWardCode.getText().toString();
-                option_Flag = ur_viewHolder.tvOption_Flag.getText().toString();
-                villageCode = "99999";
-                habitationCode = "255";
+        btnEdit.setOnClickListener(v -> {
+            serviceName = ur_viewHolder.tvServiceName.getText().toString();
+            item_position = String.valueOf(position);
+            town_Name = ur_viewHolder.tvTownName.getText().toString();
+            town_code = ur_viewHolder.tvTownCode.getText().toString();
+            ward_Name = ur_viewHolder.tvWardName.getText().toString();
+            ward_code = ur_viewHolder.tvWardCode.getText().toString();
+            option_Flag = ur_viewHolder.tvOption_Flag.getText().toString();
+            villageCode = "99999";
 
-                Intent i = new Intent(context, New_Request_FirstScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("district_Code", district_Code);
-                i.putExtra("districtCode", district);
-                i.putExtra("taluk_Code", taluk_Code);
-                i.putExtra("taluk", taluk);
-                i.putExtra("hobli_Code", hobli_Code);
-                i.putExtra("hobli", hobli);
-                i.putExtra("va_Circle_Code", va_Circle_code);
-                i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                i.putExtra("VA_Name", VA_Name);
-                i.putExtra("strSearchServiceName", serviceName);
-                i.putExtra("villageCode",villageCode);
-                i.putExtra("habitationCode", habitationCode);
-                i.putExtra("town_Name", town_Name);
-                i.putExtra("town_code", town_code);
-                i.putExtra("ward_Name", ward_Name);
-                i.putExtra("ward_code", ward_code);
-                i.putExtra("option_Flag", option_Flag);
-                ((Activity) context).finish();
-                context.startActivity(i);
+            Intent i = new Intent(context, New_Request_FirstScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.putExtra("district_Code", district_Code);
+            i.putExtra("districtCode", district);
+            i.putExtra("taluk_Code", taluk_Code);
+            i.putExtra("taluk", taluk);
+            i.putExtra("hobli_Code", hobli_Code);
+            i.putExtra("hobli", hobli);
+            i.putExtra("va_Circle_Code", va_Circle_code);
+            i.putExtra("VA_Circle_Name", VA_Circle_Name);
+            i.putExtra("VA_Name", VA_Name);
+            i.putExtra("strSearchServiceName", serviceName);
+            i.putExtra("villageCode",villageCode);
+            i.putExtra("town_Name", town_Name);
+            i.putExtra("town_code", town_code);
+            i.putExtra("ward_Name", ward_Name);
+            i.putExtra("ward_code", ward_code);
+            i.putExtra("option_Flag", option_Flag);
+            ((Activity) context).finish();
+            context.startActivity(i);
 
-                Log.d("Item_Position", ""+item_position
-                        +"\nService_Name :"+serviceName
-                        +"\ntown_Name: "+town_Name
-                        +"\nward_Name :"+ward_Name
-                        +"\noption_Flag :"+option_Flag);
-                Log.d("district_Code", ""+district_Code+" taluk_Code :"+taluk_Code+" hobli_Code: "+hobli_Code);
-                Log.d("va_Circle_code", ""+va_Circle_code+" town_code :"+town_code+" ward_code:"+ward_code+" VA_Name: "+VA_Name);
-            }
+            Log.d("Item_Position", ""+item_position
+                    +"\nService_Name :"+serviceName
+                    +"\ntown_Name: "+town_Name
+                    +"\nward_Name :"+ward_Name
+                    +"\noption_Flag :"+option_Flag);
+            Log.d("district_Code", ""+district_Code+" taluk_Code :"+taluk_Code+" hobli_Code: "+hobli_Code);
+            Log.d("va_Circle_code", ""+va_Circle_code+" town_code :"+town_code+" ward_code:"+ward_code+" VA_Name: "+VA_Name);
         });
 
         return convertView;

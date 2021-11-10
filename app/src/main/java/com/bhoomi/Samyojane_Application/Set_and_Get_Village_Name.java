@@ -31,11 +31,12 @@ public class Set_and_Get_Village_Name {
         this.HM_village_code = HM_village_code;
     }
 
-    public void setHM_habitation_code(String HM_habitation_code) {
-        this.HM_habitation_code = HM_habitation_code;
-    }
     public String getHM_habitation_code() {
         return HM_habitation_code;
+    }
+
+    public void setHM_habitation_code(String HM_habitation_code) {
+        this.HM_habitation_code = HM_habitation_code;
     }
 
     public String getHM_village_code() {

@@ -109,7 +109,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
     boolean return_Value;
     InputMethodManager imm;
     InputMethodSubtype ims;
-    String raisedLoc, eng_certi, GSC_FirstPart;
+    String raisedLoc, eng_certi;
 
     final int min = 1111;
     final int max = 9999;
@@ -418,11 +418,10 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         database = openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+"="+applicant_Id, null);
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+"='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToFirst()){
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
-                GSC_FirstPart = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_GSCFirstPart));
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
                 appID = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
                 appName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
@@ -821,13 +820,12 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
                 dialog.show();
                 //dialog1.setProgress(0);
 
-                Log.d("Docs", "Applicant_ID:"+applicant_Id+"\nGSC_FirstPart:"+GSC_FirstPart);
+                Log.d("Docs", "Applicant_ID:"+applicant_Id);
                 openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.this);
                 database = openHelper.getWritableDatabase();
 
                 //8186126549
                 hashMap_Down_Docs.put("GSC_No", applicant_Id);
-                hashMap_Down_Docs.put("GSC_First_Part", GSC_FirstPart);
                 Log.d("hashMap_Down_Docs", ""+hashMap_Down_Docs+", URL:"+getString(R.string.url_Down_Docs));
                 new GetDocsFromServer().execute(getString(R.string.url_Down_Docs));
                 //http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Docs?GSC_No=8966150768&GSC_First_Part=3
@@ -1246,7 +1244,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
         database = openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id, null);
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToNext()){
                 getNoYears = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Num_Years_8));
@@ -1292,7 +1290,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information + "='"+option2+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No + "='"+report_no+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + "=1"
-                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id);
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'");
 
             Intent i = new Intent(RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.this, RI_Field_Report_FirstScreen.class);
             i.putExtra("applicant_Id", applicant_Id);
@@ -1392,7 +1390,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information + "='"+option2+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No + "='"+report_no+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + "=1"
-                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id);
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'");
 
             Intent i = new Intent(RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.this, RI_Field_Report_FirstScreen.class);
             i.putExtra("applicant_Id", applicant_Id);

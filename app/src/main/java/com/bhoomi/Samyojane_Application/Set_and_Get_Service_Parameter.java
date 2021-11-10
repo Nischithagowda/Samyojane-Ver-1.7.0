@@ -2,43 +2,47 @@ package com.bhoomi.Samyojane_Application;
 
 public class Set_and_Get_Service_Parameter {
 
-    private String District_Code, Taluk_Code, Hobli_Code, va_Circle_Code, Village_Code, Habitation_code, Town_Code, Ward_Code, Service_Code, Service_Name, Service_Name_k,
+    private String Village_Code, Service_Code, Service_Name, Service_Name_k,
             RD_No, Applicant_Name, Father_Name, Mother_Name, Due_Date, Raised_Location, Photo, vLat, vLong, RationCard_No, Mobile_No, Address1, Address2, Address3;
-    private String rbIssue_Cert, spRejectionReason, Annual_Income, PinCode, Report_No, Eng_Certify, GSC_First_Part, ST_applicant_photo;
+    private int District_Code, Taluk_Code, Hobli_Code, va_Circle_Code, Town_Code, Ward_Code;
+    private String rbIssue_Cert, spRejectionReason, Annual_Income, PinCode, Report_No, Eng_Certify, ST_applicant_photo;
     private String APP_Category_6, App_Caste_6, rbOption_6, spReason_6; // Service_6 Parameters
     private String No_Years_8, App_Father_Category_8, APP_Father_Caste_8, App_Mother_Category_8, APP_Mother_Caste_8, App_Category_as_VA_8, Applicant_Caste_as_VA_8, remarks_8; // Service_8 Parameters
     private String Total_No_Year_10, NO_Months_10, rbStated_Address_10, rbAddress_RationCard_10, spPurpose_10; // Service_10 Parameters
     private String DataUpdateFlag;
-    private String UID, AadhaarPhoto;
 
     public Set_and_Get_Service_Parameter(){}
 
-    public void setDistrict_Code(String district_Code) {
-        District_Code = district_Code;
-    }
-    public String getDistrict_Code() {
+    public int getDistrict_Code() {
         return District_Code;
     }
 
-    public void setTaluk_Code(String taluk_Code) {
-        Taluk_Code = taluk_Code;
+    public void setDistrict_Code(int district_Code) {
+        District_Code = district_Code;
     }
-    public String getTaluk_Code() {
+
+    public int getTaluk_Code() {
         return Taluk_Code;
     }
 
-    public void setHobli_Code(String hobli_Code) {
-        Hobli_Code = hobli_Code;
+    public void setTaluk_Code(int taluk_Code) {
+        Taluk_Code = taluk_Code;
     }
-    public String getHobli_Code() {
+
+    public int getHobli_Code() {
         return Hobli_Code;
     }
 
-    public void setVa_Circle_Code(String va_Circle_Code) {
-        this.va_Circle_Code = va_Circle_Code;
+    public void setHobli_Code(int hobli_Code) {
+        Hobli_Code = hobli_Code;
     }
-    public String getVa_Circle_Code() {
+
+    public int getVa_Circle_Code() {
         return va_Circle_Code;
+    }
+
+    public void setVa_Circle_Code(int va_Circle_Code) {
+        this.va_Circle_Code = va_Circle_Code;
     }
 
     public void setVillage_Code(String village_Code) {
@@ -46,13 +50,6 @@ public class Set_and_Get_Service_Parameter {
     }
     public String getVillage_Code() {
         return Village_Code;
-    }
-
-    public void setHabitation_code(String habitation_code) {
-        Habitation_code = habitation_code;
-    }
-    public String getHabitation_code() {
-        return Habitation_code;
     }
 
     public void setService_Code(String service_Code) {
@@ -125,32 +122,11 @@ public class Set_and_Get_Service_Parameter {
         return Eng_Certify;
     }
 
-    public void setGSC_First_Part(String GSC_First_Part) {
-        this.GSC_First_Part = GSC_First_Part;
-    }
-    public String getGSC_First_Part() {
-        return GSC_First_Part;
-    }
-
     void setReport_No(String report_No) {
         Report_No = report_No;
     }
     String getReport_No() {
         return Report_No;
-    }
-
-    void setUID(String UID) {
-        this.UID = UID;
-    }
-    String getUID() {
-        return UID;
-    }
-
-    void setAadhaarPhoto(String aadhaarPhoto) {
-        AadhaarPhoto = aadhaarPhoto;
-    }
-    String getAadhaarPhoto() {
-        return AadhaarPhoto;
     }
 
     void setApplicant_Name(String applicant_Name) {
@@ -357,19 +333,19 @@ public class Set_and_Get_Service_Parameter {
         this.ST_applicant_photo = ST_applicant_photo;
     }
 
-    public String getTown_Code() {
+    public int getTown_Code() {
         return Town_Code;
     }
 
-    public void setTown_Code(String town_Code) {
+    public void setTown_Code(int town_Code) {
         Town_Code = town_Code;
     }
 
-    public String getWard_Code() {
+    public int getWard_Code() {
         return Ward_Code;
     }
 
-    public void setWard_Code(String ward_Code) {
+    public void setWard_Code(int ward_Code) {
         Ward_Code = ward_Code;
     }
 

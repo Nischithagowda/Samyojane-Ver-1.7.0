@@ -19,12 +19,11 @@ import java.util.ArrayList;
 
 public class RI_Applicant_wise_report extends AppCompatActivity {
     ArrayList<String> SlNo = new ArrayList<>();
-    ArrayList<String> GSC_No = new ArrayList<>();
     ArrayList<String> ApplicantID = new ArrayList<>();
     ArrayList<String> ApplicantName = new ArrayList<>();
     ArrayList<String> ServiceName = new ArrayList<>();
     ArrayList<String> ServiceCode = new ArrayList<>();
-    String villageCode, habitationCode, townCode, wardCode, gsc_no, applicantId, applicantName, serviceName, serviceCode;
+    String villageCode, townCode, wardCode, applicantId, applicantName, serviceName, serviceCode;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     TextView emptyTxt;
@@ -45,11 +44,9 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
 
         Intent i = getIntent();
         villageCode = i.getStringExtra("villageCode");
-        habitationCode = i.getStringExtra("habitationCode");
         townCode = i.getStringExtra("townCode");
         wardCode = i.getStringExtra("wardCode");
         Log.d("villageCode", ""+villageCode);
-        Log.d("habitationCode", ""+habitationCode);
         Log.d("townCode",""+townCode);
         Log.d("wardCode",""+wardCode);
 
@@ -68,7 +65,6 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
         Log.d("InDisplay", ""+ i);
 
         SlNo.clear();
-        GSC_No.clear();
         ApplicantID.clear();
         ApplicantName.clear();
         ServiceName.clear();
@@ -81,7 +77,6 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
                 + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + " is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code + "=" + villageCode + " and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code + "=" + habitationCode + " and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"=255", null);
         if (cursor1.getCount()>0){
@@ -92,14 +87,12 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
                 do {
                     Log.d("InDisplayIf", "" + i);
                     Log.d("Applicant_Wise","Enter1");
-                    gsc_no = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCFirstPart_Name));
                     applicantId = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
                     applicantName = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
                     serviceName = cursor1.getString(cursor1.getColumnIndexOrThrow(getString(R.string.ser_tran_service_name)));
                     serviceCode = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));
 
                     SlNo.add(String.valueOf(i));
-                    GSC_No.add(gsc_no);
                     ApplicantID.add(applicantId);
                     ApplicantName.add(applicantName);
                     ServiceName.add(serviceName);
@@ -111,7 +104,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
                 } while (cursor1.moveToNext());
             }
             Log.d("InDisplayIf", "" + i);
-            listAdapter = new Applicant_ListAdapter(RI_Applicant_wise_report.this, SlNo, GSC_No, ApplicantID, ApplicantName, ServiceName, ServiceCode);
+            listAdapter = new Applicant_ListAdapter(RI_Applicant_wise_report.this, SlNo, ApplicantID, ApplicantName, ServiceName, ServiceCode);
             listView.setAdapter(listAdapter);
             database.close();
         }else{
@@ -131,7 +124,6 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
         Log.d("InDisplay", ""+ i);
 
         SlNo.clear();
-        GSC_No.clear();
         ApplicantID.clear();
         ApplicantName.clear();
         ServiceName.clear();
@@ -145,8 +137,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + " is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code + "=" + townCode + " and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code + "=" + wardCode + " and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code + "=99999 and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code + "=255", null);
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code + "=99999", null);
         if (cursor1.getCount()>0){
             emptyTxt.setVisibility(View.GONE);
             linearLayout.setVisibility(View.VISIBLE);
@@ -154,14 +145,12 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
             if (cursor1.moveToFirst()) {
                 do {
                     Log.d("InDisplayIf", "" + i);
-                    gsc_no = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCFirstPart_Name));
                     applicantId = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
                     applicantName = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
                     serviceName = cursor1.getString(cursor1.getColumnIndexOrThrow(getString(R.string.ser_tran_service_name)));
                     serviceCode = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));
 
                     SlNo.add(String.valueOf(i));
-                    GSC_No.add(gsc_no);
                     ApplicantID.add(applicantId);
                     ApplicantName.add(applicantName);
                     ServiceName.add(serviceName);
@@ -173,7 +162,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
                 } while (cursor1.moveToNext());
             }
             Log.d("InDisplayIf", "" + i);
-            listAdapter = new Applicant_ListAdapter(RI_Applicant_wise_report.this, SlNo, GSC_No, ApplicantID, ApplicantName, ServiceName, ServiceCode);
+            listAdapter = new Applicant_ListAdapter(RI_Applicant_wise_report.this, SlNo, ApplicantID, ApplicantName, ServiceName, ServiceCode);
             listView.setAdapter(listAdapter);
             database.close();
         }else{

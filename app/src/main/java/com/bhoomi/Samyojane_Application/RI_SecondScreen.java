@@ -69,19 +69,18 @@ public class RI_SecondScreen extends AppCompatActivity {
     double latitude, longitude;
     int serviceCode;
     String serviceName, serviceName_k;
-    String gsc_firstPart, gsc_firstPart_Name=null;
 
     private long startTime = 0L;
-    private Handler customHandler = new Handler();
+    Handler customHandler = new Handler();
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedTime = 0L;
 
-    String RI_DataUpdateFlag, District_Code, Taluk_Code, Hobli_Code, Village_Circle_code, Village_Code, Habitation_Code, Town_Code, Ward_Code, Service_Code,Applicant_Id;
+    String RI_DataUpdateFlag, District_Code, Taluk_Code, Hobli_Code, Village_Circle_code, Village_Code, Town_Code, Ward_Code, Service_Code,Applicant_Id;
     String RI_Annual_Income, RI_vLat, RI_vLong, RI_Accepted_VA_information;
 
 
-    String RI_Can_Certificate_Given, RI_Reason_for_Rejection, ST_applicant_photo;
+    String RI_Can_Certificate_Given, RI_Reason_for_Rejection;
     //Service Parameters of service_code-6
     String RI_Applicant_Category, RI_Applicant_Caste, RI_Belongs_Creamy_Layer_6, RI_Reason_for_Creamy_Layer_6;
     //Service Parameters of service_code-8
@@ -566,15 +565,14 @@ public class RI_SecondScreen extends AppCompatActivity {
                     set_and_get_village_name.setVCM_va_circle_ename(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_ename));
                     set_and_get_village_name.setVCM_va_circle_kname(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_kname));
                     set_and_get_village_name.setHM_village_code(object.getString(DataBaseHelperClass_VillageNames.HM_village_code));
-                    set_and_get_village_name.setHM_habitation_code(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_code));
                     set_and_get_village_name.setHM_habitation_ename(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_ename));
                     set_and_get_village_name.setHM_habitation_kname(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_kname));
 
 
                     database.execSQL("insert into " + DataBaseHelperClass_VillageNames.TABLE_NAME
-                            + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_code, HM_habitation_ename, HM_habitation_kname) values ("
+                            + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_ename, HM_habitation_kname) values ("
                             + set_and_get_village_name.getVCM_va_circle_code() +",'"+set_and_get_village_name.getVCM_va_circle_ename()+"','"+set_and_get_village_name.getVCM_va_circle_kname()+"',"
-                            + set_and_get_village_name.getHM_village_code() +","+ set_and_get_village_name.getHM_habitation_code()+",'"+ set_and_get_village_name.getHM_habitation_ename()+"','"
+                            + set_and_get_village_name.getHM_village_code() +",'"+ set_and_get_village_name.getHM_habitation_ename()+"','"
                             + set_and_get_village_name.getHM_habitation_kname()+"')");
                     Log.d("Database", "VillageNames Database Inserted");
 
@@ -662,18 +660,16 @@ public class RI_SecondScreen extends AppCompatActivity {
                     JSONObject object = array.getJSONObject(i);
 
                     set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
-                    set_and_get_service_parameter.setDistrict_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code));
-                    set_and_get_service_parameter.setTaluk_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code));
-                    set_and_get_service_parameter.setHobli_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code));
-                    set_and_get_service_parameter.setVa_Circle_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code));
+                    set_and_get_service_parameter.setDistrict_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code));
+                    set_and_get_service_parameter.setTaluk_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code));
+                    set_and_get_service_parameter.setHobli_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code));
+                    set_and_get_service_parameter.setVa_Circle_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code));
                     set_and_get_service_parameter.setVillage_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code));
-                    set_and_get_service_parameter.setHabitation_code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code));
-                    set_and_get_service_parameter.setTown_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code));
-                    set_and_get_service_parameter.setWard_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
+                    set_and_get_service_parameter.setTown_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code));
+                    set_and_get_service_parameter.setWard_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
                     set_and_get_service_parameter.setService_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));
                     set_and_get_service_parameter.setRD_No(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
                     set_and_get_service_parameter.setEng_Certify(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
-                    set_and_get_service_parameter.setGSC_First_Part(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_GSCFirstPart));
                     set_and_get_service_parameter.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
                     set_and_get_service_parameter.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date));
                     set_and_get_service_parameter.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
@@ -736,17 +732,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                     set_and_get_service_parameter.setService_Name(serviceName);
                     set_and_get_service_parameter.setService_Name_k(serviceName_k);
 
-                    gsc_firstPart = set_and_get_service_parameter.getGSC_First_Part();
-                    if(Objects.equals(gsc_firstPart, "3")){
-                        gsc_firstPart_Name = "RD003";
-                    }
-                    else if(Objects.equals(gsc_firstPart, "501")){
-                        gsc_firstPart_Name="RD501";
-                    }else {
-                        gsc_firstPart_Name=null;
-                    }
-
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, Service_Name, Service_Name_k, ST_GSC_No,ST_Eng_Certificate, ST_GSCFirstPart, GSCFirstPart_Name," +
+                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, Service_Name, Service_Name_k, ST_GSC_No,ST_Eng_Certificate," +
                             " ST_applicant_name, ST_DueDate, ST_Raised_Location, ST_applicant_photo, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Annual_Income," +
                             " Num_Years_8, App_Father_Category_8, APP_Father_Caste_8, App_Mother_Category_8, APP_Mother_Caste_8, Remarks, " +
                             " Total_No_Years_10, NO_Months_10, Reside_At_Stated_Address_10, Place_Match_With_RationCard_10, Pur_for_Cert_Code_10, Can_Certificate_Given, Reason_for_Rejection, DataUpdateFlag)" +
@@ -756,16 +742,13 @@ public class RI_SecondScreen extends AppCompatActivity {
                             + set_and_get_service_parameter.getHobli_Code() + ","
                             + set_and_get_service_parameter.getVa_Circle_Code() + ","
                             + set_and_get_service_parameter.getVillage_Code()+",'"
-                            + set_and_get_service_parameter.getHabitation_code()+"','"
                             + set_and_get_service_parameter.getTown_Code()+"','"
                             + set_and_get_service_parameter.getWard_Code()+"','"
                             + set_and_get_service_parameter.getService_Code() + "','"
                             + set_and_get_service_parameter.getService_Name() + "','"
                             + set_and_get_service_parameter.getService_Name_k() + "',"
                             + set_and_get_service_parameter.getRD_No() +",'"
-                            + set_and_get_service_parameter.getEng_Certify()+"',"
-                            + set_and_get_service_parameter.getGSC_First_Part()+ ",'"
-                            + gsc_firstPart_Name + "','"
+                            + set_and_get_service_parameter.getEng_Certify()+"','"
                             + set_and_get_service_parameter.getApplicant_Name() + "','"
                             + set_and_get_service_parameter.getDue_Date() + "','"
                             + set_and_get_service_parameter.getRaised_Location() +"','"
@@ -804,8 +787,6 @@ public class RI_SecondScreen extends AppCompatActivity {
                         Log.d("entry", String.valueOf(tData));
                         btnProceed.setVisibility(View.VISIBLE);
                         //btnPendency.setVisibility(View.VISIBLE);
-                        btnDownload.setText(R.string.download);
-                        dialog.dismiss();
                         //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
                     }
                     else {
@@ -815,9 +796,9 @@ public class RI_SecondScreen extends AppCompatActivity {
                         tData=0;
                         btnProceed.setVisibility(View.GONE);
                         //btnPendency.setVisibility(View.GONE);
-                        btnDownload.setText(R.string.download);
-                        dialog.dismiss();
                     }
+                    btnDownload.setText(R.string.download);
+                    dialog.dismiss();
                 });
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -839,7 +820,7 @@ public class RI_SecondScreen extends AppCompatActivity {
         }
     }
 
-    private Runnable updateTimerThread = new Runnable() {
+    Runnable updateTimerThread = new Runnable() {
 
         @SuppressLint({"SetTextI18n", "DefaultLocale"})
         public void run() {
@@ -893,7 +874,6 @@ public class RI_SecondScreen extends AppCompatActivity {
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code +","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code+","
@@ -937,7 +917,6 @@ public class RI_SecondScreen extends AppCompatActivity {
                                 Hobli_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code));
                                 Village_Circle_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code));
                                 Village_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code));
-                                Habitation_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code));
                                 Town_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code));
                                 Ward_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code));
                                 Service_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));
@@ -972,7 +951,6 @@ public class RI_SecondScreen extends AppCompatActivity {
                                 request.addProperty("Hobli_Code", Hobli_Code);
                                 request.addProperty("va_Circle_Code", Village_Circle_code);
                                 request.addProperty("Village_Code", Village_Code);
-                                request.addProperty("Habitation_code", Habitation_Code);
                                 request.addProperty("Town_Code",Town_Code);
                                 request.addProperty("Ward_Code",Ward_Code);
                                 request.addProperty("Service_Code", Service_Code);

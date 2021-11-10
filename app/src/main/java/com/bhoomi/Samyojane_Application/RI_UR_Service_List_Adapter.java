@@ -36,7 +36,6 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
     Context context;
     ArrayList<String> SlNo;
     ArrayList<String> Applicant_Name;
-    ArrayList<String> GSC_First_Part;
     ArrayList<String> Applicant_ID;
     ArrayList<String> DueDate;
     ArrayList<String> ServiceCode;
@@ -50,7 +49,7 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
     String applicant_name;
     String applicant_Id;
     String town_Name, ward_Name;
-    String villageCode, habitationCode, town_code, ward_code, option_Flag, eng_certi;
+    String villageCode, town_code, ward_code, option_Flag, eng_certi;
     String serviceCode;
     String district, taluk, RI_Name, hobli,VA_Circle_Name, VA_Name;
     private SQLiteOpenHelper openHelper;
@@ -60,8 +59,7 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
     String item_position;
     Intent i;
 
-    RI_UR_Service_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name,
-                            ArrayList<String> gsc_firstPart, ArrayList<String> rd_No, ArrayList<String> dueDate,
+    RI_UR_Service_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name, ArrayList<String> rd_No, ArrayList<String> dueDate,
                             ArrayList<String> serviceCode, ArrayList<String> serviceName, ArrayList<String> townName,
                             ArrayList<String> townCode, ArrayList<String> wardName, ArrayList<String> wardCode,
                             ArrayList<String> option_Flag) {
@@ -69,7 +67,6 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
         this.context = context;
         this.SlNo = slNo;
         this.Applicant_Name = applicant_Name;
-        this.GSC_First_Part = gsc_firstPart;
         this.Applicant_ID = rd_No;
         this.DueDate = dueDate;
         this.ServiceCode = serviceCode;
@@ -129,13 +126,10 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
 
             assert date1 != null;
             if (date1.after(date2) || date1.equals(date2)) {
-                //#FFEE0808
-                ri_ur_service_viewHolder.gsc_first_part.setTextColor(Color.parseColor("#FFEE0808"));
                 ri_ur_service_viewHolder.app_Id.setTextColor(Color.parseColor("#FFEE0808"));
                 ri_ur_service_viewHolder.app_dueDate.setTextColor(Color.parseColor("#FFEE0808"));
                 Log.d("Date", "Date1 is after Date2");
             }else{
-                ri_ur_service_viewHolder.gsc_first_part.setTextColor(Color.parseColor("#ff000000"));
                 ri_ur_service_viewHolder.app_Id.setTextColor(Color.parseColor("#ff000000"));
                 ri_ur_service_viewHolder.app_dueDate.setTextColor(Color.parseColor("#ff000000"));
                 Log.d("Date", "Date1 is before Date2");
@@ -148,7 +142,6 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
 
         ri_ur_service_viewHolder.sl_No.setText(SlNo.get(position));
         ri_ur_service_viewHolder.app_Name.setText(Applicant_Name.get(position));
-        ri_ur_service_viewHolder.gsc_first_part.setText(GSC_First_Part.get(position));
         ri_ur_service_viewHolder.app_Id.setText(Applicant_ID.get(position));
         ri_ur_service_viewHolder.app_dueDate.setText(DueDate.get(position));
         ri_ur_service_viewHolder.app_ServiceCode.setText(ServiceCode.get(position));
@@ -186,7 +179,6 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
             serviceCode = ri_ur_service_viewHolder.app_ServiceCode.getText().toString();
             serviceName = ri_ur_service_viewHolder.app_ServiceName.getText().toString();
             villageCode = "99999";
-            habitationCode = "255";
             town_Name = ri_ur_service_viewHolder.tvTownName.getText().toString();
             town_code = ri_ur_service_viewHolder.tvTownCode.getText().toString();
             ward_Name = ri_ur_service_viewHolder.tvWardName.getText().toString();
@@ -215,7 +207,6 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
             Log.d("serviceCode", ""+serviceCode);
             Log.d("serviceName", ""+serviceName);
             Log.d("villageCode", ""+villageCode);
-            Log.d("habitationCode", ""+habitationCode);
             Log.d("strSearchVillageName",""+ village_name);
             Log.d("RI_va_Circle_code_ser",""+ va_Circle_code);
             Log.d("RI_VA_Circle_Name_ser", ""+VA_Circle_Name);
@@ -268,7 +259,6 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
                         i.putExtra("strSearchVillageName", village_name);
                         i.putExtra("serviceCode", serviceCode);
                         i.putExtra("villageCode", villageCode);
-                        i.putExtra("habitationCode", habitationCode);
                         i.putExtra("va_Circle_Code", va_Circle_code);
                         i.putExtra("town_Name", town_Name);
                         i.putExtra("town_code", town_code);
@@ -305,7 +295,6 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
                         i.putExtra("strSearchVillageName", village_name);
                         i.putExtra("serviceCode", serviceCode);
                         i.putExtra("villageCode", villageCode);
-                        i.putExtra("habitationCode", habitationCode);
                         i.putExtra("va_Circle_Code", va_Circle_code);
                         i.putExtra("town_Name", town_Name);
                         i.putExtra("town_code", town_code);
@@ -336,7 +325,6 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
                         i.putExtra("strSearchVillageName", village_name);
                         i.putExtra("serviceCode", serviceCode);
                         i.putExtra("villageCode", villageCode);
-                        i.putExtra("habitationCode", habitationCode);
                         i.putExtra("va_Circle_Code", va_Circle_code);
                         i.putExtra("town_Name", town_Name);
                         i.putExtra("town_code", town_code);
@@ -369,12 +357,11 @@ public class RI_UR_Service_List_Adapter  extends BaseAdapter implements Filterab
     }
 }
 class RI_UR_Service_ViewHolder{
-    TextView sl_No, app_Name, gsc_first_part, app_Id,app_dueDate, app_ServiceCode, app_ServiceName,
+    TextView sl_No, app_Name, app_Id,app_dueDate, app_ServiceCode, app_ServiceName,
             tvTownName, tvTownCode, tvWardName, tvWardCode, tvOption_Flag;
     RI_UR_Service_ViewHolder(View view) {
         sl_No = view.findViewById(R.id.sl_No);
         app_Name = view.findViewById(R.id.app_Name);
-        gsc_first_part = view.findViewById(R.id.gsc_first_part);
         app_Id = view.findViewById(R.id.app_Id);
         app_dueDate = view.findViewById(R.id.app_dueDate);
         app_ServiceCode = view.findViewById(R.id.app_ServiceCode);

@@ -95,7 +95,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
     boolean return_Value;
     InputMethodManager imm;
     InputMethodSubtype ims;
-    String raisedLoc, eng_certi, GSC_FirstPart;
+    String raisedLoc, eng_certi;
 
     final int min = 1111;
     final int max = 9999;
@@ -394,12 +394,11 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         database = openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+"="+applicant_Id, null);
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+"='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToFirst()){
                 remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
-                GSC_FirstPart = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_GSCFirstPart));
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
                 appID = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
                 appName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
@@ -620,13 +619,12 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                 dialog.show();
                 //dialog1.setProgress(0);
 
-                Log.d("Docs", "Applicant_ID:"+applicant_Id+"\nGSC_FirstPart:"+GSC_FirstPart);
+                Log.d("Docs", "Applicant_ID:"+applicant_Id);
                 openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_Resident_Parameters.this);
                 database = openHelper.getWritableDatabase();
 
                 //8186126549
                 hashMap_Down_Docs.put("GSC_No", applicant_Id);
-                hashMap_Down_Docs.put("GSC_First_Part", GSC_FirstPart);
                 Log.d("hashMap_Down_Docs", ""+hashMap_Down_Docs+", URL:"+getString(R.string.url_Down_Docs));
                 new GetDocsFromServer().execute(getString(R.string.url_Down_Docs));
                 //http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Docs?GSC_No=8966150768&GSC_First_Part=3
@@ -925,7 +923,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         database = openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id, null);
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToNext()){
                 strRemarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
@@ -961,7 +959,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information + "='"+option2+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No + "='"+report_no+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + "=1"
-                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id);
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'");
 
             Log.d("Database", "ServiceParameters Database Updated");
             Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
@@ -1031,7 +1029,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         database = openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id, null);
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
 
             database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
@@ -1058,7 +1056,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information + "='"+option2+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No + "='"+report_no+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + "=1"
-                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "="+applicant_Id);
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'");
 
             Log.d("Database", "ServiceParameters Database Updated");
             Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();

@@ -21,7 +21,7 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
 
     TextView tvHobli, tvTaluk, tvVA_Name, pendencyReport;
     static String va_Circle_Name, VA_Name;
-    static String district_Code, taluk_Code, hobli_Code, va_Circle_Code, villageCode, habitationCode;
+    static String district_Code, taluk_Code, hobli_Code, va_Circle_Code, villageCode;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database, database1;
     ArrayList<String> SlNo = new ArrayList<>();

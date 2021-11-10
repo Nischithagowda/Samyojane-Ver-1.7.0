@@ -25,20 +25,19 @@ public class Village_wise_report extends AppCompatActivity {
     //TextView tvHobli, tvTaluk, tvVA_Name;
     TextView pendencyReport;
     static String district, taluk, hobli, VA_Circle_Name, VA_Name;
-    static String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
+    static int district_Code, taluk_Code, hobli_Code, va_Circle_Code, townCode, wardCode;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database, database1, database_Asset;
-    String villageName, villageCode, habitationCode, townCode, townName, wardCode, wardName;
+    String villageName, villageCode, townName, wardName;
     ArrayList<String> SlNo = new ArrayList<>();
     ArrayList<String> TotalCount = new ArrayList<>();
     ArrayList<String> VillageName = new ArrayList<>();
     ArrayList<String> VillageCode = new ArrayList<>();
-    ArrayList<String> HabitationCode = new ArrayList<>();
     ArrayList<String> SlNo_T = new ArrayList<>();
     ArrayList<String> TotalCount_T = new ArrayList<>();
-    ArrayList<String> TownCode = new ArrayList<>();
+    ArrayList<Integer> TownCode = new ArrayList<>();
     ArrayList<String> WardName = new ArrayList<>();
-    ArrayList<String> WardCode = new ArrayList<>();
+    ArrayList<Integer> WardCode = new ArrayList<>();
     TextView emptyTxt;
     ListView listView;
     Village_ListAdapter list_adapter;
@@ -82,13 +81,13 @@ public class Village_wise_report extends AppCompatActivity {
         pendencyReport.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         Intent i = getIntent();
-        district_Code = i.getStringExtra("district_Code");
+        district_Code = i.getIntExtra("district_Code", 0);
         district = i.getStringExtra("districtCode");
-        taluk_Code = i.getStringExtra("taluk_Code");
+        taluk_Code = i.getIntExtra("taluk_Code", 0);
         taluk = i.getStringExtra("taluk");
-        hobli_Code = i.getStringExtra("hobli_Code");
+        hobli_Code = i.getIntExtra("hobli_Code", 0);
         hobli = i.getStringExtra("hobli");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        va_Circle_Code = i.getIntExtra("va_Circle_Code", 0);
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
         VA_Name = i.getStringExtra("VA_Name");
 
@@ -180,15 +179,13 @@ public class Village_wise_report extends AppCompatActivity {
                 do {
                     villageCode = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_VillageNames.HM_village_code));
                     villageName = cursor1.getString(cursor1.getColumnIndexOrThrow(getString(R.string.village_table_habitation_name)));
-                    habitationCode = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_VillageNames.HM_habitation_code));
 
                     Log.d("villageCode_l", "" + villageCode);
                     if (!villageCode.equals("99999")) {
-                        Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No
+                        Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo
                                 + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME + " where "
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + " is null and "
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=" + villageCode + " and "
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Habitation_code + "=" + habitationCode, null);
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=" + villageCode, null);
 
                         if (cursor.getCount() > 0) {
                             Log.d("cursor.getCount-", "" + cursor.getCount());
@@ -205,13 +202,12 @@ public class Village_wise_report extends AppCompatActivity {
                                         VillageName.add(villageName);
                                         TotalCount.add(cursor.getString(cursor.getColumnIndex("TotalCount")));
                                         VillageCode.add(String.valueOf(villageCode));
-                                        HabitationCode.add(String.valueOf(habitationCode));
                                         i++;
                                     }
                                 } while (cursor.moveToNext());
                             }
                             Log.d("InDisplayIf", "" + i);
-                            list_adapter = new Village_ListAdapter(Village_wise_report.this, SlNo, VillageName, TotalCount, VillageCode, HabitationCode);
+                            list_adapter = new Village_ListAdapter(Village_wise_report.this, SlNo, VillageName, TotalCount, VillageCode);
                             listView.setAdapter(list_adapter);
                             database.close();
                             //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
@@ -273,7 +269,7 @@ public class Village_wise_report extends AppCompatActivity {
         if (cursor1.getCount()>0){
             if (cursor1.moveToFirst()) {
                 do {
-                    townCode = cursor1.getString(cursor1.getColumnIndexOrThrow(SqlLiteOpenHelper_Class.TWM_town_code));
+                    townCode = cursor1.getInt(cursor1.getColumnIndexOrThrow(SqlLiteOpenHelper_Class.TWM_town_code));
                     townName = cursor1.getString(cursor1.getColumnIndexOrThrow(getString(R.string.town_master_town_name)));
 
                     Log.d("villageCode_l", "" + townCode);
@@ -286,10 +282,10 @@ public class Village_wise_report extends AppCompatActivity {
                     if (cursor2.getCount()>0) {
                         if (cursor2.moveToFirst()) {
                             do {
-                                wardCode = cursor2.getString(cursor2.getColumnIndexOrThrow(SqlLiteOpenHelper_Class.WM_ward_no));
+                                wardCode = cursor2.getInt(cursor2.getColumnIndexOrThrow(SqlLiteOpenHelper_Class.WM_ward_no));
                                 wardName = cursor2.getString(cursor2.getColumnIndexOrThrow(getString(R.string.town_master_ward_name)));
 
-                                Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No
+                                Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo
                                         + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME + " where "
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + " is null and "
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code + "=" + townCode + " and "
@@ -311,7 +307,7 @@ public class Village_wise_report extends AppCompatActivity {
                                                 WardName.add(wardName);
                                                 TotalCount_T.add(cursor.getString(cursor.getColumnIndex("TotalCount")));
                                                 TownCode.add(townCode);
-                                                WardCode.add(String.valueOf(wardCode));
+                                                WardCode.add(wardCode);
                                                 i++;
                                             }
                                         } while (cursor.moveToNext());

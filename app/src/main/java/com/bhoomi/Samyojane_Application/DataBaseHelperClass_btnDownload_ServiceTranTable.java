@@ -1,6 +1,5 @@
 package com.bhoomi.Samyojane_Application;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -8,58 +7,49 @@ import android.util.Log;
 
 public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpenHelper {
 
-    private static int DATABASE_VERSION=1;
-    @SuppressLint("SdCardPath")
-    static final String DB_PATH = "/sdcard/Samyojane/databases/";
+    static int DATABASE_VERSION=1;
     public static String DATABASE_NAME= "ServiceTranTable.db";
     public static String TABLE_NAME="ServiceTranTable";
     public static String TABLE_NAME_1="ServiceParameters";
-    public static String District_Code = "ST_district_code";
-    public static String Taluk_Code = "ST_taluk_code";
-    public static String Hobli_Code = "ST_hobli_code";
-    public static String va_Circle_Code = "ST_va_Circle_Code";
-    public static String Village_Code = "ST_village_code";
-    public static String Habitation_code = "ST_habitation_code";
-    public static String Town_Code = "ST_town_code";
-    public static String Ward_Code = "ST_ward_no";
-    public static String Service_Code = "ST_facility_code";
-    public static String RD_No = "ST_GSC_No";
-    public static String Applicant_Name = "ST_applicant_name";
-    public static String Due_Date = "ST_DueDate";
-    public static String Raised_Location = "ST_Raised_Location";
-    public static String Father_Name = "ST_father_name";
-    public static String Mother = "ST_mother_name";
-    public static String RationCard_No = "ST_ID_NUMBER";
-    public static String Aadhar_NO = "ST_Aadhaar_EID_No";
-    public static String Mobile_No = "ST_mobile_no";
-    public static String Address1 = "ST_applicant_caddress1";
-    public static String Address2 = "ST_applicant_caddress2";
-    public static String Address3 = "ST_applicant_caddress3";
-    public static String ST_applicant_cadd_pin = "ST_applicant_cadd_pin";
-    public static String ST_applicant_photo = "ST_applicant_photo";
-    public static String ID_TYPE = "ST_ID_TYPE";
-    public static String ST_Eng_Certificate = "ST_Eng_Certificate";
-    public static String ST_GSCFirstPart = "ST_GSCFirstPart";
-    public static String GSCFirstPart_Name = "GSCFirstPart_Name";
-    public static String CST_res_category = "CST_res_category";
-    public static String CST_caste_as_per_app = "CST_caste_as_per_app";
-    public static String CST_annual_income = "CST_annual_income";
-    public static String SCOT_caste_app = "SCOT_caste_app";
-    public static String SCOT_annual_income = "SCOT_annual_income";
-    public static String GST_No_Years_Applied = "GST_No_Years_Applied";
-    public static String GST_No_Mths_Applied = "GST_No_Mths_Applied";
+    public static String District_Code = "DistrictCode";
+    public static String Taluk_Code = "TalukCode";
+    public static String Hobli_Code = "HobliCode";
+    public static String Village_Code = "VillageCode";
+    public static String Town_Code = "TownCode";
+    public static String Ward_Code = "WardNo";
+    public static String Service_Code = "FacilityCode";
+    public static String GSCNo = "GSCNo";
+    public static String Applicant_Name = "ApplicantName";
+    public static String Due_Date = "DueDate";
+    public static String Raised_Location = "RaisedLocation";
+    public static String Father_Name = "FatherName";
+    public static String Mother_Name = "MotherName";
+    public static String IDNo = "IDNo";
+    public static String Mobile_No = "MobileNo";
+    public static String Address1 = "Address1";
+    public static String Address2 = "Address2";
+    public static String Address3 = "Address3";
+    public static String PinCode = "Pincode";
+    public static String ST_applicant_photo = "ApplicantPhoto";
+    public static String ID_TYPE = "IDType";
+    public static String ST_Eng_Certificate = "EnglishOrKannada";
+    public static String ApplicantTiitle = "ApplicantTiitle";
+    public static String BinCom = "BinCom";
+    public static String RelationTitle = "RelationTitle";
+    public static String ReservationCategory = "ReservationCategory";
+    public static String Caste = "Caste";
+    public static String AnnualIncome = "AnnualIncome";
+    public static String GST_No_Mths_Applied = "NoOfMonths_Applied";
+    public static String GST_No_Years_Applied = "NoOfYears_Applied";
     public static String vLat = "vLat";
     public static String vLong = "vLong";
     public static String Photo = "Photo";
     public static String DataUpdateFlag = "DataUpdateFlag";
     public static String Service_Name = "Service_Name";
     public static String Service_Name_k = "Service_Name_k";
-    public static String ST_Push_Flag = "ST_Push_Flag";
-    public static String IST_annual_income = "IST_annual_income";
 
     public static String U_RationCard_No = "ST_Upd_ID_NUMBER";
     public static String U_Mobile_No = "ST_Upd_mobile_no";
-    public static String PinCode = "ST_PinCode";
     public static String Report_No = "Report_No";
 
     public static String VA_Accepts_Applicant_information = "VA_Accepts_Applicant_information";
@@ -67,7 +57,6 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     public static String Applicant_Caste = "Applicant_Caste";
     public static String Can_Certificate_Given = "Can_Certificate_Given";
     public static String Reason_for_Rejection = "Reason_for_Rejection";
-    public static String Annual_Income = "Annual_Income";
     public static String UID = "UID";
     public static String AadhaarPhoto = "AadhaarPhoto";
 
@@ -134,18 +123,17 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     public static String RI_Can_Certificate_Given_as_RI = "RI_Can_Certificate_Given_as_RI";
     public static String RI_Reason_for_Rejection_as_RI = "RI_Reason_for_Rejection_as_RI";
 
-    private static String CREATE_TABLE ="CREATE TABLE " + TABLE_NAME +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+Village_Code+" int,"+ Habitation_code +" int,"+ Town_Code+" int,"+Ward_Code+" int,"+Service_Code+" int,"+ Service_Name+" TEXT,"+ Service_Name_k+" TEXT,"+RD_No+" int,"
-            + Applicant_Name+" TEXT,"+Due_Date+" datetime,"+Raised_Location+" TEXT,"+ Father_Name +" TEXT,"+Mother+" TEXT,"+ ID_TYPE +" int,"+RationCard_No+" TEXT,"+Aadhar_NO+" decimal(12,0),"
-            + Mobile_No+" decimal(10,0),"+Address1+" TEXT,"+Address2+" TEXT,"+Address3+" TEXT,"+ ST_applicant_cadd_pin+" int,"+ ST_applicant_photo+" TEXT, "+ ST_Eng_Certificate+" TEXT,"+ ST_GSCFirstPart+" int,"+ GSCFirstPart_Name+" TEXT,"
-            + CST_res_category+ " TEXT,"+ CST_caste_as_per_app+ " TEXT,"
-            + CST_annual_income + " TEXT,"+ SCOT_caste_app + " TEXT,"+ SCOT_annual_income + " TEXT,"+ GST_No_Years_Applied +" TEXT,"
-            + GST_No_Mths_Applied + " TEXT,"+ ST_Push_Flag+" TEXT,"+ IST_annual_income+" TEXT," + DataUpdateFlag+" int)";
+    static String CREATE_TABLE ="CREATE TABLE " + TABLE_NAME +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+Village_Code+" int,"+ Town_Code+" int,"+Ward_Code+" int,"+Service_Code+" int,"+ Service_Name+" TEXT,"+ Service_Name_k+" TEXT,"+ GSCNo +" TEXT,"
+            + ApplicantTiitle+ " int,"+ Applicant_Name+" TEXT,"+Due_Date+" datetime,"+Raised_Location+" TEXT,"+ BinCom+ " int,"+ RelationTitle+ " int,"+ Father_Name +" TEXT,"+ Mother_Name +" TEXT,"+ ID_TYPE +" int,"+ IDNo +" TEXT,"
+            + Mobile_No+" decimal(10,0),"+Address1+" TEXT,"+Address2+" TEXT,"+Address3+" TEXT,"+ PinCode +" int,"+ ST_applicant_photo+" TEXT, "+ ST_Eng_Certificate+" TEXT,"
+            + ReservationCategory+ " int,"+ Caste+ " int,"+ GST_No_Mths_Applied+ " int,"+ GST_No_Years_Applied+ " int,"
+            + AnnualIncome + " TEXT," + DataUpdateFlag+" int)";
 
-    private static String CREATE_TABLE_1 ="CREATE TABLE " + TABLE_NAME_1 +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+va_Circle_Code+" int,"+Village_Code+ " int,"+ Habitation_code +" int,"+ Town_Code+" int,"+Ward_Code+" int,"+Service_Code+" int,"+RD_No+" bigInt,"
-            + Applicant_Name+" TEXT,"+ Father_Name +" TEXT,"+Mother+" TEXT,"+ U_Mobile_No+" decimal(10,0),"+U_RationCard_No+" TEXT,"+Address1+" TEXT,"
-            + Address2+" TEXT,"+Address3+" TEXT,"+ PinCode+" int,"+ST_applicant_photo+" TEXT,"+ ST_Eng_Certificate+" TEXT,"+ ST_GSCFirstPart+" int,"+ VA_Accepts_Applicant_information +" TEXT,"
+    static String CREATE_TABLE_1 ="CREATE TABLE " + TABLE_NAME_1 +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+Village_Code+ " int,"+ Town_Code+" int,"+Ward_Code+" int,"+Service_Code+" int,"+ GSCNo +" TEXT,"
+            + Applicant_Name+" TEXT,"+ Father_Name +" TEXT,"+ Mother_Name +" TEXT,"+ U_Mobile_No+" decimal(10,0),"+U_RationCard_No+" TEXT,"+Address1+" TEXT,"
+            + Address2+" TEXT,"+Address3+" TEXT,"+ PinCode+" int,"+ST_applicant_photo+" TEXT,"+ ST_Eng_Certificate+" TEXT,"+ VA_Accepts_Applicant_information +" TEXT,"
             + UID+" TEXT,"+AadhaarPhoto +" TEXT,"+Due_Date+" datetime,"+ Report_No+" TEXT,"
-            + Applicant_Category +" int,"+Applicant_Caste +" int,"+ Belongs_Creamy_Layer_6 +" TEXT,"+ Reason_for_Creamy_Layer_6 +" int," + Annual_Income +" float,"
+            + Applicant_Category +" int,"+Applicant_Caste +" int,"+ Belongs_Creamy_Layer_6 +" TEXT,"+ Reason_for_Creamy_Layer_6 +" int," + AnnualIncome +" float,"
             + Num_Years_8+" TEXT," + App_Father_Category_8+ " int," + APP_Father_Caste_8+ " int," + App_Mother_Category_8+ " int," + APP_Mother_Caste_8+ " int,"
             + Remarks+" TEXT,"
             + Total_No_Years_10+" int,"+ NO_Months_10+" int," +Reside_At_Stated_Address_10+" TEXT,"+ Place_Match_With_RationCard_10+" TEXT," + Pur_for_Cert_Code_10+" int,"

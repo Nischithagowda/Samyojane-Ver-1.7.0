@@ -1,7 +1,6 @@
 package com.bhoomi.Samyojane_Application;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,23 +26,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.XML;
-
-import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -54,7 +42,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 public class New_Request_SecondScreen extends AppCompatActivity{
-    TextView applicant_infor, tvServiceName, tvOr, tv_for_Aadhaar;
+    TextView applicant_infor, tvServiceName, tv_for_Aadhaar;
     String applicant_name;
     String applicant_Id;
     SQLiteOpenHelper openHelper;
@@ -66,33 +54,20 @@ public class New_Request_SecondScreen extends AppCompatActivity{
     TextView tvName, tvAddress1, tvAddress2, tvAddress3, tvPinCode;
     EditText tvRationCardNo, tvMobile;
     TextView txt_raiseLoc, tvHobli, tvTaluk, tvVA_Name, tv_IDName;
-    String district, taluk,hobli,va_Circle_Code,VA_Circle_Name, VA_Name, district_Code, taluk_Code, hobli_Code;
+    String district, taluk,hobli,VA_Circle_Name, VA_Name;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_code, ward_code;
     Button btnNext, btnBack;
     String item_position;
-    String village_Code,habitationCode, service_Code;
+    String village_Code, service_Code;
     String strSearchVillageName, strSearchServiceName;
     GPSTracker gpsTracker;
     double latitude, longitude, accuracy;
-    Button btnScan, btnCaptureAadhaar;
-    TextView tvNameUID, tvAddressUID, tvUID;
-    LinearLayout lAadhaarDetails, lQrCodeScan, lCompleteAadhaar, lUID;
-    ImageView store_Aadhaar_image;
-    //qr code scanner object
-    IntentIntegrator qrScan;
-    int Aadhaar=0;
-    private static final int CAMERA_REQUEST_1 = 2;
-    String UID=null, name_UID=null, address_UID3=null, address_UID4=null;
-    String send_UID, send_AadharPhoto;
-    byte[] imageInByte;
-    static String store_1;
-    static String getString=null;
     ProgressDialog dialog;
-    ImageView scannerImage, captureImage;
-    String service_name, village_name, town_Name, ward_Name, town_code, ward_code, option_Flag;
+    String service_name, village_name, town_Name, ward_Name, option_Flag;
     Set_and_Get_Service_Parameter set_and_get_service_parameter;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
     int len;
-    String eng_certi, GSC_FirstPart;
+    String eng_certi;
     boolean return_Value;
     InputMethodManager imm;
     InputMethodSubtype ims;
@@ -302,34 +277,9 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         tvPinCode = findViewById(R.id.tvPinCode);
         btnNext = findViewById(R.id.btnNext);
         tvServiceName = findViewById(R.id.tvServiceName);
-        btnScan = findViewById(R.id.buttonScan);
-        btnCaptureAadhaar = findViewById(R.id.btnCaptureAadhaar);
-        tvUID = findViewById(R.id.tvUID);
-        tvNameUID = findViewById(R.id.tvNameUID);
-        tvAddressUID = findViewById(R.id.tvAddressUID);
-        //tvQrCodeScanner = findViewById(R.id.tvQrCodeScanner);
-        lAadhaarDetails = findViewById(R.id.lAadhaarDetails);
-        lQrCodeScan = findViewById(R.id.lQrCodeScan);
-        store_Aadhaar_image = findViewById(R.id.store_Aadhaar_image);
-        lCompleteAadhaar = findViewById(R.id.lCompleteAadhaar);
-        lUID = findViewById(R.id.lUID);
-        scannerImage = findViewById(R.id.scannerImage);
-        captureImage = findViewById(R.id.captureImage);
-        tvOr = findViewById(R.id.tvOr);
         txt_ReportNo = findViewById(R.id.txt_ReportNo);
         tv_for_Aadhaar = findViewById(R.id.tv_for_Aadhaar);
         trID = findViewById(R.id.trID);
-
-//        tvName.setFilters(new InputFilter[] { filter });
-//        tvFatherName.setFilters(new InputFilter[] { filter });
-//        tvMotherName.setFilters(new InputFilter[] { filter });
-
-        //intializing scan object
-        qrScan = new IntentIntegrator(this);
-        qrScan.setOrientationLocked(false);
-
-        store_Aadhaar_image.setVisibility(View.GONE);
-        lAadhaarDetails.setVisibility(View.GONE);
 
         PhoneNumberUtils.formatNumber(tvMobile.getText().toString());
         tvMobile.setFilters(new InputFilter[] {new InputFilter.LengthFilter(10)}); // 10 is max digits
@@ -343,22 +293,21 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         VA_Name = i.getStringExtra("VA_Name");
         applicant_name = i.getStringExtra("applicant_name");
         applicant_Id = i.getStringExtra("applicant_Id");
-        district_Code = i.getStringExtra("district_Code");
-        taluk_Code = i.getStringExtra("taluk_Code");
-        hobli_Code = i.getStringExtra("hobli_Code");
+        district_Code = i.getIntExtra("district_Code", 0);
+        taluk_Code = i.getIntExtra("taluk_Code", 0);
+        hobli_Code = i.getIntExtra("hobli_Code", 0);
         hobli = i.getStringExtra("hobli");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        va_Circle_Code = i.getIntExtra("va_Circle_Code", 0);
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
         item_position = i.getStringExtra("item_position");
         village_Code = i.getStringExtra("villageCode");
-        habitationCode = i.getStringExtra("habitationCode");
         service_Code = i.getStringExtra("serviceCode");
         service_name = i.getStringExtra("strSearchServiceName");
         village_name = i.getStringExtra("strSearchVillageName");
         report_No = i.getStringExtra("report_No");
-        town_code = i.getStringExtra("town_code");
+        town_code = i.getIntExtra("town_code", 0);
         town_Name = i.getStringExtra("town_Name");
-        ward_code = i.getStringExtra("ward_code");
+        ward_code = i.getIntExtra("ward_code", 0);
         ward_Name = i.getStringExtra("ward_Name");
         option_Flag = i.getStringExtra("option_Flag");
 
@@ -366,7 +315,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         Log.d("New_Request_Sec", ""+taluk_Code);
         Log.d("New_Request_Sec",""+hobli_Code);
         Log.d("New_Request_Sec",""+village_name);
-        Log.d("New_Request_Sec_Hab",""+habitationCode);
         Log.d("New_Request_Sec", "town_code: "+town_code);
         Log.d("New_Request_Sec", "town_Name: "+town_Name);
         Log.d("New_Request_Sec", "ward_code: "+ward_code);
@@ -403,7 +351,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         Cursor cursor1=database.rawQuery("SELECT "+DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code+", "+DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+" FROM "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" where "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+"="+district_Code+" and "+DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+"="+taluk_Code
                 +" and "+DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+"="+hobli_Code+" and "+DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+"='"+applicant_name
-                +"' and "+DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"="+applicant_Id, null);
+                +"' and "+DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +"='"+applicant_Id+"'", null);
         if (cursor1.getCount()>0){
 //            if (cursor1.moveToFirst()){
 //                village_Code = cursor1.getString(cursor1.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code));
@@ -414,7 +362,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             database = openHelper.getWritableDatabase();
 
             Cursor cursor = database.rawQuery("select "+getString(R.string.village_table_habitation_name)+" from "+ DataBaseHelperClass_VillageNames.TABLE_NAME
-                    +" where "+DataBaseHelperClass_VillageNames.HM_village_code+"='"+village_Code+"' and "+DataBaseHelperClass_VillageNames.HM_habitation_code+"="+habitationCode, null);
+                    +" where "+DataBaseHelperClass_VillageNames.HM_village_code+"='"+village_Code+"'", null);
             if(cursor.getCount()>0) {
                 if(cursor.moveToFirst()){
                     strSearchVillageName = cursor.getString(cursor.getColumnIndex(getString(R.string.village_table_habitation_name)));
@@ -438,7 +386,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 cursor2.close();
             }
             Log.d("village_Code1", ""+village_Code);
-            Log.d("habitationCode1",""+habitationCode);
             Log.d("service_Code1", ""+service_Code);
             Log.d("village_Name1", ""+strSearchVillageName);
             Log.d("service_Name1", ""+strSearchServiceName);
@@ -446,7 +393,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             cursor1.close();
         }
         Log.d("village_Code1", ""+village_Code);
-        Log.d("habitationCode", ""+habitationCode);
         Log.d("service_Code1", ""+service_Code);
         Log.d("Village_NameSecScreen", ""+strSearchVillageName);
         Log.d("Service_NameSecScreen", ""+strSearchServiceName);
@@ -461,22 +407,21 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
         Cursor cursor=database.rawQuery("SELECT * FROM "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                 +" where "+DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+"='"+applicant_name+"'"+" and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"="+applicant_Id, null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +"='"+applicant_Id+"'", null);
         if(cursor.getCount()>0) {
             if(cursor.moveToFirst()){
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
                 name = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
                 fatherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name));
-                motherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother));
+                motherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name));
                 Id_Code = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE));
-                rationCardNo = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.RationCard_No));
+                rationCardNo = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo));
                 mobileNo = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No));
                 address1 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1));
                 address2 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Address2));
                 address3 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Address3));
-                add_pin = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_cadd_pin));
+                add_pin = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode));
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
-                GSC_FirstPart = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_GSCFirstPart));
             }
         } else {
             cursor.close();
@@ -558,18 +503,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         });
 
         gpsTracker = new GPSTracker(getApplicationContext(), this);
-
-        btnScan.setOnClickListener(v -> {
-            //initiating the qr code scan
-            qrScan.initiateScan();
-            Aadhaar=1;
-        });
-
-        btnCaptureAadhaar.setOnClickListener(v -> {
-            Aadhaar=2;
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, CAMERA_REQUEST_1);
-        });
 
         btnNext.setOnClickListener(v -> {
 
@@ -793,7 +726,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                     i.putExtra("strSearchServiceName", service_name);
                     i.putExtra("strSearchVillageName", village_name);
                     i.putExtra("villageCode", village_Code);
-                    i.putExtra("habitationCode", habitationCode);
                     i.putExtra("serviceCode", service_Code);
                     i.putExtra("report_No", report_No);
                     i.putExtra("option_Flag", option_Flag);
@@ -848,7 +780,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
         Cursor cursor2=database.rawQuery("SELECT * FROM "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
                 +" where "+DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"='"+service_Code+"'"+" and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No+"="+applicant_Id, null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +"='"+applicant_Id+"'", null);
         if(cursor2.getCount()>0) {
             if(cursor2.moveToFirst()){
                 appImage = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
@@ -862,844 +794,39 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             appImage=null;
         }
 
-        if (Aadhaar == 1) {
-            try {
-                encryptUID_No = encrypt(UID);
-                send_UID = encryptUID_No;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            aadharNo = UID;
+        if(latitude!=0.0 && longitude!=0.0) {
 
-            if(latitude!=0.0 && longitude!=0.0) {
+            openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
+            database = openHelper.getWritableDatabase();
 
-                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
-                database = openHelper.getWritableDatabase();
+            Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
+            if (cursor.getCount() > 0) {
 
-                Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
-                if (cursor.getCount() > 0) {
+                database.execSQL("update "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='"+"NO"+"',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name + "='" + name + "', "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name + "='" + fatherName + "', "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name + "='" + motherName + "', "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No + "='" + rationCardNo + "', "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No + "=" + mobileNo + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + "='" + address1 +"',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 + "='" + address2 +"',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 + "='" + address3 +"',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode + "=" +pinCode +","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No + "='" +report_No +"'" + " where "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code + "=" + district_Code + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code + "=" + taluk_Code + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code + "=" + hobli_Code + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'" + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=" + village_Code + " and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"="+town_code+" and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"="+ward_code+" and "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "=" + service_Code);
 
-                    database.execSQL("update "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='"+"NO"+"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name + "='" + name + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name + "='" + fatherName + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother + "='" + motherName + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No + "='" + rationCardNo + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No + "=" + mobileNo + ","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + "='" + address1 +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 + "='" + address2 +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 + "='" + address3 +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode + "=" +pinCode +","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No + "='" +report_No +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UID + "='" + send_UID + "',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.AadhaarPhoto + "='" + send_AadharPhoto + "'" + " where "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code + "=" + district_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code + "=" + taluk_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code + "=" + hobli_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=" + village_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Habitation_code+"="+ habitationCode+" and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"="+town_code+" and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"="+ward_code+" and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "=" + service_Code);
+                Log.d("Database", "ServiceParameterTable Database Updated");
 
-                    Log.d("Database", "ServiceParameterTable Database Updated");
-
-                    switch (service_Code) {
-                        case "6":
-                        case "9":
-                        case "11":
-                        case "34":
-                        case "37":
-                        case "43": {
-                            Log.d("Service:", "" + service_Code);
-                            if(Objects.equals(eng_certi, "E")) {
-                                Log.d("Application", "English");
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters.class);
-                            }else {
-                                Log.d("Application", "Kannada");
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        case "7":
-                        case "8":
-                        case "42": {
-                            Log.d("Service:", "" + service_Code);
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters.class);
-                            }
-                            else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        case "10": {
-                            Log.d("Service:", "" + service_Code);
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters.class);
-                            }else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        default:
-                            Toast.makeText(getApplicationContext(), getString(R.string.service_not_availabel), Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                } else {
-                    cursor.close();
-                    set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
-                    set_and_get_service_parameter.setDistrict_Code(district_Code);
-                    set_and_get_service_parameter.setTaluk_Code(taluk_Code);
-                    set_and_get_service_parameter.setHobli_Code(hobli_Code);
-                    set_and_get_service_parameter.setVa_Circle_Code(va_Circle_Code);
-                    set_and_get_service_parameter.setVillage_Code(village_Code);
-                    set_and_get_service_parameter.setHabitation_code(habitationCode);
-                    set_and_get_service_parameter.setTown_Code(town_code);
-                    set_and_get_service_parameter.setWard_Code(ward_code);
-                    set_and_get_service_parameter.setService_Code(String.valueOf(service_Code));
-                    set_and_get_service_parameter.setRD_No(applicant_Id);
-                    set_and_get_service_parameter.setApplicant_Name(name);
-                    set_and_get_service_parameter.setFather_Name(fatherName);
-                    set_and_get_service_parameter.setMother_Name(motherName);
-                    set_and_get_service_parameter.setMobile_No(mobileNo);
-                    set_and_get_service_parameter.setRationCard_No(rationCardNo);
-                    set_and_get_service_parameter.setAddress1(address1);
-                    set_and_get_service_parameter.setAddress2(address2);
-                    set_and_get_service_parameter.setAddress3(address3);
-                    set_and_get_service_parameter.setEng_Certify(eng_certi);
-                    set_and_get_service_parameter.setGSC_First_Part(GSC_FirstPart);
-                    set_and_get_service_parameter.setST_applicant_photo(appImage);
-                    set_and_get_service_parameter.setPinCode(pinCode);
-                    set_and_get_service_parameter.setReport_No(report_No);
-                    set_and_get_service_parameter.setUID(send_UID);
-                    set_and_get_service_parameter.setAadhaarPhoto(send_AadharPhoto);
-
-
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                            + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_mobile_no," +
-                            "ST_Upd_ID_NUMBER, ST_applicant_caddress1, ST_applicant_caddress2,ST_applicant_caddress3, ST_Eng_Certificate, ST_GSCFirstPart, ST_applicant_photo, UID, AadhaarPhoto, ST_PinCode, Report_No, VA_Accepts_Applicant_information)" +
-                            " values ("
-                            + set_and_get_service_parameter.getDistrict_Code() + ","
-                            + set_and_get_service_parameter.getTaluk_Code() + ","
-                            + set_and_get_service_parameter.getHobli_Code() + ","
-                            + set_and_get_service_parameter.getVa_Circle_Code() + ","
-                            + set_and_get_service_parameter.getVillage_Code() + ","
-                            + set_and_get_service_parameter.getHabitation_code() + ","
-                            + set_and_get_service_parameter.getTown_Code() + ","
-                            + set_and_get_service_parameter.getWard_Code() + ","
-                            + set_and_get_service_parameter.getService_Code() + ","
-                            + set_and_get_service_parameter.getRD_No() + ",'"
-                            + set_and_get_service_parameter.getApplicant_Name() + "','"
-                            + set_and_get_service_parameter.getFather_Name() + "','"
-                            + set_and_get_service_parameter.getMother_Name() + "','"
-                            + set_and_get_service_parameter.getMobile_No() + "','"
-                            + set_and_get_service_parameter.getRationCard_No() + "','"
-                            + set_and_get_service_parameter.getAddress1() + "','"
-                            + set_and_get_service_parameter.getAddress2() + "','"
-                            + set_and_get_service_parameter.getAddress3() + "','"
-                            + set_and_get_service_parameter.getEng_Certify()+"',"
-                            + set_and_get_service_parameter.getGSC_First_Part()+",'"
-                            + set_and_get_service_parameter.getST_applicant_photo()+"','"
-                            + set_and_get_service_parameter.getUID() + "','"
-                            + set_and_get_service_parameter.getAadhaarPhoto() + "',"
-                            + set_and_get_service_parameter.getPinCode() + ",'"
-                            + set_and_get_service_parameter.getReport_No() +"','NO')");
-
-                    Log.d("Database", "ServiceParameterTable Database Inserted");
-
-                    switch (service_Code) {
-                        case "6":
-                        case "9":
-                        case "11":
-                        case "34":
-                        case "37":
-                        case "43": {
-                            Log.d("Service:", "6 or 9");
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters.class);
-                            } else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        case "7":
-                        case "8":
-                        case "42":{
-                            Log.d("Service:", "8");
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters.class);
-                            }else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        case "10": {
-                            Log.d("Service:", "10");
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters.class);
-                            }else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        default:
-                            Toast.makeText(getApplicationContext(), getString(R.string.service_not_availabel), Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-            }
-            else {
-                runOnUiThread(() -> {
-                    btnNext.setText(getString(R.string.certified));
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_SecondScreen.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.alert));
-                    dialog.setMessage(getString(R.string.cannot_get_location) );
-                    dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
-                        //Action for "Cancel".
-                        dialog1.cancel();
-                    });
-
-                    final AlertDialog alert = dialog.create();
-                    alert.show();
-                });
-            }
-
-            str="Success";
-        } else if (Aadhaar == 2) {
-            try {
-                encryptAadhaar_Photo = encrypt(store_1);
-                send_AadharPhoto = encryptAadhaar_Photo;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if(latitude!=0.0 && longitude!=0.0) {
-                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
-                database = openHelper.getWritableDatabase();
-
-                Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
-                if (cursor.getCount() > 0) {
-                    database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='"+"NO"+"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name + "='" + name + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name + "='" + fatherName + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother + "='" + motherName + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No + "='" + rationCardNo + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No + "=" + mobileNo + ","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + "='" + address1 +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 + "='" + address2 +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 + "='" + address3 +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode + "=" + pinCode + ","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No + "='"+report_No+"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UID + "='" + send_UID + "',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.AadhaarPhoto + "='" + send_AadharPhoto + "'" + " where "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code + "=" + district_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code + "=" + taluk_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code + "=" + hobli_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=" + village_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"="+town_code+" and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"="+ward_code+" and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "=" + service_Code);
-                    Log.d("Database", "ServiceParameterTable Database Updated");
-
-                    switch (service_Code) {
-                        case "6":
-                        case "9":
-                        case "11":
-                        case "34":
-                        case "37":
-                        case "43": {
-                            Log.d("Service:", "" + service_Code);
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters.class);
-                            }else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        case "7":
-                        case "8":
-                        case "42": {
-                            Log.d("Service:", "" + service_Code);
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters.class);
-                            }else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        case "10": {
-                            Log.d("Service:", "" + service_Code);
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters.class);
-                            }else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        default:
-                            Toast.makeText(getApplicationContext(), getString(R.string.service_not_availabel), Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                } else {
-                    cursor.close();
-                    openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
-                    database = openHelper.getWritableDatabase();
-
-                    set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
-                    set_and_get_service_parameter.setDistrict_Code(district_Code);
-                    set_and_get_service_parameter.setTaluk_Code(taluk_Code);
-                    set_and_get_service_parameter.setHobli_Code(hobli_Code);
-                    set_and_get_service_parameter.setVa_Circle_Code(va_Circle_Code);
-                    set_and_get_service_parameter.setVillage_Code(village_Code);
-                    set_and_get_service_parameter.setHabitation_code(habitationCode);
-                    set_and_get_service_parameter.setTown_Code(town_code);
-                    set_and_get_service_parameter.setWard_Code(ward_code);
-                    set_and_get_service_parameter.setService_Code(String.valueOf(service_Code));
-                    set_and_get_service_parameter.setRD_No(applicant_Id);
-                    set_and_get_service_parameter.setApplicant_Name(name);
-                    set_and_get_service_parameter.setFather_Name(fatherName);
-                    set_and_get_service_parameter.setMother_Name(motherName);
-                    set_and_get_service_parameter.setMobile_No(mobileNo);
-                    set_and_get_service_parameter.setRationCard_No(rationCardNo);
-                    set_and_get_service_parameter.setAddress1(address1);
-                    set_and_get_service_parameter.setAddress2(address2);
-                    set_and_get_service_parameter.setAddress3(address3);
-                    set_and_get_service_parameter.setEng_Certify(eng_certi);
-                    set_and_get_service_parameter.setGSC_First_Part(GSC_FirstPart);
-                    set_and_get_service_parameter.setST_applicant_photo(appImage);
-                    set_and_get_service_parameter.setPinCode(pinCode);
-                    set_and_get_service_parameter.setReport_No(report_No);
-                    set_and_get_service_parameter.setUID(send_UID);
-                    set_and_get_service_parameter.setAadhaarPhoto(send_AadharPhoto);
-
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                            + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_mobile_no, " +
-                            "ST_Upd_ID_NUMBER, ST_applicant_caddress1, ST_applicant_caddress2,ST_applicant_caddress3, ST_Eng_Certificate, ST_GSCFirstPart, ST_applicant_photo, UID, AadhaarPhoto, ST_PinCode, Report_No, VA_Accepts_Applicant_information)" +
-                            " values ("
-                            + set_and_get_service_parameter.getDistrict_Code() + ","
-                            + set_and_get_service_parameter.getTaluk_Code() + ","
-                            + set_and_get_service_parameter.getHobli_Code() + ","
-                            + set_and_get_service_parameter.getVa_Circle_Code() + ","
-                            + set_and_get_service_parameter.getVillage_Code() + ","
-                            + set_and_get_service_parameter.getHabitation_code() + ","
-                            + set_and_get_service_parameter.getTown_Code() + ","
-                            + set_and_get_service_parameter.getWard_Code() + ","
-                            + set_and_get_service_parameter.getService_Code() + ","
-                            + set_and_get_service_parameter.getRD_No() + ",'"
-                            + set_and_get_service_parameter.getApplicant_Name() + "','"
-                            + set_and_get_service_parameter.getFather_Name() + "','"
-                            + set_and_get_service_parameter.getMother_Name() + "','"
-                            + set_and_get_service_parameter.getMobile_No() + "','"
-                            + set_and_get_service_parameter.getRationCard_No() + "','"
-                            + set_and_get_service_parameter.getAddress1() + "','"
-                            + set_and_get_service_parameter.getAddress2() + "','"
-                            + set_and_get_service_parameter.getAddress3() + "','"
-                            + set_and_get_service_parameter.getEng_Certify() + "',"
-                            + set_and_get_service_parameter.getGSC_First_Part() + ",'"
-                            + set_and_get_service_parameter.getST_applicant_photo() + "','"
-                            + set_and_get_service_parameter.getUID() + "','"
-                            + set_and_get_service_parameter.getAadhaarPhoto() + "',"
-                            + set_and_get_service_parameter.getPinCode() + ",'"
-                            + set_and_get_service_parameter.getReport_No() +"','NO')");
-
-                    Log.d("Database", "ServiceParameterTable Database Inserted");
-
-                    switch (service_Code) {
-                        case "6":
-                        case "9":
-                        case "11":
-                        case "34":
-                        case "37":
-                        case "43": {
-                            Log.d("Service:", "6");
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters.class);
-                            }else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        case "7":
-                        case "8":
-                        case "42": {
-                            Log.d("Service:", "8");
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters.class);
-                            }else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        case "10": {
-                            Log.d("Service:", "10");
-                            if(Objects.equals(eng_certi, "E")) {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters.class);
-                            }else {
-                                i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
-                            }
-                            i.putExtra("districtCode", district);
-                            i.putExtra("taluk", taluk);
-                            i.putExtra("applicant_Id", applicant_Id);
-                            i.putExtra("VA_Name", VA_Name);
-                            i.putExtra("hobli", hobli);
-                            i.putExtra("va_Circle_Code", va_Circle_Code);
-                            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                            i.putExtra("district_Code", district_Code);
-                            i.putExtra("taluk_Code", taluk_Code);
-                            i.putExtra("hobli_Code", hobli_Code);
-                            i.putExtra("rationCardNo", rationCardNo);
-                            i.putExtra("aadharNo", aadharNo);
-                            i.putExtra("mobileNo", mobileNo);
-                            i.putExtra("address1", address1);
-                            i.putExtra("item_position", item_position);
-                            i.putExtra("strSearchServiceName", strSearchServiceName);
-                            i.putExtra("strSearchVillageName", strSearchVillageName);
-                            i.putExtra("serviceCode", service_Code);
-                            i.putExtra("villageCode", village_Code);
-                            i.putExtra("habitationCode", habitationCode);
-                            i.putExtra("eng_certi", eng_certi);
-                            i.putExtra("option_Flag", option_Flag);
-                            i.putExtra("town_Name", town_Name);
-                            i.putExtra("town_code", town_code);
-                            i.putExtra("ward_Name", ward_Name);
-                            i.putExtra("ward_code", ward_code);
-                            startActivity(i);
-                            finish();
-                            break;
-                        }
-                        default:
-                            Toast.makeText(getApplicationContext(), getString(R.string.service_not_availabel), Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-            }
-            else {
-                runOnUiThread(() -> {
-                    btnNext.setText(getString(R.string.certified));
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_SecondScreen.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.alert));
-                    dialog.setMessage(getString(R.string.cannot_get_location) );
-                    dialog.setNegativeButton(getString(R.string.ok), (dialog12, which) -> {
-                        //Action for "Cancel".
-                        dialog12.cancel();
-                    });
-
-                    final AlertDialog alert = dialog.create();
-                    alert.show();
-                });
-            }
-
-            str="Success";
-        } else {
-
-            if(latitude!=0.0 && longitude!=0.0) {
-                Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
-                if (cursor.getCount() > 0) {
-                    database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='"+"NO"+"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name + "='" + name + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name + "='" + fatherName + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother + "='" + motherName + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No + "='" + rationCardNo + "', "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No + "=" + mobileNo + ","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + "='" + address1 +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 + "='" + address2 +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 + "='" + address3 +"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode + "=" + pinCode+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No + "='"+report_No+"',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UID + "='" + send_UID + "',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.AadhaarPhoto + "='" + send_AadharPhoto + "'" + " where "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code + "=" + district_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code + "=" + taluk_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code + "=" + hobli_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=" + village_Code + " and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"="+town_code+" and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"="+ward_code+" and "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "=" + service_Code);
-
-                    Log.d("Database", "ServiceParameterTable Database Updated");
-
-                } else {
-                    cursor.close();
-                    set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
-                    set_and_get_service_parameter.setDistrict_Code(district_Code);
-                    set_and_get_service_parameter.setTaluk_Code(taluk_Code);
-                    set_and_get_service_parameter.setHobli_Code(hobli_Code);
-                    set_and_get_service_parameter.setVa_Circle_Code(va_Circle_Code);
-                    set_and_get_service_parameter.setVillage_Code(String.valueOf(village_Code));
-                    set_and_get_service_parameter.setHabitation_code(habitationCode);
-                    set_and_get_service_parameter.setTown_Code(town_code);
-                    set_and_get_service_parameter.setWard_Code(ward_code);
-                    set_and_get_service_parameter.setService_Code(String.valueOf(service_Code));
-                    set_and_get_service_parameter.setRD_No(applicant_Id);
-                    set_and_get_service_parameter.setApplicant_Name(name);
-                    set_and_get_service_parameter.setFather_Name(fatherName);
-                    set_and_get_service_parameter.setMother_Name(motherName);
-                    set_and_get_service_parameter.setMobile_No(mobileNo);
-                    set_and_get_service_parameter.setRationCard_No(rationCardNo);
-                    set_and_get_service_parameter.setAddress1(address1);
-                    set_and_get_service_parameter.setAddress2(address2);
-                    set_and_get_service_parameter.setAddress3(address3);
-                    set_and_get_service_parameter.setEng_Certify(eng_certi);
-                    set_and_get_service_parameter.setGSC_First_Part(GSC_FirstPart);
-                    set_and_get_service_parameter.setST_applicant_photo(appImage);
-                    set_and_get_service_parameter.setPinCode(pinCode);
-                    set_and_get_service_parameter.setReport_No(report_No);
-                    set_and_get_service_parameter.setUID(send_UID);
-                    set_and_get_service_parameter.setAadhaarPhoto(send_AadharPhoto);
-
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                            + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code,ST_habitation_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_mobile_no, ST_Upd_ID_NUMBER, " +
-                            " ST_applicant_caddress1, ST_applicant_caddress2,ST_applicant_caddress3, ST_Eng_Certificate, ST_GSCFirstPart, ST_applicant_photo, UID, AadhaarPhoto, ST_PinCode, Report_No, VA_Accepts_Applicant_information)" +
-                            " values ("
-                            + set_and_get_service_parameter.getDistrict_Code() + ","
-                            + set_and_get_service_parameter.getTaluk_Code() + ","
-                            + set_and_get_service_parameter.getHobli_Code() + ","
-                            + set_and_get_service_parameter.getVa_Circle_Code() + ","
-                            + set_and_get_service_parameter.getVillage_Code() + ","
-                            + set_and_get_service_parameter.getHabitation_code() + ","
-                            + set_and_get_service_parameter.getTown_Code() + ","
-                            + set_and_get_service_parameter.getWard_Code() + ","
-                            + set_and_get_service_parameter.getService_Code() + ","
-                            + set_and_get_service_parameter.getRD_No() + ",'"
-                            + set_and_get_service_parameter.getApplicant_Name() + "','"
-                            + set_and_get_service_parameter.getFather_Name() + "','"
-                            + set_and_get_service_parameter.getMother_Name() + "','"
-                            + set_and_get_service_parameter.getMobile_No() + "','"
-                            + set_and_get_service_parameter.getRationCard_No() + "','"
-                            + set_and_get_service_parameter.getAddress1() + "','"
-                            + set_and_get_service_parameter.getAddress2() + "','"
-                            + set_and_get_service_parameter.getAddress3() + "','"
-                            + set_and_get_service_parameter.getEng_Certify() + "',"
-                            + set_and_get_service_parameter.getGSC_First_Part() + ",'"
-                            + set_and_get_service_parameter.getST_applicant_photo() + "','"
-                            + set_and_get_service_parameter.getUID() + "','"
-                            + set_and_get_service_parameter.getAadhaarPhoto() + "',"
-                            + set_and_get_service_parameter.getPinCode() + ",'"
-                            + set_and_get_service_parameter.getReport_No() +"','NO')");
-
-                    Log.d("Database", "ServiceParameterTable Database Inserted");
-
-                }
                 switch (service_Code) {
                     case "6":
                     case "9":
@@ -1709,8 +836,10 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                     case "43": {
                         Log.d("Service:", "" + service_Code);
                         if(Objects.equals(eng_certi, "E")) {
+                            Log.d("Application", "English");
                             i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters.class);
                         }else {
+                            Log.d("Application", "Kannada");
                             i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
                         }
                         i.putExtra("districtCode", district);
@@ -1732,7 +861,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                         i.putExtra("strSearchVillageName", strSearchVillageName);
                         i.putExtra("serviceCode", service_Code);
                         i.putExtra("villageCode", village_Code);
-                        i.putExtra("habitationCode", habitationCode);
                         i.putExtra("eng_certi", eng_certi);
                         i.putExtra("option_Flag", option_Flag);
                         i.putExtra("town_Name", town_Name);
@@ -1749,7 +877,8 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                         Log.d("Service:", "" + service_Code);
                         if(Objects.equals(eng_certi, "E")) {
                             i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters.class);
-                        }else {
+                        }
+                        else {
                             i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
                         }
                         i.putExtra("districtCode", district);
@@ -1771,7 +900,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                         i.putExtra("strSearchVillageName", strSearchVillageName);
                         i.putExtra("serviceCode", service_Code);
                         i.putExtra("villageCode", village_Code);
-                        i.putExtra("habitationCode", habitationCode);
                         i.putExtra("eng_certi", eng_certi);
                         i.putExtra("option_Flag", option_Flag);
                         i.putExtra("town_Name", town_Name);
@@ -1808,7 +936,197 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                         i.putExtra("strSearchVillageName", strSearchVillageName);
                         i.putExtra("serviceCode", service_Code);
                         i.putExtra("villageCode", village_Code);
-                        i.putExtra("habitationCode", habitationCode);
+                        i.putExtra("eng_certi", eng_certi);
+                        i.putExtra("option_Flag", option_Flag);
+                        i.putExtra("town_Name", town_Name);
+                        i.putExtra("town_code", town_code);
+                        i.putExtra("ward_Name", ward_Name);
+                        i.putExtra("ward_code", ward_code);
+                        startActivity(i);
+                        finish();
+                        break;
+                    }
+                    default:
+                        Toast.makeText(getApplicationContext(), getString(R.string.service_not_availabel), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            } else {
+                cursor.close();
+                set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
+                set_and_get_service_parameter.setDistrict_Code(district_Code);
+                set_and_get_service_parameter.setTaluk_Code(taluk_Code);
+                set_and_get_service_parameter.setHobli_Code(hobli_Code);
+                set_and_get_service_parameter.setVa_Circle_Code(va_Circle_Code);
+                set_and_get_service_parameter.setVillage_Code(village_Code);
+                set_and_get_service_parameter.setTown_Code(town_code);
+                set_and_get_service_parameter.setWard_Code(ward_code);
+                set_and_get_service_parameter.setService_Code(String.valueOf(service_Code));
+                set_and_get_service_parameter.setRD_No(applicant_Id);
+                set_and_get_service_parameter.setApplicant_Name(name);
+                set_and_get_service_parameter.setFather_Name(fatherName);
+                set_and_get_service_parameter.setMother_Name(motherName);
+                set_and_get_service_parameter.setMobile_No(mobileNo);
+                set_and_get_service_parameter.setRationCard_No(rationCardNo);
+                set_and_get_service_parameter.setAddress1(address1);
+                set_and_get_service_parameter.setAddress2(address2);
+                set_and_get_service_parameter.setAddress3(address3);
+                set_and_get_service_parameter.setEng_Certify(eng_certi);
+                set_and_get_service_parameter.setST_applicant_photo(appImage);
+                set_and_get_service_parameter.setPinCode(pinCode);
+                set_and_get_service_parameter.setReport_No(report_No);
+
+
+                database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
+                        + "("
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name_k+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name +","
+                        + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_mobile_no," +
+                        "ST_Upd_ID_NUMBER, ST_applicant_caddress1, ST_applicant_caddress2,ST_applicant_caddress3, ST_Eng_Certificate, ST_applicant_photo, UID, AadhaarPhoto, ST_PinCode, Report_No, VA_Accepts_Applicant_information)" +
+                        " values ("
+                        + set_and_get_service_parameter.getDistrict_Code() + ","
+                        + set_and_get_service_parameter.getTaluk_Code() + ","
+                        + set_and_get_service_parameter.getHobli_Code() + ","
+                        + set_and_get_service_parameter.getVa_Circle_Code() + ","
+                        + set_and_get_service_parameter.getVillage_Code() + ","
+                        + set_and_get_service_parameter.getTown_Code() + ","
+                        + set_and_get_service_parameter.getWard_Code() + ","
+                        + set_and_get_service_parameter.getService_Code() + ","
+                        + set_and_get_service_parameter.getRD_No() + ",'"
+                        + set_and_get_service_parameter.getApplicant_Name() + "','"
+                        + set_and_get_service_parameter.getFather_Name() + "','"
+                        + set_and_get_service_parameter.getMother_Name() + "','"
+                        + set_and_get_service_parameter.getMobile_No() + "','"
+                        + set_and_get_service_parameter.getRationCard_No() + "','"
+                        + set_and_get_service_parameter.getAddress1() + "','"
+                        + set_and_get_service_parameter.getAddress2() + "','"
+                        + set_and_get_service_parameter.getAddress3() + "','"
+                        + set_and_get_service_parameter.getEng_Certify()+"','"
+                        + set_and_get_service_parameter.getST_applicant_photo()+"',"
+                        + set_and_get_service_parameter.getPinCode() + ",'"
+                        + set_and_get_service_parameter.getReport_No() +"','NO')");
+
+                Log.d("Database", "ServiceParameterTable Database Inserted");
+
+                switch (service_Code) {
+                    case "6":
+                    case "9":
+                    case "11":
+                    case "34":
+                    case "37":
+                    case "43": {
+                        Log.d("Service:", "6 or 9");
+                        if(Objects.equals(eng_certi, "E")) {
+                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters.class);
+                        } else {
+                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
+                        }
+                        i.putExtra("districtCode", district);
+                        i.putExtra("taluk", taluk);
+                        i.putExtra("applicant_Id", applicant_Id);
+                        i.putExtra("VA_Name", VA_Name);
+                        i.putExtra("hobli", hobli);
+                        i.putExtra("va_Circle_Code", va_Circle_Code);
+                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                        i.putExtra("district_Code", district_Code);
+                        i.putExtra("taluk_Code", taluk_Code);
+                        i.putExtra("hobli_Code", hobli_Code);
+                        i.putExtra("rationCardNo", rationCardNo);
+                        i.putExtra("aadharNo", aadharNo);
+                        i.putExtra("mobileNo", mobileNo);
+                        i.putExtra("address1", address1);
+                        i.putExtra("item_position", item_position);
+                        i.putExtra("strSearchServiceName", strSearchServiceName);
+                        i.putExtra("strSearchVillageName", strSearchVillageName);
+                        i.putExtra("serviceCode", service_Code);
+                        i.putExtra("villageCode", village_Code);
+                        i.putExtra("eng_certi", eng_certi);
+                        i.putExtra("option_Flag", option_Flag);
+                        i.putExtra("town_Name", town_Name);
+                        i.putExtra("town_code", town_code);
+                        i.putExtra("ward_Name", ward_Name);
+                        i.putExtra("ward_code", ward_code);
+                        startActivity(i);
+                        finish();
+                        break;
+                    }
+                    case "7":
+                    case "8":
+                    case "42":{
+                        Log.d("Service:", "8");
+                        if(Objects.equals(eng_certi, "E")) {
+                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters.class);
+                        }else {
+                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
+                        }
+                        i.putExtra("districtCode", district);
+                        i.putExtra("taluk", taluk);
+                        i.putExtra("applicant_Id", applicant_Id);
+                        i.putExtra("VA_Name", VA_Name);
+                        i.putExtra("hobli", hobli);
+                        i.putExtra("va_Circle_Code", va_Circle_Code);
+                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                        i.putExtra("district_Code", district_Code);
+                        i.putExtra("taluk_Code", taluk_Code);
+                        i.putExtra("hobli_Code", hobli_Code);
+                        i.putExtra("rationCardNo", rationCardNo);
+                        i.putExtra("aadharNo", aadharNo);
+                        i.putExtra("mobileNo", mobileNo);
+                        i.putExtra("address1", address1);
+                        i.putExtra("item_position", item_position);
+                        i.putExtra("strSearchServiceName", strSearchServiceName);
+                        i.putExtra("strSearchVillageName", strSearchVillageName);
+                        i.putExtra("serviceCode", service_Code);
+                        i.putExtra("villageCode", village_Code);
+                        i.putExtra("eng_certi", eng_certi);
+                        i.putExtra("option_Flag", option_Flag);
+                        i.putExtra("town_Name", town_Name);
+                        i.putExtra("town_code", town_code);
+                        i.putExtra("ward_Name", ward_Name);
+                        i.putExtra("ward_code", ward_code);
+                        startActivity(i);
+                        finish();
+                        break;
+                    }
+                    case "10": {
+                        Log.d("Service:", "10");
+                        if(Objects.equals(eng_certi, "E")) {
+                            i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters.class);
+                        }else {
+                            i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
+                        }
+                        i.putExtra("districtCode", district);
+                        i.putExtra("taluk", taluk);
+                        i.putExtra("applicant_Id", applicant_Id);
+                        i.putExtra("VA_Name", VA_Name);
+                        i.putExtra("hobli", hobli);
+                        i.putExtra("va_Circle_Code", va_Circle_Code);
+                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                        i.putExtra("district_Code", district_Code);
+                        i.putExtra("taluk_Code", taluk_Code);
+                        i.putExtra("hobli_Code", hobli_Code);
+                        i.putExtra("rationCardNo", rationCardNo);
+                        i.putExtra("aadharNo", aadharNo);
+                        i.putExtra("mobileNo", mobileNo);
+                        i.putExtra("address1", address1);
+                        i.putExtra("item_position", item_position);
+                        i.putExtra("strSearchServiceName", strSearchServiceName);
+                        i.putExtra("strSearchVillageName", strSearchVillageName);
+                        i.putExtra("serviceCode", service_Code);
+                        i.putExtra("villageCode", village_Code);
                         i.putExtra("eng_certi", eng_certi);
                         i.putExtra("option_Flag", option_Flag);
                         i.putExtra("town_Name", town_Name);
@@ -1824,145 +1142,25 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                         break;
                 }
             }
-            else {
-                runOnUiThread(() -> {
-                    btnNext.setText(getString(R.string.certified));
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_SecondScreen.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.alert));
-                    dialog.setMessage(getString(R.string.cannot_get_location) );
-                    dialog.setNegativeButton(getString(R.string.ok), (dialog13, which) -> {
-                        //Action for "Cancel".
-                        dialog13.cancel();
-                    });
-
-                    final AlertDialog alert = dialog.create();
-                    alert.show();
+        }
+        else {
+            runOnUiThread(() -> {
+                btnNext.setText(getString(R.string.certified));
+                AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_SecondScreen.this);
+                dialog.setCancelable(false);
+                dialog.setTitle(getString(R.string.alert));
+                dialog.setMessage(getString(R.string.cannot_get_location) );
+                dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
+                    //Action for "Cancel".
+                    dialog1.cancel();
                 });
-            }
 
-            str="Success";
-        }
-        Log.d("StoreData_in_DB", str);
-    }
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK)
-            return;
-
-        if (requestCode == CAMERA_REQUEST_1) {
-            Bundle extras = data.getExtras();
-
-            if (extras != null) {
-                Bitmap yourImage = extras.getParcelable("data");
-                // convert bitmap to byte
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();//The ByteArrayOutputStream class stream creates a buffer in memory and all the data sent to the stream is stored in the buffer.
-                assert yourImage != null;
-                yourImage.compress(Bitmap.CompressFormat.PNG, 100, stream);//Specifies the known formats a bitmap can be compressed into 1.JPEG 2.PNG 3.WEBP
-                imageInByte = stream.toByteArray();
-                getString = Base64.encodeToString(imageInByte, Base64.DEFAULT);
-                Log.d("output", Arrays.toString(imageInByte));
-                store_1 = getString;
-                scannerImage.setVisibility(View.GONE);
-                lQrCodeScan.setVisibility(View.GONE);
-                tvOr.setVisibility(View.GONE);
-                store_Aadhaar_image.setVisibility(View.VISIBLE);
-                store_Aadhaar_image.setImageBitmap(yourImage);
-                Log.d("Image in bytes", "Image Captured");
-
-            }
-        }
-
-        if (result != null) {
-            //if qrcode has nothing in it
-            if (result.getContents() == null) {
-                Toast.makeText(this, getString(R.string.result_not_found), Toast.LENGTH_LONG).show();
-            } else {
-                //if qr contains data
-                try {
-//                    Pattern pattern= Pattern.compile("");
-//                    Matcher matcher = pattern.matcher("uid");
-                    //converting the data to json
-                    JSONObject obj = XML.toJSONObject(result.getContents());
-                    Log.d("Scanned_Data", obj.toString());
-                    String str= obj.getString("PrintLetterBarcodeData");
-                    JSONObject jsonObject = new JSONObject(str);
-                    UID = jsonObject.getString("Uid");
-                    name_UID = jsonObject.getString("Name");
-//                    address_UID = jsonObject.getString("co");
-//                    address_UID1 = jsonObject.getString("house");
-//                    address_UID2 = jsonObject.getString("street");
-//                    address_UID3 = jsonObject.getString("loc");
-                    address_UID4 = jsonObject.getString("Vtc");
-                    address_UID3 = jsonObject.getString("state");
-
-                    btnScan.setVisibility(View.GONE);
-                    scannerImage.setVisibility(View.GONE);
-                    captureImage.setVisibility(View.GONE);
-                    //tvQrCodeScanner.setVisibility(View.GONE);
-                    tvOr.setVisibility(View.GONE);
-                    lAadhaarDetails.setVisibility(View.VISIBLE);
-                    btnCaptureAadhaar.setVisibility(View.GONE);
-
-                    String mask = UID.replaceAll("\\w(?=\\w{4})", "*");
-                    //setting values to textviews
-                    tvUID.setText(mask);
-                    tvNameUID.setText(name_UID);
-                    //tvAddressUID.setText(address_UID+","+ address_UID1+", "+ address_UID2+", "+ address_UID3+", "+ address_UID4);
-                    tvAddressUID.setText(address_UID4+", "+address_UID3);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    //if control comes here
-                    //that means the encoded format not matches
-                    //in this case you can display whatever data is available on the qrcode
-                    //to a toast
-                    //Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-                    try {
-                        //converting the data to json
-                        JSONObject obj = XML.toJSONObject(result.getContents());
-                        Log.d("Scanned_Data", obj.toString());
-                        String str= obj.getString("PrintLetterBarcodeData");
-                        JSONObject jsonObject = new JSONObject(str);
-                        UID = jsonObject.getString("uid");
-                        name_UID = jsonObject.getString("name");
-//                    address_UID = jsonObject.getString("co");
-//                    address_UID1 = jsonObject.getString("house");
-//                    address_UID2 = jsonObject.getString("street");
-//                    address_UID3 = jsonObject.getString("loc");
-                        address_UID4 = jsonObject.getString("vtc");
-                        address_UID3 = jsonObject.getString("state");
-
-                        btnScan.setVisibility(View.GONE);
-                        scannerImage.setVisibility(View.GONE);
-                        captureImage.setVisibility(View.GONE);
-                        tvOr.setVisibility(View.GONE);
-                        //tvQrCodeScanner.setVisibility(View.GONE);
-                        lAadhaarDetails.setVisibility(View.VISIBLE);
-                        btnCaptureAadhaar.setVisibility(View.GONE);
-
-                        String mask = UID.replaceAll("\\w(?=\\w{4})", "*");
-                        //setting values to textviews
-                        tvUID.setText(mask);
-                        tvNameUID.setText(name_UID);
-                        //tvAddressUID.setText(address_UID+","+ address_UID1+", "+ address_UID2+", "+ address_UID3+", "+ address_UID4);
-                        tvAddressUID.setText(address_UID4+", "+address_UID3);
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                        //if control comes here
-                        //that means the encoded format not matches
-                        //in this case you can display whatever data is available on the qrcode
-                        //to a toast
-                        Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
+                final AlertDialog alert = dialog.create();
+                alert.show();
+            });
         }
     }
+
 
     public static String encrypt(String value) throws Exception
     {

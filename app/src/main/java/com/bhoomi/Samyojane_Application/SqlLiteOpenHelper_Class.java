@@ -464,8 +464,8 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
         return objects;
     }
 
-    public List Get_TownName_RI(int dist_Code, int taluk_Code, String town_Name){
-        List objects = new ArrayList<>();
+    public List<AutoCompleteTextBox_Object> Get_TownName_RI(int dist_Code, int taluk_Code, String town_Name){
+        List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("dist_Code", ""+ dist_Code);
         Log.d("taluk_Code", ""+ taluk_Code);
         try{
@@ -488,10 +488,10 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
                         if(cursor1.getCount()>0){
                             town_totalCount = cursor1.getCount();
                             Log.d("Town_TotalCount", String.valueOf(town_totalCount));
-                            objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndexOrThrow(TWM_town_code)), (cursor.getString(cursor.getColumnIndexOrThrow(town_Name))+"-("+town_totalCount+")")));
+                            objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(TWM_town_code)), (cursor.getString(cursor.getColumnIndexOrThrow(town_Name))+"-("+town_totalCount+")")));
                         }else {
                             cursor1.close();
-                            objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndexOrThrow(TWM_town_code)),cursor.getString(cursor.getColumnIndexOrThrow(town_Name))));
+                            objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndexOrThrow(TWM_town_code)),cursor.getString(cursor.getColumnIndexOrThrow(town_Name))));
                         }
                     }while (cursor.moveToNext());
                 }

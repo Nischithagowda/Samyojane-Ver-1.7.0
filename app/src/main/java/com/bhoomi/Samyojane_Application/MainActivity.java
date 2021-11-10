@@ -45,7 +45,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -71,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name, e_kshana;
     String district_k, taluk_k, hobli_k, VA_Circle_Name_k;
     String deviceId;
-    HashMap<String, String> hashMap, hashMap_assistant;
     Set_and_Get_data set_and_get_data;
     Set_and_Get_Version set_and_get_version;
     String uName_get, pwd_get;
@@ -223,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
         deviceId = IMEI_Num_Shared;
         Log.d("Device_IMEI", ""+deviceId);
         Log.d("Mob_Num", ""+Mob_Num_Shared);
-
         //telephonyManager.getDeviceId()
         //352514086476508
         //358240051111110
@@ -231,9 +231,6 @@ public class MainActivity extends AppCompatActivity {
         //911623302747388
         //862611044444173
         //Toast.makeText(getApplicationContext(), deviceId, Toast.LENGTH_SHORT).show();
-
-        hashMap = new HashMap<>();
-        hashMap_assistant = new HashMap<>();
 
         if (isNetworkAvailable()) {
             //checkDatabase();
@@ -265,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private static class PasswordCharSequence implements CharSequence {
-            private CharSequence mSource;
+            private final CharSequence mSource;
             PasswordCharSequence(CharSequence source) {
                 mSource = source; // Store char sequence
             }
@@ -424,7 +421,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     Log.d("Database Value", "" + uName_db_VA);
                                     Log.d("Database Value", "" + pwrd_db_VA);
-                                    if (uName_get.toLowerCase().equals(uName_db_VA.toLowerCase()) && pwd_get.toLowerCase().equals(pwrd_db_VA.toLowerCase()) && (deviceId.equals(IMEI1_db) || deviceId.equals(IMEI2_db))) {
+                                    if (uName_get.equals(uName_db_VA) && pwd_get.equals(pwrd_db_VA) && (deviceId.equals(IMEI1_db) || deviceId.equals(IMEI2_db))) {
                                         Log.d("Login", "VA_LogIn");
 
                                         pwd.setError(null);
@@ -512,7 +509,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     Log.d("Database Value", "" + uName_db_RI);
                                     Log.d("Database Value", "" + pwrd_db_RI);
-                                    if (uName_get.toLowerCase().equals(uName_db_RI.toLowerCase()) && pwd_get.toLowerCase().equals(pwrd_db_RI.toLowerCase()) && (deviceId.equals(RI_IMEI1_db) || deviceId.equals(RI_IMEI2_db))) {
+                                    if (uName_get.equals(uName_db_RI) && pwd_get.equals(pwrd_db_RI) && (deviceId.equals(RI_IMEI1_db) || deviceId.equals(RI_IMEI2_db))) {
                                         Log.d("Login", "RI_LogIn");
 
                                         pwd.setError(null);
@@ -615,7 +612,7 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d("Database Value", "pwrd_db_VA: " + pwrd_db_VA);
                                     Log.d("Database Value", "uName_db_RI: " + uName_db_RI);
                                     Log.d("Database Value", "pwrd_db_RI: " + pwrd_db_RI);
-                                    if (uName_get.toLowerCase().equals(uName_db_VA.toLowerCase()) && pwd_get.toLowerCase().equals(pwrd_db_VA.toLowerCase()) && (deviceId.equals(IMEI1_db) || deviceId.equals(IMEI2_db))) {
+                                    if (uName_get.equals(uName_db_VA) && pwd_get.equals(pwrd_db_VA) && (deviceId.equals(IMEI1_db) || deviceId.equals(IMEI2_db))) {
                                         Log.d("Login", "VA_LogIn");
 
                                         pwd.setError(null);
@@ -642,7 +639,7 @@ public class MainActivity extends AppCompatActivity {
                                         });
                                         //str = "VA_success";
                                         break;
-                                    } else if (uName_get.toLowerCase().equals(uName_db_RI.toLowerCase()) && pwd_get.toLowerCase().equals(pwrd_db_RI.toLowerCase()) && (deviceId.equals(RI_IMEI1_db) || deviceId.equals(RI_IMEI2_db))) {
+                                    } else if (uName_get.equals(uName_db_RI) && pwd_get.equals(pwrd_db_RI) && (deviceId.equals(RI_IMEI1_db) || deviceId.equals(RI_IMEI2_db))) {
                                         Log.d("Login", "RI_LogIn");
 
                                         pwd.setError(null);
@@ -945,6 +942,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setLocale(String localeName) {
+
+        SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+        editor.putString(Constants.uName_get, uName_get);
+        editor.apply();
+
         Locale myLocale = new Locale(localeName);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -1050,6 +1052,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setLocale_RI(String localeName) {
+
+        SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+        editor.putString(Constants.uName_get, uName_get);
+        editor.apply();
+
         Locale myLocale = new Locale(localeName);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();

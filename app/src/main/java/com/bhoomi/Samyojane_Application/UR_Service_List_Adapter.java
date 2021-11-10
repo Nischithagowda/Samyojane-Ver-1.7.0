@@ -1,6 +1,5 @@
 package com.bhoomi.Samyojane_Application;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -41,15 +39,14 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
     private Context context;
     ArrayList<String> SlNo;
     ArrayList<String> Applicant_Name;
-    ArrayList<String> GSC_First_Part;
     ArrayList<String> Applicant_ID;
     ArrayList<String> DueDate;
     ArrayList<String> ServiceCode;
     ArrayList<String> ServiceName;
     ArrayList<String> TownName;
-    ArrayList<String> TownCode;
+    ArrayList<Integer> TownCode;
     ArrayList<String> WardName;
-    ArrayList<String> WardCode;
+    ArrayList<Integer> WardCode;
     ArrayList<String> Option_Flag;
     ArrayList<String> PushedList;
     ArrayList<String> selected_items = new ArrayList<>();
@@ -59,7 +56,8 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
     String serviceCode, serviceName, town_code, ward_code, option_Flag;
     String item_position;
     String district, taluk, VA_Name, hobli,VA_Circle_Name, town_Name, ward_Name;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_code, villageCode, habitationCode, eng_certi;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_code;
+    String villageCode, eng_certi;
     private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     Intent i;
@@ -67,17 +65,15 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
     Activity activity;
     LayoutInflater inflater;
 
-    UR_Service_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name,
-                            ArrayList<String> gsc_firstPart, ArrayList<String> rd_No, ArrayList<String> dueDate,
+    UR_Service_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name, ArrayList<String> rd_No, ArrayList<String> dueDate,
                             ArrayList<String> serviceCode, ArrayList<String> serviceName, ArrayList<String> townName,
-                            ArrayList<String> townCode, ArrayList<String> wardName, ArrayList<String> wardCode,
+                            ArrayList<Integer> townCode, ArrayList<String> wardName, ArrayList<Integer> wardCode,
                             ArrayList<String> option_Flag, ArrayList<String> pushedList,
                             Activity a, DataTransferInterface dtInterface) {
 
         this.context = context;
         this.SlNo = slNo;
         this.Applicant_Name = applicant_Name;
-        this.GSC_First_Part = gsc_firstPart;
         this.Applicant_ID = rd_No;
         this.DueDate = dueDate;
         this.ServiceCode = serviceCode;
@@ -137,13 +133,10 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
             Date date2 = df.parse(due_Date_C);
 
             if (date1.after(date2) || date1.equals(date2)) {
-                //#FFEE0808
-                ur_service_viewHolder.gsc_first_part.setTextColor(Color.parseColor("#FFEE0808"));
                 ur_service_viewHolder.app_Id.setTextColor(Color.parseColor("#FFEE0808"));
                 ur_service_viewHolder.app_dueDate.setTextColor(Color.parseColor("#FFEE0808"));
                 Log.d("Date", "Date1 is after Date2");
             }else{
-                ur_service_viewHolder.gsc_first_part.setTextColor(Color.parseColor("#ff000000"));
                 ur_service_viewHolder.app_Id.setTextColor(Color.parseColor("#ff000000"));
                 ur_service_viewHolder.app_dueDate.setTextColor(Color.parseColor("#ff000000"));
                 Log.d("Date", "Date1 is before Date2");
@@ -156,7 +149,6 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
 
         ur_service_viewHolder.sl_No.setText(SlNo.get(position));
         ur_service_viewHolder.app_Name.setText(Applicant_Name.get(position));
-        ur_service_viewHolder.gsc_first_part.setText(GSC_First_Part.get(position));
         ur_service_viewHolder.app_Id.setText(Applicant_ID.get(position));
         ur_service_viewHolder.app_dueDate.setText(DueDate.get(position));
         ur_service_viewHolder.app_ServiceCode.setText(ServiceCode.get(position));
@@ -195,7 +187,6 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
                 serviceCode = ur_service_viewHolder.app_ServiceCode.getText().toString();
                 serviceName = ur_service_viewHolder.app_ServiceName.getText().toString();
                 villageCode = "99999";
-                habitationCode = "255";
                 town_Name = ur_service_viewHolder.tvTownName.getText().toString();
                 town_code = ur_service_viewHolder.tvTownCode.getText().toString();
                 ward_Name = ur_service_viewHolder.tvWardName.getText().toString();
@@ -208,12 +199,11 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
                 Log.d("serviceCode", ""+serviceCode);
                 Log.d("serviceName", ""+serviceName);
                 Log.d("villageCode", ""+villageCode);
-                Log.d("habitationCode", ""+habitationCode);
                 Log.d("town_Name", ""+town_Name);
                 Log.d("town_code", ""+town_code);
                 Log.d("ward_Name", ward_Name);
                 Log.d("ward_code", ward_code);
-                Log.d("va_Circle_Code", va_Circle_code);
+                Log.d("va_Circle_Code", ""+va_Circle_code);
                 Log.d("option_Flag", option_Flag);
 
                 if(applicant_Id!=null) {
@@ -222,7 +212,7 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
                     database = openHelper.getWritableDatabase();
 
                     Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
-                            + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.RD_No + "=" + applicant_Id, null);
+                            + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
 
                     if (cursor.getCount() > 0) {
                         if (cursor.moveToNext()) {
@@ -252,7 +242,6 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
                     i.putExtra("VA_Name", VA_Name);
                     i.putExtra("eng_certi",eng_certi);
                     i.putExtra("villageCode", villageCode);
-                    i.putExtra("habitationCode", habitationCode);
                     i.putExtra("town_Name", town_Name);
                     i.putExtra("town_code", town_code);
                     i.putExtra("ward_Name", ward_Name);
@@ -293,13 +282,12 @@ public class UR_Service_List_Adapter extends BaseAdapter implements Filterable {
 }
 
 class UR_Service_ViewHolder{
-    TextView sl_No, app_Name, gsc_first_part, app_Id,app_dueDate, app_ServiceCode, app_ServiceName,
+    TextView sl_No, app_Name, app_Id,app_dueDate, app_ServiceCode, app_ServiceName,
             tvTownName, tvTownCode, tvWardName, tvWardCode, tvOption_Flag;
     CheckBox checkbox;
     UR_Service_ViewHolder(View view) {
         sl_No = view.findViewById(R.id.sl_No);
         app_Name = view.findViewById(R.id.app_Name);
-        gsc_first_part = view.findViewById(R.id.gsc_first_part);
         app_Id = view.findViewById(R.id.app_Id);
         app_dueDate = view.findViewById(R.id.app_dueDate);
         app_ServiceCode = view.findViewById(R.id.app_ServiceCode);

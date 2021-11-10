@@ -31,19 +31,17 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
     Context context;
     ArrayList<String> SlNo;
     ArrayList<String> Applicant_Name;
-    ArrayList<String> GSC_First_Part;
     ArrayList<String> Applicant_ID;
     ArrayList<String> DueDate;
     ArrayList<String> ServiceCode;
     ArrayList<String> ServiceName;
     ArrayList<String> VillageCode;
     ArrayList<String> VillageName;
-    ArrayList<String> HabitationCode;
     ArrayList<String> Option_Flag;
     TextView app_Name;
     String applicant_name;
     String applicant_Id;
-    String villageCode, habitationCode, town_code, ward_code, option_Flag, eng_certi;
+    String villageCode, town_code, ward_code, option_Flag, eng_certi;
     String serviceCode;
     String district, taluk, RI_Name, hobli,VA_Circle_Name, VA_Name;
     private SQLiteOpenHelper openHelper;
@@ -53,21 +51,18 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
     String item_position;
     Intent i;
 
-    RI_Service_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name,
-                            ArrayList<String> gsc_firstPart, ArrayList<String> rd_No, ArrayList<String> dueDate,
+    RI_Service_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name, ArrayList<String> rd_No, ArrayList<String> dueDate,
                             ArrayList<String> serviceCode, ArrayList<String> serviceName, ArrayList<String> villageCode,
-                            ArrayList<String> habitationCode, ArrayList<String> villageName, ArrayList<String> option_Flag) {
+                            ArrayList<String> villageName, ArrayList<String> option_Flag) {
 
         this.context = context;
         this.SlNo = slNo;
         this.Applicant_Name = applicant_Name;
-        this.GSC_First_Part = gsc_firstPart;
         this.Applicant_ID = rd_No;
         this.DueDate = dueDate;
         this.ServiceCode = serviceCode;
         this.ServiceName = serviceName;
         this.VillageCode = villageCode;
-        this.HabitationCode = habitationCode;
         this.VillageName = villageName;
         this.Option_Flag = option_Flag;
     }
@@ -119,13 +114,10 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
 
             assert date1 != null;
             if (date1.after(date2) || date1.equals(date2)) {
-                //#FFEE0808
-                ri_service_viewHolder.gsc_first_part.setTextColor(Color.parseColor("#FFEE0808"));
                 ri_service_viewHolder.app_Id.setTextColor(Color.parseColor("#FFEE0808"));
                 ri_service_viewHolder.app_dueDate.setTextColor(Color.parseColor("#FFEE0808"));
                 Log.d("Date", "Date1 is after Date2");
             }else{
-                ri_service_viewHolder.gsc_first_part.setTextColor(Color.parseColor("#ff000000"));
                 ri_service_viewHolder.app_Id.setTextColor(Color.parseColor("#ff000000"));
                 ri_service_viewHolder.app_dueDate.setTextColor(Color.parseColor("#ff000000"));
                 Log.d("Date", "Date1 is before Date2");
@@ -138,13 +130,11 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
 
         ri_service_viewHolder.sl_No.setText(SlNo.get(position));
         ri_service_viewHolder.app_Name.setText(Applicant_Name.get(position));
-        ri_service_viewHolder.gsc_first_part.setText(GSC_First_Part.get(position));
         ri_service_viewHolder.app_Id.setText(Applicant_ID.get(position));
         ri_service_viewHolder.app_dueDate.setText(DueDate.get(position));
         ri_service_viewHolder.app_ServiceCode.setText(ServiceCode.get(position));
         ri_service_viewHolder.app_ServiceName.setText(ServiceName.get(position));
         ri_service_viewHolder.tvVillageCode.setText(VillageCode.get(position));
-        ri_service_viewHolder.tvHabitationCode.setText(HabitationCode.get(position));
         ri_service_viewHolder.tvVillageName.setText(VillageName.get(position));
         ri_service_viewHolder.tvOption_Flag.setText(Option_Flag.get(position));
 
@@ -175,7 +165,6 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
             serviceCode = ri_service_viewHolder.app_ServiceCode.getText().toString();
             serviceName = ri_service_viewHolder.app_ServiceName.getText().toString();
             villageCode = ri_service_viewHolder.tvVillageCode.getText().toString();
-            habitationCode = ri_service_viewHolder.tvHabitationCode.getText().toString();
             village_name = ri_service_viewHolder.tvVillageName.getText().toString();
             town_code = "9999";
             ward_code = "255";
@@ -203,7 +192,6 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
             Log.d("serviceCode", ""+serviceCode);
             Log.d("serviceName", ""+serviceName);
             Log.d("villageCode", ""+villageCode);
-            Log.d("habitationCode", ""+habitationCode);
             Log.d("strSearchVillageName",""+ village_name);
             Log.d("RI_va_Circle_code_ser",""+ va_Circle_code);
             Log.d("RI_VA_Circle_Name_ser", ""+VA_Circle_Name);
@@ -256,7 +244,6 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                         i.putExtra("strSearchVillageName", village_name);
                         i.putExtra("serviceCode", serviceCode);
                         i.putExtra("villageCode", villageCode);
-                        i.putExtra("habitationCode", habitationCode);
                         i.putExtra("va_Circle_Code", va_Circle_code);
                         i.putExtra("town_code", town_code);
                         i.putExtra("ward_code", ward_code);
@@ -291,7 +278,6 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                         i.putExtra("strSearchVillageName", village_name);
                         i.putExtra("serviceCode", serviceCode);
                         i.putExtra("villageCode", villageCode);
-                        i.putExtra("habitationCode", habitationCode);
                         i.putExtra("va_Circle_Code", va_Circle_code);
                         i.putExtra("town_code", town_code);
                         i.putExtra("ward_code", ward_code);
@@ -320,7 +306,6 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                         i.putExtra("strSearchVillageName", village_name);
                         i.putExtra("serviceCode", serviceCode);
                         i.putExtra("villageCode", villageCode);
-                        i.putExtra("habitationCode", habitationCode);
                         i.putExtra("va_Circle_Code", va_Circle_code);
                         i.putExtra("town_code", town_code);
                         i.putExtra("ward_code", ward_code);
@@ -351,18 +336,16 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
     }
 }
 class RI_Service_ViewHolder{
-    TextView sl_No, app_Name, gsc_first_part, app_Id,app_dueDate, app_ServiceCode, app_ServiceName,
-            tvVillageCode, tvHabitationCode, tvVillageName, tvOption_Flag;
+    TextView sl_No, app_Name, app_Id,app_dueDate, app_ServiceCode, app_ServiceName,
+            tvVillageCode, tvVillageName, tvOption_Flag;
     RI_Service_ViewHolder(View view) {
         sl_No = view.findViewById(R.id.sl_No);
         app_Name = view.findViewById(R.id.app_Name);
-        gsc_first_part = view.findViewById(R.id.gsc_first_part);
         app_Id = view.findViewById(R.id.app_Id);
         app_dueDate = view.findViewById(R.id.app_dueDate);
         app_ServiceCode = view.findViewById(R.id.app_ServiceCode);
         app_ServiceName = view.findViewById(R.id.app_ServiceName);
         tvVillageCode = view.findViewById(R.id.tvVillageCode);
-        tvHabitationCode = view.findViewById(R.id.tvHabitationCode);
         tvVillageName = view.findViewById(R.id.tvVillageName);
         tvOption_Flag = view.findViewById(R.id.tvOption_Flag);
     }

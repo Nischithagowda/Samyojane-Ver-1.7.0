@@ -37,7 +37,7 @@ public class RI_UploadScreen extends AppCompatActivity {
     Button btnUpload, btnok;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    String RI_Report_No, RI_DataUpdateFlag, District_Code, Taluk_Code, Hobli_Code, Village_Circle_code, Village_Code, Habitation_code, Town_Code, Ward_Code, Service_Code,Applicant_Id;
+    String RI_Report_No, RI_DataUpdateFlag, District_Code, Taluk_Code, Hobli_Code, Village_Circle_code, Village_Code, Town_Code, Ward_Code, Service_Code,Applicant_Id;
     String RI_Annual_Income, RI_vLat, RI_vLong, RI_Accepted_VA_information;
     ProgressDialog dialog;
     TextView tvTotalUpload, tvAlreadyUploaded, tvNotUploaded, tvAfterUploaded;
@@ -202,7 +202,6 @@ public class RI_UploadScreen extends AppCompatActivity {
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code +","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code+","
@@ -247,7 +246,6 @@ public class RI_UploadScreen extends AppCompatActivity {
                                 Hobli_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code));
                                 Village_Circle_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code));
                                 Village_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code));
-                                Habitation_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Habitation_code));
                                 Town_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code));
                                 Ward_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code));
                                 Service_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));
@@ -283,7 +281,6 @@ public class RI_UploadScreen extends AppCompatActivity {
                                 request.addProperty("Hobli_Code", Hobli_Code);
                                 request.addProperty("va_Circle_Code", Village_Circle_code);
                                 request.addProperty("Village_Code", Village_Code);
-                                request.addProperty("Habitation_code", Habitation_code);
                                 request.addProperty("Town_Code",Town_Code);
                                 request.addProperty("Ward_Code",Ward_Code);
                                 request.addProperty("Service_Code", Service_Code);
