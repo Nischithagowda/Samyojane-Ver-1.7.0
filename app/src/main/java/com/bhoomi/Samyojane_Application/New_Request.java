@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.DeadObjectException;
 import android.provider.Settings;
 import android.telephony.PhoneNumberUtils;
 import android.text.InputFilter;
@@ -44,7 +46,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhoomi.Samyojane_Application.api.APIClient;
+import com.bhoomi.Samyojane_Application.api.APIInterface_NIC;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
@@ -62,6 +67,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class New_Request extends AppCompatActivity {
 
@@ -118,6 +127,10 @@ public class New_Request extends AppCompatActivity {
     boolean return_Value;
     InputMethodManager imm;
     InputMethodSubtype ims;
+    APIInterface_NIC apiInterface_nic;
+    String uName_get;
+    int DesiCode;
+    SharedPreferences sharedPreferences;
 
     InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
@@ -326,6 +339,10 @@ public class New_Request extends AppCompatActivity {
         ward_Name = i.getStringExtra("ward_Name");
         option_Flag = i.getStringExtra("option_Flag");
 
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        DesiCode = sharedPreferences.getInt(Constants.DesiCode_VA, 22);
+        uName_get = sharedPreferences.getString(Constants.uName_get, "");
+
         if(report_no == null){
             Date c1 = Calendar.getInstance().getTime();
 
@@ -440,8 +457,8 @@ public class New_Request extends AppCompatActivity {
             if (cursor.moveToFirst()) {
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
                 name = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
-                fatherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name));
-                motherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name));
+                fatherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName));
+                motherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName));
                 Id_Code = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE));
                 rationCardNo = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo));
                 mobileNo = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No));
@@ -835,12 +852,23 @@ public class New_Request extends AppCompatActivity {
                 openHelper = new DataBaseHelperClass_btnDownload_Docs(New_Request.this);
                 database = openHelper.getWritableDatabase();
 
-                //8186126549
-                hashMap_Down_Docs.put("GSC_No", applicant_Id);
-                Log.d("hashMap_Down_Docs", ""+hashMap_Down_Docs+", URL:"+getString(R.string.url_Down_Docs));
-                new GetDocsFromServer().execute(getString(R.string.url_Down_Docs));
-                //http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Docs?GSC_No=8966150768&GSC_First_Part=3
-                //GSC_No=8966150768&GSC_First_Part=3
+                String username = uName_get.substring(0, 3);//First three characters of username
+                Date date = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
+                String day_num = dateFormat.format(date);//Current Day
+                SimpleDateFormat dateFormat1 = new SimpleDateFormat("yy", Locale.ENGLISH);
+                String year_num = dateFormat1.format(date);//last two digits of the year
+                String app_name = "Samyojane";
+
+                String fieldVerify_api_flag2 = username + day_num + app_name + year_num;
+
+                GetDocRequestClass getDocRequestClass = new GetDocRequestClass();
+                getDocRequestClass.setFlag1(getString(R.string.fieldVerify_api_flag1));
+                getDocRequestClass.setFlag2(fieldVerify_api_flag2);
+                getDocRequestClass.setLoginId(uName_get);
+                getDocRequestClass.setDesignationCode(DesiCode);
+                getDocRequestClass.setGscNoList(applicant_Id);
+                GetDocsFromServer(getDocRequestClass);
             }
             else {
                 Toast.makeText(getApplicationContext(), getString(R.string.connection_not_available), Toast.LENGTH_SHORT).show();
@@ -884,6 +912,9 @@ public class New_Request extends AppCompatActivity {
             openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request.this);
             database = openHelper.getWritableDatabase();
 
+            String gsc_no;
+            gsc_no = applicant_Id.replaceAll("[^\\d.]", "");
+
             if (latitude != 0.0 && longitude != 0.0) {
                 Log.d("value", "enter first if");
                 if (Objects.equals(optionA, getString(R.string.yes))) {
@@ -904,19 +935,77 @@ public class New_Request extends AppCompatActivity {
 
                             database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "="+ applicant_Id);
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
 
-                            database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                                    + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No"
-                                    + ", ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_ID_NUMBER, ST_Upd_mobile_no, ST_applicant_caddress1, ST_applicant_caddress2, ST_applicant_caddress3,ST_PinCode, ST_Eng_Certificate,"
-                                    + "ST_applicant_photo,VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Num_Years_8, Total_No_Years_10, NO_Months_10, "
-                                    + "Annual_Income, vLat, vLong, Can_Certificate_Given, Reason_for_Rejection, Remarks, Report_No, DataUpdateFlag)"
-                                    + " values (" + district_Code + "," + taluk_Code + "," + hobli_Code + "," + va_Circle_Code + "," + villageCode + "," + town_code + "," + ward_code + "," + serviceCode + "," + applicant_Id + ",'"
-                                    + applicant_name + "','" + fatherName + "','" + motherName + "','" + rationCardNo + "','" + mobileNo + "','" + address1 + "','" + address2 + "','" + address3 + "','" + add_pin + "','" + eng_certi
-                                    + "','"+appImage+"','" + optionA + "'," + category_code + "," + caste_code + ",'NO',0,'" + strYear + "'," + year + "," + month + "," + amount + "," + latitude + "," + longitude + ",'YES',0,'" + remarks + "','" + report_no
-                                    + "', 1)");
+                            database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_UPD + "("
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GscNo1 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.FacilityCode + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DesignationCode + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.LoginID + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromApplicant + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.CanbeIssued + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.ReportDate + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.ReportNo + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.AppTitle + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.FatTitle + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.ResCatCode + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.CasteCode + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.CasteSl + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Income + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.NoofYears + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.NoofMonths + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag
+                                    + ") Values ('"
+                                    + applicant_Id + "',"
+                                    + gsc_no + ","
+                                    + serviceCode + ","
+                                    + DesiCode + ",'"
+                                    + uName_get + "','"
+                                    + remarks + "','"
+                                    + fatherName + "','"
+                                    + motherName + "','"
+                                    + address1 + "','"
+                                    + address2 + "','"
+                                    + address3 + "','"
+                                    + "NO" + "','"//DifferFromApplicant
+                                    + "YES" + "','"//CanbeIssued
+                                    + Calendar.getInstance().getTime() + "','"
+                                    + report_no + "',"
+                                    + "0" + "," //appTitle
+                                    + "0" + "," //bincom
+                                    + "0" + ","
+                                    + category_code + ","
+                                    + caste_code + ","
+                                    + "0" + "," //CasteSl
+                                    + amount + ","
+                                    + year + ","
+                                    + month + ", 1)");
+//                            database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
+//                                    + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code," +
+//                                    " ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No"
+//                                    + ", ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_ID_NUMBER, ST_Upd_mobile_no, " +
+//                                    "ST_applicant_caddress1, ST_applicant_caddress2, ST_applicant_caddress3,ST_PinCode, ST_Eng_Certificate,"
+//                                    + "ST_applicant_photo,VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, " +
+//                                    "Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Num_Years_8, Total_No_Years_10, NO_Months_10, "
+//                                    + "Annual_Income, vLat, vLong, Can_Certificate_Given, Reason_for_Rejection, Remarks, Report_No, DataUpdateFlag)"
+//                                    + " values (" + district_Code + "," + taluk_Code + "," + hobli_Code + "," + va_Circle_Code + ","
+//                                    + villageCode + "," + town_code + "," + ward_code + "," + serviceCode + "," + applicant_Id + ",'"
+//                                    + applicant_name + "','" + fatherName + "','" + motherName + "','" + rationCardNo + "','"
+//                                    + mobileNo + "','" + address1 + "','" + address2 + "','" + address3 + "','" + add_pin + "','" + eng_certi
+//                                    + "','"+appImage+"','" + optionA + "'," + category_code + "," + caste_code + ",'NO',0,'"
+//                                    + strYear + "'," + year + "," + month + "," + amount + "," + latitude + "," + longitude + ",'YES',0,'"
+//                                    + remarks + "','" + report_no
+//                                    + "', 1)");
 
-                            Log.d("Database", "ServiceParameters Database Inserted");
+                            Log.d("Database", DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_UPD + "Database Inserted");
                             Toast.makeText(getApplicationContext(), getString(R.string.data_saves_successfully), Toast.LENGTH_SHORT).show();
 
                             truncateDatabase_Docs();
@@ -1073,98 +1162,98 @@ public class New_Request extends AppCompatActivity {
         alert.show();
     }
 
-    @SuppressLint("StaticFieldLeak")
-    class GetDocsFromServer extends AsyncTask<String, Void, JSONObject> {
-        JSONObject jsonObject;
+    public void GetDocsFromServer(GetDocRequestClass getDocRequestClass){
+        apiInterface_nic = APIClient.getClient(getString(R.string.MobAPI_New_NIC)).create(APIInterface_NIC.class);
 
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JParserAdv jParserAdv = new JParserAdv();
-                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.url_Down_Docs), "POST", hashMap_Down_Docs);
-            } catch (NullPointerException e){
-                runOnUiThread(() -> dialog.dismiss());
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            return jsonObject;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
-
-            try {
-                //dialog1.setProgress(20);
-                openHelper = new DataBaseHelperClass_btnDownload_Docs(New_Request.this);
-                database = openHelper.getWritableDatabase();
-
-                JSONArray array = jsonObject.getJSONArray("data");
-
-                truncateDatabase_Docs();
-
-                //dialog1.setProgress(10);
-                Type listType = new TypeToken<List<Set_and_Get_Down_Docs>>(){}.getType();
-                List<Set_and_Get_Down_Docs> myModelList = new Gson().fromJson(array.toString(), listType);
-                for(Set_and_Get_Down_Docs set_and_get_down_docs:myModelList){
-
-                    //dialog1.setProgress(10);
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME + "("
-                            + DataBaseHelperClass_btnDownload_Docs.UDT_GSC_No+","
-                            + DataBaseHelperClass_btnDownload_Docs.UDT_GSCFirstPart+","
-                            + DataBaseHelperClass_btnDownload_Docs.UDT_Document_Id+","
-                            + DataBaseHelperClass_btnDownload_Docs.UDT_File+") values ("
-                            + set_and_get_down_docs.getUDT_GSC_No() +","
-                            + set_and_get_down_docs.getUDT_GSCFirstPart()+","
-                            + set_and_get_down_docs.getUDT_Document_Id() +",'"
-                            + Base64.encodeToString(set_and_get_down_docs.getUDT_File(),Base64.DEFAULT)+"')");
-
-                    Log.d("Database", "Down_Docs Database Inserted");
-                    //dialog1.setProgress(30);
-                    //Toast.makeText(getApplicationContext(), "Docs Downloaded successfully", Toast.LENGTH_SHORT).show();
-                }
-                database.close();
-                //dialog1.setProgress(10);
-                runOnUiThread(() -> {
+        Call<JsonObject> call = apiInterface_nic.GetDocs(getDocRequestClass);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject1 = response.body();
+                Log.d("response_server",jsonObject1 + "");
+                assert jsonObject1 != null;
+                JsonObject jsonObject2 = jsonObject1.getAsJsonObject("StatusMessage");
+                Log.d("response_server",jsonObject2 + "");
+                String response_server = jsonObject2.toString();
+                try {
                     openHelper = new DataBaseHelperClass_btnDownload_Docs(New_Request.this);
                     database = openHelper.getWritableDatabase();
-                    Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
 
-                    if (cursor3.getCount() > 0) {
-                        dialog.dismiss();
-                        btnViewDocs.setVisibility(View.VISIBLE);
-                        //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        cursor3.close();
-                        Log.d("Values", "No records Exists");
-                        btnViewDocs.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("Table");
+
+                    truncateDatabase_Docs();
+
+                    //dialog1.setProgress(10);
+                    Type listType = new TypeToken<List<Set_and_Get_Down_Docs>>(){}.getType();
+                    List<Set_and_Get_Down_Docs> myModelList = new Gson().fromJson(array.toString(), listType);
+                    for(Set_and_Get_Down_Docs set_and_get_down_docs:myModelList){
+
+                        //dialog1.setProgress(10);
+                        database.execSQL("insert into " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME + "("
+                                + DataBaseHelperClass_btnDownload_Docs.GSCNO+","
+                                + DataBaseHelperClass_btnDownload_Docs.DocumentName+","
+                                + DataBaseHelperClass_btnDownload_Docs.DocumentID+","
+                                + DataBaseHelperClass_btnDownload_Docs.Document+") values ('"
+                                + set_and_get_down_docs.getGSCNO() +"','"
+                                + set_and_get_down_docs.getDocumentName()+"',"
+                                + set_and_get_down_docs.getDocumentID() +",'"
+                                + set_and_get_down_docs.getDocument()+"')");
+
+                        Log.d("Database", "Down_Docs Database Inserted");
+                        //dialog1.setProgress(30);
+                        //Toast.makeText(getApplicationContext(), "Docs Downloaded successfully", Toast.LENGTH_SHORT).show();
                     }
-                });
-                database.close();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.d("JSONException", ""+e);
-                btnViewDocs.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            } catch (JsonParseException e){
-                e.printStackTrace();
-                Log.d("JsonParseException", ""+e);
-                btnViewDocs.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            } catch (NullPointerException e){
-                e.printStackTrace();
-                Log.d("NullPointerException", ""+e);
-                btnViewDocs.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-            //Toast.makeText(getApplicationContext(), "VillageNames Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-        }
-    }
+                    database.close();
+                    //dialog1.setProgress(10);
+                    runOnUiThread(() -> {
+                        openHelper = new DataBaseHelperClass_btnDownload_Docs(New_Request.this);
+                        database = openHelper.getWritableDatabase();
+                        Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
 
+                        if (cursor3.getCount() > 0) {
+                            dialog.dismiss();
+                            btnViewDocs.setVisibility(View.VISIBLE);
+                            //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            cursor3.close();
+                            Log.d("Values", "No records Exists");
+                            btnViewDocs.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    });
+                    database.close();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("JSONException", ""+e);
+                    btnViewDocs.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } catch (JsonParseException e){
+                    e.printStackTrace();
+                    Log.d("JsonParseException", ""+e);
+                    btnViewDocs.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                    Log.d("NullPointerException", ""+e);
+                    btnViewDocs.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public void truncateDatabase_Docs(){
         //dialog1.setProgress(20);
@@ -1179,7 +1268,6 @@ public class New_Request extends AppCompatActivity {
         }
 
     }
-
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

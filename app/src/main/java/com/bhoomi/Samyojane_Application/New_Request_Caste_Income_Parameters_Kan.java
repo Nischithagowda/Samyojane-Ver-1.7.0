@@ -1081,7 +1081,7 @@ public class New_Request_Caste_Income_Parameters_Kan extends AppCompatActivity {
 
                 database.execSQL("update "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "="+ applicant_Id);
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
 
                 database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='"+"NO"+"',"
@@ -1138,7 +1138,7 @@ public class New_Request_Caste_Income_Parameters_Kan extends AppCompatActivity {
                 set_and_get_service_parameter.setTown_Code(town_code);
                 set_and_get_service_parameter.setWard_Code(ward_code);
                 set_and_get_service_parameter.setService_Code(String.valueOf(serviceCode));
-                set_and_get_service_parameter.setRD_No(applicant_Id);
+                set_and_get_service_parameter.setGSC_No(applicant_Id);
                 set_and_get_service_parameter.setEng_Certify(eng_certi);
                 set_and_get_service_parameter.setAPP_Category_6(String.valueOf(getCatCode));
                 set_and_get_service_parameter.setApp_Caste_6(String.valueOf(getCasteCode));
@@ -1154,7 +1154,7 @@ public class New_Request_Caste_Income_Parameters_Kan extends AppCompatActivity {
 
                 database.execSQL("update "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "="+ applicant_Id);
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
 
                 database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
                         + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_Eng_Certificate," +
@@ -1169,7 +1169,7 @@ public class New_Request_Caste_Income_Parameters_Kan extends AppCompatActivity {
                         + set_and_get_service_parameter.getTown_Code() + ","
                         + set_and_get_service_parameter.getWard_Code() + ","
                         + set_and_get_service_parameter.getService_Code() + ","
-                        + set_and_get_service_parameter.getRD_No() + ",'"
+                        + set_and_get_service_parameter.getGSC_No() + ",'"
                         + set_and_get_service_parameter.getEng_Certify() + "','"
                         + "NO" + "',"
                         + set_and_get_service_parameter.getAPP_Category_6()+","

@@ -11,17 +11,16 @@ import android.util.Log;
 
 public class DataBaseHelperClass_btnDownload_Docs extends SQLiteOpenHelper {
 
-    private static int DATABASE_VERSION=1;
-    private static String DATABASE_NAME= "Down_Docs.db";
+    static int DATABASE_VERSION=1;
+    static String DATABASE_NAME= "Down_Docs.db";
     public static String TABLE_NAME="Docs";
-    public static String UDT_GSC_No = "UDT_GSC_No";
-    public static String UDT_GSCFirstPart = "UDT_GSCFirstPart";
-    public static String UDT_Document_Id = "UDT_Document_Id";
-    public static String UDT_File = "UDT_File";
-    private static String In_String = "In_String";
+    public static String GSCNO = "GSCNO";
+    public static String DocumentName = "DocumentName";
+    public static String DocumentID = "DocumentID";
+    public static String Document = "Document";
 
-    private static String CREATE_TABLE = " CREATE TABLE "+ TABLE_NAME +"("+UDT_GSC_No+" bigint,"+UDT_GSCFirstPart+" int,"
-            + UDT_Document_Id+" int,"+UDT_File+" TEXT , "+In_String+" TEXT)";
+    static String CREATE_TABLE = " CREATE TABLE "+ TABLE_NAME +"("+GSCNO+" TEXT,"+DocumentName+" TEXT,"
+            + DocumentID+" int,"+Document+" TEXT)";
 
     DataBaseHelperClass_btnDownload_Docs(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -436,7 +436,12 @@ public class MainActivity_Select extends AppCompatActivity {
                         int count = jsonArray.length();
                         if (count != 0) {
                             //Toast.makeText(getApplicationContext(), "calling sendOtpFromServer", Toast.LENGTH_SHORT).show();
-                            sendOtpFromServer(MobNum);
+                            //sendOtpFromServer(MobNum);
+                            dialog.dismiss();
+                            alertDialog.dismiss();
+                            if (view.getParent() != null) {
+                                ((ViewGroup) view.getParent()).removeView(view);
+                            }
                             received_OTP = "7777";
                             c1 =  received_OTP.toCharArray();
                             Intent i = new Intent(MainActivity_Select.this, OtpVerify_New.class);

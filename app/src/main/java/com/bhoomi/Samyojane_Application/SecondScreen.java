@@ -84,7 +84,7 @@ public class SecondScreen extends AppCompatActivity {
     APIInterface_SamyojaneAPI apiInterface_samyojaneAPI;
     APIInterface_NIC apiInterface_nic;
     SharedPreferences sharedPreferences;
-    int Desicode;
+    int DesiCode;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -189,7 +189,7 @@ public class SecondScreen extends AppCompatActivity {
             }
 
             sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            Desicode = sharedPreferences.getInt(Constants.DesiCode_VA, 22);
+            DesiCode = sharedPreferences.getInt(Constants.DesiCode_VA, 22);
             uName_get = sharedPreferences.getString(Constants.uName_get, "");
 
             Intent i = getIntent();
@@ -197,7 +197,7 @@ public class SecondScreen extends AppCompatActivity {
             taluk = i.getStringExtra("taluk");
             hobli = i.getStringExtra("hobli");
             VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
-            va_Circle_Code = i.getIntExtra("va_Circle_Code", 0);
+            va_Circle_Code = Integer.parseInt(i.getStringExtra("va_Circle_Code"));
             VA_Name = i.getStringExtra("VA_Name");
             localeName = i.getStringExtra("localeName");
             IMEI_Num = i.getStringExtra("IMEI_Num");
@@ -271,17 +271,6 @@ public class SecondScreen extends AppCompatActivity {
                 tvTimerValue.setText("00:00:00");
 
                 if (isNetworkAvailable()) {
-
-                    String username = uName_get.substring(0, 3);//First three characters of username
-                    Date c = Calendar.getInstance().getTime();
-                    SimpleDateFormat df = new SimpleDateFormat("dd", Locale.ENGLISH);
-                    String day_num = df.format(c);//Current Day
-                    SimpleDateFormat df1 = new SimpleDateFormat("yy", Locale.ENGLISH);
-                    String year_num = df1.format(c);//last two digits of the year
-                    String app_name = "Samyojane";
-
-                    String fieldVerify_api_flag2 = username + day_num + app_name + year_num;
-
                     dialog.show();
                     dialog.setProgress(0);
 
@@ -294,8 +283,6 @@ public class SecondScreen extends AppCompatActivity {
     //                new InsertServiceParameterTable_Server().execute();
 
                     GetFacilityServiceFromServer();
-                    GetVillageNameFromServer(district_Code, taluk_Code, hobli_Code, va_Circle_Code);
-                    GetServiceTrandataFromServer(getString(R.string.fieldVerify_api_flag1), fieldVerify_api_flag2, district_Code, taluk_Code, hobli_Code, uName_get, Desicode, va_Circle_Code);
                 }
                 else {
                     Cursor cursor1= databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME, null);
@@ -464,9 +451,11 @@ public class SecondScreen extends AppCompatActivity {
 
                     dialog.incrementProgressBy(5);
 
-                    truncateDatabase_facility();
                     JSONObject jsonObject = new JSONObject(response_server);
                     JSONArray array = jsonObject.getJSONArray("data");
+
+                    truncateDatabase_facility();
+
                     int count = array.length();
 
                     for (int i = 0; i < count; i++) {
@@ -495,13 +484,16 @@ public class SecondScreen extends AppCompatActivity {
 
                     }
                     dialog.incrementProgressBy(2);
+                    GetVillageNameFromServer(district_Code, taluk_Code, hobli_Code, va_Circle_Code);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                 }catch (OutOfMemoryError e){
                     e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     Log.e("OutOfMemoryError", ""+e.toString());
                 }catch (NullPointerException e){
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     e.printStackTrace();
                     Log.e("NullPointerException", ""+e.toString());
                 }
@@ -570,30 +562,41 @@ public class SecondScreen extends AppCompatActivity {
 
                     }
                     dialog.incrementProgressBy(10);
-                    final int totalProgressTime = 100;
-                    final Thread t = new Thread() {
-                        @Override
-                        public void run() {
-                            int jumpTime = 43;
+                    String username = uName_get.substring(0, 3);//First three characters of username
+                    Date c = Calendar.getInstance().getTime();
+                    SimpleDateFormat df = new SimpleDateFormat("dd", Locale.ENGLISH);
+                    String day_num = df.format(c);//Current Day
+                    SimpleDateFormat df1 = new SimpleDateFormat("yy", Locale.ENGLISH);
+                    String year_num = df1.format(c);//last two digits of the year
+                    String app_name = "Samyojane";
 
-                            while(jumpTime < totalProgressTime) {
-                                try {
-                                    sleep(2000);
-                                    jumpTime += 1;
-                                    if(jumpTime>75){
-                                        sleep(3000);
-                                    }else {
-                                        sleep(0);
-                                    }
-                                    dialog.setProgress(jumpTime);
-                                } catch (InterruptedException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    };
-                    t.start();
+                    String fieldVerify_api_flag2 = username + day_num + app_name + year_num;
+
+                    GetServiceTrandataFromServer(getString(R.string.fieldVerify_api_flag1), fieldVerify_api_flag2, district_Code, taluk_Code, hobli_Code, uName_get, DesiCode, va_Circle_Code);
+//                    final int totalProgressTime = 100;
+//                    final Thread t = new Thread() {
+//                        @Override
+//                        public void run() {
+//                            int jumpTime = 43;
+//
+//                            while(jumpTime < totalProgressTime) {
+//                                try {
+//                                    sleep(2000);
+//                                    jumpTime += 1;
+//                                    if(jumpTime>75){
+//                                        sleep(3000);
+//                                    }else {
+//                                        sleep(0);
+//                                    }
+//                                    dialog.setProgress(jumpTime);
+//                                } catch (InterruptedException e) {
+//                                    // TODO Auto-generated catch block
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }
+//                    };
+//                    t.start();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -601,10 +604,12 @@ public class SecondScreen extends AppCompatActivity {
                 }catch (OutOfMemoryError e){
                     dialog.dismiss();
                     e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     Log.e("OutOfMemoryError", ""+e.toString());
                 }catch (NullPointerException e){
                     dialog.dismiss();
                     e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     Log.e("NullPointerException", ""+e.toString());
                 }
             }
@@ -643,7 +648,7 @@ public class SecondScreen extends AppCompatActivity {
                 Log.d("response_server",jsonObject2 + "");
                 String response_server = jsonObject2.toString();
                 try {
-                    //dialog.incrementProgressBy(30);
+                    dialog.incrementProgressBy(10);
 
                     JSONObject jsonObject = new JSONObject(response_server);
                     JSONArray array = jsonObject.getJSONArray("Table");
@@ -668,8 +673,8 @@ public class SecondScreen extends AppCompatActivity {
                         set_and_get_service_tran_data.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
                         set_and_get_service_tran_data.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date));
                         set_and_get_service_tran_data.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
-                        set_and_get_service_tran_data.setFather_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name));
-                        set_and_get_service_tran_data.setMother(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name));
+                        set_and_get_service_tran_data.setFather_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName));
+                        set_and_get_service_tran_data.setMother(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName));
                         set_and_get_service_tran_data.setIDNo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo));
                         set_and_get_service_tran_data.setMobile_No(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No));
                         set_and_get_service_tran_data.setAddress1(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1));
@@ -684,7 +689,9 @@ public class SecondScreen extends AppCompatActivity {
                         set_and_get_service_tran_data.setReservationCategory(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
                         set_and_get_service_tran_data.setCaste(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
                         set_and_get_service_tran_data.setAnnualIncome(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
-                        //set_and_get_service_tran_data.setIST_annual_income(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IST_annual_income));
+                        set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
+                        set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
+                        set_and_get_service_tran_data.setPush_Flag("");
 
                         serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
                         Log.d("serviceCode", "" + serviceCode);
@@ -720,8 +727,8 @@ public class SecondScreen extends AppCompatActivity {
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date+","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name +","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName +","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 +","
@@ -735,7 +742,10 @@ public class SecondScreen extends AppCompatActivity {
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Caste +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome +")"
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + ","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied + ","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied + ","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+")"
                                 + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
                                 + set_and_get_service_tran_data.getTaluk_Code() + ","
                                 + set_and_get_service_tran_data.getHobli_Code()
@@ -765,7 +775,10 @@ public class SecondScreen extends AppCompatActivity {
                                 + set_and_get_service_tran_data.getRelationTitle()+","
                                 + set_and_get_service_tran_data.getReservationCategory()+","
                                 + set_and_get_service_tran_data.getCaste() + ",'"
-                                + set_and_get_service_tran_data.getAnnualIncome()+"')");
+                                + set_and_get_service_tran_data.getAnnualIncome()+ "',"
+                                + set_and_get_service_tran_data.getGST_No_Mths_Applied()+ ","
+                                + set_and_get_service_tran_data.getGST_No_Years_Applied()+ ",'"
+                                + set_and_get_service_tran_data.getPush_Flag()+"')");
 
                         Log.d("Database", "ServiceTranTable Database Inserted " + j);
                         j++;
@@ -808,6 +821,8 @@ public class SecondScreen extends AppCompatActivity {
                     });
                     Log.e("OutOfMemoryError2", ""+e.toString());
                 }catch (NullPointerException e){
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     Log.e("NullPointerException2", ""+e.toString());
                 }
             }

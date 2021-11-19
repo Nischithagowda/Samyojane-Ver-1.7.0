@@ -10,6 +10,7 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     static int DATABASE_VERSION=1;
     public static String DATABASE_NAME= "ServiceTranTable.db";
     public static String TABLE_NAME="ServiceTranTable";
+    public static String TABLE_NAME_UPD="ServiceTranTable_UPD";
     public static String TABLE_NAME_1="ServiceParameters";
     public static String District_Code = "DistrictCode";
     public static String Taluk_Code = "TalukCode";
@@ -18,27 +19,20 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     public static String Town_Code = "TownCode";
     public static String Ward_Code = "WardNo";
     public static String Service_Code = "FacilityCode";
-    public static String GSCNo = "GSCNo";
     public static String Applicant_Name = "ApplicantName";
     public static String Due_Date = "DueDate";
     public static String Raised_Location = "RaisedLocation";
-    public static String Father_Name = "FatherName";
-    public static String Mother_Name = "MotherName";
     public static String IDNo = "IDNo";
     public static String Mobile_No = "MobileNo";
-    public static String Address1 = "Address1";
-    public static String Address2 = "Address2";
-    public static String Address3 = "Address3";
-    public static String PinCode = "Pincode";
     public static String ST_applicant_photo = "ApplicantPhoto";
     public static String ID_TYPE = "IDType";
     public static String ST_Eng_Certificate = "EnglishOrKannada";
     public static String ApplicantTiitle = "ApplicantTiitle";
-    public static String BinCom = "BinCom";
     public static String RelationTitle = "RelationTitle";
     public static String ReservationCategory = "ReservationCategory";
     public static String Caste = "Caste";
     public static String AnnualIncome = "AnnualIncome";
+    public static String Push_Flag = "ST_Push_Flag";
     public static String GST_No_Mths_Applied = "NoOfMonths_Applied";
     public static String GST_No_Years_Applied = "NoOfYears_Applied";
     public static String vLat = "vLat";
@@ -70,7 +64,6 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     public static String APP_Father_Caste_8 = "APP_Father_Caste_8";
     public static String App_Mother_Category_8 = "App_Mother_Category_8";
     public static String APP_Mother_Caste_8 = "APP_Mother_Caste_8";
-    public static String Remarks = "Remarks";
 
     //Service Parameters of service_code-10
     public static String Total_No_Years_10 = "Total_No_Years_10";
@@ -123,14 +116,51 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     public static String RI_Can_Certificate_Given_as_RI = "RI_Can_Certificate_Given_as_RI";
     public static String RI_Reason_for_Rejection_as_RI = "RI_Reason_for_Rejection_as_RI";
 
-    static String CREATE_TABLE ="CREATE TABLE " + TABLE_NAME +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+Village_Code+" int,"+ Town_Code+" int,"+Ward_Code+" int,"+Service_Code+" int,"+ Service_Name+" TEXT,"+ Service_Name_k+" TEXT,"+ GSCNo +" TEXT,"
-            + ApplicantTiitle+ " int,"+ Applicant_Name+" TEXT,"+Due_Date+" datetime,"+Raised_Location+" TEXT,"+ BinCom+ " int,"+ RelationTitle+ " int,"+ Father_Name +" TEXT,"+ Mother_Name +" TEXT,"+ ID_TYPE +" int,"+ IDNo +" TEXT,"
+    //New NIC Update Parameters
+    //StringValues
+    public static String GSCNo = "GSCNo";
+    public static String LoginID = "LoginID";
+    public static String Remarks = "Remarks";
+    public static String FatherName = "FatherName";
+    public static String MotherName = "MotherName";
+    public static String Address1 = "Address1";
+    public static String Address2 = "Address2";
+    public static String Address3 = "Address3";
+    public static String DifferFromApplicant = "DifferFromApplicant";
+    public static String CanbeIssued = "CanbeIssued";
+    //Date Values
+    public static String ReportDate = "ReportDate";
+    //Integer Values
+    public static String GscNo1 = "GscNo1";
+    public static String FacilityCode = "FacilityCode";
+    public static String DesignationCode = "DesignationCode";
+    public static String ReportNo = "ReportNo";
+    public static String AppTitle = "AppTitle";
+    public static String BinCom = "BinCom";
+    public static String FatTitle = "FatTitle";
+    public static String PinCode = "Pincode";
+    public static String ResCatCode = "ResCatCode";
+    public static String CasteCode = "CasteCode";
+    public static String CasteSl = "CasteSl";
+    public static String Income = "Income";
+    public static String NoofYears = "NoofYears";
+    public static String NoofMonths = "NoofMonths";
+
+    String CREATE_TABLE ="CREATE TABLE " + TABLE_NAME +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+Village_Code+" int,"+ Town_Code+" int,"+Ward_Code+" int,"+Service_Code+" int,"+ Service_Name+" TEXT,"+ Service_Name_k+" TEXT,"+ GSCNo +" TEXT,"
+            + ApplicantTiitle+ " int,"+ Applicant_Name+" TEXT,"+Due_Date+" datetime,"+Raised_Location+" TEXT,"+ BinCom+ " int,"+ RelationTitle+ " int,"+ FatherName +" TEXT,"+ MotherName +" TEXT,"+ ID_TYPE +" int,"+ IDNo +" TEXT,"
             + Mobile_No+" decimal(10,0),"+Address1+" TEXT,"+Address2+" TEXT,"+Address3+" TEXT,"+ PinCode +" int,"+ ST_applicant_photo+" TEXT, "+ ST_Eng_Certificate+" TEXT,"
             + ReservationCategory+ " int,"+ Caste+ " int,"+ GST_No_Mths_Applied+ " int,"+ GST_No_Years_Applied+ " int,"
-            + AnnualIncome + " TEXT," + DataUpdateFlag+" int)";
+            + AnnualIncome + " TEXT," + Push_Flag + " TEXT," + DataUpdateFlag+" int)";
 
-    static String CREATE_TABLE_1 ="CREATE TABLE " + TABLE_NAME_1 +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+Village_Code+ " int,"+ Town_Code+" int,"+Ward_Code+" int,"+Service_Code+" int,"+ GSCNo +" TEXT,"
-            + Applicant_Name+" TEXT,"+ Father_Name +" TEXT,"+ Mother_Name +" TEXT,"+ U_Mobile_No+" decimal(10,0),"+U_RationCard_No+" TEXT,"+Address1+" TEXT,"
+    String CREATE_TABLE_UPD = "CREATE TABLE " + TABLE_NAME_UPD +"("+GSCNo+" int,"+GscNo1+" int,"+FacilityCode+" int,"+DesignationCode+" int,"
+            + LoginID+" TEXT,"+ Remarks+" TEXT,"+FatherName+" TEXT,"+MotherName+" TEXT,"+ Address1+" TEXT,"
+            + Address2+" TEXT,"+ Address3 +" TEXT," + DifferFromApplicant+ " TEXT,"+ CanbeIssued+" TEXT,"
+            + ReportDate+" datetime,"+ReportNo+" int,"+ AppTitle+ " int,"+ BinCom+ " int,"+ FatTitle +" int,"
+            + ResCatCode +" int,"+ CasteCode +" int,"+ CasteSl +" int," + Income+" int,"+NoofYears+" int,"
+            + NoofMonths + " int," + DataUpdateFlag+" int)";
+
+    String CREATE_TABLE_1 ="CREATE TABLE " + TABLE_NAME_1 +"("+District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+Village_Code+ " int,"+ Town_Code+" int,"+Ward_Code+" int,"+Service_Code+" int,"+ GSCNo +" TEXT,"
+            + Applicant_Name+" TEXT,"+ FatherName +" TEXT,"+ MotherName +" TEXT,"+ U_Mobile_No+" decimal(10,0),"+U_RationCard_No+" TEXT,"+Address1+" TEXT,"
             + Address2+" TEXT,"+Address3+" TEXT,"+ PinCode+" int,"+ST_applicant_photo+" TEXT,"+ ST_Eng_Certificate+" TEXT,"+ VA_Accepts_Applicant_information +" TEXT,"
             + UID+" TEXT,"+AadhaarPhoto +" TEXT,"+Due_Date+" datetime,"+ Report_No+" TEXT,"
             + Applicant_Category +" int,"+Applicant_Caste +" int,"+ Belongs_Creamy_Layer_6 +" TEXT,"+ Reason_for_Creamy_Layer_6 +" int," + AnnualIncome +" float,"
@@ -159,14 +189,17 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_TABLE_UPD);
         db.execSQL(CREATE_TABLE_1);
         Log.i("Note",TABLE_NAME+" Table Created");
+        Log.i("Note",TABLE_NAME_UPD+" Table Created");
         Log.i("Note",TABLE_NAME_1+" Table Created");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME_UPD);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME_1);
         Log.i("Note","Table Upgraded");
         //db.execSQL(CREATE_TABLE);

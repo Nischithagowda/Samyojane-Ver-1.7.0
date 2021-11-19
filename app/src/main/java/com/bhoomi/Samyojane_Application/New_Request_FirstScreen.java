@@ -461,10 +461,12 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 }catch (OutOfMemoryError e){
                     dialog.dismiss();
                     e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     Log.e("OutOfMemoryError", ""+e.toString());
                 }catch (NullPointerException e){
                     dialog.dismiss();
                     e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     Log.e("NullPointerException", ""+e.toString());
                 }
             }
@@ -519,7 +521,8 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"=9999 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"=255 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null", null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+" ='1'", null);
 
         SlNo1.clear();
         Applicant_Name1.clear();
@@ -634,7 +637,8 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code + "="+ward_code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=99999 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null", null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+" ='1'", null);
 
         SlNo1.clear();
         Applicant_Name1.clear();
@@ -819,8 +823,8 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                         set_and_get_service_tran_data.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
                         set_and_get_service_tran_data.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date));
                         set_and_get_service_tran_data.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
-                        set_and_get_service_tran_data.setFather_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name));
-                        set_and_get_service_tran_data.setMother(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name));
+                        set_and_get_service_tran_data.setFather_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName));
+                        set_and_get_service_tran_data.setMother(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName));
                         set_and_get_service_tran_data.setIDNo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo));
                         set_and_get_service_tran_data.setMobile_No(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No));
                         set_and_get_service_tran_data.setAddress1(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1));
@@ -835,7 +839,9 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                         set_and_get_service_tran_data.setReservationCategory(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
                         set_and_get_service_tran_data.setCaste(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
                         set_and_get_service_tran_data.setAnnualIncome(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
-                        //set_and_get_service_tran_data.setIST_annual_income(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IST_annual_income));
+                        set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
+                        set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
+                        set_and_get_service_tran_data.setPush_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag));
 
                         serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
                         Log.d("serviceCode", "" + serviceCode);
@@ -871,8 +877,8 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date+","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name +","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName +","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 +","
@@ -886,7 +892,10 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory +","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.Caste +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome +")"
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + ","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied + ","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied + ","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+")"
                                 + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
                                 + set_and_get_service_tran_data.getTaluk_Code() + ","
                                 + set_and_get_service_tran_data.getHobli_Code()
@@ -916,8 +925,10 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                                 + set_and_get_service_tran_data.getRelationTitle()+","
                                 + set_and_get_service_tran_data.getReservationCategory()+","
                                 + set_and_get_service_tran_data.getCaste() + ",'"
-                                + set_and_get_service_tran_data.getAnnualIncome()+"')");
-
+                                + set_and_get_service_tran_data.getAnnualIncome()+ "',"
+                                + set_and_get_service_tran_data.getGST_No_Mths_Applied()+ ","
+                                + set_and_get_service_tran_data.getGST_No_Years_Applied()+ ",'"
+                                + set_and_get_service_tran_data.getPush_Flag()+"')");
                         Log.d("Database", "ServiceTranTable Database Inserted " + j);
                         j++;
 
@@ -975,6 +986,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                     });
                     Log.e("OutOfMemoryError2", ""+e.toString());
                 }catch (NullPointerException e){
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     Log.e("NullPointerException2", ""+e.toString());
                 }
             }

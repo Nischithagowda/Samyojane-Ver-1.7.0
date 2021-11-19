@@ -33,9 +33,25 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
     private String SlNo = "SlNo";
 
     private static final String DATABASE_NAME_cat_caste = "CATEGORY_CASTE_MASTER.sqlite";
-    private static String Table_CAT_MASTER = "CAT_MASTER";
-    private static String Table_CASTE_EXCEPT_OBC = "CASTE_EXCEPT_OBC";
-    private static String Table_CASTE_OBC = "CASTE_OBC";
+    static String Table_CAT_MASTER = "CAT_MASTER";
+    public static String RTM_res_category_code = "RTM_res_category_code";
+    public static String RTM_res_category_kdesc = "RTM_res_category_kdesc";
+    public static String RTM_res_category_edesc = "RTM_res_category_edesc";
+    public static String General_SCST = "General_SCST";
+
+    static String Table_CASTE_EXCEPT_OBC = "CASTE_EXCEPT_OBC";
+    public static String CM_CASTE_ID = "CM_CASTE_ID";
+    public static String CM_res_category_code = "CM_res_category_code";
+    public static String CM_caste_code = "CM_caste_code";
+    public static String CM_caste_Slno = "CM_caste_Slno";
+    public static String CM_caste_sub_slno = "CM_caste_sub_slno";
+    public static String CM_caste_kdesc = "CM_caste_kdesc";
+    public static String CM_caste_edesc = "CM_caste_edesc";
+    public static String CM_isEWS = "CM_isEWS";
+
+    static String Table_CASTE_OBC = "CASTE_OBC";
+    public static String OBC_OCM_CASTE_ID = "OBC_OCM_CASTE_ID";
+    public static String OBC_OCM_caste_Slno = "OBC_OCM_caste_Slno";
 
     private static String DATABASE_NAME_docs_type = "DOCUMENT_TYPE_MASTER.db";
     private static String Table_DOCS_Type = "DOCUMENT_TYPE_MASTER";
@@ -181,12 +197,12 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         Log.d("Category1", "Get_Category enter");
         try{
             database = this.getReadableDatabase();
-            cursor = database.rawQuery("select * from "+Table_CAT_MASTER+" where General_SCST='"+str+"'", null);
+            cursor = database.rawQuery("select * from "+Table_CAT_MASTER+" where "+General_SCST+"='"+str+"'", null);
             objects.add ( new SpinnerObject( "0" , add ) );
             if (cursor.getCount()>0){
                 if(cursor.moveToNext()) {
                     do {
-                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex("RTM_res_category_code")), cursor.getString(cursor.getColumnIndex("RTM_res_category_kdesc"))));
+                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex(RTM_res_category_code)), cursor.getString(cursor.getColumnIndex(RTM_res_category_kdesc))));
                     } while (cursor.moveToNext());
                 }
             }
@@ -209,12 +225,12 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         Log.d("Category1", "Get_Category enter");
         try{
             database = this.getReadableDatabase();
-            cursor = database.rawQuery("select * from "+Table_CAT_MASTER+" where General_SCST='"+str+"'", null);
+            cursor = database.rawQuery("select * from "+Table_CAT_MASTER+" where "+General_SCST+"='"+str+"'", null);
             objects.add ( new SpinnerObject( "0" , add) );
             if (cursor.getCount()>0){
                 if(cursor.moveToNext()) {
                     do {
-                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex("RTM_res_category_code")), cursor.getString(cursor.getColumnIndex("RTM_res_category_edesc"))));
+                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex(RTM_res_category_code)), cursor.getString(cursor.getColumnIndex(RTM_res_category_edesc))));
                     } while (cursor.moveToNext());
                 }
             }
@@ -235,10 +251,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
     public String GetCategory_BY_Code(int catCode){
         String str = "";
         database = this.getReadableDatabase();
-        Cursor cursor = database.rawQuery("select * from "+ Table_CAT_MASTER+ " where RTM_res_category_code="+catCode, null);
+        Cursor cursor = database.rawQuery("select * from "+ Table_CAT_MASTER+ " where "+RTM_res_category_code+"="+catCode, null);
         if(cursor.getCount()>0){
             if(cursor.moveToFirst()){
-                str = cursor.getString(cursor.getColumnIndexOrThrow("RTM_res_category_kdesc"));
+                str = cursor.getString(cursor.getColumnIndexOrThrow(RTM_res_category_kdesc));
             } else {
                 cursor.close();
             }
@@ -251,10 +267,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
     public int GetCategoryCode(String str){
         int num=0;
         database = this.getReadableDatabase();
-        cursor = database.rawQuery("select * from "+ Table_CAT_MASTER+" where RTM_res_category_kdesc='"+str+"'", null);
+        cursor = database.rawQuery("select * from "+ Table_CAT_MASTER+" where "+RTM_res_category_kdesc+"='"+str+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToNext()){
-                num = cursor.getInt(cursor.getColumnIndex("RTM_res_category_code"));
+                num = cursor.getInt(cursor.getColumnIndex(RTM_res_category_code));
             }
             return num;
         }
@@ -272,7 +288,7 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
             if (cursor.getCount()>0){
                 if(cursor.moveToNext()) {
                     do {
-                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex("RTM_res_category_code")), cursor.getString(cursor.getColumnIndex("RTM_res_category_kdesc"))));
+                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex(RTM_res_category_code)), cursor.getString(cursor.getColumnIndex(RTM_res_category_kdesc))));
                     } while (cursor.moveToNext());
                 }
             }
@@ -294,11 +310,11 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         List<SpinnerObject> objects = new ArrayList<>();
         try {
             database = this.getReadableDatabase();
-            cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where CM_res_category_code='"+num+"' order by CM_caste_kdesc", null);
+            cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where "+CM_res_category_code+"='"+num+"' order by "+CM_caste_kdesc, null);
             if(cursor.getCount()>0){
                 if(cursor.moveToNext()){
                     do{
-                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex("CM_res_category_code")), cursor.getString(cursor.getColumnIndex("CM_caste_kdesc"))));
+                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex(CM_res_category_code)), cursor.getString(cursor.getColumnIndex(CM_caste_kdesc))));
                     }while (cursor.moveToNext());
                 }
             }
@@ -316,11 +332,11 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         List<SpinnerObject> objects = new ArrayList<>();
         try {
             database = this.getReadableDatabase();
-            cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where CM_isEWS='Y' order by CM_caste_kdesc", null);
+            cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where "+CM_isEWS+"='Y' order by "+CM_caste_kdesc, null);
             if(cursor.getCount()>0){
                 if(cursor.moveToNext()){
                     do{
-                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex("CM_res_category_code")), cursor.getString(cursor.getColumnIndex("CM_caste_kdesc"))));
+                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex(CM_res_category_code)), cursor.getString(cursor.getColumnIndex(CM_caste_kdesc))));
                     }while (cursor.moveToNext());
                 }
             }
@@ -338,11 +354,11 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         List<SpinnerObject> objects = new ArrayList<>();
         try {
             database = this.getReadableDatabase();
-            cursor = database.rawQuery("select * from "+ Table_CASTE_OBC+" where CM_res_category_code='"+num+"' order by CM_caste_edesc", null);
+            cursor = database.rawQuery("select * from "+ Table_CASTE_OBC+" where "+CM_res_category_code+"='"+num+"' order by "+CM_caste_edesc, null);
             if(cursor.getCount()>0){
                 if(cursor.moveToNext()){
                     do{
-                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex("CM_res_category_code")), cursor.getString(cursor.getColumnIndex("CM_caste_edesc"))));
+                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex(CM_res_category_code)), cursor.getString(cursor.getColumnIndex(CM_caste_edesc))));
                     }while (cursor.moveToNext());
                 }
             }
@@ -359,10 +375,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
     public String GetCaste_BY_Code(int CatCode,int casteCode){
         String str=null;
         database = this.getReadableDatabase();
-        cursor = database.rawQuery("select * from "+Table_CASTE_EXCEPT_OBC+" where CM_res_category_code="+CatCode+" and CM_CASTE_ID="+casteCode +" order by CM_caste_kdesc", null);
+        cursor = database.rawQuery("select * from "+Table_CASTE_EXCEPT_OBC+" where "+CM_res_category_code+"="+CatCode+" and "+CM_CASTE_ID+"="+casteCode +" order by "+CM_caste_kdesc, null);
         if(cursor.getCount()>0){
             if(cursor.moveToNext()){
-                str = cursor.getString(cursor.getColumnIndexOrThrow("CM_caste_kdesc"));
+                str = cursor.getString(cursor.getColumnIndexOrThrow(CM_caste_kdesc));
             }
         }
         else {
@@ -374,10 +390,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
     public int GetCasteCode(String str, int catCode){
         int num=0;
         database = this.getReadableDatabase();
-        cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where CM_caste_kdesc='"+str+"' and CM_res_category_code = "+catCode+" order by CM_caste_kdesc", null);
+        cursor = database.rawQuery("select * from "+ Table_CASTE_EXCEPT_OBC+" where "+CM_caste_kdesc+"='"+str+"' and "+CM_res_category_code+" = "+catCode+" order by "+CM_caste_kdesc, null);
         if(cursor.getCount()>0){
             if(cursor.moveToNext()){
-                num = cursor.getInt(cursor.getColumnIndex("CM_CASTE_ID"));
+                num = cursor.getInt(cursor.getColumnIndex(CM_CASTE_ID));
             }
             return num;
         }
@@ -388,10 +404,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
     public String GetCaste_OBC_BY_Code(int casteCode){
         String str="";
         database = this.getReadableDatabase();
-        cursor = database.rawQuery("select * from "+ Table_CASTE_OBC +" where OBC_OCM_CASTE_ID="+casteCode+" order by CM_caste_edesc", null);
+        cursor = database.rawQuery("select * from "+ Table_CASTE_OBC +" where "+OBC_OCM_CASTE_ID+"="+casteCode+" order by "+CM_caste_edesc, null);
         if(cursor.getCount()>0){
             if (cursor.moveToNext()){
-                str = cursor.getString(cursor.getColumnIndexOrThrow("CM_caste_edesc"));
+                str = cursor.getString(cursor.getColumnIndexOrThrow(CM_caste_edesc));
             }
             return str;
         }
@@ -402,10 +418,10 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
     public int GetCasteCode_OBC(String str){
         int num=0;
         database = this.getReadableDatabase();
-        cursor = database.rawQuery("select * from "+ Table_CASTE_OBC+" where CM_caste_edesc='"+str+"' order by CM_caste_edesc", null);
+        cursor = database.rawQuery("select * from "+ Table_CASTE_OBC+" where "+CM_caste_edesc+"='"+str+"' order by "+CM_caste_edesc, null);
         if(cursor.getCount()>0){
             if(cursor.moveToNext()){
-                num = cursor.getInt(cursor.getColumnIndex("OBC_OCM_CASTE_ID"));
+                num = cursor.getInt(cursor.getColumnIndex(OBC_OCM_CASTE_ID));
             }
             return num;
         }

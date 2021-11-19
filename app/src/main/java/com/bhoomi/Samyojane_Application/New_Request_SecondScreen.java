@@ -33,6 +33,7 @@ import android.widget.Toast;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -412,8 +413,8 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             if(cursor.moveToFirst()){
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
                 name = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
-                fatherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name));
-                motherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name));
+                fatherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName));
+                motherName = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName));
                 Id_Code = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE));
                 rationCardNo = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo));
                 mobileNo = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No));
@@ -807,8 +808,8 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='"+"NO"+"',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name + "='" + name + "', "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name + "='" + fatherName + "', "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name + "='" + motherName + "', "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName + "='" + fatherName + "', "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName + "='" + motherName + "', "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No + "='" + rationCardNo + "', "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No + "=" + mobileNo + ","
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + "='" + address1 +"',"
@@ -961,7 +962,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 set_and_get_service_parameter.setTown_Code(town_code);
                 set_and_get_service_parameter.setWard_Code(ward_code);
                 set_and_get_service_parameter.setService_Code(String.valueOf(service_Code));
-                set_and_get_service_parameter.setRD_No(applicant_Id);
+                set_and_get_service_parameter.setGSC_No(applicant_Id);
                 set_and_get_service_parameter.setApplicant_Name(name);
                 set_and_get_service_parameter.setFather_Name(fatherName);
                 set_and_get_service_parameter.setMother_Name(motherName);
@@ -977,23 +978,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
 
                 database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                        + "("
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name_k+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name+","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name +","
                         + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_mobile_no," +
                         "ST_Upd_ID_NUMBER, ST_applicant_caddress1, ST_applicant_caddress2,ST_applicant_caddress3, ST_Eng_Certificate, ST_applicant_photo, UID, AadhaarPhoto, ST_PinCode, Report_No, VA_Accepts_Applicant_information)" +
                         " values ("
@@ -1005,7 +989,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                         + set_and_get_service_parameter.getTown_Code() + ","
                         + set_and_get_service_parameter.getWard_Code() + ","
                         + set_and_get_service_parameter.getService_Code() + ","
-                        + set_and_get_service_parameter.getRD_No() + ",'"
+                        + set_and_get_service_parameter.getGSC_No() + ",'"
                         + set_and_get_service_parameter.getApplicant_Name() + "','"
                         + set_and_get_service_parameter.getFather_Name() + "','"
                         + set_and_get_service_parameter.getMother_Name() + "','"

@@ -45,9 +45,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -94,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
     int from_DB_distCode, from_DB_talukCode;
     String IMEI_Num_Shared, Mob_Num_Shared;
     APIInterface_SamyojaneAPI apiInterface_samyojaneAPI;
-
+    SharedPreferences sharedPreferences;
+    AppCompatActivity activity;
+    Boolean CasteMaster;
     ListView listLanguage;
     ArrayAdapter<String> adapter_language;
     String[] lang;
@@ -142,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
 
         pwd.setError(null);
 
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        CasteMaster = sharedPreferences.getBoolean(Constants.CasteMaster, false);
 
         userName.setOnTouchListener((v, event) -> {
             imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -185,11 +186,15 @@ public class MainActivity extends AppCompatActivity {
 
         btnActivation.setOnClickListener(v -> {
             if (isNetworkAvailable()) {
-
+                CasteMaster = sharedPreferences.getBoolean(Constants.CasteMaster, false);
                 btnActivation.setText(getString(R.string.activating));
                 try {
                     dialog.show();
-                    GetVersion();
+                    if (CasteMaster){
+                        GetVersion();
+                    } else {
+                        GetCasteExcept_OBC();
+                    }
                 } catch (Exception ex) {
                     Toast.makeText(getApplicationContext(), getString(R.string.error), LENGTH_LONG).show();
                 }
@@ -217,10 +222,9 @@ public class MainActivity extends AppCompatActivity {
         Intent i = getIntent();
         IMEI_Num_Shared = i.getStringExtra("IMEI_Num");
         Mob_Num_Shared = i.getStringExtra("mob_Num");
-//        IMEI_Num_Shared = "911623302747388";
-//        Mob_Num_Shared = "9141410787";
 
-        //deviceId = "911623302747388";
+        CasteMaster = sharedPreferences.getBoolean(Constants.CasteMaster, false);
+
         deviceId = IMEI_Num_Shared;
         Log.d("Device_IMEI", ""+deviceId);
         Log.d("Mob_Num", ""+Mob_Num_Shared);
@@ -237,7 +241,11 @@ public class MainActivity extends AppCompatActivity {
             //truncateDatabase();
             try {
                 dialog.show();
-                GetVersion();
+                if (CasteMaster){
+                    GetVersion();
+                } else {
+                    GetCasteExcept_OBC();
+                }
             } catch (Exception ex) {
                 Toast.makeText(getApplicationContext(), getString(R.string.error), LENGTH_LONG).show();
             }
@@ -712,6 +720,96 @@ public class MainActivity extends AppCompatActivity {
         } else {
             cursor.close();
         }
+    }
+
+    public void GetCasteExcept_OBC(){
+        apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
+
+        Call<String> call = apiInterface_samyojaneAPI.doFn_Get_Caste(getString(R.string.samyojane_api_flag1),getString(R.string.samyojane_api_flag2));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("data");
+                    SqlLiteOpenHelper_Class sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(activity, MainActivity.this);
+                    sqlLiteOpenHelper_class.Insert_CASTE_EXCEPT_OBC_Master(array);
+                    GetCaste_OBC();
+                } catch (JSONException e) {
+                    dialog.dismiss();
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                }catch (OutOfMemoryError e){
+                    dialog.dismiss();
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                    Log.e("OutOfMemoryError", ""+e.toString());
+                }catch (NullPointerException e){
+                    dialog.dismiss();
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                    Log.e("NullPointerException", ""+e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void GetCaste_OBC(){
+        apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
+
+        Call<String> call = apiInterface_samyojaneAPI.doFn_Get_OBC_Caste(getString(R.string.samyojane_api_flag1),getString(R.string.samyojane_api_flag2));
+        call.enqueue(new Callback<String>() {
+
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("data");
+                    SqlLiteOpenHelper_Class sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(activity, MainActivity.this);
+                    sqlLiteOpenHelper_class.Insert_CASTE_OBC_Master(array);
+                    SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+                    editor.putBoolean(Constants.CasteMaster, true);
+                    editor.apply();
+                    GetVersion();
+                } catch (JSONException e) {
+                    dialog.dismiss();
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                }catch (OutOfMemoryError e){
+                    dialog.dismiss();
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                    Log.e("OutOfMemoryError", ""+e.toString());
+                }catch (NullPointerException e){
+                    dialog.dismiss();
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                    Log.e("NullPointerException", ""+e.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void GetVersion(){

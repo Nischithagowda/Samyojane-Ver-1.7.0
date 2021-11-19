@@ -1,5 +1,6 @@
 package com.bhoomi.Samyojane_Application.api;
 
+import com.bhoomi.Samyojane_Application.GetDocRequestClass;
 import com.bhoomi.Samyojane_Application.UpdateStatusCLASS;
 import com.bhoomi.Samyojane_Application.UpdateVillageTownWardCLASS;
 import com.google.gson.JsonObject;
@@ -7,6 +8,7 @@ import com.google.gson.JsonObject;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -24,6 +26,12 @@ public interface APIInterface_NIC {
             @Path("loginid") String loginid,
             @Path("Desicode") int Desicode,
             @Path("VACircleCode") int VACircleCode
+            );
+
+    @Headers("Content-Type: application/json")
+    @GET("GetDocs/")
+    Call<JsonObject> GetDocs(
+            @Body GetDocRequestClass getDocRequestClass
             );
 
     @POST("UpdateVillageTownWard")

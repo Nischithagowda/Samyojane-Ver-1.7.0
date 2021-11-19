@@ -3,7 +3,7 @@ package com.bhoomi.Samyojane_Application;
 public class Set_and_Get_Service_Parameter {
 
     private String Village_Code, Service_Code, Service_Name, Service_Name_k,
-            RD_No, Applicant_Name, Father_Name, Mother_Name, Due_Date, Raised_Location, Photo, vLat, vLong, RationCard_No, Mobile_No, Address1, Address2, Address3;
+            GSC_No, Applicant_Name, Father_Name, Mother_Name, Due_Date, Raised_Location, Photo, vLat, vLong, RationCard_No, Mobile_No, Address1, Address2, Address3;
     private int District_Code, Taluk_Code, Hobli_Code, va_Circle_Code, Town_Code, Ward_Code;
     private String rbIssue_Cert, spRejectionReason, Annual_Income, PinCode, Report_No, Eng_Certify, ST_applicant_photo;
     private String APP_Category_6, App_Caste_6, rbOption_6, spReason_6; // Service_6 Parameters
@@ -66,11 +66,11 @@ public class Set_and_Get_Service_Parameter {
         return Service_Name;
     }
 
-    public void setRD_No(String RD_No) {
-        this.RD_No = RD_No;
+    public void setGSC_No(String GSC_No) {
+        this.GSC_No = GSC_No;
     }
-    public String getRD_No() {
-        return RD_No;
+    public String getGSC_No() {
+        return GSC_No;
     }
 
     void setRationCard_No(String rationCard_No) {

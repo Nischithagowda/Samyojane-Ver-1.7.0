@@ -53,7 +53,6 @@ public class OtpVerify_New extends AppCompatActivity {
 
         if (isNetworkAvailable()) {
             //ValidateOtpFromServer(mob_Num, received_OTP);
-
             SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
             editor.putString(Constants.MOBILE_NUMBER, mob_Num);
             editor.putString(Constants.IMEI_NUMBER, IMEI_Num);
@@ -61,6 +60,7 @@ public class OtpVerify_New extends AppCompatActivity {
             editor.putBoolean(Constants.LOGIN_STATUS, true);
             editor.putInt(Constants.DesiCode_VA, 22);
             editor.putInt(Constants.DesiCode_RI, 19);
+            editor.putBoolean(Constants.CasteMaster, false);
             editor.apply();
 
             Intent intent = new Intent(OtpVerify_New.this, MainActivity.class);

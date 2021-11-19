@@ -97,7 +97,7 @@ public class UploadScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(UploadScreen.this);
         database = openHelper.getWritableDatabase();
 
-        final Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1+" SP left join "
+        final Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_UPD+" SP left join "
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" ST on ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +"= SP."+DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo
                 +" where (ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1 and SP."
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1) or SP."+ DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1", null);
@@ -176,6 +176,9 @@ public class UploadScreen extends AppCompatActivity {
         alert.show();
     }
 
+    public void UploadFieldVerificationData(){
+
+    }
     @SuppressLint("StaticFieldLeak")
     class InsertServiceParameterTable_Server extends AsyncTask<String, Integer, String> {
 
@@ -195,8 +198,8 @@ public class UploadScreen extends AppCompatActivity {
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name+","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name +","
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName +","
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName +","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No+","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1+","
@@ -249,8 +252,8 @@ public class UploadScreen extends AppCompatActivity {
                                 Applicant_Id = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo));
                                 VA_Accepts_Applicant_information = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information));
                                 name = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
-                                fatherName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Father_Name));
-                                motherName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Mother_Name));
+                                fatherName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName));
+                                motherName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName));
                                 Mobile_No = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No));
                                 RationCard_No = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No));
                                 Address1 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1));

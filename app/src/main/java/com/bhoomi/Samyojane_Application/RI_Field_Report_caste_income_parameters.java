@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,7 +41,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhoomi.Samyojane_Application.api.APIClient;
+import com.bhoomi.Samyojane_Application.api.APIInterface_NIC;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -57,6 +62,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
 
@@ -105,6 +114,10 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
     final int max = 9999;
     int random;
     String report_no;
+    APIInterface_NIC apiInterface_nic;
+    String uName_get;
+    int DesiCode;
+    SharedPreferences sharedPreferences;
 
     InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
@@ -314,6 +327,10 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         option_Flag = i.getStringExtra("option_Flag");
         eng_certi = i.getStringExtra("eng_certi");
         report_no = i.getStringExtra("report_No");
+
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        DesiCode = sharedPreferences.getInt(Constants.DesiCode_RI, 19);
+        uName_get = sharedPreferences.getString(Constants.uName_get, "");
 
         if(report_no == null){
             Date c1 = Calendar.getInstance().getTime();
@@ -714,12 +731,23 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters.this);
                 database = openHelper.getWritableDatabase();
 
-                //8186126549
-                hashMap_Down_Docs.put("GSC_No", applicant_Id);
-                Log.d("hashMap_Down_Docs", ""+hashMap_Down_Docs+", URL:"+getString(R.string.url_Down_Docs));
-                new GetDocsFromServer().execute(getString(R.string.url_Down_Docs));
-                //http://164.100.133.30/NK_MobileApp/WebService.asmx/Get_Docs?GSC_No=8966150768&GSC_First_Part=3
-                //GSC_No=8966150768&GSC_First_Part=3
+                String username = uName_get.substring(0, 3);//First three characters of username
+                Date date = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd", Locale.ENGLISH);
+                String day_num = dateFormat.format(date);//Current Day
+                SimpleDateFormat dateFormat1 = new SimpleDateFormat("yy", Locale.ENGLISH);
+                String year_num = dateFormat1.format(date);//last two digits of the year
+                String app_name = "Samyojane";
+
+                String fieldVerify_api_flag2 = username + day_num + app_name + year_num;
+
+                GetDocRequestClass getDocRequestClass = new GetDocRequestClass();
+                getDocRequestClass.setFlag1(getString(R.string.fieldVerify_api_flag1));
+                getDocRequestClass.setFlag2(fieldVerify_api_flag2);
+                getDocRequestClass.setLoginId(uName_get);
+                getDocRequestClass.setDesignationCode(DesiCode);
+                getDocRequestClass.setGscNoList(applicant_Id);
+                GetDocsFromServer(getDocRequestClass);
             }
             else {
                 Toast.makeText(getApplicationContext(), getString(R.string.connection_not_available), Toast.LENGTH_SHORT).show();
@@ -1408,88 +1436,99 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         }
     }
 
+    public void GetDocsFromServer(GetDocRequestClass getDocRequestClass){
+        apiInterface_nic = APIClient.getClient(getString(R.string.MobAPI_New_NIC)).create(APIInterface_NIC.class);
 
-    @SuppressLint("StaticFieldLeak")
-    class GetDocsFromServer extends AsyncTask<String, Void, JSONObject> {
-        JSONObject jsonObject;
-
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JParserAdv jParserAdv = new JParserAdv();
-                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.url_Down_Docs), "POST", hashMap_Down_Docs);
-            }catch (NullPointerException e){
-                runOnUiThread(() -> dialog.dismiss());
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            return jsonObject;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
-
-            try {
-                //dialog1.setProgress(20);
-                openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters.this);
-                database = openHelper.getWritableDatabase();
-
-                JSONArray array = jsonObject.getJSONArray("data");
-
-                truncateDatabase_Docs();
-
-                //dialog1.setProgress(10);
-                Type listType = new TypeToken<List<Set_and_Get_Down_Docs>>(){}.getType();
-                List<Set_and_Get_Down_Docs> myModelList = new Gson().fromJson(array.toString(), listType);
-                for(Set_and_Get_Down_Docs set_and_get_down_docs:myModelList){
-
-                    //dialog1.setProgress(10);
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME + "("
-                            + DataBaseHelperClass_btnDownload_Docs.UDT_GSC_No+","
-                            + DataBaseHelperClass_btnDownload_Docs.UDT_GSCFirstPart+","
-                            + DataBaseHelperClass_btnDownload_Docs.UDT_Document_Id+","
-                            + DataBaseHelperClass_btnDownload_Docs.UDT_File+") values ("
-                            + set_and_get_down_docs.getUDT_GSC_No() +","
-                            + set_and_get_down_docs.getUDT_GSCFirstPart()+","
-                            + set_and_get_down_docs.getUDT_Document_Id() +",'"
-                            + Base64.encodeToString(set_and_get_down_docs.getUDT_File(),Base64.DEFAULT)+"')");
-
-                    Log.d("Database", "Down_Docs Database Inserted");
-                    //dialog1.setProgress(30);
-                    //Toast.makeText(getApplicationContext(), "Docs Downloaded successfully", Toast.LENGTH_SHORT).show();
-                }
-                database.close();
-                //dialog1.setProgress(10);
-                runOnUiThread(() -> {
+        Call<JsonObject> call = apiInterface_nic.GetDocs(getDocRequestClass);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonObject jsonObject1 = response.body();
+                Log.d("response_server",jsonObject1 + "");
+                assert jsonObject1 != null;
+                JsonObject jsonObject2 = jsonObject1.getAsJsonObject("StatusMessage");
+                Log.d("response_server",jsonObject2 + "");
+                String response_server = jsonObject2.toString();
+                try {
                     openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters.this);
                     database = openHelper.getWritableDatabase();
 
-                    Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("Table");
 
-                    if (cursor3.getCount() > 0) {
-                        dialog.dismiss();
-                        btnViewDocs.setVisibility(View.VISIBLE);
-                        //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        cursor3.close();
-                        Log.d("Values", "No records Exists");
-                        btnViewDocs.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                    truncateDatabase_Docs();
+
+                    //dialog1.setProgress(10);
+                    Type listType = new TypeToken<List<Set_and_Get_Down_Docs>>(){}.getType();
+                    List<Set_and_Get_Down_Docs> myModelList = new Gson().fromJson(array.toString(), listType);
+                    for(Set_and_Get_Down_Docs set_and_get_down_docs:myModelList){
+
+                        //dialog1.setProgress(10);
+                        database.execSQL("insert into " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME + "("
+                                + DataBaseHelperClass_btnDownload_Docs.GSCNO+","
+                                + DataBaseHelperClass_btnDownload_Docs.DocumentName+","
+                                + DataBaseHelperClass_btnDownload_Docs.DocumentID+","
+                                + DataBaseHelperClass_btnDownload_Docs.Document+") values ('"
+                                + set_and_get_down_docs.getGSCNO() +"','"
+                                + set_and_get_down_docs.getDocumentName()+"',"
+                                + set_and_get_down_docs.getDocumentID() +",'"
+                                + set_and_get_down_docs.getDocument()+"')");
+
+                        Log.d("Database", "Down_Docs Database Inserted");
+                        //dialog1.setProgress(30);
+                        //Toast.makeText(getApplicationContext(), "Docs Downloaded successfully", Toast.LENGTH_SHORT).show();
                     }
-                });
-                database.close();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
-            }catch (NullPointerException e){
-                runOnUiThread(() -> dialog.dismiss());
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            //Toast.makeText(getApplicationContext(), "VillageNames Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-        }
-    }
+                    database.close();
+                    //dialog1.setProgress(10);
+                    runOnUiThread(() -> {
+                        openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters.this);
+                        database = openHelper.getWritableDatabase();
 
+                        Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
+
+                        if (cursor3.getCount() > 0) {
+                            dialog.dismiss();
+                            btnViewDocs.setVisibility(View.VISIBLE);
+                            //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            cursor3.close();
+                            Log.d("Values", "No records Exists");
+                            btnViewDocs.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    });
+                    database.close();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("JSONException", ""+e);
+                    btnViewDocs.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } catch (JsonParseException e){
+                    e.printStackTrace();
+                    Log.d("JsonParseException", ""+e);
+                    btnViewDocs.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                    Log.d("NullPointerException", ""+e);
+                    btnViewDocs.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(),getString(R.string.document_not_found), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public void truncateDatabase_Docs(){
         //dialog1.setProgress(20);
@@ -1505,7 +1544,6 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         }
 
     }
-
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

@@ -678,6 +678,7 @@ public class E_Kshana_Member_Details_VA_Second extends AppCompatActivity {
                                                                                                         dialog.dismiss();
                                                                                                         runOnUiThread(runnable);
                                                                                                         e.printStackTrace();
+                                                                                                        runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                                                                                                         Log.e("NullPointerException", "" + e.getMessage());
                                                                                                     }
                                                                                                 }

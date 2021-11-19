@@ -6,34 +6,38 @@ package com.bhoomi.Samyojane_Application;
 
 public class Set_and_Get_Down_Docs {
 
-    private String UDT_GSC_No, UDT_GSCFirstPart, UDT_Document_Id;
-    private byte[] UDT_File;
+    private String GSCNO, DocumentName, Document;
+    private int DocumentID;
 
-    public void setUDT_GSC_No(String UDT_GSC_No) {
-        this.UDT_GSC_No = UDT_GSC_No;
-    }
-    public String getUDT_GSC_No() {
-        return UDT_GSC_No;
+    public String getGSCNO() {
+        return GSCNO;
     }
 
-    public void setUDT_GSCFirstPart(String UDT_GSCFirstPart) {
-        this.UDT_GSCFirstPart = UDT_GSCFirstPart;
-    }
-    public String getUDT_GSCFirstPart() {
-        return UDT_GSCFirstPart;
+    public void setGSCNO(String GSCNO) {
+        this.GSCNO = GSCNO;
     }
 
-    public void setUDT_Document_Id(String UDT_Document_Id) {
-        this.UDT_Document_Id = UDT_Document_Id;
-    }
-    public String getUDT_Document_Id() {
-        return UDT_Document_Id;
+    public String getDocumentName() {
+        return DocumentName;
     }
 
-    public void setUDT_File(byte[] UDT_File) {
-        this.UDT_File = UDT_File;
+    public void setDocumentName(String documentName) {
+        DocumentName = documentName;
     }
-    public byte[] getUDT_File() {
-        return UDT_File;
+
+    public String getDocument() {
+        return Document;
+    }
+
+    public void setDocument(String document) {
+        Document = document;
+    }
+
+    public int getDocumentID() {
+        return DocumentID;
+    }
+
+    public void setDocumentID(int documentID) {
+        DocumentID = documentID;
     }
 }

@@ -6,7 +6,7 @@ public class Set_and_Get_Service_tran_data {
             Raised_Location, Father_Name, Mother, IDNo, Mobile_No;
     private String Address1, Address2, Address3, Add_Pin, Eng_Certify;
     private String ApplicantTiitle, BinCom, RelationTitle, ReservationCategory, Caste, AnnualIncome, GST_No_Mths_Applied, GST_No_Years_Applied;
-    private String ST_applicant_photo, ST_ID_TYPE;
+    private String ST_applicant_photo, ST_ID_TYPE, Push_Flag;
 
     Set_and_Get_Service_tran_data(){}
 
@@ -223,6 +223,14 @@ public class Set_and_Get_Service_tran_data {
 
     public void setAnnualIncome(String annualIncome) {
         AnnualIncome = annualIncome;
+    }
+
+    public String getPush_Flag() {
+        return Push_Flag;
+    }
+
+    public void setPush_Flag(String push_Flag) {
+        Push_Flag = push_Flag;
     }
 
     public String getGST_No_Mths_Applied() {

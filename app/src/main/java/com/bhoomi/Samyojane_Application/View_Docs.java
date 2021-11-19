@@ -140,7 +140,7 @@ public class View_Docs extends AppCompatActivity {
                     Log.d("InDisplayIf", ""+ i);
                     SlNo.add(i +".");
 
-                    docs_ID = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_Docs.UDT_Document_Id));
+                    docs_ID = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_Docs.DocumentID));
                     Log.d("docs_ID",""+i+docs_ID);
                     sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(this, "str");
                     sqlLiteOpenHelper_class.open_Docs_Type_Tbl();

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -25,6 +26,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhoomi.Samyojane_Application.api.APIClient;
+import com.bhoomi.Samyojane_Application.api.APIInterface_NIC;
+import com.bhoomi.Samyojane_Application.api.APIInterface_SamyojaneAPI;
+import com.google.gson.JsonObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,8 +40,16 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RI_SecondScreen extends AppCompatActivity {
 
@@ -94,6 +108,11 @@ public class RI_SecondScreen extends AppCompatActivity {
     String resultFromServer;
 
     String IMEI_Num, mob_Num;
+    String uName_get;
+    APIInterface_SamyojaneAPI apiInterface_samyojaneAPI;
+    APIInterface_NIC apiInterface_nic;
+    SharedPreferences sharedPreferences;
+    int DesiCode;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -175,6 +194,10 @@ public class RI_SecondScreen extends AppCompatActivity {
         Log.d("IMEI_Num", ""+IMEI_Num);
         Log.d("mob_Num", ""+mob_Num);
 
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        DesiCode = sharedPreferences.getInt(Constants.DesiCode_RI, 19);
+        uName_get = sharedPreferences.getString(Constants.uName_get, "");
+
         dialog = new ProgressDialog(RI_SecondScreen.this, R.style.CustomDialog);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         dialog.setMessage(getString(R.string.downloading_please_wait));
@@ -251,24 +274,22 @@ public class RI_SecondScreen extends AppCompatActivity {
 
                 openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_SecondScreen.this);
                 database3 = openHelper.getWritableDatabase();
-                new Update_RI_ServiceParameterTable().execute();
 
-                new GetFacilityServiceFromServer().execute(getString(R.string.url_facility));
+                String username = uName_get.substring(0, 3);//First three characters of username
+                Date c = Calendar.getInstance().getTime();
+                SimpleDateFormat df = new SimpleDateFormat("dd", Locale.ENGLISH);
+                String day_num = df.format(c);//Current Day
+                SimpleDateFormat df1 = new SimpleDateFormat("yy", Locale.ENGLISH);
+                String year_num = df1.format(c);//last two digits of the year
+                String app_name = "Samyojane";
 
-                hashMap_village_name.put("District_Code", district_Code);
-                hashMap_village_name.put("Taluk_Code", taluk_Code);
-                hashMap_village_name.put("Hobli_Code", hobli_Code);
-                hashMap_village_name.put("IMEI", deviceId);
-                Log.d("hashMap_village_name",""+hashMap_village_name+", URL:"+getString(R.string.url_village_name_RI));
-                new GetVillageNameFromServer().execute(getString(R.string.url_village_name_RI));
+                String fieldVerify_api_flag2 = username + day_num + app_name + year_num;
 
+                //new Update_RI_ServiceParameterTable().execute();
 
-                hashMap_service_Parameter_Data.put("District_Code", district_Code);
-                hashMap_service_Parameter_Data.put("Taluk_Code", taluk_Code);
-                hashMap_service_Parameter_Data.put("Hobli_Code", hobli_Code);
-                hashMap_service_Parameter_Data.put("IMEI", deviceId);
-                Log.d("hashMap_ser_Para_Data",""+hashMap_service_Parameter_Data+", URL:"+getString(R.string.url_service_Parameter_Data));
-                new GetServiceParametersDataFromServer().execute(getString(R.string.url_service_Parameter_Data));
+                GetFacilityServiceFromServer();
+//                GetVillageNameFromServer(district_Code, taluk_Code, hobli_Code, deviceId);
+//                GetServiceParametersDataFromServer(getString(R.string.fieldVerify_api_flag1), fieldVerify_api_flag2, district_Code, taluk_Code, hobli_Code, uName_get, DesiCode, 0);
 
                 final int totalProgressTime = 100;
                 final Thread t = new Thread() {
@@ -409,90 +430,72 @@ public class RI_SecondScreen extends AppCompatActivity {
 
     }
 
-    @SuppressLint("StaticFieldLeak")
-    class GetFacilityServiceFromServer extends AsyncTask<String, Void, JSONObject> {
-        JSONObject jsonObject;
+    public void GetFacilityServiceFromServer(){
+        apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
 
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JParserAdv jParserAdv = new JParserAdv();
-                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.url_facility), "GET", hashMap_facility);
-            }catch (OutOfMemoryError e){
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                    buildAlertForOutOfMemory();
-                    //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
-                });
-                Log.e("OutOfMemoryError", ""+e.toString());
-            } catch (NullPointerException e){
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                });
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            return jsonObject;
-        }
+        Call<String> call = apiInterface_samyojaneAPI.doFn_Get_Facility_Services(getString(R.string.samyojane_api_flag1),getString(R.string.samyojane_api_flag2));
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
+                try {
+                    openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(RI_SecondScreen.this);
+                    database = openHelper.getWritableDatabase();
 
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("data");
 
-            try {
+                    truncateDatabase_facility();
 
-                //dialog.incrementProgressBy(10);
-                openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(RI_SecondScreen.this);
-                database = openHelper.getWritableDatabase();
+                    int count = array.length();
 
-                JSONArray array = jsonObject.getJSONArray("data");
+                    for (int i = 0; i < count; i++) {
 
-                truncateDatabase_facility();
+                        JSONObject object = array.getJSONObject(i);
 
-                int count = array.length();
-                for (int i = 0; i < count; i++) {
-
-                    JSONObject object = array.getJSONObject(i);
-
-                    set_and_get_facility_services = new Set_and_Get_Facility_Services();
-                    set_and_get_facility_services.setSlNo(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.SlNo));
-                    set_and_get_facility_services.setFM_facility_code(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code));
-                    set_and_get_facility_services.setFM_facility_edesc(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
-                    set_and_get_facility_services.setFM_facility_kdesc(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
-                    set_and_get_facility_services.setFM_acronym_on_doc_eng(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_acronym_on_doc_eng));
-                    set_and_get_facility_services.setFM_designated_officer(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_designated_officer));
-                    set_and_get_facility_services.setFM_gsc_no_days(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_gsc_no_days));
-                    set_and_get_facility_services.setFM_facility_display(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_display));
-                    set_and_get_facility_services.setFM_sakala_service(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_sakala_service));
-                    set_and_get_facility_services.setFM_OTC_Charges(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_OTC_Charges));
+                        set_and_get_facility_services = new Set_and_Get_Facility_Services();
+                        set_and_get_facility_services.setSlNo(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.SlNo));
+                        set_and_get_facility_services.setFM_facility_code(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code));
+                        set_and_get_facility_services.setFM_facility_edesc(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
+                        set_and_get_facility_services.setFM_facility_kdesc(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
+                        set_and_get_facility_services.setFM_acronym_on_doc_eng(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_acronym_on_doc_eng));
+                        set_and_get_facility_services.setFM_designated_officer(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_designated_officer));
+                        set_and_get_facility_services.setFM_gsc_no_days(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_gsc_no_days));
+                        set_and_get_facility_services.setFM_facility_display(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_display));
+                        set_and_get_facility_services.setFM_sakala_service(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_sakala_service));
+                        set_and_get_facility_services.setFM_OTC_Charges(object.getString(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_OTC_Charges));
 
 
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME + "(SlNo, FM_facility_code, FM_facility_edesc, FM_facility_kdesc, FM_acronym_on_doc_eng, FM_designated_officer" +
-                            ", FM_gsc_no_days, FM_facility_display, FM_sakala_service, FM_OTC_Charges) values (" + set_and_get_facility_services.getSlNo() +","+ set_and_get_facility_services.getFM_facility_code()
-                            + ",'" + set_and_get_facility_services.getFM_facility_edesc() + "','" + set_and_get_facility_services.getFM_facility_kdesc() + "','" + set_and_get_facility_services.getFM_acronym_on_doc_eng() + "','" + set_and_get_facility_services.getFM_designated_officer()
-                            + "'," + set_and_get_facility_services.getFM_gsc_no_days() + ",'" + set_and_get_facility_services.getFM_facility_display()+ "','" + set_and_get_facility_services.getFM_sakala_service()
-                            +"'," + set_and_get_facility_services.getFM_OTC_Charges()+ ")");
-                    Log.d("Database", "FacilityMaster Database Inserted");
+                        database.execSQL("insert into " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME + "(SlNo, FM_facility_code, FM_facility_edesc, FM_facility_kdesc, FM_acronym_on_doc_eng, FM_designated_officer" +
+                                ", FM_gsc_no_days, FM_facility_display, FM_sakala_service, FM_OTC_Charges) values (" + set_and_get_facility_services.getSlNo() +",'"+ set_and_get_facility_services.getFM_facility_code()
+                                + "','" + set_and_get_facility_services.getFM_facility_edesc() + "','" + set_and_get_facility_services.getFM_facility_kdesc() + "','" + set_and_get_facility_services.getFM_acronym_on_doc_eng() + "','" + set_and_get_facility_services.getFM_designated_officer()
+                                + "','" + set_and_get_facility_services.getFM_gsc_no_days() + "','" + set_and_get_facility_services.getFM_facility_display()+ "','" + set_and_get_facility_services.getFM_sakala_service()
+                                +"','" + set_and_get_facility_services.getFM_OTC_Charges()+ "')");
+                        Log.d("Database", "FacilityMaster Database Inserted");
 
-
+                    }
+                    dialog.incrementProgressBy(2);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                }catch (OutOfMemoryError e){
+                    e.printStackTrace();
+                    Log.e("OutOfMemoryError", ""+e.toString());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                    Log.e("NullPointerException", ""+e.toString());
                 }
-                //dialog.incrementProgressBy(10);
-                //database.close();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
-            }catch (OutOfMemoryError e){
-                Log.e("OutOfMemoryError", ""+e.toString());
-            }catch (NullPointerException e){
-                Log.e("NullPointerException", ""+e.toString());
             }
-            //Toast.makeText(getApplicationContext(), "FacilityMaster Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-        }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void truncateDatabase_village_name(){
@@ -510,85 +513,70 @@ public class RI_SecondScreen extends AppCompatActivity {
 
     }
 
-    @SuppressLint("StaticFieldLeak")
-    class GetVillageNameFromServer extends AsyncTask<String, Void, JSONObject> {
-        JSONObject jsonObject;
+    public void GetVillageNameFromServer(int district_Code, int taluk_Code, int hobli_Code, String IMEI_Num){
+        apiInterface_samyojaneAPI = APIClient.getClient(getString(R.string.samyojane_API_url)).create(APIInterface_SamyojaneAPI.class);
 
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JParserAdv jParserAdv = new JParserAdv();
-                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.url_village_name_RI), "POST", hashMap_village_name);
-            }catch (OutOfMemoryError e){
-                runOnUiThread(() -> {
+        Call<String> call = apiInterface_samyojaneAPI.doFn_Get_Village_Name_For_RI(getString(R.string.samyojane_api_flag1),getString(R.string.samyojane_api_flag2), district_Code, taluk_Code, hobli_Code, IMEI_Num);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String response_server = response.body();
+                Log.d("response_server",response_server + "");
+
+                try {
+
+                    openHelper = new DataBaseHelperClass_VillageNames(RI_SecondScreen.this);
+                    database = openHelper.getWritableDatabase();
+
+                    JSONObject jsonObject = new JSONObject(response_server);
+                    JSONArray array = jsonObject.getJSONArray("data");
+
+                    truncateDatabase_village_name();
+
+                    int count = array.length();
+                    for (int i = 0; i < count; i++) {
+
+                        JSONObject object = array.getJSONObject(i);
+
+                        set_and_get_village_name = new Set_and_Get_Village_Name();
+                        set_and_get_village_name.setVCM_va_circle_code(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_code));
+                        set_and_get_village_name.setVCM_va_circle_ename(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_ename));
+                        set_and_get_village_name.setVCM_va_circle_kname(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_kname));
+                        set_and_get_village_name.setHM_village_code(object.getString(DataBaseHelperClass_VillageNames.HM_village_code));
+                        set_and_get_village_name.setHM_habitation_ename(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_ename));
+                        set_and_get_village_name.setHM_habitation_kname(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_kname));
+
+
+                        database.execSQL("insert into " + DataBaseHelperClass_VillageNames.TABLE_NAME
+                                + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_ename, HM_habitation_kname) values ("
+                                + set_and_get_village_name.getVCM_va_circle_code() +",'"+set_and_get_village_name.getVCM_va_circle_ename()+"','"+set_and_get_village_name.getVCM_va_circle_kname()+"',"
+                                + set_and_get_village_name.getHM_village_code() +",'"+ set_and_get_village_name.getHM_habitation_ename()+"','"
+                                + set_and_get_village_name.getHM_habitation_kname()+"')");
+                        Log.d("Database", "VillageNames Database Inserted");
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                }catch (OutOfMemoryError e){
                     dialog.dismiss();
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                    buildAlertForOutOfMemory();
-                    //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
-                });
-                Log.e("OutOfMemoryError", ""+e.toString());
-            } catch (NullPointerException e){
-                runOnUiThread(() -> {
+                    e.printStackTrace();
+                    Log.e("OutOfMemoryError", ""+e.toString());
+                }catch (NullPointerException e){
                     dialog.dismiss();
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                });
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            return jsonObject;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
-
-            try {
-
-                //dialog.incrementProgressBy(20);
-                openHelper = new DataBaseHelperClass_VillageNames(RI_SecondScreen.this);
-                database = openHelper.getWritableDatabase();
-
-                JSONArray array = jsonObject.getJSONArray("data");
-
-                truncateDatabase_village_name();
-
-                int count = array.length();
-                for (int i = 0; i < count; i++) {
-
-                    JSONObject object = array.getJSONObject(i);
-
-                    set_and_get_village_name = new Set_and_Get_Village_Name();
-                    set_and_get_village_name.setVCM_va_circle_code(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_code));
-                    set_and_get_village_name.setVCM_va_circle_ename(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_ename));
-                    set_and_get_village_name.setVCM_va_circle_kname(object.getString(DataBaseHelperClass_VillageNames.VCM_va_circle_kname));
-                    set_and_get_village_name.setHM_village_code(object.getString(DataBaseHelperClass_VillageNames.HM_village_code));
-                    set_and_get_village_name.setHM_habitation_ename(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_ename));
-                    set_and_get_village_name.setHM_habitation_kname(object.getString(DataBaseHelperClass_VillageNames.HM_habitation_kname));
-
-
-                    database.execSQL("insert into " + DataBaseHelperClass_VillageNames.TABLE_NAME
-                            + "(VCM_va_circle_code,VCM_va_circle_ename, VCM_va_circle_kname,HM_village_code, HM_habitation_ename, HM_habitation_kname) values ("
-                            + set_and_get_village_name.getVCM_va_circle_code() +",'"+set_and_get_village_name.getVCM_va_circle_ename()+"','"+set_and_get_village_name.getVCM_va_circle_kname()+"',"
-                            + set_and_get_village_name.getHM_village_code() +",'"+ set_and_get_village_name.getHM_habitation_ename()+"','"
-                            + set_and_get_village_name.getHM_habitation_kname()+"')");
-                    Log.d("Database", "VillageNames Database Inserted");
-
+                    e.printStackTrace();
+                    Log.e("NullPointerException", ""+e.toString());
                 }
-                //dialog.incrementProgressBy(20);
-                //database.close();
-            } catch (JSONException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
-            }catch (OutOfMemoryError e){
-                Log.e("OutOfMemoryError", ""+e.toString());
-            }catch (NullPointerException e){
-                Log.e("NullPointerException", ""+e.toString());
             }
-            //Toast.makeText(getApplicationContext(), "VillageNames Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-        }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("multipleResource",""+t.getMessage());
+                call.cancel();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void truncateDatabase_Service_Parameters_tbl_data(){
@@ -606,219 +594,421 @@ public class RI_SecondScreen extends AppCompatActivity {
 
     }
 
-    @SuppressLint("StaticFieldLeak")
-    class GetServiceParametersDataFromServer extends AsyncTask<String, Integer, JSONObject> {
-        JSONObject jsonObject;
-
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            try {
-                JParserAdv jParserAdv = new JParserAdv();
-                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.url_service_Parameter_Data), "POST", hashMap_service_Parameter_Data);
-            }catch (OutOfMemoryError e){
-                dialog.dismiss();
-                Log.e("OutOfMemoryError1", ""+e.toString());
-                runOnUiThread(() -> {
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                    dialog.dismiss();
-                    buildAlertForOutOfMemory();
-                    //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
-                });
-            }catch (NullPointerException e){
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-                    btnDownload.setText(R.string.download);
-                });
-                Log.e("NullPointerException", ""+e.toString());
-            }
-            return jsonObject;
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        @SuppressLint("SetTextI18n")
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            super.onPostExecute(jsonObject);
-            try {
-                int j=1;
-                //dialog.incrementProgressBy(20);
-                JSONArray array = jsonObject.getJSONArray("data");
-                openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_SecondScreen.this);
-                database = openHelper.getWritableDatabase();
-                truncateDatabase_Service_Parameters_tbl_data();
-
-                openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(RI_SecondScreen.this);
-                database1 = openHelper.getWritableDatabase();
-
-                int count = array.length();
-                for (int i = 0; i < count; i++) {
-
-                    JSONObject object = array.getJSONObject(i);
-
-                    set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
-                    set_and_get_service_parameter.setDistrict_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code));
-                    set_and_get_service_parameter.setTaluk_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code));
-                    set_and_get_service_parameter.setHobli_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code));
-                    set_and_get_service_parameter.setVa_Circle_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code));
-                    set_and_get_service_parameter.setVillage_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code));
-                    set_and_get_service_parameter.setTown_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code));
-                    set_and_get_service_parameter.setWard_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
-                    set_and_get_service_parameter.setService_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));
-                    set_and_get_service_parameter.setRD_No(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
-                    set_and_get_service_parameter.setEng_Certify(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
-                    set_and_get_service_parameter.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
-                    set_and_get_service_parameter.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date));
-                    set_and_get_service_parameter.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
-                    set_and_get_service_parameter.setST_applicant_photo(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_applicant_photo));
-                    set_and_get_service_parameter.setAPP_Category_6(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Category));
-                    set_and_get_service_parameter.setApp_Caste_6(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Caste));
-                    set_and_get_service_parameter.setRbOption_6(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Belongs_Creamy_Layer_6));
-                    set_and_get_service_parameter.setSpReason_6(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reason_for_Creamy_Layer_6));
-                    set_and_get_service_parameter.setAnnual_Income(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Annual_Income));
-                    set_and_get_service_parameter.setNo_Years_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Num_Years_8));
-                    set_and_get_service_parameter.setApp_Father_Category_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Father_Category_8));
-                    set_and_get_service_parameter.setAPP_Father_Caste_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Father_Caste_8));
-                    set_and_get_service_parameter.setApp_Mother_Category_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Mother_Category_8));
-                    set_and_get_service_parameter.setAPP_Mother_Caste_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Mother_Caste_8));
-                    set_and_get_service_parameter.setRemarks_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
-                    set_and_get_service_parameter.setTotal_No_Year_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Total_No_Years_10));
-                    set_and_get_service_parameter.setNO_Months_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.NO_Months_10));
-                    set_and_get_service_parameter.setRbStated_Address_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reside_At_Stated_Address_10));
-                    set_and_get_service_parameter.setRbAddress_RationCard_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Place_Match_With_RationCard_10));
-                    set_and_get_service_parameter.setSpPurpose_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Pur_for_Cert_Code_10));
-                    set_and_get_service_parameter.setRbIssue_Cert(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
-                    set_and_get_service_parameter.setSpRejectionReason(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reason_for_Rejection));
-                    set_and_get_service_parameter.setDataUpdateFlag(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag));
-
-                    serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
-                    Log.d("serviceCode", "" + serviceCode);
-
-                    Cursor cursor = database1.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
-                            +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode, null);
-                    if (cursor.getCount()>0) {
-                        if (cursor.moveToNext()) {
-                            serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
-                            serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
-                            Log.d("serviceName", serviceName+", "+ serviceName_k);
-                        }
-                    } else {
-                        cursor.close();
-                    }
-
-//                    if(serviceCode==6){
-//                        serviceName = "Caste and Income Certficate";
-//                        serviceName_k = "ಜಾತಿ ಮತ್ತು ಆದಾಯ ಪ್ರಮಾಣ ಪತ್ರ ";
-//                    }else if(serviceCode==7){
-//                        serviceName="Caste Certificate (Cat-A)";
-//                        serviceName_k = "ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಪ್ರವರ್ಗ-ಎ)";
-//                    }else if(serviceCode==8){
-//                        serviceName = "Caste Certificate (SC/ST)";
-//                        serviceName_k ="ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಅ.ಜಾ/ಅ.ಪಂ)";
-//                    }else if(serviceCode==9){
-//                        serviceName = "OBC Certificate (Central)";
-//                        serviceName_k= "ಹಿಂದುಳಿದ ವರ್ಗ ಪ್ರ.ಪತ್ರ (ಕೇ.ಸ)";
-//                    }else if (serviceCode==10){
-//                        serviceName = "Residence Certificate";
-//                        serviceName_k = "ವಾಸ ಸ್ಥಳ ಪ್ರಮಾಣ ಪತ್ರ";
-//                    }else {
-//                        serviceName=null;
-//                        serviceName_k=null;
+//    public void GetServiceParametersDataFromServer(String flag1, String flag2, int district_Code, int taluk_Code, int hobli_Code, String loginID, int desiCode, int va_Circle_Code){
+//        apiInterface_nic = APIClient.getClient(getString(R.string.MobAPI_New_NIC)).create(APIInterface_NIC.class);
+//
+//        Call<JsonObject> call = apiInterface_nic.GetListForFieldVerification(flag1, flag2, district_Code, taluk_Code, hobli_Code, loginID, desiCode, va_Circle_Code);
+//        call.enqueue(new Callback<JsonObject>() {
+//            @Override
+//            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//                JsonObject jsonObject1 = response.body();
+//                Log.d("response_server",jsonObject1 + "");
+//                assert jsonObject1 != null;
+//                JsonObject jsonObject2 = jsonObject1.getAsJsonObject("StatusMessage");
+//                Log.d("response_server",jsonObject2 + "");
+//                String response_server = jsonObject2.toString();
+//                try {
+//                    //dialog.incrementProgressBy(30);
+//
+//                    JSONObject jsonObject = new JSONObject(response_server);
+//                    JSONArray array = jsonObject.getJSONArray("Table");
+//
+//                    int count = array.length();
+//                    truncateDatabase_Service_Parameters_tbl_data();
+//
+//                    for (int i = 0; i < count; i++) {
+//
+//                        JSONObject object = array.getJSONObject(i);
+//
+//                        set_and_get_service_tran_data = new Set_and_Get_Service_tran_data();
+//                        set_and_get_service_tran_data.setDistrict_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code));
+//                        set_and_get_service_tran_data.setTaluk_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code));
+//                        set_and_get_service_tran_data.setHobli_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code));
+//                        set_and_get_service_tran_data.setVillage_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code));
+//                        set_and_get_service_tran_data.setTown_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code));
+//                        set_and_get_service_tran_data.setWard_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
+//                        set_and_get_service_tran_data.setService_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code));
+//                        set_and_get_service_tran_data.setST_applicant_photo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
+//                        set_and_get_service_tran_data.setGSCNo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo));
+//                        set_and_get_service_tran_data.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
+//                        set_and_get_service_tran_data.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date));
+//                        set_and_get_service_tran_data.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
+//                        set_and_get_service_tran_data.setFather_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName));
+//                        set_and_get_service_tran_data.setMother(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName));
+//                        set_and_get_service_tran_data.setIDNo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo));
+//                        set_and_get_service_tran_data.setMobile_No(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No));
+//                        set_and_get_service_tran_data.setAddress1(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1));
+//                        set_and_get_service_tran_data.setAddress2(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address2));
+//                        set_and_get_service_tran_data.setAddress3(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address3));
+//                        set_and_get_service_tran_data.setAdd_Pin(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode));
+//                        set_and_get_service_tran_data.setST_ID_TYPE(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE));
+//                        set_and_get_service_tran_data.setEng_Certify(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
+//                        set_and_get_service_tran_data.setApplicantTiitle(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ApplicantTiitle));
+//                        set_and_get_service_tran_data.setBinCom(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom));
+//                        set_and_get_service_tran_data.setRelationTitle(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle));
+//                        set_and_get_service_tran_data.setReservationCategory(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
+//                        set_and_get_service_tran_data.setCaste(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+//                        set_and_get_service_tran_data.setAnnualIncome(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
+//                        set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
+//                        set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
+//                        set_and_get_service_tran_data.setPush_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag));
+//
+//                        serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
+//                        Log.d("serviceCode", "" + serviceCode);
+//
+//                        Cursor cursor = databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
+//                                +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode, null);
+//                        if (cursor.getCount()>0) {
+//                            if (cursor.moveToNext()) {
+//                                serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
+//                                serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
+//                                Log.d("serviceName", serviceName+", "+ serviceName_k);
+//                            }
+//                        } else {
+//                            cursor.close();
+//                        }
+//
+//                        set_and_get_service_tran_data.setService_Name(serviceName);
+//                        set_and_get_service_tran_data.setService_Name_k(serviceName_k);
+//
+//                        databaseServTran.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+//                                + "("
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name_k+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location+","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ApplicantTiitle +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Caste +","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + ","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied + ","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied + ","
+//                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+")"
+//                                + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
+//                                + set_and_get_service_tran_data.getTaluk_Code() + ","
+//                                + set_and_get_service_tran_data.getHobli_Code()
+//                                + "," + set_and_get_service_tran_data.getVillage_Code() + ","
+//                                + set_and_get_service_tran_data.getTown_Code()+","
+//                                + set_and_get_service_tran_data.getWard_Code()+","
+//                                + set_and_get_service_tran_data.getService_Code() + ",'"
+//                                + set_and_get_service_tran_data.getService_Name() + "','"
+//                                + set_and_get_service_tran_data.getService_Name_k() + "','"
+//                                + set_and_get_service_tran_data.getGSCNo()+"','"
+//                                +set_and_get_service_tran_data.getST_applicant_photo()+"','"
+//                                + set_and_get_service_tran_data.getApplicant_Name() + "','"
+//                                + set_and_get_service_tran_data.getDue_Date() + "','"
+//                                + set_and_get_service_tran_data.getRaised_Location() + "','"
+//                                + set_and_get_service_tran_data.getFather_Name() + "','"
+//                                + set_and_get_service_tran_data.getMother() + "','"
+//                                + set_and_get_service_tran_data.getIDNo() + "',"
+//                                + set_and_get_service_tran_data.getMobile_No() + ",'"
+//                                + set_and_get_service_tran_data.getAddress1() + "','"
+//                                + set_and_get_service_tran_data.getAddress2() + "','"
+//                                + set_and_get_service_tran_data.getAddress3() +"','"
+//                                + set_and_get_service_tran_data.getAdd_Pin()+"',"
+//                                + set_and_get_service_tran_data.getST_ID_TYPE()+",'"
+//                                + set_and_get_service_tran_data.getEng_Certify()+"',"
+//                                + set_and_get_service_tran_data.getApplicantTiitle()+","
+//                                + set_and_get_service_tran_data.getBinCom() + ","
+//                                + set_and_get_service_tran_data.getRelationTitle()+","
+//                                + set_and_get_service_tran_data.getReservationCategory()+","
+//                                + set_and_get_service_tran_data.getCaste() + ",'"
+//                                + set_and_get_service_tran_data.getAnnualIncome()+ "',"
+//                                + set_and_get_service_tran_data.getGST_No_Mths_Applied()+ ","
+//                                + set_and_get_service_tran_data.getGST_No_Years_Applied()+ ",'"
+//                                + set_and_get_service_tran_data.getPush_Flag()+"')");
+//
+//                        Log.d("Database", "ServiceTranTable Database Inserted " + j);
+//                        j++;
+//
 //                    }
-
-                    set_and_get_service_parameter.setService_Name(serviceName);
-                    set_and_get_service_parameter.setService_Name_k(serviceName_k);
-
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, Service_Name, Service_Name_k, ST_GSC_No,ST_Eng_Certificate," +
-                            " ST_applicant_name, ST_DueDate, ST_Raised_Location, ST_applicant_photo, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Annual_Income," +
-                            " Num_Years_8, App_Father_Category_8, APP_Father_Caste_8, App_Mother_Category_8, APP_Mother_Caste_8, Remarks, " +
-                            " Total_No_Years_10, NO_Months_10, Reside_At_Stated_Address_10, Place_Match_With_RationCard_10, Pur_for_Cert_Code_10, Can_Certificate_Given, Reason_for_Rejection, DataUpdateFlag)" +
-                            " values ("
-                            + set_and_get_service_parameter.getDistrict_Code() + ","
-                            + set_and_get_service_parameter.getTaluk_Code() + ","
-                            + set_and_get_service_parameter.getHobli_Code() + ","
-                            + set_and_get_service_parameter.getVa_Circle_Code() + ","
-                            + set_and_get_service_parameter.getVillage_Code()+",'"
-                            + set_and_get_service_parameter.getTown_Code()+"','"
-                            + set_and_get_service_parameter.getWard_Code()+"','"
-                            + set_and_get_service_parameter.getService_Code() + "','"
-                            + set_and_get_service_parameter.getService_Name() + "','"
-                            + set_and_get_service_parameter.getService_Name_k() + "',"
-                            + set_and_get_service_parameter.getRD_No() +",'"
-                            + set_and_get_service_parameter.getEng_Certify()+"','"
-                            + set_and_get_service_parameter.getApplicant_Name() + "','"
-                            + set_and_get_service_parameter.getDue_Date() + "','"
-                            + set_and_get_service_parameter.getRaised_Location() +"','"
-                            + set_and_get_service_parameter.getST_applicant_photo() + "','"
-                            + set_and_get_service_parameter.getAPP_Category_6()+"','"
-                            + set_and_get_service_parameter.getApp_Caste_6() + "','"
-                            + set_and_get_service_parameter.getRbOption_6() + "','"
-                            + set_and_get_service_parameter.getSpReason_6() + "','"
-                            + set_and_get_service_parameter.getAnnual_Income() + "','"
-                            + set_and_get_service_parameter.getNo_Years_8() + "','"
-                            + set_and_get_service_parameter.getApp_Father_Category_8() + "','"
-                            + set_and_get_service_parameter.getAPP_Father_Caste_8() + "','"
-                            + set_and_get_service_parameter.getApp_Mother_Category_8() + "','"
-                            + set_and_get_service_parameter.getAPP_Mother_Caste_8() + "','"
-                            + set_and_get_service_parameter.getRemarks_8() + "','"
-                            + set_and_get_service_parameter.getTotal_No_Year_10()+"','"
-                            + set_and_get_service_parameter.getNO_Months_10() + "','"
-                            + set_and_get_service_parameter.getRbStated_Address_10() + "','"
-                            + set_and_get_service_parameter.getRbAddress_RationCard_10() + "','"
-                            + set_and_get_service_parameter.getSpPurpose_10() + "','"
-                            + set_and_get_service_parameter.getRbIssue_Cert() + "','"
-                            + set_and_get_service_parameter.getSpRejectionReason()+ "','"
-                            + set_and_get_service_parameter.getDataUpdateFlag()+"')");
-                    Log.d("Database", "ServiceParameter Table Inserted " + j);
-                    j++;
-
-                }
-                runOnUiThread(() -> {
-                    timeSwapBuff += timeInMilliseconds;
-                    customHandler.removeCallbacks(updateTimerThread);
-
-                    Cursor cursor3 = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1, null);
-
-                    if(cursor3.getCount()>0) {
-                        tData=1;
-                        Log.d("entry", String.valueOf(tData));
-                        btnProceed.setVisibility(View.VISIBLE);
-                        //btnPendency.setVisibility(View.VISIBLE);
-                        //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        cursor3.close();
-                        Log.d("Values", "No records Exists");
-                        Toast.makeText(getApplicationContext(), getString(R.string.no_data_to_verify), Toast.LENGTH_SHORT).show();
-                        tData=0;
-                        btnProceed.setVisibility(View.GONE);
-                        //btnPendency.setVisibility(View.GONE);
-                    }
-                    btnDownload.setText(R.string.download);
-                    dialog.dismiss();
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
-                });
-            }catch (OutOfMemoryError e){
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    database.close();
-                    buildAlertForOutOfMemory();
-                    //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
-                });
-                Log.e("OutOfMemoryError", ""+e.toString());
-            }catch (NullPointerException e){
-                Log.e("NullPointerException", ""+e.toString());
-            }
-        }
-    }
+//
+//                    runOnUiThread(() -> {
+//                        timeSwapBuff += timeInMilliseconds;
+//                        customHandler.removeCallbacks(updateTimerThread);
+//                        Cursor cursor3 = databaseServTran.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
+//                        if(cursor3.getCount()>0) {
+//                            tData=1;
+//                            btnProceed.setVisibility(View.VISIBLE);
+//                            //btnPendency.setVisibility(View.VISIBLE);
+//                            btnDownload.setText(R.string.download);
+//                            //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
+//                        }
+//                        else {
+//                            cursor3.close();
+//                            tData=0;
+//                            Log.d("Values", "No records Exists");
+//                            Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();
+//                            btnDownload.setText(R.string.download);
+//                            btnProceed.setVisibility(View.GONE);
+//                            //btnPendency.setVisibility(View.GONE);
+//                        }
+//                        dialog.dismiss();
+//                    });
+//                }catch (JSONException e) {
+//                    e.printStackTrace();
+//                    runOnUiThread(() -> {
+//                        dialog.dismiss();
+//                        Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
+//                    });
+//                }catch (OutOfMemoryError e){
+//                    runOnUiThread(() -> {
+//                        dialog.dismiss();
+//                        buildAlertForOutOfMemory();
+//                        //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
+//                    });
+//                    Log.e("OutOfMemoryError2", ""+e.toString());
+//                }catch (NullPointerException e){
+//                    Log.e("NullPointerException2", ""+e.toString());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JsonObject> call, Throwable t) {
+//                Log.d("multipleResource",""+t.getMessage());
+//                call.cancel();
+//                t.printStackTrace();
+//                Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//    }
+//
+//    @SuppressLint("StaticFieldLeak")
+//    class GetServiceParametersDataFromServer extends AsyncTask<String, Integer, JSONObject> {
+//        JSONObject jsonObject;
+//
+//        @Override
+//        protected JSONObject doInBackground(String... params) {
+//            try {
+//                JParserAdv jParserAdv = new JParserAdv();
+//                jsonObject = jParserAdv.makeHttpRequest(getString(R.string.url_service_Parameter_Data), "POST", hashMap_service_Parameter_Data);
+//            }catch (OutOfMemoryError e){
+//                dialog.dismiss();
+//                Log.e("OutOfMemoryError1", ""+e.toString());
+//                runOnUiThread(() -> {
+//                    timeSwapBuff += timeInMilliseconds;
+//                    customHandler.removeCallbacks(updateTimerThread);
+//                    btnDownload.setText(R.string.download);
+//                    dialog.dismiss();
+//                    buildAlertForOutOfMemory();
+//                    //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
+//                });
+//            }catch (NullPointerException e){
+//                runOnUiThread(() -> {
+//                    dialog.dismiss();
+//                    timeSwapBuff += timeInMilliseconds;
+//                    customHandler.removeCallbacks(updateTimerThread);
+//                    btnDownload.setText(R.string.download);
+//                });
+//                Log.e("NullPointerException", ""+e.toString());
+//            }
+//            return jsonObject;
+//        }
+//
+//        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//        @SuppressLint("SetTextI18n")
+//        @Override
+//        protected void onPostExecute(JSONObject jsonObject) {
+//            super.onPostExecute(jsonObject);
+//            try {
+//                int j=1;
+//                //dialog.incrementProgressBy(20);
+//                JSONArray array = jsonObject.getJSONArray("data");
+//                openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_SecondScreen.this);
+//                database = openHelper.getWritableDatabase();
+//                truncateDatabase_Service_Parameters_tbl_data();
+//
+//                openHelper = new DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster(RI_SecondScreen.this);
+//                database1 = openHelper.getWritableDatabase();
+//
+//                int count = array.length();
+//                for (int i = 0; i < count; i++) {
+//
+//                    JSONObject object = array.getJSONObject(i);
+//
+//                    set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
+//                    set_and_get_service_parameter.setDistrict_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code));
+//                    set_and_get_service_parameter.setTaluk_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code));
+//                    set_and_get_service_parameter.setHobli_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code));
+//                    set_and_get_service_parameter.setVa_Circle_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code));
+//                    set_and_get_service_parameter.setVillage_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code));
+//                    set_and_get_service_parameter.setTown_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code));
+//                    set_and_get_service_parameter.setWard_Code(object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
+//                    set_and_get_service_parameter.setService_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));
+//                    set_and_get_service_parameter.setRD_No(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
+//                    set_and_get_service_parameter.setEng_Certify(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
+//                    set_and_get_service_parameter.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
+//                    set_and_get_service_parameter.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date));
+//                    set_and_get_service_parameter.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
+//                    set_and_get_service_parameter.setST_applicant_photo(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_applicant_photo));
+//                    set_and_get_service_parameter.setAPP_Category_6(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Category));
+//                    set_and_get_service_parameter.setApp_Caste_6(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Caste));
+//                    set_and_get_service_parameter.setRbOption_6(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Belongs_Creamy_Layer_6));
+//                    set_and_get_service_parameter.setSpReason_6(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reason_for_Creamy_Layer_6));
+//                    set_and_get_service_parameter.setAnnual_Income(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Annual_Income));
+//                    set_and_get_service_parameter.setNo_Years_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Num_Years_8));
+//                    set_and_get_service_parameter.setApp_Father_Category_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Father_Category_8));
+//                    set_and_get_service_parameter.setAPP_Father_Caste_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Father_Caste_8));
+//                    set_and_get_service_parameter.setApp_Mother_Category_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Mother_Category_8));
+//                    set_and_get_service_parameter.setAPP_Mother_Caste_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Mother_Caste_8));
+//                    set_and_get_service_parameter.setRemarks_8(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
+//                    set_and_get_service_parameter.setTotal_No_Year_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Total_No_Years_10));
+//                    set_and_get_service_parameter.setNO_Months_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.NO_Months_10));
+//                    set_and_get_service_parameter.setRbStated_Address_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reside_At_Stated_Address_10));
+//                    set_and_get_service_parameter.setRbAddress_RationCard_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Place_Match_With_RationCard_10));
+//                    set_and_get_service_parameter.setSpPurpose_10(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Pur_for_Cert_Code_10));
+//                    set_and_get_service_parameter.setRbIssue_Cert(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
+//                    set_and_get_service_parameter.setSpRejectionReason(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reason_for_Rejection));
+//                    set_and_get_service_parameter.setDataUpdateFlag(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag));
+//
+//                    serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
+//                    Log.d("serviceCode", "" + serviceCode);
+//
+//                    Cursor cursor = database1.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
+//                            +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode, null);
+//                    if (cursor.getCount()>0) {
+//                        if (cursor.moveToNext()) {
+//                            serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
+//                            serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
+//                            Log.d("serviceName", serviceName+", "+ serviceName_k);
+//                        }
+//                    } else {
+//                        cursor.close();
+//                    }
+//
+////                    if(serviceCode==6){
+////                        serviceName = "Caste and Income Certficate";
+////                        serviceName_k = "ಜಾತಿ ಮತ್ತು ಆದಾಯ ಪ್ರಮಾಣ ಪತ್ರ ";
+////                    }else if(serviceCode==7){
+////                        serviceName="Caste Certificate (Cat-A)";
+////                        serviceName_k = "ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಪ್ರವರ್ಗ-ಎ)";
+////                    }else if(serviceCode==8){
+////                        serviceName = "Caste Certificate (SC/ST)";
+////                        serviceName_k ="ಜಾತಿ ಪ್ರಮಾಣ ಪತ್ರ (ಅ.ಜಾ/ಅ.ಪಂ)";
+////                    }else if(serviceCode==9){
+////                        serviceName = "OBC Certificate (Central)";
+////                        serviceName_k= "ಹಿಂದುಳಿದ ವರ್ಗ ಪ್ರ.ಪತ್ರ (ಕೇ.ಸ)";
+////                    }else if (serviceCode==10){
+////                        serviceName = "Residence Certificate";
+////                        serviceName_k = "ವಾಸ ಸ್ಥಳ ಪ್ರಮಾಣ ಪತ್ರ";
+////                    }else {
+////                        serviceName=null;
+////                        serviceName_k=null;
+////                    }
+//
+//                    set_and_get_service_parameter.setService_Name(serviceName);
+//                    set_and_get_service_parameter.setService_Name_k(serviceName_k);
+//
+//                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, Service_Name, Service_Name_k, ST_GSC_No,ST_Eng_Certificate," +
+//                            " ST_applicant_name, ST_DueDate, ST_Raised_Location, ST_applicant_photo, Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Annual_Income," +
+//                            " Num_Years_8, App_Father_Category_8, APP_Father_Caste_8, App_Mother_Category_8, APP_Mother_Caste_8, Remarks, " +
+//                            " Total_No_Years_10, NO_Months_10, Reside_At_Stated_Address_10, Place_Match_With_RationCard_10, Pur_for_Cert_Code_10, Can_Certificate_Given, Reason_for_Rejection, DataUpdateFlag)" +
+//                            " values ("
+//                            + set_and_get_service_parameter.getDistrict_Code() + ","
+//                            + set_and_get_service_parameter.getTaluk_Code() + ","
+//                            + set_and_get_service_parameter.getHobli_Code() + ","
+//                            + set_and_get_service_parameter.getVa_Circle_Code() + ","
+//                            + set_and_get_service_parameter.getVillage_Code()+",'"
+//                            + set_and_get_service_parameter.getTown_Code()+"','"
+//                            + set_and_get_service_parameter.getWard_Code()+"','"
+//                            + set_and_get_service_parameter.getService_Code() + "','"
+//                            + set_and_get_service_parameter.getService_Name() + "','"
+//                            + set_and_get_service_parameter.getService_Name_k() + "',"
+//                            + set_and_get_service_parameter.getRD_No() +",'"
+//                            + set_and_get_service_parameter.getEng_Certify()+"','"
+//                            + set_and_get_service_parameter.getApplicant_Name() + "','"
+//                            + set_and_get_service_parameter.getDue_Date() + "','"
+//                            + set_and_get_service_parameter.getRaised_Location() +"','"
+//                            + set_and_get_service_parameter.getST_applicant_photo() + "','"
+//                            + set_and_get_service_parameter.getAPP_Category_6()+"','"
+//                            + set_and_get_service_parameter.getApp_Caste_6() + "','"
+//                            + set_and_get_service_parameter.getRbOption_6() + "','"
+//                            + set_and_get_service_parameter.getSpReason_6() + "','"
+//                            + set_and_get_service_parameter.getAnnual_Income() + "','"
+//                            + set_and_get_service_parameter.getNo_Years_8() + "','"
+//                            + set_and_get_service_parameter.getApp_Father_Category_8() + "','"
+//                            + set_and_get_service_parameter.getAPP_Father_Caste_8() + "','"
+//                            + set_and_get_service_parameter.getApp_Mother_Category_8() + "','"
+//                            + set_and_get_service_parameter.getAPP_Mother_Caste_8() + "','"
+//                            + set_and_get_service_parameter.getRemarks_8() + "','"
+//                            + set_and_get_service_parameter.getTotal_No_Year_10()+"','"
+//                            + set_and_get_service_parameter.getNO_Months_10() + "','"
+//                            + set_and_get_service_parameter.getRbStated_Address_10() + "','"
+//                            + set_and_get_service_parameter.getRbAddress_RationCard_10() + "','"
+//                            + set_and_get_service_parameter.getSpPurpose_10() + "','"
+//                            + set_and_get_service_parameter.getRbIssue_Cert() + "','"
+//                            + set_and_get_service_parameter.getSpRejectionReason()+ "','"
+//                            + set_and_get_service_parameter.getDataUpdateFlag()+"')");
+//                    Log.d("Database", "ServiceParameter Table Inserted " + j);
+//                    j++;
+//
+//                }
+//                runOnUiThread(() -> {
+//                    timeSwapBuff += timeInMilliseconds;
+//                    customHandler.removeCallbacks(updateTimerThread);
+//
+//                    Cursor cursor3 = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1, null);
+//
+//                    if(cursor3.getCount()>0) {
+//                        tData=1;
+//                        Log.d("entry", String.valueOf(tData));
+//                        btnProceed.setVisibility(View.VISIBLE);
+//                        //btnPendency.setVisibility(View.VISIBLE);
+//                        //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
+//                    }
+//                    else {
+//                        cursor3.close();
+//                        Log.d("Values", "No records Exists");
+//                        Toast.makeText(getApplicationContext(), getString(R.string.no_data_to_verify), Toast.LENGTH_SHORT).show();
+//                        tData=0;
+//                        btnProceed.setVisibility(View.GONE);
+//                        //btnPendency.setVisibility(View.GONE);
+//                    }
+//                    btnDownload.setText(R.string.download);
+//                    dialog.dismiss();
+//                });
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                runOnUiThread(() -> {
+//                    dialog.dismiss();
+//                    Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
+//                });
+//            }catch (OutOfMemoryError e){
+//                runOnUiThread(() -> {
+//                    dialog.dismiss();
+//                    database.close();
+//                    buildAlertForOutOfMemory();
+//                    //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
+//                });
+//                Log.e("OutOfMemoryError", ""+e.toString());
+//            }catch (NullPointerException e){
+//                Log.e("NullPointerException", ""+e.toString());
+//            }
+//        }
+//    }
 
     Runnable updateTimerThread = new Runnable() {
 

@@ -12,6 +12,7 @@ public class Constants {
     public static final String DesiCode_VA = "DesiCode_VA";
     public static final String DesiCode_RI = "DesiCode_RI";
     public static final String uName_get = "uName_get";
+    public static final String CasteMaster = "CasteMaster";
 
     public static final String SHARED_PREF = "shared_pref";
     public static final String LANGUAGE = "language";

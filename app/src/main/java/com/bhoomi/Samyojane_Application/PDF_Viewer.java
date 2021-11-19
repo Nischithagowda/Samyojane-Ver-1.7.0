@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
@@ -17,9 +16,6 @@ import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Arrays;
 
 /**
@@ -33,16 +29,7 @@ public class PDF_Viewer extends AppCompatActivity {
     int document_ID;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    String applicant_name;
-    String applicant_Id;
     byte[] bytes;
-    String str;
-    String mno;
-    String filePath = "sdcard/Add_proof.pdf";
-    File file;
-    InputStream fileInputStream = null;
-    OutputStream output = null;
-    Uri uri;
     TextView tvDocumentName;
 
 
@@ -59,7 +46,7 @@ public class PDF_Viewer extends AppCompatActivity {
         tvDocumentName = findViewById(R.id.tvDocumentName);
 
         Intent i = getIntent();
-        document_ID = Integer.parseInt(i.getStringExtra("document_ID"));
+        document_ID = i.getIntExtra("document_ID", 0);
         document_Name = i.getStringExtra("document_Name");
 
         Log.d("document_ID", ""+document_ID);
@@ -69,10 +56,10 @@ public class PDF_Viewer extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_Docs(this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_Docs.TABLE_NAME+" where "+DataBaseHelperClass_btnDownload_Docs.UDT_Document_Id+"="+document_ID, null);
+        Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_Docs.TABLE_NAME+" where "+DataBaseHelperClass_btnDownload_Docs.DocumentID+"="+document_ID, null);
         if(cursor.getCount()>0){
             if (cursor.moveToNext()){
-                bytes = cursor.getBlob(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_Docs.UDT_File));
+                bytes = cursor.getBlob(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_Docs.Document));
                 Log.d("Blob",""+ Arrays.toString(bytes));
             }
         } else {
