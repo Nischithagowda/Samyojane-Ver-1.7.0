@@ -1,7 +1,7 @@
 package com.bhoomi.Samyojane_Application;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,13 +17,11 @@ import android.graphics.Paint;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.DeadObjectException;
 import android.provider.Settings;
 import android.telephony.PhoneNumberUtils;
 import android.text.InputFilter;
@@ -80,16 +78,19 @@ public class New_Request extends AppCompatActivity {
     TextView applicant_infor;
     String applicant_name;
     String raisedLoc, name, fatherName, motherName, address2, address3, report_no;
+    int appTitle_Code, binCom_Code, fatTitle_Code;
+    String appTitle_Name, binCom_Name, fatTitle_Name;
     String add_pin, remarks;
     String service_name, village_name;
     String eng_certi;
-    TextView txt_raiseLoc, txt_appID, txt_appName, txt_appFatherName, txt_appMotherName, txt_ID_Num, txt_appMobileNum, txt_add1, txt_add2, txt_add3, txt_add_Pin, txt_ReportNo;
+    TextView txt_raiseLoc, txt_appID, txt_BinCom, txt_appName, txt_appFatherName, txt_appMotherName, txt_ID_Num, txt_appMobileNum, txt_add1, txt_add2, txt_add3, txt_add_Pin, txt_ReportNo;
     TextView txt1, txt2,txt3, txt4, txt5, txt6, txt7, txt8, txt9, tv_IDName;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
+    SQLiteAssetHelper_Masters sqLiteAssetHelper_masters;
     String amount, caste_code, caste_name, category_code, category_name;
     TableRow Service6, Service67, Service678, trService10, Service10, tr_residence;
     TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName;
-    String district, taluk, hobli, VA_Name,VA_Circle_Name, applicant_Id, rationCardNo, aadharNo, mobileNo, address1;
+    String district, taluk, hobli, VA_IMEI, VA_Mobile, VA_Name,VA_Circle_Name, applicant_Id, rationCardNo, aadharNo, mobileNo, address1;
     int district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_code, ward_code;
     Button btnReport, btnCancel, btnDownDocs, btnViewDocs;
     EditText tvRemarks;
@@ -111,6 +112,7 @@ public class New_Request extends AppCompatActivity {
     String Id_Name;
     int Id_Code;
     TableRow trID;
+    Activity activity;
 
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
@@ -211,9 +213,7 @@ public class New_Request extends AppCompatActivity {
         return null;
     };
 
-    @TargetApi(Build.VERSION_CODES.O)
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    @SuppressLint({"SetTextI18n", "HardwareIds", "ClickableViewAccessibility"})
+    @SuppressLint({"ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -231,6 +231,7 @@ public class New_Request extends AppCompatActivity {
         txt_raiseLoc = findViewById(R.id.txt_raiseLoc);
         txt_appID = findViewById(R.id.txt_appID);
         txt_appName = findViewById(R.id.txt_appName);
+        txt_BinCom = findViewById(R.id.txt_BinCom);
         txt_appFatherName = findViewById(R.id.txt_appFatherName);
         txt_appMotherName = findViewById(R.id.txt_appMotherName);
         txt_ID_Num = findViewById(R.id.txt_ID_Num);
@@ -467,6 +468,11 @@ public class New_Request extends AppCompatActivity {
                 address3 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Address3));
                 add_pin = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode));
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
+                appTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ApplicantTiitle));
+                binCom_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom));
+                fatTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle));
+                VA_IMEI = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Updated_By_VA_IMEI));
+                VA_Mobile = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Upd_MobileNumber));
             }
         } else {
             cursor.close();
@@ -485,6 +491,12 @@ public class New_Request extends AppCompatActivity {
             trID.setVisibility(View.VISIBLE);
         }
 
+        sqLiteAssetHelper_masters = new SQLiteAssetHelper_Masters(this, activity);
+        sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
+        appTitle_Name = sqLiteAssetHelper_masters.Get_Title_By_Code(appTitle_Code, getString(R.string.title_desc_name));
+        binCom_Name = sqLiteAssetHelper_masters.Get_BinCom_By_Code(binCom_Code, getString(R.string.bincom_desc_name));
+        fatTitle_Name = sqLiteAssetHelper_masters.Get_Title_By_Code(fatTitle_Code, getString(R.string.title_desc_name));
+
         if(Objects.equals(raisedLoc, "N") || Objects.equals(raisedLoc, "S")){
             txt_raiseLoc.setText(getString(R.string.nadakacheri_raised));
         }else if(Objects.equals(raisedLoc, "P") || Objects.equals(raisedLoc, "B") || Objects.equals(raisedLoc, "K") || Objects.equals(raisedLoc, "G") || Objects.equals(raisedLoc, "I")){
@@ -501,9 +513,12 @@ public class New_Request extends AppCompatActivity {
             add_pin="0";
         }
 
+        String appName = appTitle_Name + " " + applicant_name;
+        String father_or_Husband_Name = fatTitle_Name + " " + fatherName;
         txt_appID.setText(applicant_Id);
-        txt_appName.setText(applicant_name);
-        txt_appFatherName.setText(fatherName);
+        txt_appName.setText(appName);
+        txt_BinCom.setText(binCom_Name);
+        txt_appFatherName.setText(father_or_Husband_Name);
         txt_appMotherName.setText(motherName);
         tv_IDName.setText(Id_Name);
         txt_ID_Num.setText(rationCardNo);
@@ -867,7 +882,7 @@ public class New_Request extends AppCompatActivity {
                 getDocRequestClass.setFlag2(fieldVerify_api_flag2);
                 getDocRequestClass.setLoginId(uName_get);
                 getDocRequestClass.setDesignationCode(DesiCode);
-                getDocRequestClass.setGscNoList(applicant_Id);
+                getDocRequestClass.setGscNoList("RD"+applicant_Id);
                 GetDocsFromServer(getDocRequestClass);
             }
             else {
@@ -912,9 +927,6 @@ public class New_Request extends AppCompatActivity {
             openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request.this);
             database = openHelper.getWritableDatabase();
 
-            String gsc_no;
-            gsc_no = applicant_Id.replaceAll("[^\\d.]", "");
-
             if (latitude != 0.0 && longitude != 0.0) {
                 Log.d("value", "enter first if");
                 if (Objects.equals(optionA, getString(R.string.yes))) {
@@ -937,75 +949,91 @@ public class New_Request extends AppCompatActivity {
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
 
-                            database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_UPD + "("
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GscNo1 + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.FacilityCode + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DesignationCode + ","
+                            database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "("
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo1 + ","
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.LoginID + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DesignationCode + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromAppinformation + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Can_Certificate_Given + ","
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromApplicant + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.CanbeIssued + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No + ","
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.ReportDate + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.ReportNo + ","
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.AppTitle + ","
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom + ","
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.FatTitle + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.ResCatCode + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.CasteCode + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Upd_MobileNumber + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Category + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Caste + ","
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.CasteSl + ","
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Income + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.NoofYears + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.NoofMonths + ","
-                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Total_No_Years_10 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.NO_Months_10 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Father_Category_8 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Mother_Category_8 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Father_Caste_8 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Mother_Caste_8 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Belongs_Creamy_Layer_6 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Creamy_Layer_6 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Reside_At_Stated_Address_10 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Place_Match_With_RationCard_10 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Photo + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.vLat + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.vLong + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UploadedDate + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Updated_By_VA_IMEI + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Updated_By_VA_Name + ","
                                     + ") Values ('"
-                                    + applicant_Id + "',"
-                                    + gsc_no + ","
+                                    + applicant_Id + "','"
+                                    + uName_get + "',"
                                     + serviceCode + ","
-                                    + DesiCode + ",'"
-                                    + uName_get + "','"
+                                    + DesiCode + ","
+                                    + "'N'" + "," //DifferFromAppinformation
+                                    + "'Y'" + ",'" //Can_Certificate_Given
                                     + remarks + "','"
+                                    + report_no + "','"
+                                    + Calendar.getInstance().getTime() + "',"
+                                    + appTitle_Code + ","
+                                    + binCom_Code + ","
+                                    + fatTitle_Code + ",'"
                                     + fatherName + "','"
                                     + motherName + "','"
+                                    + mobileNo + "','"
                                     + address1 + "','"
                                     + address2 + "','"
-                                    + address3 + "','"
-                                    + "NO" + "','"//DifferFromApplicant
-                                    + "YES" + "','"//CanbeIssued
-                                    + Calendar.getInstance().getTime() + "','"
-                                    + report_no + "',"
-                                    + "0" + "," //appTitle
-                                    + "0" + "," //bincom
-                                    + "0" + ","
+                                    + address3 + "',"
+                                    + add_pin + ","
                                     + category_code + ","
                                     + caste_code + ","
-                                    + "0" + "," //CasteSl
-                                    + amount + ","
+                                    + "0" + ",'"//CasteSl
+                                    + amount + "',"
                                     + year + ","
-                                    + month + ", 1)");
-//                            database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-//                                    + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code," +
-//                                    " ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No"
-//                                    + ", ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_ID_NUMBER, ST_Upd_mobile_no, " +
-//                                    "ST_applicant_caddress1, ST_applicant_caddress2, ST_applicant_caddress3,ST_PinCode, ST_Eng_Certificate,"
-//                                    + "ST_applicant_photo,VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, " +
-//                                    "Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6, Num_Years_8, Total_No_Years_10, NO_Months_10, "
-//                                    + "Annual_Income, vLat, vLong, Can_Certificate_Given, Reason_for_Rejection, Remarks, Report_No, DataUpdateFlag)"
-//                                    + " values (" + district_Code + "," + taluk_Code + "," + hobli_Code + "," + va_Circle_Code + ","
-//                                    + villageCode + "," + town_code + "," + ward_code + "," + serviceCode + "," + applicant_Id + ",'"
-//                                    + applicant_name + "','" + fatherName + "','" + motherName + "','" + rationCardNo + "','"
-//                                    + mobileNo + "','" + address1 + "','" + address2 + "','" + address3 + "','" + add_pin + "','" + eng_certi
-//                                    + "','"+appImage+"','" + optionA + "'," + category_code + "," + caste_code + ",'NO',0,'"
-//                                    + strYear + "'," + year + "," + month + "," + amount + "," + latitude + "," + longitude + ",'YES',0,'"
-//                                    + remarks + "','" + report_no
-//                                    + "', 1)");
+                                    + month + ","
+                                    + "0" + "," //App_Father_Category_8
+                                    + "0" + "," //App_Mother_Category_8
+                                    + "0" + "," //APP_Father_Caste_8
+                                    + "0" + "," //APP_Mother_Caste_8
+                                    + "'YES'" + "," //Belongs_Creamy_Layer_6
+                                    + "0" + "," //Reason_for_Creamy_Layer_6
+                                    + "''" + "," //Reside_At_Stated_Address_10
+                                    + "''" + "," //Place_Match_With_RationCard_10
+                                    + "''" + "," //Photo
+                                    + latitude + ","
+                                    + longitude + ",'"
+                                    + Calendar.getInstance().getTime() + "',"
+                                    + "1" + ",'" //DataUpdateFlag
+                                    + VA_IMEI + "','" //Updated_By_VA_IMEI
+                                    + VA_Name  //Updated_By_VA_Name
+                                    + "')");
 
-                            Log.d("Database", DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_UPD + "Database Inserted");
+                            Log.d("Database", DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "Database Inserted");
                             Toast.makeText(getApplicationContext(), getString(R.string.data_saves_successfully), Toast.LENGTH_SHORT).show();
 
                             truncateDatabase_Docs();

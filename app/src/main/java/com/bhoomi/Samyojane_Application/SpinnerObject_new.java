@@ -2,10 +2,10 @@ package com.bhoomi.Samyojane_Application;
 
 public class SpinnerObject_new {
 
-    private String databaseId;
-    private String databaseID1;
-    private String databaseValue;
-    private String str;
+    String databaseId;
+    String databaseID1;
+    String databaseValue;
+    String str;
 
     public SpinnerObject_new(String databaseId, String databaseValue, String databaseID1) {
         this.databaseId = databaseId;

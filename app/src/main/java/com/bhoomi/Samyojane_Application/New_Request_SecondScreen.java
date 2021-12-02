@@ -1,10 +1,12 @@
 package com.bhoomi.Samyojane_Application;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,6 +26,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -33,7 +38,6 @@ import android.widget.Toast;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -51,9 +55,12 @@ public class New_Request_SecondScreen extends AppCompatActivity{
     String raisedLoc, name, fatherName, motherName, rationCardNo, aadharNo, mobileNo, address1, address2, address3, report_No, pinCode;
     String add_pin;
     String appImage=null;
+    int appTitle_Code, binCom_Code, fatTitle_Code;
+    String appTitle_Name, binCom_Name, fatTitle_Name;
+    AutoCompleteTextView autoSearchAppTitle, autoSearchBinCom, autoSearchFatTitle;
     EditText tvFatherName, tvMotherName;
     TextView tvName, tvAddress1, tvAddress2, tvAddress3, tvPinCode;
-    EditText tvRationCardNo, tvMobile;
+    EditText tvMobile;
     TextView txt_raiseLoc, tvHobli, tvTaluk, tvVA_Name, tv_IDName;
     String district, taluk,hobli,VA_Circle_Name, VA_Name;
     int district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_code, ward_code;
@@ -67,25 +74,32 @@ public class New_Request_SecondScreen extends AppCompatActivity{
     String service_name, village_name, town_Name, ward_Name, option_Flag;
     Set_and_Get_Service_Parameter set_and_get_service_parameter;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
-    int len;
+    SQLiteAssetHelper_Masters sqLiteAssetHelper_masters;
     String eng_certi;
     boolean return_Value;
     InputMethodManager imm;
     InputMethodSubtype ims;
     TextView txt_ReportNo;
-    Character code, code_Value='5';
     String str;
     int Id_Code;
     String Id_Name;
     LinearLayout trID;
 
+    String uName_get;
+    int DesiCode;
+    SharedPreferences sharedPreferences;
+    Activity activity;
+    List<AutoCompleteTextBox_Object> objects_appTitle = new ArrayList<>();
+    List<AutoCompleteTextBox_Object> objects_bincom = new ArrayList<>();
+    List<AutoCompleteTextBox_Object> objects_FatTitle = new ArrayList<>();
+    ArrayAdapter<AutoCompleteTextBox_Object> adapter_appTitle, adapter_bincom, adapter_fatTitle;
+
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1Hbfh667adfDEJ78";
     public static Key key;
     public static String decryptedValue;
-    String encryptUID_No, encryptAadhaar_Photo;
 
-    private InputFilter filter = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String blockCharacterSet = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
         if (source != null && blockCharacterSet.contains(("" + source))) {
@@ -95,7 +109,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         return null;
     };
 
-    private InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
@@ -156,7 +170,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         return null;
     };
 
-    private InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "abcdefghijklmnopqrstuvwxyz";
         String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -174,7 +188,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         return null;
     };
 
-    private InputFilter filter_Eng_Add = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Eng_Add = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
@@ -235,7 +249,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         return null;
     };
 
-    private InputFilter filter_Kan_Add = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Kan_Add = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "abcdefgijklmnopqrsuvwxyz";
         String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -266,11 +280,12 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         btnBack = findViewById(R.id.btnBack);
         txt_raiseLoc = findViewById(R.id.txt_raiseLoc);
         tvName = findViewById(R.id.tvName);
+        autoSearchAppTitle = findViewById(R.id.autoSearchAppTitle);
+        autoSearchBinCom = findViewById(R.id.autoSearchBinCom);
+        autoSearchFatTitle = findViewById(R.id.autoSearchFatTitle);
         tvFatherName = findViewById(R.id.tvFatherNme);
         tvMotherName = findViewById(R.id.tvMotherName);
         tv_IDName = findViewById(R.id.tv_IDName);
-        tvRationCardNo = findViewById(R.id.tvRationCardNo);
-        tvRationCardNo.setFilters(new InputFilter[] { filter });
         tvMobile = findViewById(R.id.tvMobile);
         tvAddress1 = findViewById(R.id.tvAddress1);
         tvAddress2 = findViewById(R.id.tvAddress2);
@@ -327,6 +342,10 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage(getString(R.string.loading));
         dialog.setIndeterminate(true);
+
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        DesiCode = sharedPreferences.getInt(Constants.DesiCode_VA, 22);
+        uName_get = sharedPreferences.getString(Constants.uName_get, "");
 
 //        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //        assert imm != null;
@@ -423,6 +442,9 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 address3 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.Address3));
                 add_pin = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode));
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
+                appTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ApplicantTiitle));
+                binCom_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom));
+                fatTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle));
             }
         } else {
             cursor.close();
@@ -443,6 +465,20 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             trID.setVisibility(View.VISIBLE);
         }
 
+        sqLiteAssetHelper_masters = new SQLiteAssetHelper_Masters(this, activity);
+        sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
+        appTitle_Name = sqLiteAssetHelper_masters.Get_Title_By_Code(appTitle_Code, getString(R.string.title_desc_name));
+        binCom_Name = sqLiteAssetHelper_masters.Get_BinCom_By_Code(binCom_Code, getString(R.string.bincom_desc_name));
+        fatTitle_Name = sqLiteAssetHelper_masters.Get_Title_By_Code(fatTitle_Code, getString(R.string.title_desc_name));
+
+        GetAppTitle();
+        GetBincom();
+        GetFatTitle();
+
+        autoSearchAppTitle.setText(appTitle_Name);
+        autoSearchBinCom.setText(binCom_Name);
+        autoSearchFatTitle.setText(fatTitle_Name);
+
         if(Objects.equals(raisedLoc, "N") || Objects.equals(raisedLoc, "S")){
             txt_raiseLoc.setText(getString(R.string.nadakacheri_raised));
         }else if(Objects.equals(raisedLoc, "P") || Objects.equals(raisedLoc, "B") || Objects.equals(raisedLoc, "K") || Objects.equals(raisedLoc, "G") || Objects.equals(raisedLoc, "I")){
@@ -455,19 +491,18 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             txt_raiseLoc.setText(getString(R.string.not_specified));
         }
 
-        tvName.setText(applicant_name);
+        String appName = appTitle_Name + " " + applicant_name;
+        tvName.setText(appName);
         tvFatherName.setText(fatherName);
         tvMotherName.setText(motherName);
         tv_IDName.setText(Id_Name);
         if(Id_Code==19){
             tv_for_Aadhaar.setText(rationCardNo);
             tv_for_Aadhaar.setVisibility(View.VISIBLE);
-            tvRationCardNo.setVisibility(View.GONE);
         }else {
-            tv_for_Aadhaar.setVisibility(View.GONE);
-            tvRationCardNo.setVisibility(View.VISIBLE);
+            tv_for_Aadhaar.setText(rationCardNo);
+            tv_for_Aadhaar.setVisibility(View.VISIBLE);
         }
-        tvRationCardNo.setText(rationCardNo);
         tvMobile.setText(mobileNo);
         tvAddress1.setText(address1);
         tvAddress2.setText(address2);
@@ -503,6 +538,69 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             return false;
         });
 
+        autoSearchAppTitle.setOnTouchListener((v, event) -> {
+            autoSearchAppTitle.showDropDown();
+            autoSearchAppTitle.setError(null);
+            return false;
+        });
+
+        autoSearchBinCom.setOnTouchListener((v, event) -> {
+            autoSearchBinCom.showDropDown();
+            autoSearchBinCom.setError(null);
+            return false;
+        });
+
+        autoSearchFatTitle.setOnTouchListener((v, event) -> {
+            autoSearchFatTitle.showDropDown();
+            autoSearchFatTitle.setError(null);
+            return false;
+        });
+
+        autoSearchAppTitle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                appTitle_Name = parent.getItemAtPosition(position).toString();
+                sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
+                appTitle_Code = sqLiteAssetHelper_masters.Get_Title_By_NAME(appTitle_Name, getString(R.string.title_desc_name));
+                Log.d("Selected_Item", ""+appTitle_Name+", ID:"+appTitle_Code);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        autoSearchBinCom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                binCom_Name = parent.getItemAtPosition(position).toString();
+                sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
+                binCom_Code = sqLiteAssetHelper_masters.Get_BinCom_By_Name(binCom_Name, getString(R.string.bincom_desc_name));
+                Log.d("Selected_Item", ""+binCom_Name+", ID:"+binCom_Code);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        autoSearchFatTitle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                fatTitle_Name = parent.getItemAtPosition(position).toString();
+                sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
+                fatTitle_Code = sqLiteAssetHelper_masters.Get_Title_By_NAME(fatTitle_Name, getString(R.string.title_desc_name));
+                Log.d("Selected_Item", ""+fatTitle_Name+", ID:"+fatTitle_Code);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         gpsTracker = new GPSTracker(getApplicationContext(), this);
 
         btnNext.setOnClickListener(v -> {
@@ -519,13 +617,11 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
             fatherName = tvFatherName.getText().toString();
             motherName = tvMotherName.getText().toString();
-            rationCardNo =tvRationCardNo.getText().toString();
             mobileNo = tvMobile.getText().toString();
 
             Log.d("Values", ""+applicant_name);
             Log.d("Values", ""+fatherName);
             Log.d("Values", ""+motherName);
-            Log.d("Values", ""+rationCardNo);
             Log.d("Values", ""+mobileNo);
             Log.d("Values", ""+address1);
             Log.d("Values", ""+address2);
@@ -539,15 +635,12 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                     if (TextUtils.isEmpty(motherName)) {
                         tvMotherName.setError(getString(R.string.field_canno_null));
                     } else {
-                        if (TextUtils.isEmpty(rationCardNo)) {
-                            tvRationCardNo.setError(getString(R.string.field_canno_null));
+                        if (TextUtils.isEmpty(mobileNo)) {
+                            tvMobile.setError(getString(R.string.field_canno_null));
                         } else {
-                            if (TextUtils.isEmpty(mobileNo)) {
-                                tvMobile.setError(getString(R.string.field_canno_null));
+                            if (!isValidMobile(mobileNo)) {
+                                tvMobile.setError(getString(R.string.enter_valid_phone_num));
                             } else {
-                                if (!isValidMobile(mobileNo)) {
-                                    tvMobile.setError(getString(R.string.enter_valid_phone_num));
-                                } else {
 //                                    code = pinCode.charAt(0);
 //                                    Log.d("code",""+code);
 //                                    if (code.equals(code_Value)){
@@ -563,11 +656,15 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 //                                        Log.d("code: ", "code value do not matched");
 //                                        tvPinCode.setError(getString(R.string.enter_valid_pincode));
 //                                    }
-                                    CheckAadhaarDetails();
-                                    finish();
-                                }
+                                CheckAadhaarDetails();
+                                finish();
                             }
                         }
+//                        if (TextUtils.isEmpty(rationCardNo)) {
+//                            tvRationCardNo.setError(getString(R.string.field_canno_null));
+//                        } else {
+//
+//                        }
                     }
                 }
             } else {
@@ -753,27 +850,41 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         return check;
     }
 
+    public void GetAppTitle(){
+        sqLiteAssetHelper_masters = new SQLiteAssetHelper_Masters(this, activity);
+        sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
+        objects_appTitle = sqLiteAssetHelper_masters.Get_Salutation_title(getString(R.string.title_desc_name));
+        adapter_appTitle = new ArrayAdapter<>(this, R.layout.list_item, objects_appTitle);
+        adapter_appTitle.setDropDownViewResource(R.layout.list_item);
+        autoSearchAppTitle.setAdapter(adapter_appTitle);
+    }
+
+    public void GetBincom(){
+        sqLiteAssetHelper_masters = new SQLiteAssetHelper_Masters(this, activity);
+        sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
+        objects_bincom = sqLiteAssetHelper_masters.Get_BinCome();
+        adapter_bincom = new ArrayAdapter<>(this, R.layout.spinner_item_color, objects_bincom);
+        adapter_bincom.setDropDownViewResource(R.layout.spinner_item_dropdown);
+        autoSearchBinCom.setAdapter(adapter_bincom);
+    }
+
+    public void GetFatTitle(){
+        sqLiteAssetHelper_masters = new SQLiteAssetHelper_Masters(this, activity);
+        sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
+        objects_FatTitle = sqLiteAssetHelper_masters.Get_Salutation_title(getString(R.string.title_desc_name));
+        adapter_fatTitle = new ArrayAdapter<>(this, R.layout.spinner_item_color, objects_FatTitle);
+        adapter_fatTitle.setDropDownViewResource(R.layout.spinner_item_dropdown);
+        autoSearchFatTitle.setAdapter(adapter_fatTitle);
+    }
     public void CheckAadhaarDetails(){
 
-        btnNext.setText(getString(R.string.loading_C));
-        String str;
-        Intent i;
-
-        name = tvName.getText().toString();
         fatherName = tvFatherName.getText().toString();
         motherName = tvMotherName.getText().toString();
-        rationCardNo =tvRationCardNo.getText().toString();
         mobileNo = tvMobile.getText().toString();
 
-        Log.d("Values", ""+name);
         Log.d("Values", ""+fatherName);
         Log.d("Values", ""+motherName);
-        Log.d("Values", ""+rationCardNo);
         Log.d("Values", ""+mobileNo);
-        Log.d("Values", ""+address1);
-        Log.d("Values", ""+address2);
-        Log.d("Values", ""+address3);
-        Log.d("Values", ""+pinCode);
         Log.d("Values", ""+report_No);
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
@@ -797,334 +908,45 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
         if(latitude!=0.0 && longitude!=0.0) {
 
-            openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
-            database = openHelper.getWritableDatabase();
+            if (appTitle_Code!=0) {
+                if (binCom_Code!=0) {
+                    if (fatTitle_Code!=0) {
+                        if (!fatherName.isEmpty()) {
+                            if (!motherName.isEmpty()) {
+                                if (isValidMobile(mobileNo)) {
+                                    openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
+                                    database = openHelper.getWritableDatabase();
 
-            Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
-            if (cursor.getCount() > 0) {
+                                    Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
+                                            + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
+                                    if (cursor.getCount() > 0) {
 
-                database.execSQL("update "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='"+"NO"+"',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name + "='" + name + "', "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName + "='" + fatherName + "', "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName + "='" + motherName + "', "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.U_RationCard_No + "='" + rationCardNo + "', "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.U_Mobile_No + "=" + mobileNo + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + "='" + address1 +"',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 + "='" + address2 +"',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 + "='" + address3 +"',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode + "=" +pinCode +","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No + "='" +report_No +"'" + " where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code + "=" + district_Code + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code + "=" + taluk_Code + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code + "=" + hobli_Code + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'" + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=" + village_Code + " and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"="+town_code+" and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"="+ward_code+" and "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + "=" + service_Code);
+                                        database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
+                                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'");
 
-                Log.d("Database", "ServiceParameterTable Database Updated");
+                                        Log.d("Database", "ServiceParameterTable delete GSC_No:" + applicant_Id);
 
-                switch (service_Code) {
-                    case "6":
-                    case "9":
-                    case "11":
-                    case "34":
-                    case "37":
-                    case "43": {
-                        Log.d("Service:", "" + service_Code);
-                        if(Objects.equals(eng_certi, "E")) {
-                            Log.d("Application", "English");
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters.class);
-                        }else {
-                            Log.d("Application", "Kannada");
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
+                                    } else {
+                                        cursor.close();
+                                    }
+                                    Insert_ServiceParameterTbl();
+                                } else {
+                                    tvMobile.setError(getString(R.string.inavlid_mobile_nnum));
+                                }
+                            } else {
+                                tvMotherName.setError(getString(R.string.enter_mother_name));
+                            }
+                        } else {
+                            tvFatherName.setError(getString(R.string.enter_father_husband_name));
                         }
-                        i.putExtra("districtCode", district);
-                        i.putExtra("taluk", taluk);
-                        i.putExtra("applicant_Id", applicant_Id);
-                        i.putExtra("VA_Name", VA_Name);
-                        i.putExtra("hobli", hobli);
-                        i.putExtra("va_Circle_Code", va_Circle_Code);
-                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                        i.putExtra("district_Code", district_Code);
-                        i.putExtra("taluk_Code", taluk_Code);
-                        i.putExtra("hobli_Code", hobli_Code);
-                        i.putExtra("rationCardNo", rationCardNo);
-                        i.putExtra("aadharNo", aadharNo);
-                        i.putExtra("mobileNo", mobileNo);
-                        i.putExtra("address1", address1);
-                        i.putExtra("item_position", item_position);
-                        i.putExtra("strSearchServiceName", strSearchServiceName);
-                        i.putExtra("strSearchVillageName", strSearchVillageName);
-                        i.putExtra("serviceCode", service_Code);
-                        i.putExtra("villageCode", village_Code);
-                        i.putExtra("eng_certi", eng_certi);
-                        i.putExtra("option_Flag", option_Flag);
-                        i.putExtra("town_Name", town_Name);
-                        i.putExtra("town_code", town_code);
-                        i.putExtra("ward_Name", ward_Name);
-                        i.putExtra("ward_code", ward_code);
-                        startActivity(i);
-                        finish();
-                        break;
+                    } else {
+                        autoSearchFatTitle.setError(getString(R.string.select));
                     }
-                    case "7":
-                    case "8":
-                    case "42": {
-                        Log.d("Service:", "" + service_Code);
-                        if(Objects.equals(eng_certi, "E")) {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters.class);
-                        }
-                        else {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
-                        }
-                        i.putExtra("districtCode", district);
-                        i.putExtra("taluk", taluk);
-                        i.putExtra("applicant_Id", applicant_Id);
-                        i.putExtra("VA_Name", VA_Name);
-                        i.putExtra("hobli", hobli);
-                        i.putExtra("va_Circle_Code", va_Circle_Code);
-                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                        i.putExtra("district_Code", district_Code);
-                        i.putExtra("taluk_Code", taluk_Code);
-                        i.putExtra("hobli_Code", hobli_Code);
-                        i.putExtra("rationCardNo", rationCardNo);
-                        i.putExtra("aadharNo", aadharNo);
-                        i.putExtra("mobileNo", mobileNo);
-                        i.putExtra("address1", address1);
-                        i.putExtra("item_position", item_position);
-                        i.putExtra("strSearchServiceName", strSearchServiceName);
-                        i.putExtra("strSearchVillageName", strSearchVillageName);
-                        i.putExtra("serviceCode", service_Code);
-                        i.putExtra("villageCode", village_Code);
-                        i.putExtra("eng_certi", eng_certi);
-                        i.putExtra("option_Flag", option_Flag);
-                        i.putExtra("town_Name", town_Name);
-                        i.putExtra("town_code", town_code);
-                        i.putExtra("ward_Name", ward_Name);
-                        i.putExtra("ward_code", ward_code);
-                        startActivity(i);
-                        finish();
-                        break;
-                    }
-                    case "10": {
-                        Log.d("Service:", "" + service_Code);
-                        if(Objects.equals(eng_certi, "E")) {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters.class);
-                        }else {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
-                        }
-                        i.putExtra("districtCode", district);
-                        i.putExtra("taluk", taluk);
-                        i.putExtra("applicant_Id", applicant_Id);
-                        i.putExtra("VA_Name", VA_Name);
-                        i.putExtra("hobli", hobli);
-                        i.putExtra("va_Circle_Code", va_Circle_Code);
-                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                        i.putExtra("district_Code", district_Code);
-                        i.putExtra("taluk_Code", taluk_Code);
-                        i.putExtra("hobli_Code", hobli_Code);
-                        i.putExtra("rationCardNo", rationCardNo);
-                        i.putExtra("aadharNo", aadharNo);
-                        i.putExtra("mobileNo", mobileNo);
-                        i.putExtra("address1", address1);
-                        i.putExtra("item_position", item_position);
-                        i.putExtra("strSearchServiceName", strSearchServiceName);
-                        i.putExtra("strSearchVillageName", strSearchVillageName);
-                        i.putExtra("serviceCode", service_Code);
-                        i.putExtra("villageCode", village_Code);
-                        i.putExtra("eng_certi", eng_certi);
-                        i.putExtra("option_Flag", option_Flag);
-                        i.putExtra("town_Name", town_Name);
-                        i.putExtra("town_code", town_code);
-                        i.putExtra("ward_Name", ward_Name);
-                        i.putExtra("ward_code", ward_code);
-                        startActivity(i);
-                        finish();
-                        break;
-                    }
-                    default:
-                        Toast.makeText(getApplicationContext(), getString(R.string.service_not_availabel), Toast.LENGTH_SHORT).show();
-                        break;
+                } else {
+                    autoSearchBinCom.setError(getString(R.string.select));
                 }
             } else {
-                cursor.close();
-                set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
-                set_and_get_service_parameter.setDistrict_Code(district_Code);
-                set_and_get_service_parameter.setTaluk_Code(taluk_Code);
-                set_and_get_service_parameter.setHobli_Code(hobli_Code);
-                set_and_get_service_parameter.setVa_Circle_Code(va_Circle_Code);
-                set_and_get_service_parameter.setVillage_Code(village_Code);
-                set_and_get_service_parameter.setTown_Code(town_code);
-                set_and_get_service_parameter.setWard_Code(ward_code);
-                set_and_get_service_parameter.setService_Code(String.valueOf(service_Code));
-                set_and_get_service_parameter.setGSC_No(applicant_Id);
-                set_and_get_service_parameter.setApplicant_Name(name);
-                set_and_get_service_parameter.setFather_Name(fatherName);
-                set_and_get_service_parameter.setMother_Name(motherName);
-                set_and_get_service_parameter.setMobile_No(mobileNo);
-                set_and_get_service_parameter.setRationCard_No(rationCardNo);
-                set_and_get_service_parameter.setAddress1(address1);
-                set_and_get_service_parameter.setAddress2(address2);
-                set_and_get_service_parameter.setAddress3(address3);
-                set_and_get_service_parameter.setEng_Certify(eng_certi);
-                set_and_get_service_parameter.setST_applicant_photo(appImage);
-                set_and_get_service_parameter.setPinCode(pinCode);
-                set_and_get_service_parameter.setReport_No(report_No);
-
-
-                database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                        + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_applicant_name, ST_father_name, ST_mother_name, ST_Upd_mobile_no," +
-                        "ST_Upd_ID_NUMBER, ST_applicant_caddress1, ST_applicant_caddress2,ST_applicant_caddress3, ST_Eng_Certificate, ST_applicant_photo, UID, AadhaarPhoto, ST_PinCode, Report_No, VA_Accepts_Applicant_information)" +
-                        " values ("
-                        + set_and_get_service_parameter.getDistrict_Code() + ","
-                        + set_and_get_service_parameter.getTaluk_Code() + ","
-                        + set_and_get_service_parameter.getHobli_Code() + ","
-                        + set_and_get_service_parameter.getVa_Circle_Code() + ","
-                        + set_and_get_service_parameter.getVillage_Code() + ","
-                        + set_and_get_service_parameter.getTown_Code() + ","
-                        + set_and_get_service_parameter.getWard_Code() + ","
-                        + set_and_get_service_parameter.getService_Code() + ","
-                        + set_and_get_service_parameter.getGSC_No() + ",'"
-                        + set_and_get_service_parameter.getApplicant_Name() + "','"
-                        + set_and_get_service_parameter.getFather_Name() + "','"
-                        + set_and_get_service_parameter.getMother_Name() + "','"
-                        + set_and_get_service_parameter.getMobile_No() + "','"
-                        + set_and_get_service_parameter.getRationCard_No() + "','"
-                        + set_and_get_service_parameter.getAddress1() + "','"
-                        + set_and_get_service_parameter.getAddress2() + "','"
-                        + set_and_get_service_parameter.getAddress3() + "','"
-                        + set_and_get_service_parameter.getEng_Certify()+"','"
-                        + set_and_get_service_parameter.getST_applicant_photo()+"',"
-                        + set_and_get_service_parameter.getPinCode() + ",'"
-                        + set_and_get_service_parameter.getReport_No() +"','NO')");
-
-                Log.d("Database", "ServiceParameterTable Database Inserted");
-
-                switch (service_Code) {
-                    case "6":
-                    case "9":
-                    case "11":
-                    case "34":
-                    case "37":
-                    case "43": {
-                        Log.d("Service:", "6 or 9");
-                        if(Objects.equals(eng_certi, "E")) {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters.class);
-                        } else {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
-                        }
-                        i.putExtra("districtCode", district);
-                        i.putExtra("taluk", taluk);
-                        i.putExtra("applicant_Id", applicant_Id);
-                        i.putExtra("VA_Name", VA_Name);
-                        i.putExtra("hobli", hobli);
-                        i.putExtra("va_Circle_Code", va_Circle_Code);
-                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                        i.putExtra("district_Code", district_Code);
-                        i.putExtra("taluk_Code", taluk_Code);
-                        i.putExtra("hobli_Code", hobli_Code);
-                        i.putExtra("rationCardNo", rationCardNo);
-                        i.putExtra("aadharNo", aadharNo);
-                        i.putExtra("mobileNo", mobileNo);
-                        i.putExtra("address1", address1);
-                        i.putExtra("item_position", item_position);
-                        i.putExtra("strSearchServiceName", strSearchServiceName);
-                        i.putExtra("strSearchVillageName", strSearchVillageName);
-                        i.putExtra("serviceCode", service_Code);
-                        i.putExtra("villageCode", village_Code);
-                        i.putExtra("eng_certi", eng_certi);
-                        i.putExtra("option_Flag", option_Flag);
-                        i.putExtra("town_Name", town_Name);
-                        i.putExtra("town_code", town_code);
-                        i.putExtra("ward_Name", ward_Name);
-                        i.putExtra("ward_code", ward_code);
-                        startActivity(i);
-                        finish();
-                        break;
-                    }
-                    case "7":
-                    case "8":
-                    case "42":{
-                        Log.d("Service:", "8");
-                        if(Objects.equals(eng_certi, "E")) {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters.class);
-                        }else {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
-                        }
-                        i.putExtra("districtCode", district);
-                        i.putExtra("taluk", taluk);
-                        i.putExtra("applicant_Id", applicant_Id);
-                        i.putExtra("VA_Name", VA_Name);
-                        i.putExtra("hobli", hobli);
-                        i.putExtra("va_Circle_Code", va_Circle_Code);
-                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                        i.putExtra("district_Code", district_Code);
-                        i.putExtra("taluk_Code", taluk_Code);
-                        i.putExtra("hobli_Code", hobli_Code);
-                        i.putExtra("rationCardNo", rationCardNo);
-                        i.putExtra("aadharNo", aadharNo);
-                        i.putExtra("mobileNo", mobileNo);
-                        i.putExtra("address1", address1);
-                        i.putExtra("item_position", item_position);
-                        i.putExtra("strSearchServiceName", strSearchServiceName);
-                        i.putExtra("strSearchVillageName", strSearchVillageName);
-                        i.putExtra("serviceCode", service_Code);
-                        i.putExtra("villageCode", village_Code);
-                        i.putExtra("eng_certi", eng_certi);
-                        i.putExtra("option_Flag", option_Flag);
-                        i.putExtra("town_Name", town_Name);
-                        i.putExtra("town_code", town_code);
-                        i.putExtra("ward_Name", ward_Name);
-                        i.putExtra("ward_code", ward_code);
-                        startActivity(i);
-                        finish();
-                        break;
-                    }
-                    case "10": {
-                        Log.d("Service:", "10");
-                        if(Objects.equals(eng_certi, "E")) {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters.class);
-                        }else {
-                            i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
-                        }
-                        i.putExtra("districtCode", district);
-                        i.putExtra("taluk", taluk);
-                        i.putExtra("applicant_Id", applicant_Id);
-                        i.putExtra("VA_Name", VA_Name);
-                        i.putExtra("hobli", hobli);
-                        i.putExtra("va_Circle_Code", va_Circle_Code);
-                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                        i.putExtra("district_Code", district_Code);
-                        i.putExtra("taluk_Code", taluk_Code);
-                        i.putExtra("hobli_Code", hobli_Code);
-                        i.putExtra("rationCardNo", rationCardNo);
-                        i.putExtra("aadharNo", aadharNo);
-                        i.putExtra("mobileNo", mobileNo);
-                        i.putExtra("address1", address1);
-                        i.putExtra("item_position", item_position);
-                        i.putExtra("strSearchServiceName", strSearchServiceName);
-                        i.putExtra("strSearchVillageName", strSearchVillageName);
-                        i.putExtra("serviceCode", service_Code);
-                        i.putExtra("villageCode", village_Code);
-                        i.putExtra("eng_certi", eng_certi);
-                        i.putExtra("option_Flag", option_Flag);
-                        i.putExtra("town_Name", town_Name);
-                        i.putExtra("town_code", town_code);
-                        i.putExtra("ward_Name", ward_Name);
-                        i.putExtra("ward_code", ward_code);
-                        startActivity(i);
-                        finish();
-                        break;
-                    }
-                    default:
-                        Toast.makeText(getApplicationContext(), getString(R.string.service_not_availabel), Toast.LENGTH_SHORT).show();
-                        break;
-                }
+                autoSearchAppTitle.setError(getString(R.string.select));
             }
         }
         else {
@@ -1145,6 +967,212 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         }
     }
 
+    public void Insert_ServiceParameterTbl(){
+        Intent i;
+        btnNext.setText(getString(R.string.loading_C));
+
+        set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
+        set_and_get_service_parameter.setGSCNo1(applicant_Id);
+        set_and_get_service_parameter.setLoginID(uName_get);
+        set_and_get_service_parameter.setDesignationCode(DesiCode);
+        set_and_get_service_parameter.setService_Code(Integer.parseInt(service_Code));
+        set_and_get_service_parameter.setAppTitle(appTitle_Code);
+        set_and_get_service_parameter.setBinCom(binCom_Code);
+        set_and_get_service_parameter.setFatTitle(fatTitle_Code);
+        set_and_get_service_parameter.setFatherName(fatherName);
+        set_and_get_service_parameter.setMotherName(motherName);
+        set_and_get_service_parameter.setUpd_MobileNumber(mobileNo);
+        set_and_get_service_parameter.setReport_No(report_No);
+        set_and_get_service_parameter.setDifferFromAppinformation("Y");
+        set_and_get_service_parameter.setPinCode(0);
+        set_and_get_service_parameter.setApplicant_Category(0);
+        set_and_get_service_parameter.setApplicant_Caste(0);
+        set_and_get_service_parameter.setCasteSl(0);
+        set_and_get_service_parameter.setIncome(0);
+        set_and_get_service_parameter.setTotal_No_Years_10(0);
+        set_and_get_service_parameter.setNO_Months_10(0);
+        set_and_get_service_parameter.setApp_Father_Category_8(0);
+        set_and_get_service_parameter.setAPP_Father_Caste_8(0);
+        set_and_get_service_parameter.setApp_Mother_Category_8(0);
+        set_and_get_service_parameter.setAPP_Mother_Caste_8(0);
+        set_and_get_service_parameter.setReason_for_Creamy_Layer_6(0);
+        set_and_get_service_parameter.setDataUpdateFlag(0);
+
+        database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "("
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo1+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.LoginID+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.DesignationCode+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.AppTitle+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.FatTitle+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.Upd_MobileNumber +","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Category+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Caste+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.CasteSl+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.Income+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.Total_No_Years_10+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.NO_Months_10+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Father_Category_8+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Mother_Category_8+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Father_Caste_8+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Mother_Caste_8+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Creamy_Layer_6+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag
+                +") values ('"
+                + set_and_get_service_parameter.getGSCNo1() + "','"
+                + set_and_get_service_parameter.getLoginID() + "',"
+                + set_and_get_service_parameter.getDesignationCode() + ","
+                + set_and_get_service_parameter.getService_Code() + ","
+                + set_and_get_service_parameter.getAppTitle() + ","
+                + set_and_get_service_parameter.getBinCom() + ","
+                + set_and_get_service_parameter.getFatTitle() + ",'"
+                + set_and_get_service_parameter.getFatherName() + "','"
+                + set_and_get_service_parameter.getMotherName() + "','"
+                + set_and_get_service_parameter.getUpd_MobileNumber() + "','"
+                + set_and_get_service_parameter.getReport_No() + "','"
+                + set_and_get_service_parameter.getDifferFromAppinformation() + "',"
+                + set_and_get_service_parameter.getPinCode() + ","
+                + set_and_get_service_parameter.getApplicant_Category() + ","
+                + set_and_get_service_parameter.getApplicant_Caste() + ","
+                + set_and_get_service_parameter.getCasteSl() + ","
+                + set_and_get_service_parameter.getIncome() + ","
+                + set_and_get_service_parameter.getTotal_No_Years_10() + ","
+                + set_and_get_service_parameter.getNO_Months_10() + ","
+                + set_and_get_service_parameter.getApp_Father_Category_8() + ","
+                + set_and_get_service_parameter.getApp_Mother_Category_8() + ","
+                + set_and_get_service_parameter.getAPP_Father_Caste_8() + ","
+                + set_and_get_service_parameter.getAPP_Mother_Caste_8() + ","
+                + set_and_get_service_parameter.getReason_for_Creamy_Layer_6() + ","
+                + set_and_get_service_parameter.getDataUpdateFlag() + ")");
+
+        Log.d("Database", "ServiceParameterTable Database Inserted");
+
+        switch (service_Code) {
+            case "6":
+            case "9":
+            case "11":
+            case "34":
+            case "37":
+            case "43": {
+                Log.d("Service:", "6 or 9");
+                if(Objects.equals(eng_certi, "E")) {
+                    i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters.class);
+                } else {
+                    i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
+                }
+                i.putExtra("districtCode", district);
+                i.putExtra("taluk", taluk);
+                i.putExtra("applicant_Id", applicant_Id);
+                i.putExtra("VA_Name", VA_Name);
+                i.putExtra("hobli", hobli);
+                i.putExtra("va_Circle_Code", va_Circle_Code);
+                i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                i.putExtra("district_Code", district_Code);
+                i.putExtra("taluk_Code", taluk_Code);
+                i.putExtra("hobli_Code", hobli_Code);
+                i.putExtra("rationCardNo", rationCardNo);
+                i.putExtra("aadharNo", aadharNo);
+                i.putExtra("mobileNo", mobileNo);
+                i.putExtra("address1", address1);
+                i.putExtra("item_position", item_position);
+                i.putExtra("strSearchServiceName", strSearchServiceName);
+                i.putExtra("strSearchVillageName", strSearchVillageName);
+                i.putExtra("serviceCode", service_Code);
+                i.putExtra("villageCode", village_Code);
+                i.putExtra("eng_certi", eng_certi);
+                i.putExtra("option_Flag", option_Flag);
+                i.putExtra("town_Name", town_Name);
+                i.putExtra("town_code", town_code);
+                i.putExtra("ward_Name", ward_Name);
+                i.putExtra("ward_code", ward_code);
+                startActivity(i);
+                finish();
+                break;
+            }
+            case "7":
+            case "8":
+            case "42":{
+                Log.d("Service:", "8");
+                if(Objects.equals(eng_certi, "E")) {
+                    i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters.class);
+                }else {
+                    i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
+                }
+                i.putExtra("districtCode", district);
+                i.putExtra("taluk", taluk);
+                i.putExtra("applicant_Id", applicant_Id);
+                i.putExtra("VA_Name", VA_Name);
+                i.putExtra("hobli", hobli);
+                i.putExtra("va_Circle_Code", va_Circle_Code);
+                i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                i.putExtra("district_Code", district_Code);
+                i.putExtra("taluk_Code", taluk_Code);
+                i.putExtra("hobli_Code", hobli_Code);
+                i.putExtra("rationCardNo", rationCardNo);
+                i.putExtra("aadharNo", aadharNo);
+                i.putExtra("mobileNo", mobileNo);
+                i.putExtra("address1", address1);
+                i.putExtra("item_position", item_position);
+                i.putExtra("strSearchServiceName", strSearchServiceName);
+                i.putExtra("strSearchVillageName", strSearchVillageName);
+                i.putExtra("serviceCode", service_Code);
+                i.putExtra("villageCode", village_Code);
+                i.putExtra("eng_certi", eng_certi);
+                i.putExtra("option_Flag", option_Flag);
+                i.putExtra("town_Name", town_Name);
+                i.putExtra("town_code", town_code);
+                i.putExtra("ward_Name", ward_Name);
+                i.putExtra("ward_code", ward_code);
+                startActivity(i);
+                finish();
+                break;
+            }
+            case "10": {
+                Log.d("Service:", "10");
+                if(Objects.equals(eng_certi, "E")) {
+                    i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters.class);
+                }else {
+                    i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
+                }
+                i.putExtra("districtCode", district);
+                i.putExtra("taluk", taluk);
+                i.putExtra("applicant_Id", applicant_Id);
+                i.putExtra("VA_Name", VA_Name);
+                i.putExtra("hobli", hobli);
+                i.putExtra("va_Circle_Code", va_Circle_Code);
+                i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                i.putExtra("district_Code", district_Code);
+                i.putExtra("taluk_Code", taluk_Code);
+                i.putExtra("hobli_Code", hobli_Code);
+                i.putExtra("rationCardNo", rationCardNo);
+                i.putExtra("aadharNo", aadharNo);
+                i.putExtra("mobileNo", mobileNo);
+                i.putExtra("address1", address1);
+                i.putExtra("item_position", item_position);
+                i.putExtra("strSearchServiceName", strSearchServiceName);
+                i.putExtra("strSearchVillageName", strSearchVillageName);
+                i.putExtra("serviceCode", service_Code);
+                i.putExtra("villageCode", village_Code);
+                i.putExtra("eng_certi", eng_certi);
+                i.putExtra("option_Flag", option_Flag);
+                i.putExtra("town_Name", town_Name);
+                i.putExtra("town_code", town_code);
+                i.putExtra("ward_Name", ward_Name);
+                i.putExtra("ward_code", ward_code);
+                startActivity(i);
+                finish();
+                break;
+            }
+            default:
+                Toast.makeText(getApplicationContext(), getString(R.string.service_not_availabel), Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 
     public static String encrypt(String value) throws Exception
     {

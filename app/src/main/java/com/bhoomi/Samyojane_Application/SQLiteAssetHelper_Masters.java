@@ -20,62 +20,62 @@ import java.util.List;
 
 public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
 
-    private static final int DATABASE_VERSION = 1;
-    private static final String DB_PATH_SUFFIX = "/databases/";
+    static final int DATABASE_VERSION = 1;
+    static final String DB_PATH_SUFFIX = "/databases/";
 
-    private static final String DATABASE_Name_NK_Master = "NK_Master.db";
+    static final String DATABASE_Name_NK_Master = "NK_Master.db";
 
-    private static final String DATABASE_Name_Title_MASTER = "Title_MASTER.db";
+    static final String DATABASE_Name_Title_MASTER = "Title_MASTER.db";
 
-    private static String Table_District_Master = "DISTRICT_MASTER";
-    private static String DM_district_code = "DM_district_code";
-    private static String DM_district_kname = "DM_district_kname";
-    private static String DM_district_ename = "DM_district_ename";
+    static String Table_District_Master = "DISTRICT_MASTER";
+    static String DM_district_code = "DM_district_code";
+    static String DM_district_kname = "DM_district_kname";
+    static String DM_district_ename = "DM_district_ename";
 
-    private static String Table_Taluk_Master = "TALUK_MASTER";
-    private static String TM_district_code = "TM_district_code";
-    private static String TM_taluk_code = "TM_taluk_code";
-    private static String TM_taluk_kname = "TM_taluk_kname";
-    private static String TM_taluk_ename = "TM_taluk_ename";
+    static String Table_Taluk_Master = "TALUK_MASTER";
+    static String TM_district_code = "TM_district_code";
+    static String TM_taluk_code = "TM_taluk_code";
+    static String TM_taluk_kname = "TM_taluk_kname";
+    static String TM_taluk_ename = "TM_taluk_ename";
 
-    private static String Table_Hobli_Master = "HOBLI_MASTER";
-    private static String HBM_district_code = "HBM_district_code";
-    private static String HBM_taluk_code = "HBM_taluk_code";
-    private static String HBM_hobli_code = "HBM_hobli_code";
-    private static String HBM_hobli_kname = "HBM_hobli_kname";
-    private static String HBM_hobli_ename = "HBM_hobli_ename";
+    static String Table_Hobli_Master = "HOBLI_MASTER";
+    static String HBM_district_code = "HBM_district_code";
+    static String HBM_taluk_code = "HBM_taluk_code";
+    static String HBM_hobli_code = "HBM_hobli_code";
+    static String HBM_hobli_kname = "HBM_hobli_kname";
+    static String HBM_hobli_ename = "HBM_hobli_ename";
 
-    private static String Table_BINCOM_MASTER = "BINCOM_MASTER";
-    private static String BM_bincom_code = "BM_bincom_code";
-    private static String BM_bincom_kdesc = "BM_bincom_kdesc";
-    private static String BM_bincom_edesc = "BM_bincom_edesc";
+    static String Table_BINCOM_MASTER = "BINCOM_MASTER";
+    static String BM_bincom_code = "BM_bincom_code";
+    static String BM_bincom_kdesc = "BM_bincom_kdesc";
+    static String BM_bincom_edesc = "BM_bincom_edesc";
 
-    private static String Table_RELATIONSHIP_MASTER = "RELATIONSHIP_MASTER";
-    private static String RLM_relationship_code = "RLM_relationship_code";
-    private static String RLM_relationship_kdesc = "RLM_relationship_kdesc";
-    private static String RLM_relationship_edesc = "RLM_relationship_edesc";
+    static String Table_RELATIONSHIP_MASTER = "RELATIONSHIP_MASTER";
+    static String RLM_relationship_code = "RLM_relationship_code";
+    static String RLM_relationship_kdesc = "RLM_relationship_kdesc";
+    static String RLM_relationship_edesc = "RLM_relationship_edesc";
 
-    private static String Table_GENDER_MASTER = "GENDER_MASTER";
-    private static String Gender_Code = "Gender_Code";
-    private static String Gender_KDesc = "Gender_KDesc";
-    private static String Gender_EDesc = "Gender_EDesc";
+    static String Table_GENDER_MASTER = "GENDER_MASTER";
+    static String Gender_Code = "Gender_Code";
+    static String Gender_KDesc = "Gender_KDesc";
+    static String Gender_EDesc = "Gender_EDesc";
 
-    private static String Table_RELIGION_MASTER = "RELIGION_MASTER";
-    private static String RGM_religion_code = "RGM_religion_code";
-    private static String RGM_religion_kdesc = "RGM_religion_kdesc";
-    private static String RGM_religion_edesc = "RGM_religion_edesc";
-    private static String RGM_Minority = "RGM_Minority";
+    static String Table_RELIGION_MASTER = "RELIGION_MASTER";
+    static String RGM_religion_code = "RGM_religion_code";
+    static String RGM_religion_kdesc = "RGM_religion_kdesc";
+    static String RGM_religion_edesc = "RGM_religion_edesc";
+    static String RGM_Minority = "RGM_Minority";
 
-    private static String Table_Salutation_Master = "Salutation_Master";
-    private static String SM_Salutation_Code = "SM_Salutation_Code";
-    private static String SM_Salutation_ename = "SM_Salutation_ename";
-    private static String SM_Salutation_kname = "SM_Salutation_kname";
+    static String Table_Salutation_Master = "Salutation_Master";
+    static String SM_Salutation_Code = "SM_Salutation_Code";
+    static String SM_Salutation_ename = "SM_Salutation_ename";
+    static String SM_Salutation_kname = "SM_Salutation_kname";
 
     SQLiteDatabase database;
     Cursor cursor;
 
     @SuppressLint("StaticFieldLeak")
-    private static Context ctx;
+    static Context ctx;
 
     public SQLiteAssetHelper_Masters(Context context){
         super(context, DATABASE_Name_NK_Master, null, DATABASE_VERSION);
@@ -87,7 +87,7 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         ctx = context;
     }
 
-    private void CopyNK_MasterDataBaseFromAsset() throws IOException {
+    void CopyNK_MasterDataBaseFromAsset() throws IOException {
 
         InputStream myInput = ctx.getAssets().open(DATABASE_Name_NK_Master);
 
@@ -116,7 +116,7 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
 
     }
 
-    private void CopyTitle_MASTERDataBaseFromAsset() throws IOException {
+    void CopyTitle_MASTERDataBaseFromAsset() throws IOException {
 
         InputStream myInput = ctx.getAssets().open(DATABASE_Name_Title_MASTER);
 
@@ -145,11 +145,11 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
 
     }
 
-    private static String getNK_MASTERDatabasePath() {
+    static String getNK_MASTERDatabasePath() {
         return ctx.getApplicationInfo().dataDir + DB_PATH_SUFFIX + DATABASE_Name_NK_Master;
     }
 
-    private static String getTitle_MASTERDatabasePath() {
+    static String getTitle_MASTERDatabasePath() {
         return ctx.getApplicationInfo().dataDir + DB_PATH_SUFFIX + DATABASE_Name_Title_MASTER;
     }
 
@@ -356,24 +356,47 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    String GetEng_BinCom_By_Code(int Code){
+    String Get_BinCom_By_Code(int Code, String bincom_desc_name){
         String objects=null;
-        Log.d("BinCom_Eng", "GetEng_BinCom_By_Code enter");
+        Log.d("BinCom_Name", "GetEng_BinCom_By_Code enter");
         try{
             database = this.getReadableDatabase();
             cursor = database.rawQuery("select * from "+Table_BINCOM_MASTER+" where "+BM_bincom_code+"="+Code, null);
             if (cursor.getCount()>0){
                 if(cursor.moveToNext()) {
-                    objects = cursor.getString(cursor.getColumnIndexOrThrow(BM_bincom_edesc));
+                    objects = cursor.getString(cursor.getColumnIndexOrThrow(bincom_desc_name));
                 }
             }
             else {
-                Log.d("BinCom_Eng", "cursor count not greater than 0");
+                Log.d("BinCom_Name", "cursor count not greater than 0");
             }
-            Log.d("BinCom_Eng", ""+objects);
+            Log.d("BinCom_Name", ""+objects);
             cursor.close();
             database.close();
 
+        }catch(Exception e){
+            Log.d("Catch", String.valueOf(e));
+        }
+        return objects;
+    }
+
+    int Get_BinCom_By_Name(String str_val, String bincom_desc_name){
+        int objects=0;
+        Log.d("BinCom_Code", "Get_BinCom_By_Name enter");
+        try{
+            database = this.getReadableDatabase();
+            cursor = database.rawQuery("select * from "+Table_BINCOM_MASTER+" where "+bincom_desc_name+"='"+str_val+"'", null);
+            if (cursor.getCount()>0){
+                if(cursor.moveToNext()) {
+                    objects = cursor.getInt(cursor.getColumnIndexOrThrow(BM_bincom_code));
+                }
+            }
+            else {
+                Log.d("BinCom_Code", "cursor count not greater than 0");
+            }
+            Log.d("BinCom_Code", ""+objects);
+            cursor.close();
+            database.close();
 
         }catch(Exception e){
             Log.d("Catch", String.valueOf(e));
@@ -545,18 +568,66 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    public List<AutoCompleteTextBox_Object> Get_Salutation(){
+    String Get_Title_By_Code(int Code, String title_desc_name){
+        String objects=null;
+        Log.d("title_desc_name", "Get_Title_By_Code enter");
+        try{
+            database = this.getReadableDatabase();
+            cursor = database.rawQuery("select * from "+Table_Salutation_Master+" where "+SM_Salutation_Code+"="+Code, null);
+            if (cursor.getCount()>0){
+                if(cursor.moveToNext()) {
+                    objects = cursor.getString(cursor.getColumnIndexOrThrow(title_desc_name));
+                }
+            }
+            else {
+                Log.d("title_desc_name", "cursor count not greater than 0");
+            }
+            Log.d("title_desc_name", ""+objects);
+            cursor.close();
+            database.close();
+
+        }catch(Exception e){
+            Log.d("Catch", String.valueOf(e));
+        }
+        return objects;
+    }
+
+    int Get_Title_By_NAME(String str_val, String title_desc_name){
+        int objects=0;
+        Log.d("title_desc_Code", "Get_Title_By_NAME enter");
+        try{
+            database = this.getReadableDatabase();
+            cursor = database.rawQuery("select * from "+Table_Salutation_Master+" where "+title_desc_name+"='"+str_val+"'", null);
+            if (cursor.getCount()>0){
+                if(cursor.moveToNext()) {
+                    objects = cursor.getInt(cursor.getColumnIndexOrThrow(SM_Salutation_Code));
+                }
+            }
+            else {
+                Log.d("title_desc_Code", "cursor count not greater than 0");
+            }
+            Log.d("title_desc_Code", ""+objects);
+            cursor.close();
+            database.close();
+
+        }catch(Exception e){
+            Log.d("Catch", String.valueOf(e));
+        }
+        return objects;
+    }
+
+    public List<AutoCompleteTextBox_Object> Get_Salutation_title(String title_desc_name){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("Salutation_Name", "Get_Salutation enter");
         try{
             database = this.getReadableDatabase();
-            cursor = database.rawQuery("select * from "+Table_Salutation_Master+" order by "+SM_Salutation_kname, null);
+            cursor = database.rawQuery("select * from "+Table_Salutation_Master+" order by "+title_desc_name, null);
             if (cursor.getCount()>0){
                 objects.add(new AutoCompleteTextBox_Object("0", "-- ಆಯ್ಕೆ --"));
                 if(cursor.moveToNext()) {
                     do {
                         objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndex(SM_Salutation_Code)),
-                                cursor.getString(cursor.getColumnIndex(SM_Salutation_kname))));
+                                cursor.getString(cursor.getColumnIndex(title_desc_name))));
                     } while (cursor.moveToNext());
                 }
             }

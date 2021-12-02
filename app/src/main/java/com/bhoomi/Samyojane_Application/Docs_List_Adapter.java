@@ -20,15 +20,15 @@ import java.util.ArrayList;
 
 public class Docs_List_Adapter extends BaseAdapter implements Filterable {
 
-    private Context context;
+    Context context;
     ArrayList<String> SlNo;
-    private ArrayList<String> App_ID;
-    private ArrayList<String> Docs_ID;
-    private ArrayList<String> Docs_Name;
-    private String document_Name;
-    private String document_ID, Applicant_Id;
+    ArrayList<String> App_ID;
+    ArrayList<Integer> Docs_ID;
+    ArrayList<String> Docs_Name;
+    String document_Name, Applicant_Id;
+    int document_ID;
 
-    Docs_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> app_ID, ArrayList<String> docs_ID, ArrayList<String> docs_Name){
+    Docs_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> app_ID, ArrayList<Integer> docs_ID, ArrayList<String> docs_Name){
         this.context=context;
         this.SlNo = slNo;
         this.App_ID = app_ID;
@@ -62,15 +62,17 @@ public class Docs_List_Adapter extends BaseAdapter implements Filterable {
             docs_viewHolder = (Docs_ViewHolder) convertView.getTag();
         }
 
+        String Docs_ID_str = Docs_ID.get(position).toString();
+
         docs_viewHolder.sl_No.setText(SlNo.get(position));
         docs_viewHolder.tvAppID.setText(App_ID.get(position));
-        docs_viewHolder.tvDocsID.setText(Docs_ID.get(position));
+        docs_viewHolder.tvDocsID.setText(Docs_ID_str);
         docs_viewHolder.tvDocsName.setText(Docs_Name.get(position));
 
         Button btnView = convertView.findViewById(R.id.btnView);
         btnView.setOnClickListener(v -> {
             Applicant_Id = docs_viewHolder.tvAppID.getText().toString();
-            document_ID = docs_viewHolder.tvDocsID.getText().toString();
+            document_ID = Integer.parseInt(docs_viewHolder.tvDocsID.getText().toString());
             document_Name = docs_viewHolder.tvDocsName.getText().toString();
 
             Intent i = new Intent(context, PDF_Viewer.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

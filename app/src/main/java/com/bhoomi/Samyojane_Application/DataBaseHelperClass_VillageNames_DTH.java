@@ -31,7 +31,7 @@ public class DataBaseHelperClass_VillageNames_DTH  extends SQLiteOpenHelper {
 
     private static final String DB_PATH_SUFFIX = "/databases/";
 
-    private static final String DATABASE_NAME_town_ward = "TOWN_WARD_MASTER.db";
+    private static final String DATABASE_NAME_town_ward = "TOWN_WARD_MASTER.sqlite";
 
     public static String Table_TOWN_MASTER = "TOWN_MASTER";
     public static String TWM_district_code = "TWM_district_code";

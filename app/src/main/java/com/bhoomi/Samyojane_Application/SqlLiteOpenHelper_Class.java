@@ -75,7 +75,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
     public static String Doc_Name_E = "DTM_document_edesc";
     public static String Doc_Name_K = "DTM_document_kdesc";
 
-    private static final String DATABASE_NAME_town_ward = "TOWN_WARD_MASTER.db";
+    private static final String DATABASE_NAME_town_ward = "TOWN_WARD_MASTER.sqlite";
 
     public static String Table_TOWN_MASTER = "TOWN_MASTER";
     public static String TWM_district_code = "TWM_district_code";

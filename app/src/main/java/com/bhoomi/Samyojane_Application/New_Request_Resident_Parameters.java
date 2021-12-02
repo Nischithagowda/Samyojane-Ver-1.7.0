@@ -70,12 +70,11 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
     LinearLayout lRejection;
     RadioGroup radiogroup1, radioGroup2, radioGroup3;
     RadioButton radioButton1, radioButton11;
-    RadioButton radioButton2, radioButton22;
+    RadioButton radioButton2;
     RadioButton radioButton3, radioButton33;
     String option1, option2, option3;
     int posPurpose, codePurpose, posRejectionReason, codeRejectionReason;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
-    Set_and_Get_Service_Parameter set_and_get_service_parameter;
     ProgressDialog dialog;
     String service_name, village_name;
     String year, month, strRemarks;
@@ -85,7 +84,7 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
     InputMethodManager imm;
     InputMethodSubtype ims;
 
-    private InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
@@ -146,7 +145,7 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
         return null;
     };
 
-    private InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
+    InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
         String l1 = "abcdefghijklmnopqrstuvwxyz";
         String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -598,21 +597,21 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
         String str;
 
         if(option1.equals(getString(R.string.no))){
-            option1="NO";
+            option1="N";
         }else if (option1.equals(getString(R.string.yes))){
-            option1 = "YES";
+            option1 = "Y";
         }
 
         if(option2.equals(getString(R.string.no))){
-            option2="NO";
+            option2="N";
         }else if (option2.equals(getString(R.string.yes))){
-            option2 = "YES";
+            option2 = "Y";
         }
 
         if(option3.equals(getString(R.string.no))){
-            option3="NO";
+            option3="N";
         }else if (option3.equals(getString(R.string.yes))){
-            option3 = "YES";
+            option3 = "Y";
         }
 
         strRemarks = tvRemarks.getText().toString();
@@ -633,21 +632,21 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
 
                 database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='"+"NO"+"',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromAppinformation +"='Y',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Total_No_Years_10 + "='"+strYear+"',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.NO_Months_10 + "='"+strMonth+"',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Reside_At_Stated_Address_10 + "='" + option1 + "',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Place_Match_With_RationCard_10 + "='" + option2 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Pur_for_Cert_Code_10 + "=" + codePurpose + ","
+//                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Pur_for_Cert_Code_10 + "=" + codePurpose + ","
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + "=0,"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.vLat + "=" + latitude + ","
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.vLong + "=" + longitude + ","
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Photo + "='"+store+"',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Can_Certificate_Given + "='" + option3 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Rejection + "=" + codeRejectionReason + ","
+//                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Rejection + "=" + codeRejectionReason + ","
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks + "='" + strRemarks + "',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1"
-                        + " where " +DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'");
+                        + " where " +DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo1 + "='" + applicant_Id + "'");
 
                 Log.d("Database", "ServiceParameters Database Updated");
                 Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
@@ -674,92 +673,15 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
                 i.putExtra("ward_code", ward_code);
                 startActivity(i);
                 finish();
+                dialog.dismiss();
                 truncateDatabase_Docs();
                 str = "Success";
             } else {
                 cursor.close();
-                set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
-                set_and_get_service_parameter.setDistrict_Code(district_Code);
-                set_and_get_service_parameter.setTaluk_Code(taluk_Code);
-                set_and_get_service_parameter.setHobli_Code(hobli_Code);
-                set_and_get_service_parameter.setVa_Circle_Code(va_Circle_Code);
-                set_and_get_service_parameter.setVillage_Code(String.valueOf(villageCode));
-                set_and_get_service_parameter.setTown_Code(town_code);
-                set_and_get_service_parameter.setWard_Code(ward_code);
-                set_and_get_service_parameter.setService_Code(String.valueOf(serviceCode));
-                set_and_get_service_parameter.setGSC_No(applicant_Id);
-                set_and_get_service_parameter.setEng_Certify(eng_certi);
-                set_and_get_service_parameter.setTotal_No_Year_10(strYear);
-                set_and_get_service_parameter.setNO_Months_10(strMonth);
-                set_and_get_service_parameter.setRbStated_Address_10(option1);
-                set_and_get_service_parameter.setRbAddress_RationCard_10(option2);
-                set_and_get_service_parameter.setSpPurpose_10(String.valueOf(codePurpose));
-                set_and_get_service_parameter.setPhoto(store);
-                set_and_get_service_parameter.setRbIssue_Cert(option3);
-                set_and_get_service_parameter.setSpRejectionReason(String.valueOf(codeRejectionReason));
-                set_and_get_service_parameter.setRemarks_8(strRemarks);
-                set_and_get_service_parameter.setvLat(String.valueOf(latitude));
-                set_and_get_service_parameter.setvLong(String.valueOf(longitude));
-
-                database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
-
-                database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                        + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_Eng_Certificate," +
-                        " VA_Accepts_Applicant_information, Total_No_Years_10, NO_Months_10, Reside_At_Stated_Address_10, Place_Match_With_RationCard_10, Pur_for_Cert_Code_10,Annual_Income,Remarks"+
-                        " Photo, vLat, vLong, Can_Certificate_Given, Reason_for_Rejection, DataUpdateFlag)" +
-                        " values ("
-                        + set_and_get_service_parameter.getDistrict_Code() + ","
-                        + set_and_get_service_parameter.getTaluk_Code() + ","
-                        + set_and_get_service_parameter.getHobli_Code() + ","
-                        + set_and_get_service_parameter.getVa_Circle_Code() + ","
-                        + villageCode + ","
-                        + set_and_get_service_parameter.getTown_Code() + ","
-                        + set_and_get_service_parameter.getWard_Code() + ","
-                        + serviceCode +","
-                        + set_and_get_service_parameter.getGSC_No() + ",'"
-                        + set_and_get_service_parameter.getEng_Certify() + "','"
-                        + "NO" + "','"
-                        + set_and_get_service_parameter.getTotal_No_Year_10() + "','"
-                        + set_and_get_service_parameter.getNO_Months_10() + "','"
-                        + set_and_get_service_parameter.getRbStated_Address_10() + "','"
-                        + set_and_get_service_parameter.getRbAddress_RationCard_10() + "',"
-                        + set_and_get_service_parameter.getSpPurpose_10() + ",0,'"
-                        + set_and_get_service_parameter.getRemarks_8() + "','"
-                        + set_and_get_service_parameter.getPhoto() + "',"
-                        + set_and_get_service_parameter.getvLat() + ","
-                        + set_and_get_service_parameter.getvLong() + ",'"
-                        + set_and_get_service_parameter.getRbIssue_Cert() + "',"
-                        + set_and_get_service_parameter.getSpRejectionReason()
-                        + ", 1)");
-
-                Toast.makeText(getApplicationContext(), getString(R.string.saved_successfully), Toast.LENGTH_SHORT).show();
-
-                Intent i = new Intent(New_Request_Resident_Parameters.this, New_Request_FirstScreen.class);
-                i.putExtra("applicant_Id", applicant_Id);
-                i.putExtra("district_Code", district_Code);
-                i.putExtra("taluk_Code", taluk_Code);
-                i.putExtra("hobli_Code", hobli_Code);
-                i.putExtra("districtCode", district);
-                i.putExtra("taluk", taluk);
-                i.putExtra("VA_Name", VA_Name);
-                i.putExtra("hobli", hobli);
-                i.putExtra("va_Circle_Code", va_Circle_Code);
-                i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                i.putExtra("strSearchServiceName", service_name);
-                i.putExtra("strSearchVillageName", village_name);
-                i.putExtra("serviceCode", serviceCode);
-                i.putExtra("villageCode", String.valueOf(villageCode));
-                i.putExtra("option_Flag", option_Flag);
-                i.putExtra("town_Name", town_Name);
-                i.putExtra("town_code", town_code);
-                i.putExtra("ward_Name", ward_Name);
-                i.putExtra("ward_code", ward_code);
-                startActivity(i);
-                finish();
+                dialog.dismiss();
                 truncateDatabase_Docs();
-                str = "Success";
+                str="Failure";
+                Toast.makeText(getApplicationContext(), getString(R.string.could_not_save_the_data_please_try_again), Toast.LENGTH_SHORT).show();
             }
         return str;
     }

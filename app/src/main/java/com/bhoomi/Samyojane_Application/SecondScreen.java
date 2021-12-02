@@ -660,6 +660,9 @@ public class SecondScreen extends AppCompatActivity {
 
                         JSONObject object = array.getJSONObject(i);
 
+                        String gsc = object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo);
+                        gsc = gsc.replaceAll("[^\\d.]", "");
+
                         set_and_get_service_tran_data = new Set_and_Get_Service_tran_data();
                         set_and_get_service_tran_data.setDistrict_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code));
                         set_and_get_service_tran_data.setTaluk_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code));
@@ -669,7 +672,7 @@ public class SecondScreen extends AppCompatActivity {
                         set_and_get_service_tran_data.setWard_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
                         set_and_get_service_tran_data.setService_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code));
                         set_and_get_service_tran_data.setST_applicant_photo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
-                        set_and_get_service_tran_data.setGSCNo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo));
+                        set_and_get_service_tran_data.setGSCNo(gsc);
                         set_and_get_service_tran_data.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
                         set_and_get_service_tran_data.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date));
                         set_and_get_service_tran_data.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
@@ -692,6 +695,9 @@ public class SecondScreen extends AppCompatActivity {
                         set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
                         set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
                         set_and_get_service_tran_data.setPush_Flag("");
+                        set_and_get_service_tran_data.setVA_IMEI_Num(IMEI_Num);
+                        set_and_get_service_tran_data.setVAMobileNum(mob_Num);
+                        set_and_get_service_tran_data.setVAName(VA_Name);
 
                         serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
                         Log.d("serviceCode", "" + serviceCode);
@@ -745,7 +751,10 @@ public class SecondScreen extends AppCompatActivity {
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + ","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied + ","
                                 + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+")"
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag + ","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Updated_By_VA_IMEI + ","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Upd_MobileNumber + ","
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Updated_By_VA_Name+")"
                                 + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
                                 + set_and_get_service_tran_data.getTaluk_Code() + ","
                                 + set_and_get_service_tran_data.getHobli_Code()
@@ -754,8 +763,8 @@ public class SecondScreen extends AppCompatActivity {
                                 + set_and_get_service_tran_data.getWard_Code()+","
                                 + set_and_get_service_tran_data.getService_Code() + ",'"
                                 + set_and_get_service_tran_data.getService_Name() + "','"
-                                + set_and_get_service_tran_data.getService_Name_k() + "','"
-                                + set_and_get_service_tran_data.getGSCNo()+"','"
+                                + set_and_get_service_tran_data.getService_Name_k() + "',"
+                                + set_and_get_service_tran_data.getGSCNo()+",'"
                                 +set_and_get_service_tran_data.getST_applicant_photo()+"','"
                                 + set_and_get_service_tran_data.getApplicant_Name() + "','"
                                 + set_and_get_service_tran_data.getDue_Date() + "','"
@@ -778,7 +787,10 @@ public class SecondScreen extends AppCompatActivity {
                                 + set_and_get_service_tran_data.getAnnualIncome()+ "',"
                                 + set_and_get_service_tran_data.getGST_No_Mths_Applied()+ ","
                                 + set_and_get_service_tran_data.getGST_No_Years_Applied()+ ",'"
-                                + set_and_get_service_tran_data.getPush_Flag()+"')");
+                                + set_and_get_service_tran_data.getPush_Flag()+ "','"
+                                + set_and_get_service_tran_data.getVA_IMEI_Num()+ "','"
+                                + set_and_get_service_tran_data.getVAMobileNum()+ "','"
+                                + set_and_get_service_tran_data.getVAName() +"')");
 
                         Log.d("Database", "ServiceTranTable Database Inserted " + j);
                         j++;

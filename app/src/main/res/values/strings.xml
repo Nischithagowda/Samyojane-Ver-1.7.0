@@ -219,7 +219,7 @@
     <string name="raised_location">Raised Location</string>
     <string name="enter_your_name">Enter Your Name</string>
     <string name="father_husband">Father/Husband</string>
-    <string name="enter_father_name">Enter Father Name</string>
+    <string name="enter_father_name">Enter Father/Husband Name</string>
     <string name="mother">Mother</string>
     <string name="enter_mother_name">Enter Mother Name</string>
     <string name="enter_father_husband_name">Enter Father/Husband Name</string>
@@ -320,7 +320,7 @@
     <string name="data_saves_successfully">Data Saved Successfully</string>
     <string name="select_no_years">Select No. of Years</string>
     <string name="field_canno_null">Field Cannot be NULL</string>
-    <string name="cannot_get_location">Can\'t get your Location \nPlease Switch on the GPS</string>
+    <string name="cannot_get_location">Could not get your Location \nPlease Switch on the GPS</string>
     <string name="document_not_found">Document not found</string>
     <string name="switch_on_gps">Please switch on the GPS</string>
     <string name="switch_on_internet">Please switch on the Internet</string>
@@ -465,5 +465,7 @@
     <string name="time_out">Timeout, Please Try Again…</string>
     <string name="pushed_successfully">Pushed Successfully</string>
     <string name="to">to</string>
-
+    <string name="bincom_desc_name">BM_bincom_edesc</string>
+    <string name="title_desc_name">SM_Salutation_ename</string>
+    <string name="could_not_save_the_data_please_try_again">Could not save the Data. Please try again</string>
 </resources>

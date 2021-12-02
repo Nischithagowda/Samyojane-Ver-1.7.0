@@ -1,11 +1,13 @@
 package com.bhoomi.Samyojane_Application;
 
+import java.math.BigInteger;
+
 /**
  * Created by Nischitha on 08,November,2021
  **/
 public class UpdateVillageTownWardCLASS {
     private String LoginID, RuralOrUrban;
-    private double GscNo;
+    private BigInteger GscNo;
     private int DesignationCode, NewTownVillageCode, NewWardNo;
 
     public String getLoginID() {
@@ -24,11 +26,11 @@ public class UpdateVillageTownWardCLASS {
         RuralOrUrban = ruralOrUrban;
     }
 
-    public double getGscNo() {
+    public BigInteger getGscNo() {
         return GscNo;
     }
 
-    public void setGscNo(double gscNo) {
+    public void setGscNo(BigInteger gscNo) {
         GscNo = gscNo;
     }
 

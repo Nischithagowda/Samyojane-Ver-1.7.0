@@ -1,367 +1,335 @@
 package com.bhoomi.Samyojane_Application;
 
+import java.util.Date;
+
 public class Set_and_Get_Service_Parameter {
 
-    private String Village_Code, Service_Code, Service_Name, Service_Name_k,
-            GSC_No, Applicant_Name, Father_Name, Mother_Name, Due_Date, Raised_Location, Photo, vLat, vLong, RationCard_No, Mobile_No, Address1, Address2, Address3;
-    private int District_Code, Taluk_Code, Hobli_Code, va_Circle_Code, Town_Code, Ward_Code;
-    private String rbIssue_Cert, spRejectionReason, Annual_Income, PinCode, Report_No, Eng_Certify, ST_applicant_photo;
-    private String APP_Category_6, App_Caste_6, rbOption_6, spReason_6; // Service_6 Parameters
-    private String No_Years_8, App_Father_Category_8, APP_Father_Caste_8, App_Mother_Category_8, APP_Mother_Caste_8, App_Category_as_VA_8, Applicant_Caste_as_VA_8, remarks_8; // Service_8 Parameters
-    private String Total_No_Year_10, NO_Months_10, rbStated_Address_10, rbAddress_RationCard_10, spPurpose_10; // Service_10 Parameters
-    private String DataUpdateFlag;
+    String GSCNo1, LoginID, DifferFromAppinformation, Can_Certificate_Given, Remarks, Report_No, FatherName, MotherName,
+            Address1, Address2, Address3, Belongs_Creamy_Layer_6, Reside_At_Stated_Address_10, Place_Match_With_RationCard_10,
+            Photo, Updated_By_VA_IMEI, Upd_MobileNumber, Updated_By_VA_Name;
+    int Service_Code, DesignationCode, AppTitle, BinCom, FatTitle, PinCode, Applicant_Category, Applicant_Caste, CasteSl,
+            Income, Total_No_Years_10, NO_Months_10, App_Father_Category_8, App_Mother_Category_8, APP_Father_Caste_8,
+            APP_Mother_Caste_8, Reason_for_Creamy_Layer_6, DataUpdateFlag;
+    Date ReportDate, UploadedDate;
+    double vLat, vLong;
 
-    public Set_and_Get_Service_Parameter(){}
-
-    public int getDistrict_Code() {
-        return District_Code;
+    public String getGSCNo1() {
+        return GSCNo1;
     }
 
-    public void setDistrict_Code(int district_Code) {
-        District_Code = district_Code;
+    public void setGSCNo1(String GSCNo1) {
+        this.GSCNo1 = GSCNo1;
     }
 
-    public int getTaluk_Code() {
-        return Taluk_Code;
+    public String getLoginID() {
+        return LoginID;
     }
 
-    public void setTaluk_Code(int taluk_Code) {
-        Taluk_Code = taluk_Code;
+    public void setLoginID(String loginID) {
+        LoginID = loginID;
     }
 
-    public int getHobli_Code() {
-        return Hobli_Code;
+    public String getDifferFromAppinformation() {
+        return DifferFromAppinformation;
     }
 
-    public void setHobli_Code(int hobli_Code) {
-        Hobli_Code = hobli_Code;
+    public void setDifferFromAppinformation(String differFromAppinformation) {
+        DifferFromAppinformation = differFromAppinformation;
     }
 
-    public int getVa_Circle_Code() {
-        return va_Circle_Code;
+    public String getCan_Certificate_Given() {
+        return Can_Certificate_Given;
     }
 
-    public void setVa_Circle_Code(int va_Circle_Code) {
-        this.va_Circle_Code = va_Circle_Code;
+    public void setCan_Certificate_Given(String can_Certificate_Given) {
+        Can_Certificate_Given = can_Certificate_Given;
     }
 
-    public void setVillage_Code(String village_Code) {
-        Village_Code = village_Code;
-    }
-    public String getVillage_Code() {
-        return Village_Code;
+    public String getRemarks() {
+        return Remarks;
     }
 
-    public void setService_Code(String service_Code) {
-        Service_Code = service_Code;
-    }
-    public String getService_Code() {
-        return Service_Code;
+    public void setRemarks(String remarks) {
+        Remarks = remarks;
     }
 
-    void setService_Name(String service_Name) {
-        Service_Name = service_Name;
-    }
-    String getService_Name() {
-        return Service_Name;
+    public String getReport_No() {
+        return Report_No;
     }
 
-    public void setGSC_No(String GSC_No) {
-        this.GSC_No = GSC_No;
-    }
-    public String getGSC_No() {
-        return GSC_No;
+    public void setReport_No(String report_No) {
+        Report_No = report_No;
     }
 
-    void setRationCard_No(String rationCard_No) {
-        RationCard_No = rationCard_No;
-    }
-    String getRationCard_No() {
-        return RationCard_No;
+    public String getFatherName() {
+        return FatherName;
     }
 
-    void setMobile_No(String mobile_No) {
-        Mobile_No = mobile_No;
+    public void setFatherName(String fatherName) {
+        FatherName = fatherName;
     }
-    String getMobile_No() {
-        return Mobile_No;
+
+    public String getMotherName() {
+        return MotherName;
+    }
+
+    public void setMotherName(String motherName) {
+        MotherName = motherName;
+    }
+
+    public String getAddress1() {
+        return Address1;
     }
 
     public void setAddress1(String address1) {
         Address1 = address1;
     }
-    public String getAddress1() {
-        return Address1;
+
+    public String getAddress2() {
+        return Address2;
     }
 
     public void setAddress2(String address2) {
         Address2 = address2;
     }
-    public String getAddress2() {
-        return Address2;
+
+    public String getAddress3() {
+        return Address3;
     }
 
     public void setAddress3(String address3) {
         Address3 = address3;
     }
-    public String getAddress3() {
-        return Address3;
+
+    public String getBelongs_Creamy_Layer_6() {
+        return Belongs_Creamy_Layer_6;
     }
 
-    void setPinCode(String pinCode) {
-        PinCode = pinCode;
-    }
-    String getPinCode() {
-        return PinCode;
+    public void setBelongs_Creamy_Layer_6(String belongs_Creamy_Layer_6) {
+        Belongs_Creamy_Layer_6 = belongs_Creamy_Layer_6;
     }
 
-    public void setEng_Certify(String eng_Certify) {
-        Eng_Certify = eng_Certify;
-    }
-    public String getEng_Certify() {
-        return Eng_Certify;
+    public String getReside_At_Stated_Address_10() {
+        return Reside_At_Stated_Address_10;
     }
 
-    void setReport_No(String report_No) {
-        Report_No = report_No;
-    }
-    String getReport_No() {
-        return Report_No;
+    public void setReside_At_Stated_Address_10(String reside_At_Stated_Address_10) {
+        Reside_At_Stated_Address_10 = reside_At_Stated_Address_10;
     }
 
-    void setApplicant_Name(String applicant_Name) {
-        Applicant_Name = applicant_Name;
-    }
-    String getApplicant_Name() {
-        return Applicant_Name;
+    public String getPlace_Match_With_RationCard_10() {
+        return Place_Match_With_RationCard_10;
     }
 
-    void setFather_Name(String father_Name) {
-        Father_Name = father_Name;
-    }
-    String getFather_Name() {
-        return Father_Name;
+    public void setPlace_Match_With_RationCard_10(String place_Match_With_RationCard_10) {
+        Place_Match_With_RationCard_10 = place_Match_With_RationCard_10;
     }
 
-    void setMother_Name(String mother_Name) {
-        Mother_Name = mother_Name;
-    }
-    String getMother_Name() {
-        return Mother_Name;
-    }
-
-    void setDue_Date(String due_Date) {
-        Due_Date = due_Date;
-    }
-    String getDue_Date() {
-        return Due_Date;
-    }
-
-    void setAPP_Category_6(String APP_Category_6) {
-        this.APP_Category_6 = APP_Category_6;
-    }
-    String getAPP_Category_6() {
-        return APP_Category_6;
-    }
-
-    void setApp_Caste_6(String app_Caste_6) {
-        App_Caste_6 = app_Caste_6;
-    }
-    String getApp_Caste_6() {
-        return App_Caste_6;
-    }
-
-    void setRbOption_6(String rbOption_6) {
-        this.rbOption_6 = rbOption_6;
-    }
-    String getRbOption_6() {
-        return rbOption_6;
-    }
-
-    void setSpReason_6(String spReason_6) {
-        this.spReason_6 = spReason_6;
-    }
-    String getSpReason_6() {
-        return spReason_6;
-    }
-
-    void setAnnual_Income(String annual_Income) {
-        Annual_Income = annual_Income;
-    }
-    String getAnnual_Income() {
-        return Annual_Income;
-    }
-
-    void setNo_Years_8(String no_Years_8) {
-        No_Years_8 = no_Years_8;
-    }
-    String getNo_Years_8() {
-        return No_Years_8;
-    }
-
-    void setApp_Father_Category_8(String app_Father_Category_8) {
-        App_Father_Category_8 = app_Father_Category_8;
-    }
-    String getApp_Father_Category_8() {
-        return App_Father_Category_8;
-    }
-
-    public void setAPP_Father_Caste_8(String APP_Father_Caste_8) {
-        this.APP_Father_Caste_8 = APP_Father_Caste_8;
-    }
-    public String getAPP_Father_Caste_8() {
-        return APP_Father_Caste_8;
-    }
-
-    void setApp_Mother_Category_8(String app_Mother_Category_8) {
-        App_Mother_Category_8 = app_Mother_Category_8;
-    }
-    String getApp_Mother_Category_8() {
-        return App_Mother_Category_8;
-    }
-
-    public void setAPP_Mother_Caste_8(String APP_Mother_Caste_8) {
-        this.APP_Mother_Caste_8 = APP_Mother_Caste_8;
-    }
-    public String getAPP_Mother_Caste_8() {
-        return APP_Mother_Caste_8;
-    }
-
-    void setApp_Category_as_VA_8(String app_Category_as_VA_8) {
-        App_Category_as_VA_8 = app_Category_as_VA_8;
-    }
-    String getApp_Category_as_VA_8() {
-        return App_Category_as_VA_8;
-    }
-
-    void setApplicant_Caste_as_VA_8(String applicant_Caste_as_VA_8) {
-        Applicant_Caste_as_VA_8 = applicant_Caste_as_VA_8;
-    }
-    String getApplicant_Caste_as_VA_8() {
-        return Applicant_Caste_as_VA_8;
-    }
-
-    public void setRemarks_8(String remarks_8) {
-        this.remarks_8 = remarks_8;
-    }
-    public String getRemarks_8() {
-        return remarks_8;
-    }
-
-    void setTotal_No_Year_10(String total_No_Year_10) {
-        Total_No_Year_10 = total_No_Year_10;
-    }
-    String getTotal_No_Year_10() {
-        return Total_No_Year_10;
-    }
-
-    public void setNO_Months_10(String NO_Months_10) {
-        this.NO_Months_10 = NO_Months_10;
-    }
-    public String getNO_Months_10() {
-        return NO_Months_10;
-    }
-
-    void setRbStated_Address_10(String rbStated_Address_10) {
-        this.rbStated_Address_10 = rbStated_Address_10;
-    }
-    String getRbStated_Address_10() {
-        return rbStated_Address_10;
-    }
-
-    void setRbAddress_RationCard_10(String rbAddress_RationCard_10) {
-        this.rbAddress_RationCard_10 = rbAddress_RationCard_10;
-    }
-    String getRbAddress_RationCard_10() {
-        return rbAddress_RationCard_10;
-    }
-
-    void setSpPurpose_10(String spPurpose_10) {
-        this.spPurpose_10 = spPurpose_10;
-    }
-    String getSpPurpose_10() {
-        return spPurpose_10;
+    public String getPhoto() {
+        return Photo;
     }
 
     public void setPhoto(String photo) {
         Photo = photo;
     }
-    public String getPhoto() {
-        return Photo;
+
+    public String getUpdated_By_VA_IMEI() {
+        return Updated_By_VA_IMEI;
     }
 
-    public void setvLat(String vLat) {
-        this.vLat = vLat;
-    }
-    public String getvLat() {
-        return vLat;
+    public void setUpdated_By_VA_IMEI(String updated_By_VA_IMEI) {
+        Updated_By_VA_IMEI = updated_By_VA_IMEI;
     }
 
-    public void setvLong(String vLong) {
-        this.vLong = vLong;
-    }
-    public String getvLong() {
-        return vLong;
+    public String getUpd_MobileNumber() {
+        return Upd_MobileNumber;
     }
 
-    public void setRbIssue_Cert(String rbIssue_Cert) {
-        this.rbIssue_Cert = rbIssue_Cert;
-    }
-    public String getRbIssue_Cert() {
-        return rbIssue_Cert;
+    public void setUpd_MobileNumber(String upd_MobileNumber) {
+        Upd_MobileNumber = upd_MobileNumber;
     }
 
-    public void setSpRejectionReason(String spRejectionReason) {
-        this.spRejectionReason = spRejectionReason;
-    }
-    public String getSpRejectionReason() {
-        return spRejectionReason;
+    public String getUpdated_By_VA_Name() {
+        return Updated_By_VA_Name;
     }
 
-    void setDataUpdateFlag(String dataUpdateFlag) {
-        DataUpdateFlag = dataUpdateFlag;
+    public void setUpdated_By_VA_Name(String updated_By_VA_Name) {
+        Updated_By_VA_Name = updated_By_VA_Name;
     }
-    String getDataUpdateFlag() {
+
+    public int getService_Code() {
+        return Service_Code;
+    }
+
+    public void setService_Code(int service_Code) {
+        Service_Code = service_Code;
+    }
+
+    public int getDesignationCode() {
+        return DesignationCode;
+    }
+
+    public void setDesignationCode(int designationCode) {
+        DesignationCode = designationCode;
+    }
+
+    public int getAppTitle() {
+        return AppTitle;
+    }
+
+    public void setAppTitle(int appTitle) {
+        AppTitle = appTitle;
+    }
+
+    public int getBinCom() {
+        return BinCom;
+    }
+
+    public void setBinCom(int binCom) {
+        BinCom = binCom;
+    }
+
+    public int getFatTitle() {
+        return FatTitle;
+    }
+
+    public void setFatTitle(int fatTitle) {
+        FatTitle = fatTitle;
+    }
+
+    public int getPinCode() {
+        return PinCode;
+    }
+
+    public void setPinCode(int pinCode) {
+        PinCode = pinCode;
+    }
+
+    public int getApplicant_Category() {
+        return Applicant_Category;
+    }
+
+    public void setApplicant_Category(int applicant_Category) {
+        Applicant_Category = applicant_Category;
+    }
+
+    public int getApplicant_Caste() {
+        return Applicant_Caste;
+    }
+
+    public void setApplicant_Caste(int applicant_Caste) {
+        Applicant_Caste = applicant_Caste;
+    }
+
+    public int getCasteSl() {
+        return CasteSl;
+    }
+
+    public void setCasteSl(int casteSl) {
+        CasteSl = casteSl;
+    }
+
+    public int getIncome() {
+        return Income;
+    }
+
+    public void setIncome(int income) {
+        Income = income;
+    }
+
+    public int getTotal_No_Years_10() {
+        return Total_No_Years_10;
+    }
+
+    public void setTotal_No_Years_10(int total_No_Years_10) {
+        Total_No_Years_10 = total_No_Years_10;
+    }
+
+    public int getNO_Months_10() {
+        return NO_Months_10;
+    }
+
+    public void setNO_Months_10(int NO_Months_10) {
+        this.NO_Months_10 = NO_Months_10;
+    }
+
+    public int getApp_Father_Category_8() {
+        return App_Father_Category_8;
+    }
+
+    public void setApp_Father_Category_8(int app_Father_Category_8) {
+        App_Father_Category_8 = app_Father_Category_8;
+    }
+
+    public int getApp_Mother_Category_8() {
+        return App_Mother_Category_8;
+    }
+
+    public void setApp_Mother_Category_8(int app_Mother_Category_8) {
+        App_Mother_Category_8 = app_Mother_Category_8;
+    }
+
+    public int getAPP_Father_Caste_8() {
+        return APP_Father_Caste_8;
+    }
+
+    public void setAPP_Father_Caste_8(int APP_Father_Caste_8) {
+        this.APP_Father_Caste_8 = APP_Father_Caste_8;
+    }
+
+    public int getAPP_Mother_Caste_8() {
+        return APP_Mother_Caste_8;
+    }
+
+    public void setAPP_Mother_Caste_8(int APP_Mother_Caste_8) {
+        this.APP_Mother_Caste_8 = APP_Mother_Caste_8;
+    }
+
+    public int getReason_for_Creamy_Layer_6() {
+        return Reason_for_Creamy_Layer_6;
+    }
+
+    public void setReason_for_Creamy_Layer_6(int reason_for_Creamy_Layer_6) {
+        Reason_for_Creamy_Layer_6 = reason_for_Creamy_Layer_6;
+    }
+
+    public int getDataUpdateFlag() {
         return DataUpdateFlag;
     }
 
-    public String getST_applicant_photo() {
-        return ST_applicant_photo;
+    public void setDataUpdateFlag(int dataUpdateFlag) {
+        DataUpdateFlag = dataUpdateFlag;
     }
 
-    public void setST_applicant_photo(String ST_applicant_photo) {
-        this.ST_applicant_photo = ST_applicant_photo;
+    public Date getReportDate() {
+        return ReportDate;
     }
 
-    public int getTown_Code() {
-        return Town_Code;
+    public void setReportDate(Date reportDate) {
+        ReportDate = reportDate;
     }
 
-    public void setTown_Code(int town_Code) {
-        Town_Code = town_Code;
+    public Date getUploadedDate() {
+        return UploadedDate;
     }
 
-    public int getWard_Code() {
-        return Ward_Code;
+    public void setUploadedDate(Date uploadedDate) {
+        UploadedDate = uploadedDate;
     }
 
-    public void setWard_Code(int ward_Code) {
-        Ward_Code = ward_Code;
+    public double getvLat() {
+        return vLat;
     }
 
-    String getRaised_Location() {
-        return Raised_Location;
+    public void setvLat(double vLat) {
+        this.vLat = vLat;
     }
 
-    void setRaised_Location(String raised_Location) {
-        Raised_Location = raised_Location;
+    public double getvLong() {
+        return vLong;
     }
 
-    String getService_Name_k() {
-        return Service_Name_k;
-    }
-
-    void setService_Name_k(String service_Name_k) {
-        Service_Name_k = service_Name_k;
+    public void setvLong(double vLong) {
+        this.vLong = vLong;
     }
 }

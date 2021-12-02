@@ -443,7 +443,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                             intent.putExtra("strSearchServiceName", service_name);
                             intent.putExtra("strSearchVillageName", village_name);
                             intent.putExtra("serviceCode", serviceCode);
-                            intent.putExtra("villageCode", String.valueOf(villageCode));
+                            intent.putExtra("villageCode", villageCode);
                             intent.putExtra("option_Flag", option_Flag);
                             intent.putExtra("town_Name", town_Name);
                             intent.putExtra("town_code", town_code);

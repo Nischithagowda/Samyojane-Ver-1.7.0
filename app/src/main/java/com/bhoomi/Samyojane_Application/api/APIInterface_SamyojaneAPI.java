@@ -65,7 +65,7 @@ public interface APIInterface_SamyojaneAPI {
             @Path("IMEI") String IMEI
     );
 
-    @POST("Get_Village_name_RuralUrban/{flag1}/{flag2}/{District_Code}/{Taluk_Code}/{Hobli_Code}/{VA_Cicle_Code}")
+    @POST("Get_Village_name_RuralUrban/{flag1}/{flag2}/{District_Code}/{Taluk_Code}/{Hobli_Code}")
     Call<String> doGet_Village_name_RuralUrban(
             @Path("flag1") String flag1,
             @Path("flag2") String flag2,

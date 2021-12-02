@@ -213,7 +213,7 @@
     <string name="raised_location">ಅರ್ಜಿ ಸಲ್ಲಿಸಿದ ಸ್ಥಳ</string>--ಸಲ್ಲಿಸಿದ ಸ್ಥಳ
     <string name="enter_your_name">ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>--ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ
     <string name="father_husband">ತಂದೆ / ಗಂಡ</string>--ತಂದೆ / ಗಂಡ
-    <string name="enter_father_name">ತಂದೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>--ತಂದೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ
+    <string name="enter_father_name">ತಂದೆ / ಗಂಡನ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>--ತಂದೆಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ
     <string name="mother">ತಾಯಿ</string>--ತಾಯಿ
     <string name="enter_mother_name">ತಾಯಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>--ತಾಯಿಯ ಹೆಸರನ್ನು ನಮೂದಿಸಿ
     <string name="enter_father_husband_name">ತಂದೆ / ಗಂಡನ ಹೆಸರನ್ನು ನಮೂದಿಸಿ</string>
@@ -462,4 +462,7 @@
     <string name="time_out">ಸಮಯ ಮುಕ್ತಾಯವಾಗಿದೆ, ದಯವಿಟ್ಟು ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ…</string>
     <string name="pushed_successfully">ಯಶಸ್ವಿಯಾಗಿ ಅರ್ಜಿಯನ್ನು ಮುಂದೂಡಲಾಗಿದೆ</string>
     <string name="to">ಮುಂದೂಡಲು ಬಯಸುವಿರಾ?</string>
+    <string name="bincom_desc_name">BM_bincom_kdesc</string>
+    <string name="title_desc_name">SM_Salutation_kname</string>
+    <string name="could_not_save_the_data_please_try_again">ಡೇಟಾವನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</string>
 </resources>

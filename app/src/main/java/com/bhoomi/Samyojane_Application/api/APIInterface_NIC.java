@@ -29,7 +29,7 @@ public interface APIInterface_NIC {
             );
 
     @Headers("Content-Type: application/json")
-    @GET("GetDocs/")
+    @POST("GetDocs/")
     Call<JsonObject> GetDocs(
             @Body GetDocRequestClass getDocRequestClass
             );
@@ -40,7 +40,7 @@ public interface APIInterface_NIC {
             );
 
     @POST("UpdateStatus")
-    Call<String> UpdateStatus(
+    Call<JsonObject> UpdateStatus(
             @Body UpdateStatusCLASS updateStatusCLASS
             );
 }

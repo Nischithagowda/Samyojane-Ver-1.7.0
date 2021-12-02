@@ -7,6 +7,7 @@ public class Set_and_Get_Service_tran_data {
     private String Address1, Address2, Address3, Add_Pin, Eng_Certify;
     private String ApplicantTiitle, BinCom, RelationTitle, ReservationCategory, Caste, AnnualIncome, GST_No_Mths_Applied, GST_No_Years_Applied;
     private String ST_applicant_photo, ST_ID_TYPE, Push_Flag;
+    private String VAName, VA_IMEI_Num, VAMobileNum;
 
     Set_and_Get_Service_tran_data(){}
 
@@ -257,4 +258,27 @@ public class Set_and_Get_Service_tran_data {
         Service_Name_k = service_Name_k;
     }
 
+    public String getVAName() {
+        return VAName;
+    }
+
+    public void setVAName(String VAName) {
+        this.VAName = VAName;
+    }
+
+    public String getVA_IMEI_Num() {
+        return VA_IMEI_Num;
+    }
+
+    public void setVA_IMEI_Num(String VA_IMEI_Num) {
+        this.VA_IMEI_Num = VA_IMEI_Num;
+    }
+
+    public String getVAMobileNum() {
+        return VAMobileNum;
+    }
+
+    public void setVAMobileNum(String VAMobileNum) {
+        this.VAMobileNum = VAMobileNum;
+    }
 }

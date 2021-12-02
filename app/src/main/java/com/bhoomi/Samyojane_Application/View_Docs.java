@@ -30,7 +30,7 @@ public class View_Docs extends AppCompatActivity {
     Button btnBack;
     TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName,tvAppName, txt_ReportNo;
     String district, taluk, hobli, VA_Circle_Name, VA_Name;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     String applicant_name;
@@ -45,7 +45,7 @@ public class View_Docs extends AppCompatActivity {
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
     ArrayList<String> SlNo = new ArrayList<>();
     ArrayList<String> App_ID = new ArrayList<>();
-    ArrayList<String> Docs_ID = new ArrayList<>();
+    ArrayList<Integer> Docs_ID = new ArrayList<>();
     ArrayList<String> Docs_Name = new ArrayList<>();
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -67,13 +67,13 @@ public class View_Docs extends AppCompatActivity {
         tvAppName = findViewById(R.id.tvAppName);
 
         Intent i = getIntent();
-        district_Code = i.getStringExtra("district_Code");
+        district_Code = i.getIntExtra("district_Code", 0);
         district = i.getStringExtra("districtCode");
-        taluk_Code = i.getStringExtra("taluk_Code");
+        taluk_Code = i.getIntExtra("taluk_Code", 0);
         taluk = i.getStringExtra("taluk");
-        hobli_Code = i.getStringExtra("hobli_Code");
+        hobli_Code = i.getIntExtra("hobli_Code", 0);
         hobli = i.getStringExtra("hobli");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        va_Circle_Code = i.getIntExtra("va_Circle_Code", 0);
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
         VA_Name = i.getStringExtra("VA_Name");
         service_name = i.getStringExtra("strSearchServiceName");
@@ -141,14 +141,12 @@ public class View_Docs extends AppCompatActivity {
                     SlNo.add(i +".");
 
                     docs_ID = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_Docs.DocumentID));
-                    Log.d("docs_ID",""+i+docs_ID);
-                    sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(this, "str");
-                    sqlLiteOpenHelper_class.open_Docs_Type_Tbl();
-                    docs_Name = sqlLiteOpenHelper_class.Get_E_DocsName(docs_ID);
+                    Log.d("docs_ID",""+docs_ID+", Index:"+i);
+                    docs_Name = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_Docs.DocumentName));
                     Log.d("docs_Name",""+i+docs_Name);
 
                     App_ID.add(applicant_Id);
-                    Docs_ID.add(String.valueOf(docs_ID));
+                    Docs_ID.add(docs_ID);
                     Docs_Name.add(docs_Name);
 
                     i++;
@@ -158,7 +156,7 @@ public class View_Docs extends AppCompatActivity {
             list_adapter = new Docs_List_Adapter(View_Docs.this, SlNo, App_ID, Docs_ID, Docs_Name);
             listView.setAdapter(list_adapter);
             database.close();
-            Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Data Displayed Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
             cursor1.close();

@@ -78,7 +78,6 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
     int income_len, income_Value;
     GPSTracker gpsTracker;
     double latitude, longitude;
-    Set_and_Get_Service_Parameter set_and_get_service_parameter;
     int getFatherCatCode=0, getFatherCasteCode=0, getMotherCatCode=0, getMotherCasteCode=0, getAppCatCode_VA=0, getAppCasteCode_VA=0;
     Activity activity;
     String strIncome;
@@ -954,9 +953,9 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
     public String StoreData_in_DB(){
 
         if(option1.equals(getString(R.string.no))){
-            option1="NO";
+            option1="N";
         }else if (option1.equals(getString(R.string.yes))){
-            option1 = "YES";
+            option1 = "Y";
         }
 
         String str;
@@ -983,7 +982,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
 
             database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Accepts_Applicant_information+"='NO',"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromAppinformation +"='Y',"
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Num_Years_8 + "='" + strYear + "',"
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Father_Category_8 + "=" + getFatherCatCode + ","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Father_Caste_8 + "=" + getFatherCasteCode + ","
@@ -996,10 +995,10 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.vLong + "=" + longitude + ","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Photo + "='" + store + "',"
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Can_Certificate_Given + "='" + option1 + "',"
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Rejection + "=" + reason_Code_1 + ","
+//                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Rejection + "=" + reason_Code_1 + ","
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks + "='" + strRemarks + "',"
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1" + " where "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'");
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo1 + "='" + applicant_Id + "'");
 
             Log.d("Database", "ServiceParameters Database Updated");
             Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
@@ -1026,100 +1025,15 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
             i.putExtra("ward_code", ward_code);
             startActivity(i);
             finish();
+            dialog.dismiss();
             truncateDatabase_Docs();
             str = "Success";
         } else {
             cursor.close();
-            set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
-            set_and_get_service_parameter.setDistrict_Code(district_Code);
-            set_and_get_service_parameter.setTaluk_Code(taluk_Code);
-            set_and_get_service_parameter.setHobli_Code(hobli_Code);
-            set_and_get_service_parameter.setVa_Circle_Code(va_Circle_Code);
-            set_and_get_service_parameter.setVillage_Code(String.valueOf(villageCode));
-            set_and_get_service_parameter.setTown_Code(town_code);
-            set_and_get_service_parameter.setWard_Code(ward_code);
-            set_and_get_service_parameter.setService_Code(String.valueOf(serviceCode));
-            set_and_get_service_parameter.setGSC_No(applicant_Id);
-            set_and_get_service_parameter.setEng_Certify(eng_certi);
-            set_and_get_service_parameter.setNo_Years_8(strYear);
-            set_and_get_service_parameter.setApp_Father_Category_8(String.valueOf(getFatherCatCode));
-            set_and_get_service_parameter.setAPP_Father_Caste_8(String.valueOf(getFatherCasteCode));
-            set_and_get_service_parameter.setApp_Mother_Category_8(String.valueOf(getMotherCatCode));
-            set_and_get_service_parameter.setAPP_Mother_Caste_8(String.valueOf(getMotherCasteCode));
-            set_and_get_service_parameter.setApp_Category_as_VA_8(String.valueOf(getAppCatCode_VA));
-            set_and_get_service_parameter.setApplicant_Caste_as_VA_8(String.valueOf(getAppCasteCode_VA));
-            set_and_get_service_parameter.setAnnual_Income(strIncome);
-            set_and_get_service_parameter.setRemarks_8(strRemarks);
-            set_and_get_service_parameter.setPhoto(store);
-            set_and_get_service_parameter.setST_applicant_photo(appImage);
-            set_and_get_service_parameter.setRbIssue_Cert(option1);
-            set_and_get_service_parameter.setSpRejectionReason(String.valueOf(reason_Code_1));
-            set_and_get_service_parameter.setvLat(String.valueOf(latitude));
-            set_and_get_service_parameter.setvLong(String.valueOf(longitude));
-
-            database.execSQL("update "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
-
-            database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
-                    + "(ST_district_code, ST_taluk_code, ST_hobli_code, ST_va_Circle_Code, ST_village_code, ST_town_code, ST_ward_no, ST_facility_code, ST_GSC_No, ST_Eng_Certificate," +
-                    " VA_Accepts_Applicant_information, Applicant_Category, Applicant_Caste, Annual_Income," +
-                    " Num_Years_8, App_Father_Category_8, APP_Father_Caste_8, App_Mother_Category_8, APP_Mother_Caste_8, Remarks, " +
-                    " Photo, ST_applicant_photo, vLat, vLong, Can_Certificate_Given, Reason_for_Rejection, DataUpdateFlag)" +
-                    " values ("
-                    + set_and_get_service_parameter.getDistrict_Code() + ","
-                    + set_and_get_service_parameter.getTaluk_Code() + ","
-                    + set_and_get_service_parameter.getHobli_Code() + ","
-                    + set_and_get_service_parameter.getVa_Circle_Code() + ","
-                    + set_and_get_service_parameter.getVillage_Code() + ","
-                    + set_and_get_service_parameter.getTown_Code() + ","
-                    + set_and_get_service_parameter.getWard_Code() + ","
-                    + set_and_get_service_parameter.getService_Code() + ","
-                    + set_and_get_service_parameter.getGSC_No() + ",'"
-                    + set_and_get_service_parameter.getEng_Certify() + "','"
-                    + "NO" + "',"
-                    + set_and_get_service_parameter.getApp_Category_as_VA_8() +","
-                    + set_and_get_service_parameter.getApplicant_Caste_as_VA_8() +",'"
-                    + set_and_get_service_parameter.getAnnual_Income()+"','"
-                    + set_and_get_service_parameter.getNo_Years_8() + "',"
-                    + set_and_get_service_parameter.getApp_Father_Category_8() + ","
-                    + set_and_get_service_parameter.getAPP_Father_Caste_8() + ","
-                    + set_and_get_service_parameter.getApp_Mother_Category_8() + ","
-                    + set_and_get_service_parameter.getAPP_Mother_Caste_8() + ",'"
-                    + set_and_get_service_parameter.getRemarks_8() + "','"
-                    + set_and_get_service_parameter.getPhoto()+"','"
-                    + set_and_get_service_parameter.getST_applicant_photo()+"',"
-                    + set_and_get_service_parameter.getvLat() + ","
-                    + set_and_get_service_parameter.getvLong() + ",'"
-                    + set_and_get_service_parameter.getRbIssue_Cert() + "',"
-                    + set_and_get_service_parameter.getSpRejectionReason() + ", 1)");
-            Log.d("Database", "ServiceParameters Database Inserted");
-            Toast.makeText(getApplicationContext(), getString(R.string.saved_successfully), Toast.LENGTH_SHORT).show();
-
-            Intent i = new Intent(New_Request_Caste_sc_st_certi_Parameters_Kan.this, New_Request_FirstScreen.class);
-            i.putExtra("applicant_Id", applicant_Id);
-            i.putExtra("district_Code", district_Code);
-            i.putExtra("taluk_Code", taluk_Code);
-            i.putExtra("hobli_Code", hobli_Code);
-            i.putExtra("districtCode", district);
-            i.putExtra("taluk", taluk);
-            i.putExtra("VA_Name", VA_Name);
-            i.putExtra("hobli", hobli);
-            i.putExtra("va_Circle_Code", va_Circle_Code);
-            i.putExtra("VA_Circle_Name", VA_Circle_Name);
-            i.putExtra("strSearchServiceName", service_name);
-            i.putExtra("strSearchVillageName", village_name);
-            i.putExtra("serviceCode", serviceCode);
-            i.putExtra("villageCode", String.valueOf(villageCode));
-            i.putExtra("option_Flag", option_Flag);
-            i.putExtra("town_Name", town_Name);
-            i.putExtra("town_code", town_code);
-            i.putExtra("ward_Name", ward_Name);
-            i.putExtra("ward_code", ward_code);
-            startActivity(i);
-            finish();
+            dialog.dismiss();
             truncateDatabase_Docs();
-            str = "success";
+            str="Failure";
+            Toast.makeText(getApplicationContext(), getString(R.string.could_not_save_the_data_please_try_again), Toast.LENGTH_SHORT).show();
         }
         return str;
     }

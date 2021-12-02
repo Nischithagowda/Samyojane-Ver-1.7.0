@@ -213,6 +213,16 @@
                         android:layout_column="2"/>
 
                     <TextView
+                        android:id="@+id/txt_BinCom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_marginStart="5dp"
+                        android:layout_column="3"/>
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="5dp">
+                    <TextView
                         android:id="@+id/txt_appFatherName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
