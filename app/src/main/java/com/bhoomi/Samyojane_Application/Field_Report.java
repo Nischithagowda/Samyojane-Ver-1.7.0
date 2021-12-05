@@ -67,8 +67,7 @@ public class Field_Report extends AppCompatActivity {
     ArrayAdapter<AutoCompleteTextBox_Object> adapter;
     ArrayAdapter<AutoCompleteTextBox_Object> adapter_village;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
+    @SuppressLint({"ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,7 +152,7 @@ public class Field_Report extends AppCompatActivity {
             if (cursor.getCount() > 0) {
                 count = cursor.getCount();
                 Log.d("Count", ""+ count);
-                totalPending.setText("" + count);
+                totalPending.setText(String.valueOf(count));
             } else {
                 cursor.close();
                 totalPending.setText("0");

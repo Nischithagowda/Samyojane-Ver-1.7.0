@@ -73,8 +73,7 @@ public class RI_Field_Report extends AppCompatActivity {
     String option_Flag;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
+    @SuppressLint({"ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,14 +159,13 @@ public class RI_Field_Report extends AppCompatActivity {
 
         Cursor cursor = database.rawQuery("select * from "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999", null);
         int count;
         if (cursor.getCount()>0){
             count = cursor.getCount();
             Log.d("Count", String.valueOf(count));
-            totalPending.setText(""+count);
+            totalPending.setText(String.valueOf(count));
         }
         else {
             cursor.close();
@@ -183,14 +181,13 @@ public class RI_Field_Report extends AppCompatActivity {
 
             Cursor cursor1 = database.rawQuery("select * from "
                     +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
+                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999", null);
             int count1;
             if (cursor1.getCount()>0){
                 count1 = cursor1.getCount();
                 Log.d("Count", String.valueOf(count1));
-                totalPending.setText(""+count1);
+                totalPending.setText(String.valueOf(count1));
             }
             else {
                 cursor1.close();
@@ -232,13 +229,12 @@ public class RI_Field_Report extends AppCompatActivity {
             Cursor cursor1 = database.rawQuery("select * from "
                     +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"=99999"+" and "
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null " , null);
+                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null " , null);
             int count1;
             if (cursor1.getCount()>0){
                 count1 = cursor1.getCount();
                 Log.d("Count", String.valueOf(count1));
-                totalPending.setText(""+count1);
+                totalPending.setText(String.valueOf(count1));
             }
             else {
                 cursor1.close();
@@ -287,13 +283,12 @@ public class RI_Field_Report extends AppCompatActivity {
                         +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"=255 and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null " , null);
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null " , null);
                 int count12;
                 if (cursor12.getCount()>0){
                     count12 = cursor12.getCount();
                     Log.d("Count", ""+ count12);
-                    totalPending.setText(""+ count12);
+                    totalPending.setText(String.valueOf(count12));
                 }
                 else {
                     cursor12.close();
@@ -337,13 +332,12 @@ public class RI_Field_Report extends AppCompatActivity {
                 Cursor cursor12 = database.rawQuery("select * from "
                         +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"=99999"+" and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null " , null);
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null " , null);
                 int count12;
                 if (cursor12.getCount()>0){
                     count12 = cursor12.getCount();
                     Log.d("Count", String.valueOf(count12));
-                    totalPending.setText(""+ count12);
+                    totalPending.setText(String.valueOf(count12));
                 }
                 else {
                     cursor12.close();
@@ -413,11 +407,10 @@ public class RI_Field_Report extends AppCompatActivity {
                 database=openHelper.getWritableDatabase();
 
                 Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code+"="+hab_Va_Circle_Code+" and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.villageCircle_Code+"="+hab_Va_Circle_Code+" and "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"=255 and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1",null);
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"=255",null);
                 if (cursor1.getCount()>0){
                     totalCount_va_Cir = cursor1.getCount();
                     Log.d("totalCount_va_Cir", String.valueOf(totalCount_va_Cir));
@@ -453,8 +446,7 @@ public class RI_Field_Report extends AppCompatActivity {
 
                 Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
                         +" where "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"="+hab_Village_Code+" and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1",null);
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null",null);
                 if (cursor1.getCount()>0){
                     totalCount_vill = cursor1.getCount();
                     Log.d("totalCount_vill", String.valueOf(totalCount_vill));
@@ -605,10 +597,9 @@ public class RI_Field_Report extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
+        Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo
                 +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"='"+village_Code
                 +"' group by "+getString(R.string.ser_tran_service_name), null);
@@ -661,12 +652,11 @@ public class RI_Field_Report extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
+        Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo
                 +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"="+town_Code+" and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"="+ward_Code+" and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"='99999"
                 +"' group by "+getString(R.string.ser_tran_service_name), null);
 
