@@ -222,7 +222,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         TotalYears = findViewById(R.id.TotalYears);
         ResideAtStatedAddress = findViewById(R.id.ResideAtStatedAddress);
         PlaceMatch = findViewById(R.id.placeMatch);
-        Purpose = findViewById(R.id.Purpose);
+//        Purpose = findViewById(R.id.Purpose);
         ReservationGiven = findViewById(R.id.ReservationGiven);
         ReasonForRejection = findViewById(R.id.ReasonForRejection);
         radioGroup1 = findViewById(R.id.radioGroup1);
@@ -237,15 +237,15 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         radioButton33 = findViewById(R.id.radioButton33);
         radioButton4 = findViewById(R.id.radioButton4);
         radioButton44 = findViewById(R.id.radioButton44);
-        spPurpose = findViewById(R.id.spPurpose);
-        spRejectReason1 = findViewById(R.id.spRejectReason1);
-        lRejection = findViewById(R.id.lRejection);
+//        spPurpose = findViewById(R.id.spPurpose);
+//        spRejectReason1 = findViewById(R.id.spRejectReason1);
+//        lRejection = findViewById(R.id.lRejection);
         lReservationGiven = findViewById(R.id.lReservationGiven);
         lRejectionReason = findViewById(R.id.lRejectionReason);
         btnSave = findViewById(R.id.btnSave);
         tvAppAddress = findViewById(R.id.tvAppAddress);
         tvAppPlace = findViewById(R.id.tvAppPlace);
-        tvPurpose= findViewById(R.id.tvPurpose);
+//        tvPurpose= findViewById(R.id.tvPurpose);
         tvTotalYears = findViewById(R.id.tvTotalYears);
         etYear = findViewById(R.id.etYear);
         spMonth = findViewById(R.id.spMonth);
@@ -410,14 +410,14 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+"='"+applicant_Id+"'", null);
+        Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo+"='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToFirst()){
                 remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
-                appID = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
+                appID = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo));
                 appName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
                 year = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Total_No_Years_10));
                 month = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.NO_Months_10));
@@ -950,8 +950,8 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_Resident_Parameters.this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'", null);
+        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToNext()){
                 strRemarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
@@ -987,7 +987,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information + "='"+option2+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No + "='"+report_no+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + "=1"
-                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'");
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo1 + "='"+applicant_Id+"'");
 
             Log.d("Database", "ServiceParameters Database Updated");
             Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
@@ -1056,8 +1056,8 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_Resident_Parameters.this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'", null);
+        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
 
             database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
@@ -1084,7 +1084,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information + "='"+option2+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No + "='"+report_no+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + "=1"
-                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'");
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo1 + "='"+applicant_Id+"'");
 
             Log.d("Database", "ServiceParameters Database Updated");
             Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();

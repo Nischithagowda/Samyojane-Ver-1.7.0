@@ -7,7 +7,7 @@ import java.math.BigInteger;
  **/
 public class UpdateVillageTownWardCLASS {
     private String LoginID, RuralOrUrban;
-    private BigInteger GscNo;
+    private String GscNo;
     private int DesignationCode, NewTownVillageCode, NewWardNo;
 
     public String getLoginID() {
@@ -26,11 +26,11 @@ public class UpdateVillageTownWardCLASS {
         RuralOrUrban = ruralOrUrban;
     }
 
-    public BigInteger getGscNo() {
+    public String getGscNo() {
         return GscNo;
     }
 
-    public void setGscNo(BigInteger gscNo) {
+    public void setGscNo(String gscNo) {
         GscNo = gscNo;
     }
 

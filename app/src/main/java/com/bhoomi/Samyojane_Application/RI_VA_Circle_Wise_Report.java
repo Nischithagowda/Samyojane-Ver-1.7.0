@@ -19,9 +19,9 @@ import java.util.ArrayList;
 
 public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
 
-    TextView tvHobli, tvTaluk, tvVA_Name, pendencyReport;
-    static String va_Circle_Name, VA_Name;
-    static String district_Code, taluk_Code, hobli_Code, va_Circle_Code, villageCode;
+    TextView pendencyReport;
+    static String va_Circle_Name;
+    static String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database, database1;
     ArrayList<String> SlNo = new ArrayList<>();
@@ -99,11 +99,10 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
                     va_Circle_Name = cursor.getString(cursor.getColumnIndexOrThrow(getString(R.string.cre_va_circle_name)));
                     va_Circle_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.VA_circle_Code));
 
-                    Cursor cursor1 = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
-                            + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
-                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + " is null and "
-                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code + "=" + va_Circle_Code , null);
+                    Cursor cursor1 = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo
+                            + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
+                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is null and "
+                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VillageCircle_Code + "=" + va_Circle_Code , null);
 
                     if (cursor1.getCount() > 0) {
 
@@ -144,6 +143,7 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
                 }while (cursor.moveToNext());
             }
         }else{
+            cursor.close();
             emptyTxt.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
             Log.d("InDisplayElse", ""+ i);

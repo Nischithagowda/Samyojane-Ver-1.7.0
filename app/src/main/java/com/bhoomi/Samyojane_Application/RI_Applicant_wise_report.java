@@ -87,7 +87,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
                 do {
                     Log.d("InDisplayIf", "" + i);
                     Log.d("Applicant_Wise","Enter1");
-                    applicantId = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
+                    applicantId = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo));
                     applicantName = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
                     serviceName = cursor1.getString(cursor1.getColumnIndexOrThrow(getString(R.string.ser_tran_service_name)));
                     serviceCode = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));
@@ -145,7 +145,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
             if (cursor1.moveToFirst()) {
                 do {
                     Log.d("InDisplayIf", "" + i);
-                    applicantId = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
+                    applicantId = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo));
                     applicantName = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
                     serviceName = cursor1.getString(cursor1.getColumnIndexOrThrow(getString(R.string.ser_tran_service_name)));
                     serviceCode = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));

@@ -483,34 +483,6 @@
         </TableRow>
         <TableRow
             android:layout_marginTop="5dp"
-            android:id="@+id/TableReasonForRejection">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/reason_for_rejection"
-                android:textColor="@android:color/black"
-                android:layout_column="1"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_column="2"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:text="@string/colon"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-            <TextView
-                android:id="@+id/ReasonForRejection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:layout_marginStart="5dp"
-                android:layout_column="3"/>
-        </TableRow>
-        <TableRow
-            android:layout_marginTop="5dp"
             tools:ignore="TooManyViews">
 
             <TextView
@@ -747,35 +719,6 @@
             </RadioGroup>
         </TableRow>
 
-        <TableRow
-            android:id="@+id/lRejection"
-            android:layout_marginTop="5dp">
-
-            <TextView
-                android:text="@string/reason_for_rejection"
-                android:textColor="@android:color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1" />
-            <TextView
-                android:text="@string/colon"
-
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_column="2"/>
-            <Spinner
-                android:id="@+id/spRejectReason1"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/black"
-                android:textAlignment="center"
-                tools:ignore="RtlCompat,UnusedAttribute"
-                android:layout_column="3"/>
-        </TableRow>
     </TableLayout>
 
         <LinearLayout

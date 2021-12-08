@@ -13,10 +13,10 @@ import java.util.ArrayList;
 
 public class PushToAnotherVA_List_Adapter extends BaseAdapter implements Filterable {
 
-    private Context context;
-    private ArrayList<String> SlNo;
-    private ArrayList<String> Applicant_Name;
-    private ArrayList<String> Applicant_ID;
+    Context context;
+    ArrayList<String> SlNo;
+    ArrayList<String> Applicant_Name;
+    ArrayList<String> Applicant_ID;
 
     PushToAnotherVA_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> applicant_Name, ArrayList<String> rd_No) {
         this.context = context;

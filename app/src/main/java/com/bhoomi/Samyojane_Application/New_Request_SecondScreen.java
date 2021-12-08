@@ -62,7 +62,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
     TextView tvName, tvAddress1, tvAddress2, tvAddress3, tvPinCode;
     EditText tvMobile;
     TextView txt_raiseLoc, tvHobli, tvTaluk, tvVA_Name, tv_IDName;
-    String district, taluk,hobli,VA_Circle_Name, VA_Name;
+    String district, taluk,hobli,VA_Circle_Name, VA_Name, VA_IMEI;
     int district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_code, ward_code;
     Button btnNext, btnBack;
     String item_position;
@@ -445,6 +445,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 appTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.ApplicantTiitle));
                 binCom_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom));
                 fatTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle));
+                VA_IMEI = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceTranTable.VA_IMEI));
             }
         } else {
             cursor.close();
@@ -458,12 +459,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         Log.d("ID_Name: ", ""+Id_Name);
         Log.d("Eng_Certi", eng_certi);
         Log.d("Raised_Location: ",""+raisedLoc);
-
-        if (Id_Code == 19){
-            trID.setVisibility(View.GONE);
-        } else {
-            trID.setVisibility(View.VISIBLE);
-        }
 
         sqLiteAssetHelper_masters = new SQLiteAssetHelper_Masters(this, activity);
         sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
@@ -496,12 +491,24 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         tvFatherName.setText(fatherName);
         tvMotherName.setText(motherName);
         tv_IDName.setText(Id_Name);
-        if(Id_Code==19){
-            tv_for_Aadhaar.setText(rationCardNo);
-            tv_for_Aadhaar.setVisibility(View.VISIBLE);
-        }else {
-            tv_for_Aadhaar.setText(rationCardNo);
-            tv_for_Aadhaar.setVisibility(View.VISIBLE);
+
+        if (Id_Code == 19){
+            trID.setVisibility(View.GONE);
+        } else {
+            trID.setVisibility(View.VISIBLE);
+        }
+
+        if (rationCardNo.isEmpty()){
+            trID.setVisibility(View.GONE);
+        } else {
+            trID.setVisibility(View.VISIBLE);
+            if (Id_Code == 19) {
+                tv_for_Aadhaar.setText(rationCardNo);
+                tv_for_Aadhaar.setVisibility(View.VISIBLE);
+            } else {
+                tv_for_Aadhaar.setText(rationCardNo);
+                tv_for_Aadhaar.setVisibility(View.VISIBLE);
+            }
         }
         tvMobile.setText(mobileNo);
         tvAddress1.setText(address1);
@@ -996,33 +1003,37 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         set_and_get_service_parameter.setApp_Mother_Category_8(0);
         set_and_get_service_parameter.setAPP_Mother_Caste_8(0);
         set_and_get_service_parameter.setReason_for_Creamy_Layer_6(0);
+        set_and_get_service_parameter.setUpdated_By_VA_IMEI(VA_IMEI);
+        set_and_get_service_parameter.setUpdated_By_VA_Name(VA_Name);
         set_and_get_service_parameter.setDataUpdateFlag(0);
 
         database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "("
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo1+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.LoginID+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.DesignationCode+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.AppTitle+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.FatTitle+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Upd_MobileNumber +","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Category+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Caste+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.CasteSl+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Income+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Total_No_Years_10+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.NO_Months_10+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Father_Category_8+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Mother_Category_8+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Father_Caste_8+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Mother_Caste_8+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Creamy_Layer_6+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_LoginID+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DesignationCode+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Service_Code+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_AppTitle+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_BinCom+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatTitle+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatherName+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MotherName+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MobileNumber +","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Report_No+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_PinCode+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Category+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Caste+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_CasteSl+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Total_No_Years_10+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_NO_Months_10+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Father_Category_8+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Mother_Category_8+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Father_Caste_8+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Mother_Caste_8+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reason_for_Creamy_Layer_6+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_IMEI+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_Name+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag
                 +") values ('"
                 + set_and_get_service_parameter.getGSCNo1() + "','"
                 + set_and_get_service_parameter.getLoginID() + "',"
@@ -1047,7 +1058,9 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 + set_and_get_service_parameter.getApp_Mother_Category_8() + ","
                 + set_and_get_service_parameter.getAPP_Father_Caste_8() + ","
                 + set_and_get_service_parameter.getAPP_Mother_Caste_8() + ","
-                + set_and_get_service_parameter.getReason_for_Creamy_Layer_6() + ","
+                + set_and_get_service_parameter.getReason_for_Creamy_Layer_6() + ",'"
+                + set_and_get_service_parameter.getUpdated_By_VA_IMEI() + "','"
+                + set_and_get_service_parameter.getUpdated_By_VA_Name() + "',"
                 + set_and_get_service_parameter.getDataUpdateFlag() + ")");
 
         Log.d("Database", "ServiceParameterTable Database Inserted");

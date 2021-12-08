@@ -47,91 +47,51 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     public static String Service_Name = "Service_Name";
     public static String Service_Name_k = "Service_Name_k";
     public static String DataUpdateFlag = "DataUpdateFlag";
-    public static String Push_Flag = "ST_Push_Flag";
+    public static String Push_Flag = "isVAModifiedVillage";
+    public static String VA_IMEI = "VA_IMEI";
+    public static String VA_Name = "VA_Name";
 
     //Updated ST Table Values
-    public static String GSCNo1 = "GscNo1";
-    public static String LoginID = "LoginID";
-//    public static String Service_Code = "FacilityCode";
-    public static String DesignationCode = "DesignationCode";
-    public static String DifferFromAppinformation = "DifferFromApplicant";
-    public static String Can_Certificate_Given = "CanbeIssued";
-    public static String Remarks = "Remarks";
-    public static String Report_No = "ReportNo";
-    public static String ReportDate = "ReportDate";
-    public static String AppTitle = "AppTitle";
-//    public static String BinCom = "BinCom";
-    public static String FatTitle = "FatTitle";
-//    public static String FatherName = "FatherName";
-//    public static String MotherName = "MotherName";
-    public static String Upd_MobileNumber = "MobileNumber";
-//    public static String Address1 = "Address1";
-//    public static String Address2 = "Address2";
-//    public static String Address3 = "Address3";
-//    public static String PinCode = "Pincode";
-    public static String Applicant_Category = "ResCatCode";
-    public static String Applicant_Caste = "CasteCode";
-    public static String CasteSl = "CasteSl";
-    public static String Income = "Income";
-    public static String Total_No_Years_10 = "NoofYears";
-    public static String NO_Months_10 = "NoofMonths";
-    public static String App_Father_Category_8 = "FatherCategory";
-    public static String App_Mother_Category_8 = "MotherCategory";
-    public static String APP_Father_Caste_8 = "FatherCaste";
-    public static String APP_Mother_Caste_8 = "MotherCaste";
-    public static String Belongs_Creamy_Layer_6 = "CreamyLayer";
-    public static String Reason_for_Creamy_Layer_6 = "ReasonCreamyLayer";
-    public static String Reside_At_Stated_Address_10 = "ResAddress";
-    public static String Place_Match_With_RationCard_10 = "PlaceMatchWithRationCard";
-    public static String Photo = "Photo";
-    public static String vLat = "vLat";
-    public static String vLong = "vLong";
-    public static String UploadedDate = "UploadedDate";
-//    public static String DataUpdateFlag = "DataUpdateFlag";
-    public static String Updated_By_VA_IMEI = "IMEI";
-    public static String Updated_By_VA_Name = "VARIName";
-
-    //Service Parameters of service_code-8
-    public static String Num_Years_8 = "Num_Years_8";
-
-    //RI Module
-
-//    public static String RI_vLat = "RI_vLat";
-//    public static String RI_vLong = "RI_vLong";
-//    public static String RI_DataUpdateFlag = "RI_DataUpdateFlag";
-//
-//    public static String RI_Applicant_Category = "RI_Applicant_Category";
-//    public static String RI_Applicant_Caste = "RI_Applicant_Caste";
-//    public static String RI_Accepted_VA_information = "RI_Accepted_VA_information";
-//    public static String RI_Annual_Income = "RI_Annual_Income";
-//
-//    //Service Parameters of service_code-6
-//    public static String RI_Belongs_Creamy_Layer_6 = "RI_Belongs_Creamy_Layer_6";
-//    public static String RI_Reason_for_Creamy_Layer_6 = "RI_Reason_for_Creamy_Layer_6";
-//
-//    //Service Parameters of service_code-8
-//    public static String RI_Num_Years_8 = "RI_Num_Years_8";
-//    public static String RI_App_Father_Category_8 = "RI_App_Father_Category_8";
-//    public static String RI_APP_Father_Caste_8 = "RI_APP_Father_Caste_8";
-//    public static String RI_App_Mother_Category_8 = "RI_App_Mother_Category_8";
-//    public static String RI_APP_Mother_Caste_8 = "RI_APP_Mother_Caste_8";
-//    public static String RI_Remarks = "RI_Remarks";
-//
-//    //Service Parameters of service_code-10
-//    public static String RI_Total_No_Years_10 = "RI_Total_No_Years_10";
-//    public static String RI_NO_Months_10 = "RI_NO_Months_10";
-//    public static String RI_Reside_At_Stated_Address_10 = "RI_Reside_At_Stated_Address_10";
-//    public static String RI_Place_Match_With_RationCard_10 = "RI_Place_Match_With_RationCard_10";
-//    public static String RI_Pur_for_Cert_Code_10 = "RI_Pur_for_Cert_Code_10";
-//
-//    //Update By
-//    public static String Updated_By_RI_IMEI = "Updated_By_RI_IMEI";
-//    public static String Updated_By_RI_MobileNum = "Updated_By_RI_MobileNum";
-//    public static String Updated_By_RI_Name = "Updated_By_RI_Name";
-//
-//    //Additional Parameters for RI
-//    public static String RI_Can_Certificate_Given_as_RI = "RI_Can_Certificate_Given_as_RI";
-//    public static String RI_Reason_for_Rejection_as_RI = "RI_Reason_for_Rejection_as_RI";
+    public static String UPD_GSCNo = "GscNo1";
+    public static String UPD_LoginID = "LoginID";
+    public static String UPD_Service_Code = "FacilityCode";
+    public static String UPD_DesignationCode = "DesignationCode";
+    public static String UPD_DifferFromAppinformation = "DifferFromApplicant";
+    public static String UPD_Can_Certificate_Given = "CanbeIssued";
+    public static String UPD_Remarks = "Remarks";
+    public static String UPD_Report_No = "ReportNo";
+    public static String UPD_ReportDate = "ReportDate";
+    public static String UPD_AppTitle = "AppTitle";
+    public static String UPD_BinCom = "BinCom";
+    public static String UPD_FatTitle = "FatTitle";
+    public static String UPD_FatherName = "FatherName";
+    public static String UPD_MotherName = "MotherName";
+    public static String UPD_MobileNumber = "MobileNumber";
+    public static String UPD_Address1 = "Address1";
+    public static String UPD_Address2 = "Address2";
+    public static String UPD_Address3 = "Address3";
+    public static String UPD_PinCode = "Pincode";
+    public static String UPD_Applicant_Category = "ResCatCode";
+    public static String UPD_Applicant_Caste = "CasteCode";
+    public static String UPD_CasteSl = "CasteSl";
+    public static String UPD_Income = "Income";
+    public static String UPD_Total_No_Years_10 = "NoofYears";
+    public static String UPD_NO_Months_10 = "NoofMonths";
+    public static String UPD_App_Father_Category_8 = "FatherCategory";
+    public static String UPD_App_Mother_Category_8 = "MotherCategory";
+    public static String UPD_APP_Father_Caste_8 = "FatherCaste";
+    public static String UPD_APP_Mother_Caste_8 = "MotherCaste";
+    public static String UPD_Belongs_Creamy_Layer_6 = "CreamyLayer";
+    public static String UPD_Reason_for_Creamy_Layer_6 = "ReasonCreamyLayer";
+    public static String UPD_Reside_At_Stated_Address_10 = "ResAddress";
+    public static String UPD_Place_Match_With_RationCard_10 = "PlaceMatchWithRationCard";
+    public static String UPD_Photo = "Photo";
+    public static String UPD_vLat = "vLat";
+    public static String UPD_vLong = "vLong";
+    public static String UPD_UploadedDate = "UploadedDate";
+    public static String UPD_DataUpdateFlag = "DataUpdateFlag";
+    public static String UPD_VA_RI_IMEI = "IMEI";
+    public static String UPD_VA_RI_Name = "VARIName";
 
     String CREATE_TABLE ="CREATE TABLE " + TABLE_NAME +"("
             + District_Code+" int,"+Taluk_Code+" int,"+Hobli_Code+" int,"+Village_Code+" int,"+ Town_Code+" int,"
@@ -141,22 +101,23 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
             + FatherName +" TEXT,"+ MotherName +" TEXT,"+ ID_TYPE +" int,"+ IDNo +" TEXT," + Mobile_No+" decimal(10,0),"
             + Address1+" TEXT,"+Address2+" TEXT,"+Address3+" TEXT,"+ PinCode +" int,"+ ST_applicant_photo+" TEXT, "
             + ST_Eng_Certificate+" TEXT," + ReservationCategory+ " int,"+ Caste+ " int,"+ GST_No_Mths_Applied+ " int,"
-            + GST_No_Years_Applied+ " int," + AnnualIncome + " TEXT," + Push_Flag + " TEXT," + DataUpdateFlag+" int)";
+            + GST_No_Years_Applied+ " int," + AnnualIncome + " TEXT," + Push_Flag + " TEXT,"+ VA_IMEI + " TEXT,"
+            + VA_Name + " TEXT," + DataUpdateFlag+" int)";
 
     String CREATE_TABLE_1 ="CREATE TABLE " + TABLE_NAME_1 +"("
-            + GSCNo1 +" TEXT," + LoginID+" TEXT," + Service_Code +" int," + DesignationCode +" int,"
-            + DifferFromAppinformation +" TEXT,"//character
-            + Can_Certificate_Given +" TEXT,"//character
-            + Remarks +" TEXT," + Report_No +" TEXT," + ReportDate +" datetime," + AppTitle +" int," + BinCom +" int,"
-            + FatTitle +" int," + FatherName +" TEXT," + MotherName +" TEXT," + Upd_MobileNumber +" decimal(10,0),"
-            + Address1 +" TEXT," + Address2 +" TEXT," + Address3 +" TEXT," + PinCode +" int," + Applicant_Category +" int,"
-            + Applicant_Caste +" int," + CasteSl +" int," + Income +" int," + Total_No_Years_10 +" int,"
-            + NO_Months_10 +" int," + App_Father_Category_8 +" int," + App_Mother_Category_8 +" int,"
-            + APP_Father_Caste_8 +" int," + APP_Mother_Caste_8 +" int," + Belongs_Creamy_Layer_6 +" TEXT,"
-            + Reason_for_Creamy_Layer_6 +" int," + Reside_At_Stated_Address_10 +" TEXT,"
-            + Place_Match_With_RationCard_10 +" TEXT," + Photo +" int," + vLat +" double," + vLong +" double,"
-            + UploadedDate +" datetime," + DataUpdateFlag +" int," + Updated_By_VA_IMEI +" bigint,"
-            + Updated_By_VA_Name +" TEXT)";
+            + UPD_GSCNo +" TEXT," + UPD_LoginID+" TEXT," + UPD_Service_Code +" int," + UPD_DesignationCode +" int,"
+            + UPD_DifferFromAppinformation +" TEXT,"//character
+            + UPD_Can_Certificate_Given +" TEXT,"//character
+            + UPD_Remarks +" TEXT," + UPD_Report_No +" TEXT," + UPD_ReportDate +" datetime," + UPD_AppTitle +" int," + UPD_BinCom +" int,"
+            + UPD_FatTitle +" int," + UPD_FatherName +" TEXT," + UPD_MotherName +" TEXT," + UPD_MobileNumber +" decimal(10,0),"
+            + UPD_Address1 +" TEXT," + UPD_Address2 +" TEXT," + UPD_Address3 +" TEXT," + UPD_PinCode +" int," + UPD_Applicant_Category +" int,"
+            + UPD_Applicant_Caste +" int," + UPD_CasteSl +" int," + UPD_Income +" int," + UPD_Total_No_Years_10 +" int,"
+            + UPD_NO_Months_10 +" int," + UPD_App_Father_Category_8 +" int," + UPD_App_Mother_Category_8 +" int,"
+            + UPD_APP_Father_Caste_8 +" int," + UPD_APP_Mother_Caste_8 +" int," + UPD_Belongs_Creamy_Layer_6 +" TEXT,"
+            + UPD_Reason_for_Creamy_Layer_6 +" int," + UPD_Reside_At_Stated_Address_10 +" TEXT,"
+            + UPD_Place_Match_With_RationCard_10 +" TEXT," + UPD_Photo +" int," + UPD_vLat +" double," + UPD_vLong +" double,"
+            + UPD_UploadedDate +" datetime," + UPD_DataUpdateFlag +" int," + UPD_VA_RI_IMEI +" bigint,"
+            + UPD_VA_RI_Name +" TEXT)";
 
     public DataBaseHelperClass_btnDownload_ServiceTranTable(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -1,6 +1,5 @@
 package com.bhoomi.Samyojane_Application;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,10 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.Settings;
@@ -26,15 +22,10 @@ import android.widget.Toast;
 import com.bhoomi.Samyojane_Application.api.APIClient;
 import com.bhoomi.Samyojane_Application.api.APIInterface_NIC;
 import com.google.gson.JsonObject;
-
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
+import com.google.gson.JsonPrimitive;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,41 +33,17 @@ import retrofit2.Response;
 
 public class UploadScreen extends AppCompatActivity {
 
-//    String SOAP_ACTION1 = "http://tempuri.org/Update_ServiceTranTable ";
-//    public final String OPERATION_NAME1 = "Update_ServiceTranTable";  //Method_name
-
-    String SOAP_ACTION2 = "http://tempuri.org/Insert_ServiceParameterTable_Auto";
-    public final String OPERATION_NAME2 = "Insert_ServiceParameterTable_Auto";  //Method_name
-
-    public final String WSDL_TARGET_NAMESPACE = "http://tempuri.org/";  // NAMESPACE
-    //String SOAP_ADDRESS = "http://164.100.133.30/NK_MobileApp/WebService.asmx";
-
     Button btnUpload, btnok;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    String VA_Accepts_Applicant_information,name, fatherName, motherName,Mobile_No,RationCard_No, Address1, Address2, Address3, PinCode, Eng_Certif, Report_No, Aadhar_NO, Aadhaar_Photo, DataUpdateFlag, District_Code, Taluk_Code, Hobli_Code, Village_Code, Town_Code, Ward_Code, Service_Code,Applicant_Id;
-    String Annual_Income, Photo, vLat, vLong;
     ProgressDialog dialog;
     TextView tvTotalUpload, tvAlreadyUploaded, tvNotUploaded, tvAfterUploaded;
     int count_TotalCaptured=0, count_AfterUpload=0, count_BalanceRecord;
-    int i=0;
-    String Can_Certificate_Given, Reason_for_Rejection, ST_applicant_photo;
-    //Service Parameters of service_code-6
-    String Applicant_Category, Applicant_Caste, Belongs_Creamy_Layer_6, Reason_for_Creamy_Layer_6;
-    //Service Parameters of service_code-8
-    String Num_Years_8, App_Father_Category_8, APP_Father_Caste_8, App_Mother_Category_8, APP_Mother_Caste_8, Remarks;
-    //Service Parameters of service_code-10
-    String Total_No_Years_10, NO_Months_10, Reside_At_Stated_Address_10, Place_Match_With_RationCard_10, Pur_for_Cert_Code_10;
-
-    HttpTransportSE androidHttpTransport;
-    SoapSerializationEnvelope envelope;
-    SoapPrimitive resultString;
     String resultFromServer;
 
-    String Updated_By_VA_Name, Updated_By_VA_IMEI, Updated_By_VA_MobileNum;
+    String Updated_By_VA_Name, Updated_By_VA_IMEI;
     APIInterface_NIC apiInterface_nic;
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,16 +68,14 @@ public class UploadScreen extends AppCompatActivity {
         Intent i = getIntent();
         Updated_By_VA_Name = i.getStringExtra("VA_Name");
         Updated_By_VA_IMEI = i.getStringExtra("IMEI_Num");
-        Updated_By_VA_MobileNum = i.getStringExtra("mob_Num");
         Log.d("Updated_By_VA_Name", ""+Updated_By_VA_Name);
         Log.d("Updated_By_VA_IMEI", ""+Updated_By_VA_IMEI);
-        Log.d("Updated_By_VA_MobileNum", ""+Updated_By_VA_MobileNum);
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(UploadScreen.this);
         database = openHelper.getWritableDatabase();
 
         final Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1+" SP left join "
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" ST on ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +"= SP."+DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo1
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" ST on ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +"= SP."+DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo
                 +" where (ST."+ DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1 and SP."
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1) or SP."+ DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1", null);
 
@@ -191,52 +156,17 @@ public class UploadScreen extends AppCompatActivity {
 
     public void UploadFieldVerificationData(){
 
+        String Applicant_Id;
+        UpdateStatusCLASS updateStatusCLASS;
+        dialog.show();
         apiInterface_nic = APIClient.getClient(getString(R.string.MobAPI_New_NIC)).create(APIInterface_NIC.class);
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(UploadScreen.this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo +","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromAppinformation +","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName +","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName +","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Upd_MobileNumber +","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Category+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Caste+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Belongs_Creamy_Layer_6+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Creamy_Layer_6+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Num_Years_8+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Father_Category_8+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Father_Caste_8+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Mother_Category_8+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Mother_Caste_8+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Total_No_Years_10+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.NO_Months_10+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Reside_At_Stated_Address_10+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Place_Match_With_RationCard_10+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Photo+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.vLat+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.vLong+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.Can_Certificate_Given+","
-                + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag
-                +" from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1+" where "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+"=1", null);
+        Cursor cursor = database.rawQuery("select * from "
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1+" where "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag+"=1", null);
         try {
             if (cursor.getCount() > 0) {
 
@@ -245,86 +175,100 @@ public class UploadScreen extends AppCompatActivity {
                         Log.d("Loop_entering_here", "");
 
                         try {
-                            UpdateStatusCLASS updateStatusCLASS = new UpdateStatusCLASS();
-                            updateStatusCLASS.setGSCNo1(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo)));
-                            updateStatusCLASS.setLoginID(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.LoginID)));
-                            updateStatusCLASS.setService_Code(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code)));
-                            updateStatusCLASS.setDesignationCode(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.DesignationCode)));
-                            updateStatusCLASS.setDifferFromAppinformation(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromAppinformation)));
-                            updateStatusCLASS.setCan_Certificate_Given(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Can_Certificate_Given)));
-                            updateStatusCLASS.setRemarks(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks)));
-                            updateStatusCLASS.setReport_No(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Report_No)));
-                            updateStatusCLASS.setAppTitle(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AppTitle)));
-                            updateStatusCLASS.setBinCom(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom)));
-                            updateStatusCLASS.setFatTitle(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.FatTitle)));
-                            updateStatusCLASS.setFatherName(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName)));
-                            updateStatusCLASS.setMotherName(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName)));
-                            updateStatusCLASS.setUpd_MobileNumber(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Upd_MobileNumber)));
-                            updateStatusCLASS.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1)));
-                            updateStatusCLASS.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Address2)));
-                            updateStatusCLASS.setAddress3(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Address3)));
-                            updateStatusCLASS.setPinCode(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode)));
-                            updateStatusCLASS.setApplicant_Category(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Category)));
-                            updateStatusCLASS.setApplicant_Caste(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Caste)));
-                            updateStatusCLASS.setCasteSl(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.CasteSl)));
-                            updateStatusCLASS.setIncome(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Income)));
-                            updateStatusCLASS.setTotal_No_Years_10(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Total_No_Years_10)));
-                            updateStatusCLASS.setNO_Months_10(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.NO_Months_10)));
-                            updateStatusCLASS.setApp_Father_Category_8(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.App_Father_Category_8)));
-                            updateStatusCLASS.setApp_Mother_Category_8(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.App_Mother_Category_8)));
-                            updateStatusCLASS.setAPP_Father_Caste_8(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Father_Caste_8)));
-                            updateStatusCLASS.setAPP_Mother_Caste_8(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Mother_Caste_8)));
-                            updateStatusCLASS.setBelongs_Creamy_Layer_6(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Belongs_Creamy_Layer_6)));
-                            updateStatusCLASS.setReason_for_Creamy_Layer_6(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Creamy_Layer_6)));
-                            updateStatusCLASS.setReside_At_Stated_Address_10(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Reside_At_Stated_Address_10)));
-                            updateStatusCLASS.setPlace_Match_With_RationCard_10(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Place_Match_With_RationCard_10)));
-                            updateStatusCLASS.setPhoto(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Photo)));
-                            updateStatusCLASS.setvLat(cursor.getDouble(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.vLat)));
-                            updateStatusCLASS.setvLong(cursor.getDouble(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.vLong)));
-                            updateStatusCLASS.setDataUpdateFlag(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag)));
-                            updateStatusCLASS.setReportDate(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ReportDate)));
+                            Applicant_Id = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo));
+                            updateStatusCLASS = new UpdateStatusCLASS();
+                            updateStatusCLASS.setGSCNo1(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo)));
+                            updateStatusCLASS.setLoginID(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_LoginID)));
+                            updateStatusCLASS.setService_Code(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Service_Code)));
+                            updateStatusCLASS.setDesignationCode(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DesignationCode)));
+                            updateStatusCLASS.setDifferFromAppinformation(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DifferFromAppinformation)));
+                            updateStatusCLASS.setCan_Certificate_Given(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given)));
+                            updateStatusCLASS.setRemarks(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks)));
+                            updateStatusCLASS.setReport_No(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Report_No)));
+                            updateStatusCLASS.setAppTitle(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_AppTitle)));
+                            updateStatusCLASS.setBinCom(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_BinCom)));
+                            updateStatusCLASS.setFatTitle(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatTitle)));
+                            updateStatusCLASS.setFatherName(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatherName)));
+                            updateStatusCLASS.setMotherName(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MotherName)));
+                            updateStatusCLASS.setUpd_MobileNumber(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MobileNumber)));
+                            updateStatusCLASS.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address1)));
+                            updateStatusCLASS.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address2)));
+                            updateStatusCLASS.setAddress3(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address3)));
+                            updateStatusCLASS.setPinCode(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_PinCode)));
+                            updateStatusCLASS.setApplicant_Category(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Category)));
+                            updateStatusCLASS.setApplicant_Caste(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Caste)));
+                            updateStatusCLASS.setCasteSl(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_CasteSl)));
+                            updateStatusCLASS.setIncome(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income)));
+                            updateStatusCLASS.setTotal_No_Years_10(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Total_No_Years_10)));
+                            updateStatusCLASS.setNO_Months_10(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_NO_Months_10)));
+                            updateStatusCLASS.setApp_Father_Category_8(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Father_Category_8)));
+                            updateStatusCLASS.setApp_Mother_Category_8(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Mother_Category_8)));
+                            updateStatusCLASS.setAPP_Father_Caste_8(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Father_Caste_8)));
+                            updateStatusCLASS.setAPP_Mother_Caste_8(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Mother_Caste_8)));
+                            updateStatusCLASS.setBelongs_Creamy_Layer_6("Y");
+                            updateStatusCLASS.setReason_for_Creamy_Layer_6(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reason_for_Creamy_Layer_6)));
+                            updateStatusCLASS.setReside_At_Stated_Address_10(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reside_At_Stated_Address_10)));
+                            updateStatusCLASS.setPlace_Match_With_RationCard_10(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Place_Match_With_RationCard_10)));
+                            updateStatusCLASS.setPhoto(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo)));
+                            updateStatusCLASS.setvLat(cursor.getDouble(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLat)));
+                            updateStatusCLASS.setvLong(cursor.getDouble(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLong)));
+                            updateStatusCLASS.setDataUpdateFlag(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag)));
+                            updateStatusCLASS.setReportDate(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_ReportDate)));
                             updateStatusCLASS.setUploadedDate(Calendar.getInstance().getTime());
-                            updateStatusCLASS.setUpdated_By_VA_IMEI(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Updated_By_VA_IMEI)));
-                            updateStatusCLASS.setUpdated_By_VA_Name(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Updated_By_VA_Name)));
+                            updateStatusCLASS.setUpdated_By_VA_IMEI(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_IMEI)));
+                            updateStatusCLASS.setUpdated_By_VA_Name(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_Name)));
 
 
                             Call<JsonObject> call = apiInterface_nic.UpdateStatus(updateStatusCLASS);
+                            String finalApplicant_Id = Applicant_Id;
                             call.enqueue(new Callback<JsonObject>() {
                                 @Override
                                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                                     JsonObject jsonObject1 = response.body();
                                     Log.d("response_server",jsonObject1 + "");
+                                    if (Objects.requireNonNull(jsonObject1).isJsonNull()){
+                                        Toast.makeText(getApplicationContext(), ""+response.message() , Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    } else {
+                                        JsonPrimitive jsonObject2 = jsonObject1.getAsJsonPrimitive("StatusMessage");
+                                        JsonPrimitive jsonObject3 = jsonObject1.getAsJsonPrimitive("StatusCode");
+                                        String StatusMessage = jsonObject2.toString();
+                                        String StatusCode = jsonObject3.toString();
+                                        Log.d("StatusCode", StatusCode + ", StatusMessage: " + StatusMessage);
 
-                                    resultFromServer = String.valueOf(resultString);
-                                    if(resultFromServer.equals("0")) {
-                                        runOnUiThread(() -> {
-                                            //Toast.makeText(getApplicationContext(), "Data Uploaded Successfully" , Toast.LENGTH_SHORT).show();
-                                            Log.d("Request_", "UpdateServiceParameterTable" + "Data Uploaded Successfully");
-                                            count_AfterUpload++;
-                                            count_BalanceRecord--;
-                                            tvTotalUpload.setText(String.valueOf(count_TotalCaptured));
-                                            tvAlreadyUploaded.setText(String.valueOf(count_AfterUpload));
-                                            tvNotUploaded.setText(String.valueOf(count_BalanceRecord));
-                                            Log.d("Count_of_Records", "count_TotalCaptured : " + count_TotalCaptured + "\ncount_AfterUpload : " + count_AfterUpload + "\ncount_AfterUpload : " + count_BalanceRecord);
-                                            if (count_TotalCaptured == count_AfterUpload && count_BalanceRecord == 0) {
-                                                tvAfterUploaded.setVisibility(View.VISIBLE);
-                                                btnok.setVisibility(View.VISIBLE);
-                                                btnUpload.setVisibility(View.GONE);
-                                            }
+                                        resultFromServer = StatusCode;
+                                        if (resultFromServer.equals("0")) {
+                                            runOnUiThread(() -> {
+                                                //Toast.makeText(getApplicationContext(), "Data Uploaded Successfully" , Toast.LENGTH_SHORT).show();
+                                                Log.d("Request_", "UpdateServiceParameterTable" + "Data Uploaded Successfully");
+                                                count_AfterUpload++;
+                                                count_BalanceRecord--;
+                                                tvTotalUpload.setText(String.valueOf(count_TotalCaptured));
+                                                tvAlreadyUploaded.setText(String.valueOf(count_AfterUpload));
+                                                tvNotUploaded.setText(String.valueOf(count_BalanceRecord));
+                                                Log.d("Count_of_Records", "count_TotalCaptured : " + count_TotalCaptured + "\ncount_AfterUpload : " + count_AfterUpload + "\ncount_AfterUpload : " + count_BalanceRecord);
+                                                if (count_TotalCaptured == count_AfterUpload && count_BalanceRecord == 0) {
+                                                    tvAfterUploaded.setVisibility(View.VISIBLE);
+                                                    btnok.setVisibility(View.VISIBLE);
+                                                    btnUpload.setVisibility(View.GONE);
+                                                }
 
-                                        });
-
-                                        database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + Applicant_Id + "'");
-                                        Log.d("Local_Result", "A row deleted Successfully");
-                                    }
-                                    else {
-                                        Log.d("Request_", "UpdateServiceParameterTable" +" Data not uploaded");
+                                            });
+                                            dialog.dismiss();
+                                            database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
+                                                    + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + finalApplicant_Id + "'");
+                                            Log.d("Local_Result", "A row deleted Successfully");
+                                        } else {
+                                            Log.d("Request_", "UpdateServiceParameterTable" + " Data not uploaded");
+                                        }
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                                    dialog.dismiss();
+                                    t.printStackTrace();
+                                    Toast.makeText(getApplicationContext(), ""+t.getLocalizedMessage() , Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -345,9 +289,7 @@ public class UploadScreen extends AppCompatActivity {
                             });
                         }
                     }while (cursor.moveToNext());
-                    dialog.dismiss();
                 }
-                dialog.dismiss();
 
             } else {
                 cursor.close();

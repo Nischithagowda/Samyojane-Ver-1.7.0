@@ -23,21 +23,21 @@ import java.util.ArrayList;
 
 public class RC_Member_List_Adapter extends BaseAdapter implements Filterable {
 
-    private Context context;
-    private ArrayList<String> SlNo;
-    private ArrayList<String> Member_Name;
-    private ArrayList<String> Member_Id;
-    private ArrayList<String> Rc_num;
-    private ArrayList<String> DataEntry;
-    private ArrayList<String> DistCode_ass;
-    private ArrayList<String> TalCode_ass;
-    private ArrayList<String> HobCode_ass;
-    private ArrayList<String> uName_get_Array;
-    private String member_ID, rc_num, dataEntry, distCode_ass, talCode_ass, hobCode_ass, uName_get;
+    Context context;
+    ArrayList<String> SlNo;
+    ArrayList<String> Member_Name;
+    ArrayList<String> Member_Id;
+    ArrayList<String> Rc_num;
+    ArrayList<String> DataEntry;
+    ArrayList<String> DistCode_ass;
+    ArrayList<String> TalCode_ass;
+    ArrayList<String> HobCode_ass;
+    ArrayList<String> uName_get_Array;
+    String member_ID, rc_num, dataEntry, distCode_ass, talCode_ass, hobCode_ass, uName_get;
     ProgressDialog dialog;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    private String freeze, inactive;
+    String freeze, inactive;
 
     RC_Member_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> member_Name,
                            ArrayList<String> member_Id, ArrayList<String> rc_num, ArrayList<String> DataEntry,

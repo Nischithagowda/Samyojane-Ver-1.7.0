@@ -441,47 +441,6 @@
                     </TableRow>
 
                     <TableRow
-                        android:layout_marginTop="10dp">
-
-                        <TextView
-                            android:id="@+id/tvPurpose"
-                            android:text="@string/purpose_for_which_certificate_nneeded"
-                            android:textColor="@android:color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_column="1" />
-
-                        <TextView
-                            android:text="@string/colon"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:layout_width="10dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp" />
-
-                        <TextView
-                            android:id="@+id/Purpose"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_column="3"/>
-
-                        <Spinner
-                            android:id="@+id/spPurpose"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@android:color/black"
-                            android:textAlignment="center"
-                            tools:ignore="RtlCompat,UnusedAttribute"
-                            android:layout_marginTop="10dp"/>
-
-                    </TableRow>
-
-                    <TableRow
                         android:layout_marginTop="10dp"
                         android:id="@+id/lReservationGiven">
 
@@ -787,34 +746,6 @@
                 </RadioGroup>
             </TableRow>
 
-            <TableRow
-                android:id="@+id/lRejection"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:text="@string/reason_for_rejection"
-                    android:textColor="@android:color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1" />
-                <TextView
-                    android:text="@string/colon"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_width="10dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_column="2"/>
-                <Spinner
-                    android:id="@+id/spRejectReason1"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/black"
-                    android:textAlignment="center"
-                    tools:ignore="RtlCompat,UnusedAttribute"
-                    android:layout_column="3"/>
-            </TableRow>
         </TableLayout>
 
             <LinearLayout

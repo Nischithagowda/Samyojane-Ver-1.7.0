@@ -15,13 +15,13 @@ import java.util.ArrayList;
 
 public class RC_VA_List_Adapter extends BaseAdapter implements Filterable {
 
-    private ArrayList<String> SlNo;
-    private ArrayList<String> RCList;
-    private ArrayList<String> DistCode_ass;
-    private ArrayList<String> TalCode_ass;
-    private ArrayList<String> HobCode_ass;
-    private ArrayList<String> uName_get_Array;
-    private Context context;
+    ArrayList<String> SlNo;
+    ArrayList<String> RCList;
+    ArrayList<String> DistCode_ass;
+    ArrayList<String> TalCode_ass;
+    ArrayList<String> HobCode_ass;
+    ArrayList<String> uName_get_Array;
+    Context context;
 
     String rc_num, districtCode, talukCode, hobliCode, uName_get;
 

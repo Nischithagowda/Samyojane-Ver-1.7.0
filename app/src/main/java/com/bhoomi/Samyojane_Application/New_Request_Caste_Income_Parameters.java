@@ -48,14 +48,14 @@ import java.util.Objects;
 public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
     TextView applicant_infor;
-    Spinner spCategory, spReasons, spRejectReason;
-    String strReason, strRejectionReason, strCategory, strSearchCaste;
-    int posReason, posRejectionReason;
+    Spinner spCategory, spReasons;
+    String strReason, strCategory, strSearchCaste;
+    int posReason;
     TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName, tvCaste;
     String district, taluk, hobli, VA_Name,VA_Circle_Name, applicant_Id, rationCardNo, aadharNo, mobileNo, address1;
     int district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_code, ward_code;
     String eng_certi;
-    ArrayAdapter<CharSequence> adapter_rejection_reason, adapter_reason;
+    ArrayAdapter<CharSequence> adapter_reason;
     Button btnCamera, btnSave, btnBack;
     private static final int CAMERA_REQUEST = 1;
     byte[] imageInByte;
@@ -72,13 +72,13 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
     String item_position;
     String strSearchVillageName, strSearchServiceName, town_Name, ward_Name, option_Flag;
     String villageCode, serviceCode;
-    TableRow lRejection, trCatCaste;
+    TableRow trCatCaste;
     RadioGroup radiogroup, radioGroup1;
     RadioButton radioButton1, radioButton2;
     RadioButton radioButton11, radioButton22;
     String option, option1;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
-    int reason_Code_1, reason_Code_2;
+    int reason_Code_1;
     AutoCompleteTextView autoSearchCaste;
     int getCatCode=0, getCasteCode=0;
     ProgressDialog dialog;
@@ -187,7 +187,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         autoSearchCaste = findViewById(R.id.autoSearchCaste);
         spCategory = findViewById(R.id.spCategory);
         spReasons = findViewById(R.id.spReasons);
-        spRejectReason = findViewById(R.id.spRejectReason);
         btnCamera = findViewById(R.id.btnCamera);
         btnSave = findViewById(R.id.btnSave);
         tvIncome = findViewById(R.id.tvIncome);
@@ -201,7 +200,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         radioButton2 = findViewById(R.id.radioButton2);
         radioButton11 = findViewById(R.id.radioButton11);
         radioButton22 = findViewById(R.id.radioButton22);
-        lRejection = findViewById(R.id.lRejection);
         trCatCaste = findViewById(R.id.trCatCaste);
         tvCaste = findViewById(R.id.tvCaste);
 
@@ -213,7 +211,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
         imageView.setVisibility(View.GONE);
         spReasons.setVisibility(View.GONE);
-        lRejection.setVisibility(View.GONE);
         tvCaste.setVisibility(View.GONE);
 
         Intent i = getIntent();
@@ -329,21 +326,14 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
             // find which radio button is selected
             if (checkedId == R.id.radioButton11) {
                 option1 = getString(R.string.yes);
-                lRejection.setVisibility(View.GONE);
-                spRejectReason.setSelection(0);
             } else if (checkedId == R.id.radioButton22) {
                 option1 = getString(R.string.no);
-                lRejection.setVisibility(View.VISIBLE);
             }
         });
 
         adapter_reason = ArrayAdapter.createFromResource(this, R.array.Reason_array, R.layout.spinner_item_color);
         adapter_reason.setDropDownViewResource(R.layout.spinner_item_dropdown);
         spReasons.setAdapter(adapter_reason);
-
-        adapter_rejection_reason = ArrayAdapter.createFromResource(this, R.array.RejectionReason, R.layout.spinner_item_color);
-        adapter_rejection_reason.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        spRejectReason.setAdapter(adapter_rejection_reason);
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_Caste_Income_Parameters.this);
         database = openHelper.getWritableDatabase();
@@ -516,25 +506,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
             }
         });
 
-        spRejectReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                strRejectionReason = String.valueOf(spRejectReason.getSelectedItem());
-                posRejectionReason = position;
-                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(New_Request_Caste_Income_Parameters.this);
-                sqlLiteOpenHelper_class.open_Reasons_Master_Tbl();
-                reason_Code_2 = sqlLiteOpenHelper_class.Get_CertificateRejectionReason(strRejectionReason, getString(R.string.reasons_tbl_reason_name));
-                Log.d("Number", ""+ reason_Code_2);
-                Log.d("Item_Position", ""+ position);
-                Log.d("Spinner_Value", ""+strRejectionReason);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         btnCamera.setOnClickListener(v -> {
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
@@ -626,19 +597,10 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                                 Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
 
                                 if (income_len >= 4 && income_Value>=1000) {
-                                    if (option1.equals(getString(R.string.no))) {
-                                        if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                            StoreData_in_DB();
-                                        } else {
-                                            ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
-                                            Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
-                                        }
+                                    if (TextUtils.isEmpty(strRemarks)) {
+                                        tvRemarks.setError(getString(R.string.field_canno_null));
                                     } else {
-                                        if (TextUtils.isEmpty(strRemarks)) {
-                                            tvRemarks.setError(getString(R.string.field_canno_null));
-                                        } else {
-                                            StoreData_in_DB();
-                                        }
+                                        StoreData_in_DB();
                                     }
                                 } else {
                                     tvIncome.setError(getString(R.string.incorrect_value));
@@ -658,23 +620,10 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                             Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
 
                             if (income_len >= 4 && income_Value>=1000) {
-                                if (option1.equals(getString(R.string.no))) {
-                                    if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                        if (TextUtils.isEmpty(strRemarks)) {
-                                            tvRemarks.setError(getString(R.string.field_canno_null));
-                                        } else {
-                                            StoreData_in_DB();
-                                        }
-                                    } else {
-                                        ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.reason_for_rejection));
-                                        Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
-                                    }
+                                if (TextUtils.isEmpty(strRemarks)) {
+                                    tvRemarks.setError(getString(R.string.field_canno_null));
                                 } else {
-                                    if (TextUtils.isEmpty(strRemarks)) {
-                                        tvRemarks.setError(getString(R.string.field_canno_null));
-                                    } else {
-                                        StoreData_in_DB();
-                                    }
+                                    StoreData_in_DB();
                                 }
                             } else {
                                 tvIncome.setError(getString(R.string.incorrect_value));
@@ -717,19 +666,10 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                         Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
 
                         if (income_len >= 4 && income_Value>=1000) {
-                            if (option1.equals(getString(R.string.no))) {
-                                if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                    StoreData_in_DB();
-                                } else {
-                                    ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
-                                    Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
-                                }
+                            if (TextUtils.isEmpty(strRemarks)) {
+                                tvRemarks.setError(getString(R.string.field_canno_null));
                             } else {
-                                if (TextUtils.isEmpty(strRemarks)) {
-                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                } else {
-                                    StoreData_in_DB();
-                                }
+                                StoreData_in_DB();
                             }
                         } else {
                             tvIncome.setError(getString(R.string.incorrect_value));
@@ -749,23 +689,10 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                     Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
 
                     if (income_len >= 4 && income_Value>=1000) {
-                        if (option1.equals(getString(R.string.no))) {
-                            if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                if (TextUtils.isEmpty(strRemarks)) {
-                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                } else {
-                                    StoreData_in_DB();
-                                }
-                            } else {
-                                ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.reason_for_rejection));
-                                Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
-                            }
+                        if (TextUtils.isEmpty(strRemarks)) {
+                            tvRemarks.setError(getString(R.string.field_canno_null));
                         } else {
-                            if (TextUtils.isEmpty(strRemarks)) {
-                                tvRemarks.setError(getString(R.string.field_canno_null));
-                            } else {
-                                StoreData_in_DB();
-                            }
+                            StoreData_in_DB();
                         }
                     } else {
                         tvIncome.setError(getString(R.string.incorrect_value));
@@ -806,19 +733,10 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                                     Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
 
                                     if (income_len >= 4 && income_Value>=1000) {
-                                        if (option1.equals(getString(R.string.no))) {
-                                            if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                                StoreData_in_DB();
-                                            } else {
-                                                ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason_for_rejection));
-                                                Toast.makeText(getApplicationContext(), getString(R.string.select_reason_for_rejection), Toast.LENGTH_SHORT).show();
-                                            }
+                                        if (TextUtils.isEmpty(strRemarks)) {
+                                            tvRemarks.setError(getString(R.string.field_canno_null));
                                         } else {
-                                            if (TextUtils.isEmpty(strRemarks)) {
-                                                tvRemarks.setError(getString(R.string.field_canno_null));
-                                            } else {
-                                                StoreData_in_DB();
-                                            }
+                                            StoreData_in_DB();
                                         }
                                     } else {
                                         tvIncome.setError(getString(R.string.incorrect_value));
@@ -838,23 +756,10 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                                 Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
 
                                 if (income_len >= 4 && income_Value>=1000) {
-                                    if (option1.equals(getString(R.string.no))) {
-                                        if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                            if (TextUtils.isEmpty(strRemarks)) {
-                                                tvRemarks.setError(getString(R.string.field_canno_null));
-                                            } else {
-                                                StoreData_in_DB();
-                                            }
-                                        } else {
-                                            ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.reason_for_rejection));
-                                            Toast.makeText(getApplicationContext(), getString(R.string.reason_for_rejection), Toast.LENGTH_SHORT).show();
-                                        }
+                                    if (TextUtils.isEmpty(strRemarks)) {
+                                        tvRemarks.setError(getString(R.string.field_canno_null));
                                     } else {
-                                        if (TextUtils.isEmpty(strRemarks)) {
-                                            tvRemarks.setError(getString(R.string.field_canno_null));
-                                        } else {
-                                            StoreData_in_DB();
-                                        }
+                                        StoreData_in_DB();
                                     }
                                 } else {
                                     tvIncome.setError(getString(R.string.incorrect_value));
@@ -1063,20 +968,19 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
 
                 database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromAppinformation +"='Y',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Category + "="+ getCatCode + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Caste + "=" + getCasteCode + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Belongs_Creamy_Layer_6 + "='" + option + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Creamy_Layer_6 + "=" + reason_Code_1 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + "='" + strIncome + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Photo + "='" + store + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.vLat + "=" + latitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.vLong + "=" + longitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Can_Certificate_Given + "='" + option1 + "',"
-//                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Rejection + "=" + reason_Code_2 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks + "='" + strRemarks + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1" + " where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo1 + "='" + applicant_Id + "'");
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DifferFromAppinformation +"='Y',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Category + "="+ getCatCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Caste + "=" + getCasteCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Belongs_Creamy_Layer_6 + "='" + option + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reason_for_Creamy_Layer_6 + "=" + reason_Code_1 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income + "='" + strIncome + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo + "='" + store + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLat + "=" + latitude + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLong + "=" + longitude + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given + "='" + option1 + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks + "='" + strRemarks + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag + "=1" + " where "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'");
 
                 Log.d("Database", "ServiceParameters Database Updated");
                 Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();

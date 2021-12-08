@@ -204,8 +204,8 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                 openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(context);
                 database = openHelper.getWritableDatabase();
 
-                Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
-                        + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "=" + applicant_Id, null);
+                Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "=" + applicant_Id, null);
 
                 if (cursor1.getCount() > 0) {
                     if (cursor1.moveToNext()) {

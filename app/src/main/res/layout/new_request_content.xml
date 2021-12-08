@@ -76,41 +76,6 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tr_residence"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="5dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:text="@string/number_of_years_napplicant_is_resident_nin_karnataka"
-                android:textColor="@android:color/black"
-                android:layout_gravity="center_vertical"/>
-
-            <TextView
-                android:text="@string/colon"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_column="2"/>
-
-            <Spinner
-                android:id="@+id/spYears"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/black"
-                android:layout_gravity="center_vertical"
-                android:layout_column="3"/>
-
-        </TableRow>
-
-        <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginTop="5dp"

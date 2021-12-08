@@ -14,14 +14,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class RI_Ward_ListAdapter extends BaseAdapter implements Filterable {
-    private Context context;
+    Context context;
     ArrayList<String> SlNo;
     ArrayList<String> TotalCount;
     ArrayList<String> TownCode;
     ArrayList<String> WardName;
     ArrayList<String> WardCode;
-    String district, taluk, VA_Name, hobli,VA_Circle_Name, total;
-    String district_Code, taluk_Code, hobli_Code, townCode, wardName, wardCode;
+    String total;
+    String townCode, wardName, wardCode;
 
     RI_Ward_ListAdapter(Context context, ArrayList<String> slNo, ArrayList<String> wardName,
                      ArrayList<String> totalCount, ArrayList<String> townCode, ArrayList<String> wardCode){

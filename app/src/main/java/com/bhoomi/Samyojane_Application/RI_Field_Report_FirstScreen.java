@@ -133,7 +133,6 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         btnBack.setOnClickListener(v -> onBackPressed());
     }
 
-    @SuppressLint("SetTextI18n")
     public void displayData_AfterItemSelected() {
         int i=1;
         Log.d("For_Display_Data", district_Code+" "+taluk_Code+" "+hobli_Code+" "+va_Circle_Code+" "+villageCode+" "+serviceCode);
@@ -143,18 +142,18 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
 
         Cursor cursor = database.rawQuery("select "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+","
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo+","
                 +" substr(ST_DueDate,0,11) as ST_DueDate from "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+"="+district_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code+"="+taluk_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+"="+hobli_Code+" and "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code+"="+va_Circle_Code+" and "
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VillageCircle_Code+"="+va_Circle_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"="+villageCode+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"=255 and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code+"="+serviceCode+" and "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null", null);
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null", null);
 
         SlNo.clear();
         Appication_Name.clear();
@@ -174,7 +173,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
                     Log.d("InDisplayIf", ""+ i);
                     SlNo.add(String.valueOf(i));
                     Appication_Name.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name)));
-                    Applicant_ID.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No)));
+                    Applicant_ID.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo)));
                     DueDate.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date)));
                     ServiceCode.add(String.valueOf(serviceCode));
                     ServiceName.add(service_name);
@@ -208,8 +207,9 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_FirstScreen.this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+","
-                +" substr(ST_DueDate,0,11) as ST_DueDate from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
+        Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo+","
+                +" substr(ST_DueDate,0,11) as ST_DueDate from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+"="+district_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code+"="+taluk_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+"="+hobli_Code+" and "
@@ -217,8 +217,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"="+town_code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"="+ward_code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code+"="+serviceCode+" and "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null", null);
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null", null);
 
         SlNo.clear();
         Appication_Name.clear();
@@ -240,7 +239,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
                     Log.d("InDisplayIf", ""+ i);
                     SlNo.add(String.valueOf(i));
                     Appication_Name.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name)));
-                    Applicant_ID.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No)));
+                    Applicant_ID.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo)));
                     DueDate.add(cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date)));
                     ServiceCode.add(String.valueOf(serviceCode));
                     ServiceName.add(service_name);

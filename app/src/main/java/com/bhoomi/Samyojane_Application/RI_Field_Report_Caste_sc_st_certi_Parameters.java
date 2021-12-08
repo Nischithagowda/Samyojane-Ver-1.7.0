@@ -80,23 +80,23 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
     String villageCode, serviceCode, habitationCode, town_Name, ward_Name, town_code, ward_code, option_Flag;
     EditText tvIncome, tvRemarks;
     Button btnSave, btnBack, btnDownDocs, btnViewDocs;
-    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, NoYears, FatherCategory,FatherCaste, MotherCategory, MotherCaste, ApplicantCategory, ApplicantCaste, AnnualIncome, ReservationGiven, ReasonForRejection, Remarks;
+    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, FatherCategory,FatherCaste, MotherCategory, MotherCaste, ApplicantCategory, ApplicantCaste, AnnualIncome, ReservationGiven, ReasonForRejection, Remarks;
     TableRow lRejection;
-    Spinner spYears,spFatherCategory, spMotherCategory, spAPPCategory_VA, spRejectReason1;
+    Spinner spFatherCategory, spMotherCategory, spAPPCategory_VA, spRejectReason1;
     AutoCompleteTextView autoSearchFatherCaste, autoSearchMotherCaste, autoSearchAPPCaste_VA;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class, sqlLiteOpenHelper_class1;
-    String appID, appName, noYears, fatherCategory, fatherCaste, motherCategory, motherCaste, appCategory, appCaste, appAnnualIncome, appReservationGiven, appRejectionReason, remarks;
+    String appID, appName, fatherCategory, fatherCaste, motherCategory, motherCaste, appCategory, appCaste, appAnnualIncome, appReservationGiven, appRejectionReason, remarks;
     String n_fatherCategory, n_fatherCaste, n_motherCategory, n_motherCaste, n_appCategory, n_appCaste, n_appRejectionReason;
-    TextView tvVillageName,tvNoYears, tvFatherCategory, tvFatherCaste, tvMotherCategory, tvMotherCaste, tvAppCategory, tvAppCaste, tvAnnualIncome, tvRemarksColor;
+    TextView tvVillageName, tvFatherCategory, tvFatherCaste, tvMotherCategory, tvMotherCaste, tvAppCategory, tvAppCaste, tvAnnualIncome, tvRemarksColor;
     int income_len, income_Value;
     RadioGroup radioGroup2, radioGroup3;
     RadioButton radioButton2, radioButton22, radioButton3, radioButton33;
     String option2, option3;
     TableRow TableFatherCaste, TableMotherCaste,TableAppCaste,TableReasonForRejection, TableCasteReservation;
-    ArrayAdapter<CharSequence> adapter_rejection_reason, adapter_Year;
-    String strRejectionReason, strYear;
+    ArrayAdapter<CharSequence> adapter_rejection_reason;
+    String strRejectionReason;
     int reason_Code_1;
     int posRejectionReason;
     int getFatherCatCode=0, getFatherCasteCode=0, getMotherCatCode=0, getMotherCasteCode=0, getAppCatCode_VA=0, getAppCasteCode_VA=0;
@@ -108,7 +108,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
     String strIncome, strRemarks;
     ProgressDialog dialog;
     int FCategory, FCaste, MCategory, MCaste, Total_No_Years_10, NO_Months_10;
-    String photo, getNoYears;
+    String photo;
     String appImage;
     ImageView iv_scst;
     boolean return_Value;
@@ -127,7 +127,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
 
 
     int getCatCode, getCasteCode;
-    String reason_Code_2, codePurpose;
+    String reason_Code_2;
     String option, option1,option5;
 
     InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
@@ -217,7 +217,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ri_field_report_caste_sc_st_certi_parameters);
 
-        strYear = getString(R.string.select_spinner);
         option2=getString(R.string.yes);
         option3=getString(R.string.yes);
         strFatherCategory=getString(R.string.select_category_spinner);
@@ -239,7 +238,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         tvVillageName = findViewById(R.id.tvVillageName);
         ApplicantID = findViewById(R.id.ApplicantID);
         ApplicantName = findViewById(R.id.ApplicantName);
-        NoYears= findViewById(R.id.NoYears);
         FatherCategory= findViewById(R.id.FatherCategory);
         FatherCaste = findViewById(R.id.FatherCaste);
         MotherCategory = findViewById(R.id.MotherCategory);
@@ -252,16 +250,15 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         Remarks = findViewById(R.id.Remarks);
         tvIncome = findViewById(R.id.tvIncome);
         tvRemarks = findViewById(R.id.tvRemarks);
-        lRejection = findViewById(R.id.lRejection);
+//        lRejection = findViewById(R.id.lRejection);
         btnSave = findViewById(R.id.btnSave);
-        spYears = findViewById(R.id.spYears);
         spFatherCategory = findViewById(R.id.spFatherCategory);
         spMotherCategory = findViewById(R.id.spMotherCategory);
         spAPPCategory_VA = findViewById(R.id.spAPPCategory_VA);
         autoSearchFatherCaste = findViewById(R.id.autoSearchFatherCaste);
         autoSearchMotherCaste = findViewById(R.id.autoSearchMotherCaste);
         autoSearchAPPCaste_VA = findViewById(R.id.autoSearchAPPCaste_VA);
-        spRejectReason1 = findViewById(R.id.spRejectReason1);
+//        spRejectReason1 = findViewById(R.id.spRejectReason1);
         radioGroup2 = findViewById(R.id.radioGroup2);
         radioGroup3 = findViewById(R.id.radioGroup3);
         radioButton2 = findViewById(R.id.radioButton2);
@@ -271,7 +268,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         TableFatherCaste = findViewById(R.id.TableFatherCaste);
         TableMotherCaste = findViewById(R.id.TableMotherCaste);
         TableAppCaste = findViewById(R.id.TableAppCaste);
-        TableReasonForRejection = findViewById(R.id.TableReasonForRejection);
+//        TableReasonForRejection = findViewById(R.id.TableReasonForRejection);
         TableCasteReservation = findViewById(R.id.TableCasteReservation);
         iv_scst = findViewById(R.id.iv_scst);
         tv_V_T_Name = findViewById(R.id.tv_V_T_Name);
@@ -279,7 +276,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         btnViewDocs = findViewById(R.id.btnViewDocs);
         txt_ReportNo  = findViewById(R.id.txt_ReportNo);
 
-        tvNoYears = findViewById(R.id.tvNoYears);
         tvFatherCategory = findViewById(R.id.tvFatherCategory);
         tvFatherCaste = findViewById(R.id.tvFatherCaste);
         tvMotherCategory = findViewById(R.id.tvMotherCategory);
@@ -291,7 +287,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
 
         btnViewDocs.setVisibility(View.GONE);
 
-        NoYears.setVisibility(View.VISIBLE);
         FatherCategory.setVisibility(View.VISIBLE);
         FatherCaste.setVisibility(View.VISIBLE);
         MotherCategory.setVisibility(View.VISIBLE);
@@ -305,7 +300,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         tvIncome.setVisibility(View.GONE);
         tvRemarks.setVisibility(View.GONE);
         lRejection.setVisibility(View.GONE);
-        spYears.setVisibility(View.GONE);
         spFatherCategory.setVisibility(View.GONE);
         spMotherCategory.setVisibility(View.GONE);
         spAPPCategory_VA.setVisibility(View.GONE);
@@ -430,22 +424,21 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(this);
         database = openHelper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+"='"+applicant_Id+"'", null);
+        Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo+"='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToFirst()){
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
-                appID = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
+                appID = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo));
                 appName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
-                noYears = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Num_Years_8));
                 fatherCategory = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Father_Category_8));
                 fatherCaste = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Father_Caste_8));
                 motherCategory = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Mother_Category_8));
                 motherCaste = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Mother_Caste_8));
                 appCategory = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Category));
                 appCaste = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Caste));
-                appAnnualIncome = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Annual_Income));
+                appAnnualIncome = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
                 appReservationGiven = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
                 appRejectionReason = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reason_for_Rejection));
                 remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
@@ -479,7 +472,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
 
         Log.d("dbValues", "App_ID "+appID);
         Log.d("dbValues", "appName "+appName);
-        Log.d("dbValues", "noYears "+noYears);
         Log.d("dbValues", "fatherCategory "+fatherCategory);
         Log.d("dbValues", "fatherCaste "+fatherCaste);
         Log.d("dbValues", "motherCategory "+motherCategory);
@@ -521,7 +513,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
 
         ApplicantID.setText(appID);
         ApplicantName.setText(appName);
-        NoYears.setText(noYears);
         FatherCategory.setText(n_fatherCategory);
         FatherCaste.setText(n_fatherCaste);
         MotherCategory.setText(n_motherCategory);
@@ -560,7 +551,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
             // find which radio button is selected
             if (checkedId == R.id.radioButton2) {
                 option2 = getString(R.string.yes);
-                NoYears.setVisibility(View.VISIBLE);
                 FatherCategory.setVisibility(View.VISIBLE);
                 FatherCaste.setVisibility(View.VISIBLE);
                 MotherCategory.setVisibility(View.VISIBLE);
@@ -573,7 +563,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                 Remarks.setVisibility(View.VISIBLE);
                 tvIncome.setVisibility(View.GONE);
                 tvRemarks.setVisibility(View.GONE);
-                spYears.setVisibility(View.GONE);
                 spFatherCategory.setVisibility(View.GONE);
                 spMotherCategory.setVisibility(View.GONE);
                 spAPPCategory_VA.setVisibility(View.GONE);
@@ -594,7 +583,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                 MotherCategory.setText(n_motherCategory);
                 ApplicantCategory.setText(n_appCategory);
 
-                tvNoYears.setTextColor(Color.parseColor("#000000"));
                 tvFatherCategory.setTextColor(Color.parseColor("#000000"));
                 tvFatherCaste.setTextColor(Color.parseColor("#000000"));
                 tvMotherCategory.setTextColor(Color.parseColor("#000000"));
@@ -605,7 +593,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                 tvRemarksColor.setTextColor(Color.parseColor("#000000"));
             } else if (checkedId == R.id.radioButton22) {
                 option2 = getString(R.string.no);
-                NoYears.setVisibility(View.GONE);
                 FatherCategory.setVisibility(View.GONE);
                 FatherCaste.setVisibility(View.GONE);
                 MotherCategory.setVisibility(View.GONE);
@@ -618,7 +605,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                 Remarks.setVisibility(View.GONE);
                 tvIncome.setVisibility(View.VISIBLE);
                 tvRemarks.setVisibility(View.VISIBLE);
-                spYears.setVisibility(View.VISIBLE);
                 spFatherCategory.setVisibility(View.VISIBLE);
                 spMotherCategory.setVisibility(View.VISIBLE);
                 spAPPCategory_VA.setVisibility(View.VISIBLE);
@@ -692,7 +678,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                     tvAppCategory.setTextColor(Color.parseColor("#0000ff"));
                 }
 
-                tvNoYears.setTextColor(Color.parseColor("#0000ff"));
                 tvFatherCaste.setTextColor(Color.parseColor("#0000ff"));
                 tvMotherCaste.setTextColor(Color.parseColor("#0000ff"));
                 tvAppCaste.setTextColor(Color.parseColor("#0000ff"));
@@ -741,23 +726,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                 Log.d("Number", ""+ reason_Code_1);
                 Log.d("Item_Position", ""+ position);
                 Log.d("Spinner_Value", ""+strRejectionReason);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        adapter_Year = ArrayAdapter.createFromResource(this, R.array.years_array, R.layout.spinner_item_color);
-        adapter_Year.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        spYears.setAdapter(adapter_Year);
-
-        spYears.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                strYear = String.valueOf(spYears.getSelectedItem());
-                Log.d("Spinner_Value", ""+strYear);
             }
 
             @Override
@@ -906,15 +874,10 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                     strRemarks = tvRemarks.getText().toString();
                     Log.d("Income value", ""+strRemarks);
 
-                    if (!strYear.equals(getString(R.string.select_spinner))) {
-                        if (serviceCode.equals("7") || serviceCode.equals("8")){
-                            saveService_7_and_8();
-                        } else if(serviceCode.equals("42")){
-                            saveService_42();
-                        }
-                    } else {
-                        ((TextView) spYears.getSelectedView()).setError(getString(R.string.select_no_years));
-                        Toast.makeText(getApplicationContext(), getString(R.string.select_no_years), Toast.LENGTH_SHORT).show();
+                    if (serviceCode.equals("7") || serviceCode.equals("8")){
+                        saveService_7_and_8();
+                    } else if(serviceCode.equals("42")){
+                        saveService_42();
                     }
                 }
                 else {
@@ -1271,15 +1234,14 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         database = openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'", null);
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo1 + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToNext()){
-                getNoYears = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Num_Years_8));
                 FCategory = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Father_Category_8));
                 FCaste = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Father_Caste_8));
                 MCategory = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Mother_Category_8));
                 MCaste = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Mother_Caste_8));
-                strIncome = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Annual_Income));
+                strIncome = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
                 strRemarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
                 photo = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Photo));
                 getCatCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Category));
@@ -1290,11 +1252,9 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                 NO_Months_10 = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.NO_Months_10));
                 option = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reside_At_Stated_Address_10));
                 option1 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Place_Match_With_RationCard_10));
-                codePurpose = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Pur_for_Cert_Code_10));
                 Log.d("Data_Fetched", "StoreData_in_DB_When_Correct");
             }
             database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Num_Years_8+"='"+getNoYears+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_App_Father_Category_8+"="+FCategory+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_APP_Father_Caste_8+"="+FCaste+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_App_Mother_Category_8+"="+MCategory+","
@@ -1309,7 +1269,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_NO_Months_10+"="+NO_Months_10+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Reside_At_Stated_Address_10 + "='" + option + "',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Place_Match_With_RationCard_10 + "='" + option1 + "',"
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Pur_for_Cert_Code_10 + "='" + codePurpose + "',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_vLat + "=" + latitude + ","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_vLong + "=" + longitude + ","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Can_Certificate_Given_as_RI + "='" + option3 + "',"
@@ -1317,7 +1276,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information + "='"+option2+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No + "='"+report_no+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + "=1"
-                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'");
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo1 + "='"+applicant_Id+"'");
 
             Intent i = new Intent(RI_Field_Report_Caste_sc_st_certi_Parameters.this, RI_Field_Report_FirstScreen.class);
             i.putExtra("applicant_Id", applicant_Id);
@@ -1373,7 +1332,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_Caste_sc_st_certi_Parameters.this);
         database = openHelper.getWritableDatabase();
 
-        getNoYears = strYear;
         FCategory = getFatherCatCode;
         FCaste = getFatherCasteCode;
         MCategory = getMotherCatCode;
@@ -1381,8 +1339,8 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         getCatCode = getAppCatCode_VA;
         getCasteCode = getAppCasteCode_VA;
 
-        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "=" + applicant_Id, null);
+        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo1 + "=" + applicant_Id, null);
         if (cursor.getCount() > 0) {
             if (cursor.moveToNext()) {
                 option5 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Belongs_Creamy_Layer_6));
@@ -1391,11 +1349,9 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                 NO_Months_10 = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.NO_Months_10));
                 option = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reside_At_Stated_Address_10));
                 option1 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Place_Match_With_RationCard_10));
-                codePurpose = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Pur_for_Cert_Code_10));
                 photo = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Photo));
             }
             database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Num_Years_8+"='"+getNoYears+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_App_Father_Category_8+"="+FCategory+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_APP_Father_Caste_8+"="+FCaste+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_App_Mother_Category_8+"="+MCategory+","
@@ -1410,7 +1366,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_NO_Months_10+"="+NO_Months_10+","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Reside_At_Stated_Address_10 + "='" + option + "',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Place_Match_With_RationCard_10 + "='" + option1 + "',"
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Pur_for_Cert_Code_10 + "='" + codePurpose + "',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_vLat + "=" + latitude + ","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_vLong + "=" + longitude + ","
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Can_Certificate_Given_as_RI + "='" + option3 + "',"
@@ -1418,7 +1373,7 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information + "='"+option2+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No + "='"+report_no+"',"
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + "=1"
-                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "='"+applicant_Id+"'");
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo1 + "='"+applicant_Id+"'");
 
             Intent i = new Intent(RI_Field_Report_Caste_sc_st_certi_Parameters.this, RI_Field_Report_FirstScreen.class);
             i.putExtra("applicant_Id", applicant_Id);

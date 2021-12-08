@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class RI_Village_wise_report extends AppCompatActivity {
-    TextView tvHobli, tvTaluk, tvVA_Name, pendencyReport;
+    TextView pendencyReport;
     static String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database, database1, database_Asset;
@@ -168,10 +168,9 @@ public class RI_Village_wise_report extends AppCompatActivity {
                     Log.d("villageCode_l", "" + villageCode);
 
                     if (!villageCode.equals("99999")){
-                    Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
-                            + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
-                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag +" is null and "
+                    Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo
+                            + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
+                            + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is null and "
                             + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code + "=" + villageCode , null);
 
                     if (cursor.getCount() > 0) {
@@ -350,11 +349,10 @@ public class RI_Village_wise_report extends AppCompatActivity {
                                 wardName = cursor2.getString(cursor2.getColumnIndexOrThrow(getString(R.string.town_master_ward_name)));
                                 Log.d("wardCode_1", "" + wardCode);
 
-                                Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No
-                                        + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where "
-                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
-                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null and "
-                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code+"="+va_Circle_Code+" and "
+                                Cursor cursor = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo
+                                        + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
+                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is null and "
+                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VillageCircle_Code+"="+va_Circle_Code+" and "
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code + "=" + townCode + " and "
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code + "=" + wardCode + " and "
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code + "=99999", null);

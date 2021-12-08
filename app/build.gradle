@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 30
+
     defaultConfig {
         applicationId "com.bhoomi.Samyojane_Application"
         minSdkVersion 21
@@ -11,6 +12,16 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        release {
+            storeFile file("Samyojane Mobile Application/SAMYOJANE.jks")
+            storePassword "bmc@123"
+            keyAlias "key0"
+            keyPassword "bmc@123"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

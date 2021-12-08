@@ -31,7 +31,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -53,20 +52,15 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
     String strSearchServiceName, strSearchVillageName, strFatherCategory, strSearchFatherCaste, strMotherCategory,
             strSearchMotherCaste, strAppCategory_VA, strSearchAppCaste_VA;
     int villageCode, serviceCode;
-    Spinner spYears,spFatherCategory, spMotherCategory, spAPPCategory_VA, spRejectReason;
+    Spinner spFatherCategory, spMotherCategory, spAPPCategory_VA;
     AutoCompleteTextView autoSearchFatherCaste, autoSearchMotherCaste, autoSearchAPPCaste_VA;
     RadioGroup radioGroup1;
     RadioButton radioButton1, radioButton11;
     EditText tvRemarks, tvIncome;
-    ArrayAdapter<CharSequence> adapter_rejection_reason, adapter_Year;
-    String strRejectionReason, strYear;
-    int posRejectionReason;
-    int reason_Code_1;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     String option1;
-    LinearLayout lRejection;
     Button btnSave, btnCamera, btnBack;
     private static final int CAMERA_REQUEST = 1;
     byte[] imageInByte;
@@ -182,27 +176,22 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
         strSearchMotherCaste = getString(R.string.select_caste_spinner);
         strSearchAppCaste_VA = getString(R.string.select_caste_spinner);
         option1 = getString(R.string.yes);
-        strYear = getString(R.string.select_spinner);
-        strRejectionReason = getString(R.string.reason_spinner);
 
         tvTaluk = findViewById(R.id.taluk);
         tvHobli = findViewById(R.id.hobli);
         tvVA_Name = findViewById(R.id.VA_name);
         tvServiceName = findViewById(R.id.tvServiceName);
-        spYears = findViewById(R.id.spYears);
         spFatherCategory = findViewById(R.id.spFatherCategory);
         spMotherCategory = findViewById(R.id.spMotherCategory);
         spAPPCategory_VA = findViewById(R.id.spAPPCategory_VA);
         autoSearchFatherCaste = findViewById(R.id.autoSearchFatherCaste);
         autoSearchMotherCaste = findViewById(R.id.autoSearchMotherCaste);
         autoSearchAPPCaste_VA = findViewById(R.id.autoSearchAPPCaste_VA);
-        spRejectReason = findViewById(R.id.spRejectReason);
         radioGroup1 = findViewById(R.id.radioGroup1);
         radioButton1 = findViewById(R.id.radioButton1);
         radioButton11 = findViewById(R.id.radioButton11);
         tvRemarks = findViewById(R.id.tvRemarks);
         tvIncome = findViewById(R.id.tvIncome);
-        lRejection = findViewById(R.id.lRejection);
         btnSave = findViewById(R.id.btnSave);
         btnBack = findViewById(R.id.btnBack);
         btnCamera = findViewById(R.id.btnCamera);
@@ -211,7 +200,6 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
         txtFatherCategory = findViewById(R.id.txtFatherCategory);
         txtAppCategory = findViewById(R.id.txtAppCategory);
 
-        lRejection.setVisibility(View.GONE);
         imageView.setVisibility(View.GONE);
         txtMotherCategory.setVisibility(View.GONE);
         txtFatherCategory.setVisibility(View.GONE);
@@ -432,24 +420,18 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
         radioGroup1.setOnCheckedChangeListener((group, checkedId) -> {
             // find which radio button is selected
             if (checkedId == R.id.radioButton1) {
-                //Toast.makeText(getApplicationContext(), "choice: male", Toast.LENGTH_SHORT).show();
                 option1 = getString(R.string.yes);
                 if (strSearchAppCaste_VA.equals(strSearchFatherCaste) || strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
                     option1 = getString(R.string.yes);
                     radioButton1.setChecked(true);
-                    lRejection.setVisibility(View.GONE);
-                    spRejectReason.setSelection(0);
                     autoSearchAPPCaste_VA.setError(null);
                 }else {
                     option1=getString(R.string.no);
                     radioButton11.setChecked(true);
-                    lRejection.setVisibility(View.VISIBLE);
                     autoSearchAPPCaste_VA.setError(getString(R.string.must_match_father_mother));
                 }
             } else if (checkedId == R.id.radioButton11) {
                 option1 = getString(R.string.no);
-                lRejection.setVisibility(View.VISIBLE);
-                //Toast.makeText(getApplicationContext(), "choice: Female", Toast.LENGTH_SHORT).show();
             }
             Log.d("option1", ""+option1);
         });
@@ -464,46 +446,6 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
             //gpsTracker.showSettingsAlert();
             Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
         }
-
-        adapter_Year = ArrayAdapter.createFromResource(this, R.array.years_array, R.layout.spinner_item_color);
-        adapter_Year.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        spYears.setAdapter(adapter_Year);
-
-        spYears.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                strYear = String.valueOf(spYears.getSelectedItem());
-                Log.d("Spinner_Value", ""+strYear);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        adapter_rejection_reason = ArrayAdapter.createFromResource(this, R.array.RejectionReason, R.layout.spinner_item_color);
-        adapter_rejection_reason.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        spRejectReason.setAdapter(adapter_rejection_reason);
-
-        spRejectReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                strRejectionReason = String.valueOf(spRejectReason.getSelectedItem());
-                posRejectionReason = position;
-                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(New_Request_Caste_sc_st_certi_Parameters.this);
-                sqlLiteOpenHelper_class.open_Reasons_Master_Tbl();
-                reason_Code_1 = sqlLiteOpenHelper_class.Get_CertificateRejectionReason(strRejectionReason,getString(R.string.reasons_tbl_reason_name));
-                Log.d("Number", ""+ reason_Code_1);
-                Log.d("Item_Position", ""+ position);
-                Log.d("Spinner_Value", ""+strRejectionReason);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         tvTaluk.setText(taluk);
         tvHobli.setText(hobli);
@@ -577,81 +519,59 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
         getAppCasteCode_VA = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getAppCatCode_VA);
         Log.d("Caste_CodeA",""+getAppCasteCode_VA);
 
-        Log.d("Spinner_Value", ""+strYear);
-
         if(latitude!=0.0 && longitude!=0.0) {
-            if (!strYear.equals(getString(R.string.select_spinner))) {
-                if(!strSearchFatherCaste.equals(getString(R.string.select_caste_spinner))) {
-                    if (getFatherCasteCode!=0) {
-                        Log.d("Caste_CodeF1",""+getFatherCasteCode);
-                        if (!strSearchMotherCaste.equals(getString(R.string.select_caste_spinner))) {
-                            if (getMotherCasteCode != 0) {
-                                Log.d("Caste_CodeM1",""+getMotherCasteCode);
-                                if (!strSearchAppCaste_VA.equals(getString(R.string.select_caste_spinner))) {
-                                    if (getAppCasteCode_VA != 0) {
-                                        Log.d("Caste_CodeA1",""+getAppCasteCode_VA);
-                                        if (!strSearchAppCaste_VA.equals(strSearchFatherCaste) && !strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
-                                            radioButton11.setChecked(true);
-                                        }
-                                        if (TextUtils.isEmpty(strIncome)) {
-                                            tvIncome.setError(getString(R.string.field_canno_null));
-                                            Toast.makeText(getApplicationContext(),getString(R.string.annual_income) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            income_len = strIncome.length();
-                                            income_Value = Integer.parseInt(strIncome);
-
-                                            if (income_len >= 4 && income_Value>=1000) {
-                                                if (option1.equals(getString(R.string.no))) {
-                                                    if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                                        if (TextUtils.isEmpty(strRemarks)) {
-                                                            tvRemarks.setError(getString(R.string.field_canno_null));
-                                                            Toast.makeText(getApplicationContext(),getString(R.string.remarks) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
-                                                        } else {
-                                                            returnStr = StoreData_in_DB();
-                                                            Log.d("Data", returnStr);
-                                                        }
-                                                    } else {
-                                                        ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason));
-                                                        Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                } else {
-                                                    if (TextUtils.isEmpty(strRemarks)) {
-                                                        tvRemarks.setError(getString(R.string.field_canno_null));
-                                                        Toast.makeText(getApplicationContext(),getString(R.string.remarks) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
-                                                    } else {
-                                                        returnStr = StoreData_in_DB();
-                                                        Log.d("Data", returnStr);
-                                                    }
-                                                }
-                                            } else {
-                                                tvIncome.setError(getString(R.string.incorrect_value));
-                                                Toast.makeText(getApplicationContext(),getString(R.string.annual_income) + " " + getString(R.string.incorrect_value), Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
+            if(!strSearchFatherCaste.equals(getString(R.string.select_caste_spinner))) {
+                if (getFatherCasteCode!=0) {
+                    Log.d("Caste_CodeF1",""+getFatherCasteCode);
+                    if (!strSearchMotherCaste.equals(getString(R.string.select_caste_spinner))) {
+                        if (getMotherCasteCode != 0) {
+                            Log.d("Caste_CodeM1",""+getMotherCasteCode);
+                            if (!strSearchAppCaste_VA.equals(getString(R.string.select_caste_spinner))) {
+                                if (getAppCasteCode_VA != 0) {
+                                    Log.d("Caste_CodeA1",""+getAppCasteCode_VA);
+                                    if (!strSearchAppCaste_VA.equals(strSearchFatherCaste) && !strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
+                                        radioButton11.setChecked(true);
+                                    }
+                                    if (TextUtils.isEmpty(strIncome)) {
+                                        tvIncome.setError(getString(R.string.field_canno_null));
+                                        Toast.makeText(getApplicationContext(),getString(R.string.annual_income) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
                                     } else {
-                                        autoSearchAPPCaste_VA.setError(getString(R.string.invalid_caste));
+                                        income_len = strIncome.length();
+                                        income_Value = Integer.parseInt(strIncome);
+
+                                        if (income_len >= 4 && income_Value>=1000) {
+                                            if (TextUtils.isEmpty(strRemarks)) {
+                                                tvRemarks.setError(getString(R.string.field_canno_null));
+                                                Toast.makeText(getApplicationContext(),getString(R.string.remarks) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                returnStr = StoreData_in_DB();
+                                                Log.d("Data", returnStr);
+                                            }
+                                        } else {
+                                            tvIncome.setError(getString(R.string.incorrect_value));
+                                            Toast.makeText(getApplicationContext(),getString(R.string.annual_income) + " " + getString(R.string.incorrect_value), Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 } else {
-                                    autoSearchAPPCaste_VA.setError(getString(R.string.select_caste));
-                                    Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
+                                    autoSearchAPPCaste_VA.setError(getString(R.string.invalid_caste));
                                 }
                             } else {
-                                autoSearchMotherCaste.setError(getString(R.string.invalid_caste));
+                                autoSearchAPPCaste_VA.setError(getString(R.string.select_caste));
+                                Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            autoSearchMotherCaste.setError(getString(R.string.select_caste));
-                            Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
+                            autoSearchMotherCaste.setError(getString(R.string.invalid_caste));
                         }
                     } else {
-                        autoSearchFatherCaste.setError(getString(R.string.invalid_caste));
+                        autoSearchMotherCaste.setError(getString(R.string.select_caste));
+                        Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    autoSearchFatherCaste.setError(getString(R.string.select_caste));
-                    Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
+                    autoSearchFatherCaste.setError(getString(R.string.invalid_caste));
                 }
             } else {
-                ((TextView) spYears.getSelectedView()).setError(getString(R.string.select_no_years));
-                Toast.makeText(getApplicationContext(), getString(R.string.select_no_years), Toast.LENGTH_SHORT).show();
+                autoSearchFatherCaste.setError(getString(R.string.select_caste));
+                Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
             }
         } else {
             runOnUiThread(() -> {
@@ -711,129 +631,92 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
 
         }
 
-        Log.d("Spinner_Value", ""+strYear);
-
         if(latitude!=0.0 && longitude!=0.0) {
-            if (!strYear.equals(getString(R.string.select_spinner))) {
-                if(!strFatherCategory.equals(getString(R.string.select_category_spinner))) {
-                    if(!strSearchFatherCaste.equals(getString(R.string.select_caste_spinner))) {
-                        if (getFatherCasteCode!=0) {
-                            if (!strMotherCategory.equals(getString(R.string.select_category_spinner))) {
-                                if (!strSearchMotherCaste.equals(getString(R.string.select_caste_spinner))) {
-                                    if (getMotherCasteCode != 0) {
-                                        if (!strAppCategory_VA.equals(getString(R.string.select_category_spinner))) {
-                                            if (!strSearchAppCaste_VA.equals(getString(R.string.select_caste_spinner))) {
-                                                if (getAppCasteCode_VA != 0) {
-                                                    if (strSearchAppCaste_VA.equals(strSearchFatherCaste) || strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
-                                                        if (TextUtils.isEmpty(strIncome)) {
-                                                            tvIncome.setError(getString(R.string.field_canno_null));
-                                                        } else {
-                                                            income_len = strIncome.length();
-                                                            income_Value = Integer.parseInt(strIncome);
-                                                            if (income_len >= 4 && income_Value>=1000) {
-                                                                if (option1.equals(getString(R.string.no))) {
-                                                                    if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                                                        if (TextUtils.isEmpty(strRemarks)) {
-                                                                            tvRemarks.setError(getString(R.string.field_canno_null));
-                                                                            Toast.makeText(getApplicationContext(),getString(R.string.remarks) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
-                                                                        } else {
-                                                                            returnStr = StoreData_in_DB();
-                                                                            Log.d("Data", returnStr);
-                                                                        }
-                                                                    } else {
-                                                                        ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason));
-                                                                        Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                } else {
-                                                                    if (TextUtils.isEmpty(strRemarks)) {
-                                                                        tvRemarks.setError(getString(R.string.field_canno_null));
-                                                                        Toast.makeText(getApplicationContext(),getString(R.string.remarks) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
-                                                                    } else {
-                                                                        returnStr = StoreData_in_DB();
-                                                                        Log.d("Data", returnStr);
-                                                                    }
-                                                                }
-                                                            } else {
-                                                                tvIncome.setError(getString(R.string.incorrect_value));
-                                                            }
-                                                        }
+            if(!strFatherCategory.equals(getString(R.string.select_category_spinner))) {
+                if(!strSearchFatherCaste.equals(getString(R.string.select_caste_spinner))) {
+                    if (getFatherCasteCode!=0) {
+                        if (!strMotherCategory.equals(getString(R.string.select_category_spinner))) {
+                            if (!strSearchMotherCaste.equals(getString(R.string.select_caste_spinner))) {
+                                if (getMotherCasteCode != 0) {
+                                    if (!strAppCategory_VA.equals(getString(R.string.select_category_spinner))) {
+                                        if (!strSearchAppCaste_VA.equals(getString(R.string.select_caste_spinner))) {
+                                            if (getAppCasteCode_VA != 0) {
+                                                if (strSearchAppCaste_VA.equals(strSearchFatherCaste) || strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
+                                                    if (TextUtils.isEmpty(strIncome)) {
+                                                        tvIncome.setError(getString(R.string.field_canno_null));
                                                     } else {
-                                                        radioButton11.setChecked(true);
-                                                        if (TextUtils.isEmpty(strIncome)) {
-                                                            tvIncome.setError(getString(R.string.field_canno_null));
-                                                            Toast.makeText(getApplicationContext(),getString(R.string.annual_income) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
-                                                        } else {
-
-                                                            income_len = strIncome.length();
-                                                            income_Value = Integer.parseInt(strIncome);
-                                                            Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
-
-                                                            if (income_len >= 4 && income_Value>=1000) {
-                                                                if (option1.equals(getString(R.string.no))) {
-                                                                    if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                                                        if (TextUtils.isEmpty(strRemarks)) {
-                                                                            tvRemarks.setError(getString(R.string.field_canno_null));
-                                                                            Toast.makeText(getApplicationContext(),getString(R.string.remarks) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
-                                                                        } else {
-                                                                            returnStr = StoreData_in_DB();
-                                                                            Log.d("Data", returnStr);
-                                                                        }
-                                                                    } else {
-                                                                        ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason));
-                                                                        Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                } else {
-                                                                    if (TextUtils.isEmpty(strRemarks)) {
-                                                                        tvRemarks.setError(getString(R.string.field_canno_null));
-                                                                        Toast.makeText(getApplicationContext(),getString(R.string.remarks) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
-                                                                    } else {
-                                                                        returnStr = StoreData_in_DB();
-                                                                        Log.d("Data", returnStr);
-                                                                    }
-                                                                }
+                                                        income_len = strIncome.length();
+                                                        income_Value = Integer.parseInt(strIncome);
+                                                        if (income_len >= 4 && income_Value>=1000) {
+                                                            if (TextUtils.isEmpty(strRemarks)) {
+                                                                tvRemarks.setError(getString(R.string.field_canno_null));
+                                                                Toast.makeText(getApplicationContext(),getString(R.string.remarks) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
                                                             } else {
-                                                                tvIncome.setError(getString(R.string.incorrect_value));
-                                                                Toast.makeText(getApplicationContext(),getString(R.string.annual_income) + " " + getString(R.string.incorrect_value), Toast.LENGTH_SHORT).show();
+                                                                returnStr = StoreData_in_DB();
+                                                                Log.d("Data", returnStr);
                                                             }
+                                                        } else {
+                                                            tvIncome.setError(getString(R.string.incorrect_value));
                                                         }
                                                     }
                                                 } else {
-                                                    autoSearchAPPCaste_VA.setError(getString(R.string.invalid_caste));
+                                                    radioButton11.setChecked(true);
+                                                    if (TextUtils.isEmpty(strIncome)) {
+                                                        tvIncome.setError(getString(R.string.field_canno_null));
+                                                        Toast.makeText(getApplicationContext(),getString(R.string.annual_income) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
+                                                    } else {
+
+                                                        income_len = strIncome.length();
+                                                        income_Value = Integer.parseInt(strIncome);
+                                                        Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+
+                                                        if (income_len >= 4 && income_Value>=1000) {
+                                                            if (TextUtils.isEmpty(strRemarks)) {
+                                                                tvRemarks.setError(getString(R.string.field_canno_null));
+                                                                Toast.makeText(getApplicationContext(),getString(R.string.remarks) + " " + getString(R.string.field_canno_null), Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                returnStr = StoreData_in_DB();
+                                                                Log.d("Data", returnStr);
+                                                            }
+                                                        } else {
+                                                            tvIncome.setError(getString(R.string.incorrect_value));
+                                                            Toast.makeText(getApplicationContext(),getString(R.string.annual_income) + " " + getString(R.string.incorrect_value), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
                                                 }
                                             } else {
-                                                autoSearchAPPCaste_VA.setError(getString(R.string.select_caste));
-                                                Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
+                                                autoSearchAPPCaste_VA.setError(getString(R.string.invalid_caste));
                                             }
                                         } else {
-                                            ((TextView) spAPPCategory_VA.getSelectedView()).setError(getString(R.string.select_category));
-                                            Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+                                            autoSearchAPPCaste_VA.setError(getString(R.string.select_caste));
+                                            Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
                                         }
                                     } else {
-                                        autoSearchMotherCaste.setError(getString(R.string.invalid_caste));
+                                        ((TextView) spAPPCategory_VA.getSelectedView()).setError(getString(R.string.select_category));
+                                        Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
                                     }
-
                                 } else {
-                                    autoSearchMotherCaste.setError(getString(R.string.select_caste));
-                                    Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
+                                    autoSearchMotherCaste.setError(getString(R.string.invalid_caste));
                                 }
+
                             } else {
-                                ((TextView) spMotherCategory.getSelectedView()).setError(getString(R.string.select_category));
-                                Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+                                autoSearchMotherCaste.setError(getString(R.string.select_caste));
+                                Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
                             }
-                        }else {
-                            autoSearchFatherCaste.setError(getString(R.string.invalid_caste));
+                        } else {
+                            ((TextView) spMotherCategory.getSelectedView()).setError(getString(R.string.select_category));
+                            Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
                         }
                     }else {
-                        autoSearchFatherCaste.setError(getString(R.string.select_caste));
-                        Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
+                        autoSearchFatherCaste.setError(getString(R.string.invalid_caste));
                     }
                 }else {
-                    ((TextView) spFatherCategory.getSelectedView()).setError(getString(R.string.select_category));
-                    Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+                    autoSearchFatherCaste.setError(getString(R.string.select_caste));
+                    Toast.makeText(getApplicationContext(), getString(R.string.select_caste), Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                ((TextView) spYears.getSelectedView()).setError(getString(R.string.select_no_years));
-                Toast.makeText(getApplicationContext(), getString(R.string.select_no_years), Toast.LENGTH_SHORT).show();
+            }else {
+                ((TextView) spFatherCategory.getSelectedView()).setError(getString(R.string.select_category));
+                Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
             }
         }
         else {
@@ -1019,23 +902,21 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
 
                 database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromAppinformation +"='Y',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Num_Years_8 + "='" + strYear + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Father_Category_8 + "=" + getFatherCatCode + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Father_Caste_8 + "=" + getFatherCasteCode + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.App_Mother_Category_8 + "=" + getMotherCatCode + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.APP_Mother_Caste_8 + "=" + getMotherCasteCode + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Category + "=" + getAppCatCode_VA + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Caste + "=" + getAppCasteCode_VA + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + "='" + strIncome + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.vLat + "=" + latitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.vLong + "=" + longitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Photo + "='" + store + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Can_Certificate_Given + "='" + option1 + "',"
-//                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Rejection + "=" + reason_Code_1 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks + "='" + strRemarks + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1" + " where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo1 + "='" + applicant_Id + "'");
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DifferFromAppinformation +"='Y',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Father_Category_8 + "=" + getFatherCatCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Father_Caste_8 + "=" + getFatherCasteCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Mother_Category_8 + "=" + getMotherCatCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Mother_Caste_8 + "=" + getMotherCasteCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Category + "=" + getAppCatCode_VA + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Caste + "=" + getAppCasteCode_VA + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income + "='" + strIncome + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLat + "=" + latitude + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLong + "=" + longitude + ","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo + "='" + store + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given + "='" + option1 + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks + "='" + strRemarks + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag + "=1" + " where "
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'");
 
                 Log.d("Database", "ServiceParameters Database Updated");
                 Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
@@ -1194,13 +1075,10 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
             if (strSearchAppCaste_VA.equals(strSearchFatherCaste) || strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
                 option1 = getString(R.string.yes);
                 radioButton1.setChecked(true);
-                lRejection.setVisibility(View.GONE);
-                spRejectReason.setSelection(0);
                 autoSearchAPPCaste_VA.setError(null);
             }else {
                 option1=getString(R.string.no);
                 radioButton11.setChecked(true);
-                lRejection.setVisibility(View.VISIBLE);
                 autoSearchAPPCaste_VA.setText("");
                 getAppCasteCode_VA = 0;
                 autoSearchAPPCaste_VA.setError(getString(R.string.must_match_father_mother));
@@ -1254,13 +1132,10 @@ public class New_Request_Caste_sc_st_certi_Parameters extends AppCompatActivity 
             if (strSearchAppCaste_VA.equals(strSearchFatherCaste) || strSearchAppCaste_VA.equals(strSearchMotherCaste)) {
                 option1 = getString(R.string.yes);
                 radioButton1.setChecked(true);
-                lRejection.setVisibility(View.GONE);
-                spRejectReason.setSelection(0);
                 autoSearchAPPCaste_VA.setError(null);
             }else {
                 option1=getString(R.string.no);
                 radioButton11.setChecked(true);
-                lRejection.setVisibility(View.VISIBLE);
                 autoSearchAPPCaste_VA.setText("");
                 getAppCasteCode_VA = 0;
                 autoSearchAPPCaste_VA.setError(getString(R.string.must_match_father_mother));

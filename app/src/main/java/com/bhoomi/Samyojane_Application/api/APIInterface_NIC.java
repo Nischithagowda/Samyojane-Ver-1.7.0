@@ -35,7 +35,7 @@ public interface APIInterface_NIC {
             );
 
     @POST("UpdateVillageTownWard")
-    Call<String> UpdateVillageTownWard(
+    Call<JsonObject> UpdateVillageTownWard(
             @Body UpdateVillageTownWardCLASS updateVillageTownWardCLASS
             );
 

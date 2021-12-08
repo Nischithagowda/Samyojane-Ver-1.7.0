@@ -30,11 +30,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bhoomi.Samyojane_Application.api.APIClient;
 import com.bhoomi.Samyojane_Application.api.APIInterface_NIC;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -291,7 +289,6 @@ public class PushToAnotherVA extends AppCompatActivity {
                     if (!Objects.equals(option_Flag, urbanRuralFlag)){
                         P_town_village_code = 99999;
                     } else {
-                        P_town_village_code = Integer.parseInt(villageCode);
                         P_ward_Code = 255;
                     }
 
@@ -322,9 +319,6 @@ public class PushToAnotherVA extends AppCompatActivity {
                     if (!Objects.equals(option_Flag, urbanRuralFlag)){
                         P_town_village_code = 9999;
                         P_ward_Code = 255;
-                    } else {
-                        P_town_village_code = town_code;
-                        P_ward_Code = ward_code;
                     }
 
                     if (!P_town_name.isEmpty() && P_town_village_code != 0) {
@@ -530,26 +524,9 @@ public class PushToAnotherVA extends AppCompatActivity {
                 RuralOrUrban = "R";
             }
 
-            BigInteger appID;
-
-            Cursor cursor = database.rawQuery("Select "+DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + " From "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" Where "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo+"="+arrayList.get(i)+"", null);
-            if (cursor.getCount()>0){
-                if (cursor.moveToFirst()) {
-                    appID = new BigInteger(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo)));
-                } else {
-                    appID = BigInteger.valueOf(0);
-                    cursor.close();
-                }
-            } else {
-                appID = BigInteger.valueOf(0);
-                cursor.close();
-            }
-
             Log.d("ser_count",""+ser_count);
             Log.d("uName_get",""+uName_get);
-            Log.d("Applicant_Id_Int", ""+appID);
+            Log.d("Applicant_Id_Int", ""+arrayList.get(i));
             Log.d("DesiCode", ""+DesiCode);
             Log.d("urbanRuralFlag", ""+urbanRuralFlag);
             Log.d("RuralOrUrban", ""+RuralOrUrban);
@@ -562,7 +539,7 @@ public class PushToAnotherVA extends AppCompatActivity {
 
             UpdateVillageTownWardCLASS updateVillageTownWardCLASS = new UpdateVillageTownWardCLASS();
             updateVillageTownWardCLASS.setLoginID(uName_get);
-            updateVillageTownWardCLASS.setGscNo(appID);
+            updateVillageTownWardCLASS.setGscNo(arrayList.get(i));
             updateVillageTownWardCLASS.setDesignationCode(DesiCode);
             updateVillageTownWardCLASS.setRuralOrUrban(RuralOrUrban);
             updateVillageTownWardCLASS.setNewTownVillageCode(P_town_village_code);
@@ -633,19 +610,25 @@ public class PushToAnotherVA extends AppCompatActivity {
     public void pushApplicationToVA(UpdateVillageTownWardCLASS updateVillageTownWardCLASS){
         apiInterface_nic = APIClient.getClient(getString(R.string.MobAPI_New_NIC)).create(APIInterface_NIC.class);
 
-        Call<String> call = apiInterface_nic.UpdateVillageTownWard(updateVillageTownWardCLASS);
+        Call<JsonObject> call = apiInterface_nic.UpdateVillageTownWard(updateVillageTownWardCLASS);
 
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 Log.d("TAG",response.code()+"");
-                String response_server = response.body();
-                Log.d("response.message",response.message() + "");
+                JsonObject response_server = response.body();
                 Log.d("response_server",response_server + "");
-                if (response_server==null){
+                assert response_server != null;
+                JsonPrimitive jsonObject2 = response_server.getAsJsonPrimitive("StatusMessage");
+                String StatusMessage = jsonObject2.toString();
+                Log.d("StatusMessage",StatusMessage + "");
+                JsonPrimitive jsonObject3 = response_server.getAsJsonPrimitive("StatusCode");
+                String StatusCode = jsonObject3.toString();
+                Log.d("StatusCode",StatusCode + "");
+                if (StatusMessage.isEmpty()){
                     p_dialog.dismiss();
                     Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
-                }  else if (response_server.equals(getString(R.string.access_denied_msg))){
+                }  else if (StatusMessage.equals(getString(R.string.access_denied_msg))){
                     p_dialog.dismiss();
                     final AlertDialog.Builder builder = new AlertDialog.Builder(PushToAnotherVA.this, R.style.MyDialogTheme);
                     builder.setTitle(getString(R.string.alert))
@@ -658,18 +641,18 @@ public class PushToAnotherVA extends AppCompatActivity {
                     alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(16);
                     TextView msgTxt = alert.findViewById(android.R.id.message);
                     msgTxt.setTextSize(16);
-                } else if (response.code() == 500){
+                } else if (StatusCode.equalsIgnoreCase("0")){
                     p_dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), ""+StatusMessage, Toast.LENGTH_SHORT).show();
                 } else {
                     try {
-                        JSONObject jsonObject = new JSONObject(response_server);
-                        Log.d("jsonObject1", "" + jsonObject);
-                        //jsonObject = jsonObject.getJSONObject("data");
-                        int data = jsonObject.getInt("data");
-                        Log.d("jsonObject2", "" + data);
-                        response_server = String.valueOf(data);
-                        if (response_server.equalsIgnoreCase("0")) {
+//                        JSONObject jsonObject = new JSONObject(StatusMessage);
+//                        Log.d("jsonObject1", "" + jsonObject);
+//                        //jsonObject = jsonObject.getJSONObject("data");
+//                        int data = jsonObject.getInt("data");
+//                        Log.d("jsonObject2", "" + data);
+//                        response_server = String.valueOf(data);
+                        if (StatusMessage.equalsIgnoreCase("Updated")) {
                             ser_count++;
                             Log.d("ser_count", "" + ser_count);
                             if (count == ser_count) {
@@ -700,11 +683,11 @@ public class PushToAnotherVA extends AppCompatActivity {
                                 startActivity(i);
                                 finish();
                             }
-                        } else if (response_server.equalsIgnoreCase("1")) {
+                        } else if (StatusMessage.equalsIgnoreCase("NOT Updated")) {
                             p_dialog.dismiss();
                             Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
                         }
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         p_dialog.dismiss();
                         Log.d("JSONException", "" + e.getMessage());
                         Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
@@ -713,7 +696,7 @@ public class PushToAnotherVA extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.d("multipleResource",""+t.getMessage());
                 p_dialog.dismiss();
                 call.cancel();

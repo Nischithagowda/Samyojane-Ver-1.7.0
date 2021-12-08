@@ -31,7 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -47,12 +46,11 @@ import java.util.Objects;
 
 public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
 
-    Spinner spPurpose, spRejectReason, spMonth;
-    String strPurpose, strRejectionReason;
+    Spinner spMonth;
     TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName;
     String district, taluk, hobli, VA_Name,VA_Circle_Name, applicant_Id, rationCardNo, aadharNo, mobileNo, address1;
     int district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_code, ward_code;
-    ArrayAdapter<CharSequence> adapter_purpose, adapter_rejection_reason, adapter_Month;
+    ArrayAdapter<CharSequence> adapter_Month;
     Button btnCamera, btnSave, btnBack;
     private static final int CAMERA_REQUEST = 1;
     byte[] imageInByte;
@@ -67,14 +65,11 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
     String item_position;
     String strSearchVillageName, strSearchServiceName, strMonth, strYear, town_Name, ward_Name, option_Flag;
     int villageCode, serviceCode;
-    LinearLayout lRejection;
     RadioGroup radiogroup1, radioGroup2, radioGroup3;
     RadioButton radioButton1, radioButton11;
     RadioButton radioButton2;
     RadioButton radioButton3, radioButton33;
     String option1, option2, option3;
-    int posPurpose, codePurpose, posRejectionReason, codeRejectionReason;
-    SqlLiteOpenHelper_Class_Kan sqlLiteOpenHelper_class_Kan;
     ProgressDialog dialog;
     String service_name, village_name;
     String year, month, strRemarks;
@@ -180,8 +175,6 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
         tvVA_Name = findViewById(R.id.VA_name);
         tvServiceName = findViewById(R.id.tvServiceName);
 
-        spPurpose = findViewById(R.id.spPurpose);
-        spRejectReason = findViewById(R.id.spRejectReason);
         btnCamera = findViewById(R.id.btnCamera);
         btnSave = findViewById(R.id.btnSave);
         imageView = findViewById(R.id.store_image);
@@ -189,7 +182,6 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
         radiogroup1 = findViewById(R.id.radioGroup1);
         radioGroup2 = findViewById(R.id.radioGroup2);
         radioGroup3 = findViewById(R.id.radioGroup3);
-        lRejection = findViewById(R.id.lRejection);
         radioButton1 = findViewById(R.id.radioButton1);
         radioButton11 = findViewById(R.id.radioButton11);
         radioButton2 = findViewById(R.id.radioButton2);
@@ -200,7 +192,6 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
         tvRemarks = findViewById(R.id.tvRemarks);
 
         imageView.setVisibility(View.GONE);
-        lRejection.setVisibility(View.GONE);
 
         etYear.setFilters(new InputFilter[] {new InputFilter.LengthFilter(3)}); // 14 is max digits
 
@@ -291,17 +282,6 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
         etYear.setText(year);
         spMonth.setSelection(Integer.parseInt(month+1));
 
-        sqlLiteOpenHelper_class_Kan = new SqlLiteOpenHelper_Class_Kan(New_Request_Resident_Parameters_Kan.this);
-        sqlLiteOpenHelper_class_Kan.open_Reasons_Master_Tbl();
-
-        adapter_purpose = ArrayAdapter.createFromResource(this, R.array.Purpose_of_certificate, R.layout.spinner_item_color);
-        adapter_purpose.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        spPurpose.setAdapter(adapter_purpose);
-
-        adapter_rejection_reason = ArrayAdapter.createFromResource(this, R.array.RejectionReason, R.layout.spinner_item_color);
-        adapter_rejection_reason.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        spRejectReason.setAdapter(adapter_rejection_reason);
-
         tvTaluk.setText(taluk);
         tvHobli.setText(hobli);
         tvVA_Name.setText(VA_Name);
@@ -335,14 +315,9 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
         radioGroup3.setOnCheckedChangeListener((group, checkedId) -> {
             // find which radio button is selected
             if (checkedId == R.id.radioButton3) {
-                //Toast.makeText(getApplicationContext(), "choice: male", Toast.LENGTH_SHORT).show();
                 option3 = getString(R.string.yes);
-                lRejection.setVisibility(View.GONE);
-                spRejectReason.setSelection(0);
             } else if (checkedId == R.id.radioButton33) {
                 option3 = getString(R.string.no);
-                lRejection.setVisibility(View.VISIBLE);
-                //Toast.makeText(getApplicationContext(), "choice: Female", Toast.LENGTH_SHORT).show();
 
             }
             Log.d("option3", ""+option3);
@@ -399,28 +374,10 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
             if(latitude!=0.0 && longitude!=0.0) {
                 if(!TextUtils.isEmpty(strYear) && Integer.parseInt(strYear)<=129) {
                     if(!strMonth.equals(getString(R.string.month_spinner))) {
-                        if (!strPurpose.equals(getString(R.string.select_spinner))) {
-                            if (option3.equals(getString(R.string.no))) {
-                                if (!strRejectionReason.equals(getString(R.string.reason_spinner))) {
-                                    if (TextUtils.isEmpty(strRemarks)) {
-                                        tvRemarks.setError(getString(R.string.field_canno_null));
-                                    } else {
-                                        StoreData_in_DB();
-                                    }
-                                } else {
-                                    ((TextView) spRejectReason.getSelectedView()).setError(getString(R.string.select_reason));
-                                    Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                if (TextUtils.isEmpty(strRemarks)) {
-                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                } else {
-                                    StoreData_in_DB();
-                                }
-                            }
+                        if (TextUtils.isEmpty(strRemarks)) {
+                            tvRemarks.setError(getString(R.string.field_canno_null));
                         } else {
-                            ((TextView) spPurpose.getSelectedView()).setError(getString(R.string.select_purpose));
-                            Toast.makeText(getApplicationContext(), getString(R.string.select_purpose), Toast.LENGTH_SHORT).show();
+                            StoreData_in_DB();
                         }
                     }else {
                         ((TextView) spMonth.getSelectedView()).setError(getString(R.string.select_month));
@@ -445,40 +402,6 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
                     alert.show();
                 });
                 //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        spPurpose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                strPurpose = String.valueOf(spPurpose.getSelectedItem());
-                posPurpose = position;
-                codePurpose = sqlLiteOpenHelper_class_Kan.Get_Purpose(strPurpose, getString(R.string.reasons_tbl_purpose_name));
-                Log.d("Number", ""+ codePurpose);
-                Log.d("Item_Position", ""+ position);
-                Log.d("Spinner_Value", ""+strPurpose);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spRejectReason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                strRejectionReason = String.valueOf(spRejectReason.getSelectedItem());
-                posRejectionReason = position;
-                codeRejectionReason = sqlLiteOpenHelper_class_Kan.Get_CertificateRejectionReason(strRejectionReason, getString(R.string.reasons_tbl_reason_name));
-                Log.d("Number", ""+ codeRejectionReason);
-                Log.d("Item_Position", ""+ position);
-                Log.d("Spinner_Value", ""+strRejectionReason);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -616,21 +539,19 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
                     + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
 
             database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DifferFromAppinformation +"='Y',"
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Total_No_Years_10 + "='"+strYear+"',"
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.NO_Months_10 + "='"+strMonth+"',"
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Reside_At_Stated_Address_10 + "='" + option1 + "',"
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Place_Match_With_RationCard_10 + "='" + option2 + "',"
-//                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Pur_for_Cert_Code_10 + "=" + codePurpose + ","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + "=0,"
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.vLat + "=" + latitude + ","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.vLong + "=" + longitude + ","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Photo + "='"+store+"',"
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Can_Certificate_Given + "='" + option3 + "',"
-//                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Reason_for_Rejection + "=" + codeRejectionReason + ","
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.Remarks + "='" + strRemarks + "',"
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1"
-                    + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo1 + "='" + applicant_Id + "'");
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DifferFromAppinformation +"='Y',"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Total_No_Years_10 + "='"+strYear+"',"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_NO_Months_10 + "='"+strMonth+"',"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reside_At_Stated_Address_10 + "='" + option1 + "',"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Place_Match_With_RationCard_10 + "='" + option2 + "',"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income + "=0,"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLat + "=" + latitude + ","
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLong + "=" + longitude + ","
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo + "='"+store+"',"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given + "='" + option3 + "',"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks + "='" + strRemarks + "',"
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag + "=1"
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'");
 
             Log.d("Database", "ServiceParameters Database Updated");
             Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();

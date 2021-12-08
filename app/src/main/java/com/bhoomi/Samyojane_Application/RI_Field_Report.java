@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -158,7 +156,7 @@ public class RI_Field_Report extends AppCompatActivity {
         database=openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select * from "
-                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+ " where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999", null);
         int count;
@@ -180,7 +178,7 @@ public class RI_Field_Report extends AppCompatActivity {
             database=openHelper.getWritableDatabase();
 
             Cursor cursor1 = database.rawQuery("select * from "
-                    +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
+                    +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+ " where "
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999", null);
             int count1;
@@ -227,7 +225,7 @@ public class RI_Field_Report extends AppCompatActivity {
             database=openHelper.getWritableDatabase();
 
             Cursor cursor1 = database.rawQuery("select * from "
-                    +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
+                    +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+ " where "
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"=99999"+" and "
                     + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null " , null);
             int count1;
@@ -280,7 +278,7 @@ public class RI_Field_Report extends AppCompatActivity {
                 database=openHelper.getWritableDatabase();
 
                 Cursor cursor12 = database.rawQuery("select * from "
-                        +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
+                        +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+ " where "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"=255 and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null " , null);
@@ -330,7 +328,7 @@ public class RI_Field_Report extends AppCompatActivity {
                 database=openHelper.getWritableDatabase();
 
                 Cursor cursor12 = database.rawQuery("select * from "
-                        +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+ " where "
+                        +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+ " where "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"=99999"+" and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null " , null);
                 int count12;
@@ -406,8 +404,8 @@ public class RI_Field_Report extends AppCompatActivity {
                 openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
                 database=openHelper.getWritableDatabase();
 
-                Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.villageCircle_Code+"="+hab_Va_Circle_Code+" and "
+                Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VillageCircle_Code+"="+hab_Va_Circle_Code+" and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"=255",null);
@@ -444,7 +442,7 @@ public class RI_Field_Report extends AppCompatActivity {
                 openHelper=new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);
                 database=openHelper.getWritableDatabase();
 
-                Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
+                Cursor cursor1 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME
                         +" where "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"="+hab_Village_Code+" and "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null",null);
                 if (cursor1.getCount()>0){
@@ -598,7 +596,7 @@ public class RI_Field_Report extends AppCompatActivity {
         database = openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo
-                +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
+                +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"='"+village_Code
@@ -653,7 +651,7 @@ public class RI_Field_Report extends AppCompatActivity {
         database = openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select "+getString(R.string.ser_tran_service_name)+", count("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo
-                +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
+                +") as TotalCount from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"="+town_Code+" and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"="+ward_Code+" and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null and "

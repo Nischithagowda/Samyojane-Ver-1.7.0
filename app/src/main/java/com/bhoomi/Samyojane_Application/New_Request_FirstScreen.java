@@ -522,7 +522,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"=255 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+" ='1'", null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+" ='Y'", null);
 
         SlNo1.clear();
         Applicant_Name1.clear();
@@ -638,7 +638,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=99999 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null and "
-                +DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+" ='1'", null);
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+" ='Y'", null);
 
         SlNo1.clear();
         Applicant_Name1.clear();
