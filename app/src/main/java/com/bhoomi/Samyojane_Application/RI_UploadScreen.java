@@ -1,6 +1,5 @@
 package com.bhoomi.Samyojane_Application;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,10 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,44 +17,34 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
+import com.bhoomi.Samyojane_Application.api.APIClient;
+import com.bhoomi.Samyojane_Application.api.APIInterface_NIC;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RI_UploadScreen extends AppCompatActivity {
-
-    String SOAP_ACTION2 = "http://tempuri.org/Update_RI_ServiceParameterTable_Auto";
-    public final String OPERATION_NAME2 = "Update_RI_ServiceParameterTable_Auto";  //Method_name
-    public final String WSDL_TARGET_NAMESPACE2 = "http://tempuri.org/";  // NAMESPACE
-    //String SOAP_ADDRESS2 = "http://164.100.133.30/NK_MobileApp/WebService.asmx";
 
     Button btnUpload, btnok;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    String RI_Report_No, RI_DataUpdateFlag, District_Code, Taluk_Code, Hobli_Code, Village_Circle_code, Village_Code, Town_Code, Ward_Code, Service_Code,Applicant_Id;
-    String RI_Annual_Income, RI_vLat, RI_vLong, RI_Accepted_VA_information;
     ProgressDialog dialog;
     TextView tvTotalUpload, tvAlreadyUploaded, tvNotUploaded, tvAfterUploaded;
     int count_TotalCaptured=0, count_AfterUpload=0, count_BalanceRecord;
-    int i=0;
-    String RI_Can_Certificate_Given, RI_Reason_for_Rejection;
-    //Service Parameters of service_code-6
-    String RI_Applicant_Category, RI_Applicant_Caste, RI_Belongs_Creamy_Layer_6, RI_Reason_for_Creamy_Layer_6;
-    //Service Parameters of service_code-8
-    String RI_Num_Years_8, RI_App_Father_Category_8, RI_APP_Father_Caste_8, RI_App_Mother_Category_8, RI_APP_Mother_Caste_8, RI_Remarks;
-    //Service Parameters of service_code-10
-    String RI_Total_No_Years_10, RI_NO_Months_10,RI_Reside_At_Stated_Address_10, RI_Place_Match_With_RationCard_10, RI_Pur_for_Cert_Code_10;
-
-    HttpTransportSE androidHttpTransport;
-    SoapSerializationEnvelope envelope;
-    SoapPrimitive resultString;
     String resultFromServer;
 
-    String Updated_By_RI_Name, Updated_By_RI_IMEI, Updated_By_RI_MobileNum;
+    String Updated_By_RI_Name, Updated_By_RI_IMEI;
+    APIInterface_NIC apiInterface_nic;
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -83,18 +69,17 @@ public class RI_UploadScreen extends AppCompatActivity {
         Intent i = getIntent();
         Updated_By_RI_Name = i.getStringExtra("RI_Name");
         Updated_By_RI_IMEI = i.getStringExtra("IMEI_Num");
-        Updated_By_RI_MobileNum = i.getStringExtra("mob_Num");
 
         Log.d("Updated_By_RI_Name", ""+Updated_By_RI_Name);
         Log.d("Updated_By_RI_IMEI", ""+Updated_By_RI_IMEI);
-        Log.d("Updated_By_RI_MobileNum", ""+Updated_By_RI_MobileNum);
 
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_UploadScreen.this);
         database = openHelper.getWritableDatabase();
 
-        final Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
-                + " where "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is not null and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + " is not null ", null);
+        final Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" SP left join "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" ST on ST."+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo +"= SP."+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_GSCNo
+                +" where (ST."+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1 and SP."
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1) or SP."+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+"=1", null);
 
         count_TotalCaptured=cursor.getCount();
         count_BalanceRecord=cursor.getCount();
@@ -127,38 +112,15 @@ public class RI_UploadScreen extends AppCompatActivity {
                 openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_UploadScreen.this);
                 database = openHelper.getWritableDatabase();
 
-                new Update_RI_ServiceParameterTable().execute();
+                UploadFieldVerificationData();
             }
-            else {
+            else{
                 buildAlertMessageConnection();
-                //Toast.makeText(getApplicationContext(), "Internet Connection was not Available\nPlease try again", Toast.LENGTH_SHORT).show();
             }
         });
 
         btnok.setOnClickListener(v -> onBackPressed());
 
-//        try {
-//            @SuppressLint("SdCardPath")
-//            File sd = new File("/sdcard/Samyojane/databases/");
-//            sd.mkdirs();
-//
-//            File currentFile = new File(Environment.getDataDirectory(), "//data//" + getApplicationContext().getPackageName() + "//databases//" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DATABASE_NAME);
-//
-//            File backupFile = new File(sd, DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DATABASE_NAME);
-//            backupFile.delete();
-//            backupFile.createNewFile();
-//
-//            FileInputStream fis = new FileInputStream(currentFile);
-//            FileOutputStream fos = new FileOutputStream(backupFile);
-//
-//            ByteStreams.copy(fis, fos);
-//
-//            fis.close();
-//            fos.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     private boolean isNetworkAvailable() {
@@ -188,205 +150,158 @@ public class RI_UploadScreen extends AppCompatActivity {
         alert.show();
     }
 
-    @SuppressLint("StaticFieldLeak")
-    class Update_RI_ServiceParameterTable extends AsyncTask<String, Integer, String> {
+    public void UploadFieldVerificationData(){
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        protected String doInBackground(String... params) {
-            openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_UploadScreen.this);
-            database = openHelper.getWritableDatabase();
+        String Applicant_Id;
+        UpdateStatusCLASS updateStatusCLASS;
+        dialog.show();
+        apiInterface_nic = APIClient.getClient(getString(R.string.MobAPI_New_NIC)).create(APIInterface_NIC.class);
 
-            Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code +","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Applicant_Category+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Applicant_Caste+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Belongs_Creamy_Layer_6+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Reason_for_Creamy_Layer_6+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Num_Years_8+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_App_Father_Category_8+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_APP_Father_Caste_8+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_App_Mother_Category_8+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_APP_Mother_Caste_8+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Remarks+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Total_No_Years_10+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_NO_Months_10+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Reside_At_Stated_Address_10+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Place_Match_With_RationCard_10+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Pur_for_Cert_Code_10+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Annual_Income+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_vLat+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_vLong+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Can_Certificate_Given_as_RI+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Reason_for_Rejection_as_RI+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No+","
-                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag
-                    +" from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
-                    +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+"=1", null);
-            try {
-                if (cursor.getCount() > 0) {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+        String formattedDate = df.format(c);
 
-                    if (cursor.moveToFirst()) {
-                        do {
-                            Log.d("Loop_entering_here", "");
-                            Applicant_Id = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
-                            Log.d("From_DataBase", ""+Applicant_Id);
+        openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_UploadScreen.this);
+        database = openHelper.getWritableDatabase();
 
-                            try {
-                                District_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code));
-                                Taluk_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code));
-                                Hobli_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code));
-                                Village_Circle_code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.va_Circle_Code));
-                                Village_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code));
-                                Town_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code));
-                                Ward_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code));
-                                Service_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code));
-                                Applicant_Id = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No));
-                                RI_Applicant_Category = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Applicant_Category));
-                                RI_Applicant_Caste = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Applicant_Caste));
-                                RI_Belongs_Creamy_Layer_6=cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Belongs_Creamy_Layer_6));
-                                RI_Reason_for_Creamy_Layer_6= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Reason_for_Creamy_Layer_6));
-                                RI_Num_Years_8=cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Num_Years_8));
-                                RI_App_Father_Category_8= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_App_Father_Category_8));
-                                RI_APP_Father_Caste_8= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_APP_Father_Caste_8));
-                                RI_App_Mother_Category_8= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_App_Mother_Category_8));
-                                RI_APP_Mother_Caste_8= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_APP_Mother_Caste_8));
-                                RI_Remarks=cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Remarks));
-                                RI_Total_No_Years_10 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Total_No_Years_10));
-                                RI_NO_Months_10 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_NO_Months_10));
-                                RI_Reside_At_Stated_Address_10=cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Reside_At_Stated_Address_10));
-                                RI_Place_Match_With_RationCard_10=cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Place_Match_With_RationCard_10));
-                                RI_Pur_for_Cert_Code_10= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Pur_for_Cert_Code_10));
-                                RI_Annual_Income= cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Annual_Income));
-                                RI_vLat = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_vLat));
-                                RI_vLong = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_vLong));
-                                RI_Accepted_VA_information = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Accepted_VA_information));
-                                RI_Can_Certificate_Given = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Can_Certificate_Given_as_RI));
-                                RI_Reason_for_Rejection = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Reason_for_Rejection_as_RI));
-                                RI_Report_No = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_Report_No));
-                                RI_DataUpdateFlag = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag));
+        Cursor cursor = database.rawQuery("select * from "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
+                +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DataUpdateFlag+"=1", null);
+        try {
+            if (cursor.getCount() > 0) {
 
-                                SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE2, OPERATION_NAME2);
+                if (cursor.moveToFirst()) {
+                    do {
+                        Log.d("Loop_entering_here", "");
 
-                                request.addProperty("District_Code", District_Code);
-                                request.addProperty("Taluk_Code", Taluk_Code);
-                                request.addProperty("Hobli_Code", Hobli_Code);
-                                request.addProperty("va_Circle_Code", Village_Circle_code);
-                                request.addProperty("Village_Code", Village_Code);
-                                request.addProperty("Town_Code",Town_Code);
-                                request.addProperty("Ward_Code",Ward_Code);
-                                request.addProperty("Service_Code", Service_Code);
-                                request.addProperty("Applicant_Id", Applicant_Id);
-                                request.addProperty("RI_Applicant_Category", RI_Applicant_Category);
-                                request.addProperty("RI_Applicant_Caste", RI_Applicant_Caste);
-                                request.addProperty("RI_Belongs_Creamy_Layer_6", RI_Belongs_Creamy_Layer_6);
-                                request.addProperty("RI_Reason_for_Creamy_Layer_6", RI_Reason_for_Creamy_Layer_6);
-                                request.addProperty("RI_Num_Years_8", RI_Num_Years_8);
-                                request.addProperty("RI_App_Father_Category_8", RI_App_Father_Category_8);
-                                request.addProperty("RI_APP_Father_Caste_8", RI_APP_Father_Caste_8);
-                                request.addProperty("RI_App_Mother_Category_8", RI_App_Mother_Category_8);
-                                request.addProperty("RI_APP_Mother_Caste_8", RI_APP_Mother_Caste_8);
-                                request.addProperty("RI_Remarks", RI_Remarks);
-                                request.addProperty("RI_Total_No_Years_10", RI_Total_No_Years_10);
-                                request.addProperty("RI_NO_Months_10", RI_NO_Months_10);
-                                request.addProperty("RI_Reside_At_Stated_Address_10", RI_Reside_At_Stated_Address_10);
-                                request.addProperty("RI_Place_Match_With_RationCard_10", RI_Place_Match_With_RationCard_10);
-                                request.addProperty("RI_Pur_for_Cert_Code_10", RI_Pur_for_Cert_Code_10);
-                                request.addProperty("RI_Annual_Income", RI_Annual_Income);
-                                request.addProperty("RI_vLat", RI_vLat);
-                                request.addProperty("RI_vLong", RI_vLong);
-                                request.addProperty("RI_Accepted_VA_information", RI_Accepted_VA_information);
-                                request.addProperty("RI_Can_Certificate_Given", RI_Can_Certificate_Given);
-                                request.addProperty("RI_Reason_for_Rejection", RI_Reason_for_Rejection);
-                                request.addProperty("RI_Report_No", RI_Report_No);
-                                request.addProperty("RI_DataUpdateFlag", RI_DataUpdateFlag);
-                                request.addProperty("Updated_By_RI_IMEI", Updated_By_RI_IMEI);
-                                request.addProperty("Updated_By_RI_MobileNum",Updated_By_RI_MobileNum);
-                                request.addProperty("Updated_By_RI_Name", Updated_By_RI_Name);
+                        try {
+                            Applicant_Id = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_GSCNo));
+                            updateStatusCLASS = new UpdateStatusCLASS();
+                            updateStatusCLASS.setGscNo(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_GSCNo)));
+                            updateStatusCLASS.setLoginID(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_LoginID)));
+                            updateStatusCLASS.setFacilityCode(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Service_Code)));
+                            updateStatusCLASS.setDesignationCode(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DesignationCode)));
+                            updateStatusCLASS.setDifferFromApplicant(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DifferFromAppinformation)));
+                            updateStatusCLASS.setCanbeIssued(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Can_Certificate_Given)));
+                            updateStatusCLASS.setRemarks(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Remarks)));
+                            updateStatusCLASS.setReportNo(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Report_No)));
+                            updateStatusCLASS.setAppTitle(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_AppTitle)));
+                            updateStatusCLASS.setBinCom(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_BinCom)));
+                            updateStatusCLASS.setFatTitle(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_FatTitle)));
+                            updateStatusCLASS.setFatherName(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_FatherName)));
+                            updateStatusCLASS.setMotherName(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_MotherName)));
+                            updateStatusCLASS.setMobileNumber(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_MobileNumber)));
+                            updateStatusCLASS.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Address1)));
+                            updateStatusCLASS.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Address2)));
+                            updateStatusCLASS.setAddress3(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Address3)));
+                            updateStatusCLASS.setPinCode(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_PinCode)));
+                            updateStatusCLASS.setResCatCode(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Category)));
+                            updateStatusCLASS.setCasteCode(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Caste)));
+                            updateStatusCLASS.setCasteSl(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_CasteSl)));
+                            updateStatusCLASS.setIncome(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Income)));
+                            updateStatusCLASS.setNoofYears(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Total_No_Years_10)));
+                            updateStatusCLASS.setNoofMonths(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_NO_Months_10)));
+                            updateStatusCLASS.setFatherCategory(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Father_Category_8)));
+                            updateStatusCLASS.setMotherCategory(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Mother_Category_8)));
+                            updateStatusCLASS.setFatherCaste(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Father_Caste_8)));
+                            updateStatusCLASS.setMotherCaste(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Mother_Caste_8)));
+                            updateStatusCLASS.setCreamyLayer(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Belongs_Creamy_Layer_6)));
+                            updateStatusCLASS.setReasonCreamyLayer(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reason_for_Creamy_Layer_6)));
+                            updateStatusCLASS.setResAddress(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reside_At_Stated_Address_10)));
+                            updateStatusCLASS.setPlaceMatchWithRationCard(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Place_Match_With_RationCard_10)));
+                            updateStatusCLASS.setPhoto(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Photo)));
+                            updateStatusCLASS.setvLat(cursor.getDouble(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLat)));
+                            updateStatusCLASS.setvLong(cursor.getDouble(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLong)));
+                            updateStatusCLASS.setDataUpdateFlag(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DataUpdateFlag)));
+                            updateStatusCLASS.setReportDate(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_ReportDate)));
+                            updateStatusCLASS.setUploadedDate(df.parse(formattedDate));
+                            updateStatusCLASS.setIMEI(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_VA_RI_IMEI)));
+                            updateStatusCLASS.setVARIName(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_VA_RI_Name)));
 
-                                Log.d("Request","" + request);
 
-                                envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-                                envelope.dotNet = true;
-                                envelope.setOutputSoapObject(request);
+                            Call<JsonObject> call = apiInterface_nic.UpdateStatus(updateStatusCLASS);
+                            String finalApplicant_Id = Applicant_Id;
+                            call.enqueue(new Callback<JsonObject>() {
+                                @Override
+                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                    if (response.isSuccessful()) {
+                                        JsonObject jsonObject1 = response.body();
+                                        Log.d("response_server", jsonObject1 + "");
+                                        if (Objects.requireNonNull(jsonObject1).isJsonNull()) {
+                                            Toast.makeText(getApplicationContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        } else {
+                                            JsonPrimitive jsonObject2 = jsonObject1.getAsJsonPrimitive("StatusMessage");
+                                            JsonPrimitive jsonObject3 = jsonObject1.getAsJsonPrimitive("StatusCode");
+                                            String StatusMessage = jsonObject2.toString();
+                                            String StatusCode = jsonObject3.toString();
+                                            Log.d("StatusCode", StatusCode + ", StatusMessage: " + StatusMessage);
 
-                                androidHttpTransport = new HttpTransportSE(getString(R.string.SOAP_ADDRESS));
-                                Log.d("URL","URL: "+getString(R.string.SOAP_ADDRESS));
-                                androidHttpTransport.call(SOAP_ACTION2, envelope);
-                                resultString = (SoapPrimitive) envelope.getResponse();
-                                Log.i("Result", ""+resultString);
-                                resultFromServer = String.valueOf(resultString);
-                                if(resultFromServer.equals("0")) {
-                                    runOnUiThread(() -> {
-                                        //Toast.makeText(getApplicationContext(), "Data Uploaded Successfully" , Toast.LENGTH_SHORT).show();
-                                        Log.d("Request_", "Update_RI_ServiceParameterTable" + "Data Uploaded Successfully");
-                                        count_AfterUpload++;
-                                        count_BalanceRecord--;
-                                        tvTotalUpload.setText(String.valueOf(count_TotalCaptured));
-                                        tvAlreadyUploaded.setText(String.valueOf(count_AfterUpload));
-                                        tvNotUploaded.setText(String.valueOf(count_BalanceRecord));
-                                        Log.d("Count_of_Records", "count_TotalCaptured : " + count_TotalCaptured + "\ncount_AfterUpload : " + count_AfterUpload + "\ncount_AfterUpload : " + count_BalanceRecord);
-                                        if (count_TotalCaptured == count_AfterUpload && count_BalanceRecord == 0) {
-                                            tvAfterUploaded.setVisibility(View.VISIBLE);
-                                            btnok.setVisibility(View.VISIBLE);
-                                            btnUpload.setVisibility(View.GONE);
+                                            resultFromServer = StatusCode;
+                                            if (resultFromServer.equals("0")) {
+                                                runOnUiThread(() -> {
+                                                    //Toast.makeText(getApplicationContext(), "Data Uploaded Successfully" , Toast.LENGTH_SHORT).show();
+                                                    Log.d("Request_", "UpdateServiceParameterTable" + "Data Uploaded Successfully");
+                                                    count_AfterUpload++;
+                                                    count_BalanceRecord--;
+                                                    tvTotalUpload.setText(String.valueOf(count_TotalCaptured));
+                                                    tvAlreadyUploaded.setText(String.valueOf(count_AfterUpload));
+                                                    tvNotUploaded.setText(String.valueOf(count_BalanceRecord));
+                                                    Log.d("Count_of_Records", "count_TotalCaptured : " + count_TotalCaptured + "\ncount_AfterUpload : " + count_AfterUpload + "\ncount_AfterUpload : " + count_BalanceRecord);
+                                                    if (count_TotalCaptured == count_AfterUpload && count_BalanceRecord == 0) {
+                                                        tvAfterUploaded.setVisibility(View.VISIBLE);
+                                                        btnok.setVisibility(View.VISIBLE);
+                                                        btnUpload.setVisibility(View.GONE);
+                                                    }
+
+                                                });
+                                                dialog.dismiss();
+                                                database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
+                                                        + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + finalApplicant_Id + "'");
+                                                Log.d("Local_Result", "A row deleted Successfully");
+                                            } else {
+                                                Log.d("Request_", "UpdateServiceParameterTable" + " Data not uploaded");
+                                            }
                                         }
-
-                                    });
-                                    database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RD_No + "=" + Applicant_Id);
-                                    Log.d("Local_Result", "A row deleted Successfully");
-                                }
-                                else {
-                                    Log.d("Request_", "Update_RI_ServiceParameterTable" +" Data not uploaded");
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    }
                                 }
 
-                            } catch (Exception e) {
-                                Log.i("Error1", String.valueOf(e));
-                                runOnUiThread(() -> {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.server_exception) , Toast.LENGTH_SHORT).show();
-                                    Log.d("Update_RI_SerParamTable", "Server Exception Occurred");
+                                @Override
+                                public void onFailure(Call<JsonObject> call, Throwable t) {
                                     dialog.dismiss();
-                                });
-                            }
-                        }while (cursor.moveToNext());
-                        dialog.dismiss();
-                    }
-                    dialog.dismiss();
+                                    t.printStackTrace();
+                                    Toast.makeText(getApplicationContext(), ""+t.getLocalizedMessage() , Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
-                } else {
-                    cursor.close();
-                    runOnUiThread(() -> {
-                        //Toast.makeText(getApplicationContext(), "There is no Updated data to Upload in Server " , Toast.LENGTH_SHORT).show();
-                        Log.d("Update_RI_SerParamTable", "There is no Updated data to Upload in Server");
-                        dialog.dismiss();
-                    });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.i("Error1", e.getMessage());
+                            runOnUiThread(() -> {
+                                Toast.makeText(getApplicationContext(), getString(R.string.server_exception) , Toast.LENGTH_SHORT).show();
+                                Log.d("InsertServiceParaTable", "Server Exception Occurred");
+                                dialog.dismiss();
+                            });
+                        }
+                    }while (cursor.moveToNext());
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("Update_RI_SerParamTbla", "ExceptionArrived ");
-                dialog.dismiss();
+            } else {
+                cursor.close();
+                runOnUiThread(() -> {
+                    //Toast.makeText(getApplicationContext(), "There is no Updated data to Upload in Server " , Toast.LENGTH_SHORT).show();
+                    Log.d("InsertServiceParaTable", "There is no Updated data to Upload in Server");
+                    dialog.dismiss();
+                });
             }
-            //Toast.makeText(getApplicationContext(), result , Toast.LENGTH_SHORT).show();
 
-            return "InBackground";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
-
-        protected void onProgressUpdate(Integer... a) {
-
+        } catch (Exception e) {
+            Log.d("InsertServiceParaTable1", e.getMessage());
+            dialog.dismiss();
+            runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception) , Toast.LENGTH_SHORT).show());
         }
     }
 }

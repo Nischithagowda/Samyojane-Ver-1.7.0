@@ -20,7 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class RI_List_Adapter extends BaseAdapter implements Filterable {
-    private Context context;
+    Context context;
     ArrayList<String> SlNo;
     ArrayList<String> Service_Name;
     ArrayList<String> TotalCount;

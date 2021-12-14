@@ -729,29 +729,34 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String response_server = response.body();
-                Log.d("response_server",response_server + "");
+                if (response.isSuccessful()) {
+                    String response_server = response.body();
+                    Log.d("response_server", response_server + "");
 
-                try {
-                    JSONObject jsonObject = new JSONObject(response_server);
-                    JSONArray array = jsonObject.getJSONArray("data");
-                    SqlLiteOpenHelper_Class sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(activity, MainActivity.this);
-                    sqlLiteOpenHelper_class.Insert_CASTE_EXCEPT_OBC_Master(array);
-                    GetCaste_OBC();
-                } catch (JSONException e) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response_server);
+                        JSONArray array = jsonObject.getJSONArray("data");
+                        SqlLiteOpenHelper_Class sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(activity, MainActivity.this);
+                        sqlLiteOpenHelper_class.Insert_CASTE_EXCEPT_OBC_Master(array);
+                        GetCaste_OBC();
+                    } catch (JSONException e) {
+                        dialog.dismiss();
+                        e.printStackTrace();
+                        runOnUiThread(() -> Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
+                    } catch (OutOfMemoryError e) {
+                        dialog.dismiss();
+                        e.printStackTrace();
+                        runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                        Log.e("OutOfMemoryError", "" + e.toString());
+                    } catch (NullPointerException e) {
+                        dialog.dismiss();
+                        e.printStackTrace();
+                        runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                        Log.e("NullPointerException", "" + e.toString());
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    e.printStackTrace();
-                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
-                }catch (OutOfMemoryError e){
-                    dialog.dismiss();
-                    e.printStackTrace();
-                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
-                    Log.e("OutOfMemoryError", ""+e.toString());
-                }catch (NullPointerException e){
-                    dialog.dismiss();
-                    e.printStackTrace();
-                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
-                    Log.e("NullPointerException", ""+e.toString());
                 }
             }
 

@@ -474,38 +474,6 @@
                     </TableRow>
 
                     <TableRow
-                        android:id="@+id/lRejectionReason"
-                        android:layout_marginTop="10dp">
-
-                        <TextView
-                            android:text="@string/reason_for_rejection"
-                            android:textColor="@android:color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1" />
-
-                        <TextView
-                            android:text="@string/colon"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:layout_width="10dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:layout_column="2"
-                            android:layout_marginStart="5dp" />
-
-                        <TextView
-                            android:id="@+id/ReasonForRejection"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
-                            android:layout_marginStart="5dp"
-                            android:layout_column="3"/>
-
-                    </TableRow>
-
-                    <TableRow
                         android:layout_marginTop="5dp"
                         tools:ignore="TooManyViews">
 

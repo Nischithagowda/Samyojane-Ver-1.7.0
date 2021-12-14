@@ -588,8 +588,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
                         Cursor cursor1 = database.rawQuery("select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"="+townCode + " and "
                                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"=99999" + " and "
-                                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 and "
-                                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null ",null);
+                                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null ",null);
                         if(cursor1.getCount()>0){
                             town_totalCount = cursor1.getCount();
                             Log.d("Town_TotalCount", String.valueOf(town_totalCount));
@@ -817,8 +816,7 @@ public class SqlLiteOpenHelper_Class extends SQLiteAssetHelper {
                                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"="+townCode+" and "
                                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"="+wardCode+" and "
                                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code+"=99999"+" and "
-                                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 and "
-                                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag+" is null ",null);
+                                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag+" is null ",null);
                         if(cursor1.getCount()>0){
                             ward_totalCount = cursor1.getCount();
                             Log.d("Town_TotalCount", String.valueOf(ward_totalCount));

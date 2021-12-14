@@ -38,8 +38,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -510,6 +513,10 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
     public String StoreData_in_DB() {
         String str;
 
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+        String currDate = dateFormat.format(date);
+
         if(option1.equals(getString(R.string.no))){
             option1="N";
         }else if (option1.equals(getString(R.string.yes))){
@@ -538,56 +545,60 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
             database = openHelper.getWritableDatabase();
 
             Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
-                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
+                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'", null);
             if (cursor.getCount() > 0) {
+                try {
+                    database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME + " set "
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'");
 
-                database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
+                    database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Total_No_Years_10 + "='" + strYear + "',"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_NO_Months_10 + "='" + strMonth + "',"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reside_At_Stated_Address_10 + "='" + option1 + "',"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Place_Match_With_RationCard_10 + "='" + option2 + "',"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income + "=0,"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLat + "=" + latitude + ","
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLong + "=" + longitude + ","
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo + "='" + store + "',"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given + "='" + option3 + "',"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks + "='" + strRemarks + "',"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_ReportDate + "='" + dateFormat.parse(currDate) + "',"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag + "=1"
+                            + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'");
 
-                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DifferFromAppinformation +"='Y',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Total_No_Years_10 + "='"+strYear+"',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_NO_Months_10 + "='"+strMonth+"',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reside_At_Stated_Address_10 + "='" + option1 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Place_Match_With_RationCard_10 + "='" + option2 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income + "=0,"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLat + "=" + latitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLong + "=" + longitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo + "='"+store+"',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given + "='" + option3 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks + "='" + strRemarks + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag + "=1"
-                        + " where " +DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'");
+                    Log.d("Database", "ServiceParameters Database Updated");
+                    Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
 
-                Log.d("Database", "ServiceParameters Database Updated");
-                Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
-
-                Intent i = new Intent(New_Request_Resident_Parameters.this, New_Request_FirstScreen.class);
-                i.putExtra("applicant_Id", applicant_Id);
-                i.putExtra("district_Code", district_Code);
-                i.putExtra("taluk_Code", taluk_Code);
-                i.putExtra("hobli_Code", hobli_Code);
-                i.putExtra("districtCode", district);
-                i.putExtra("taluk", taluk);
-                i.putExtra("VA_Name", VA_Name);
-                i.putExtra("hobli", hobli);
-                i.putExtra("va_Circle_Code", va_Circle_Code);
-                i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                i.putExtra("strSearchServiceName", service_name);
-                i.putExtra("strSearchVillageName", village_name);
-                i.putExtra("serviceCode", serviceCode);
-                i.putExtra("villageCode", String.valueOf(villageCode));
-                i.putExtra("option_Flag", option_Flag);
-                i.putExtra("town_Name", town_Name);
-                i.putExtra("town_code", town_code);
-                i.putExtra("ward_Name", ward_Name);
-                i.putExtra("ward_code", ward_code);
-                startActivity(i);
-                finish();
-                dialog.dismiss();
-                truncateDatabase_Docs();
-                str = "Success";
+                    Intent i = new Intent(New_Request_Resident_Parameters.this, New_Request_FirstScreen.class);
+                    i.putExtra("applicant_Id", applicant_Id);
+                    i.putExtra("district_Code", district_Code);
+                    i.putExtra("taluk_Code", taluk_Code);
+                    i.putExtra("hobli_Code", hobli_Code);
+                    i.putExtra("districtCode", district);
+                    i.putExtra("taluk", taluk);
+                    i.putExtra("VA_Name", VA_Name);
+                    i.putExtra("hobli", hobli);
+                    i.putExtra("va_Circle_Code", va_Circle_Code);
+                    i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                    i.putExtra("strSearchServiceName", service_name);
+                    i.putExtra("strSearchVillageName", village_name);
+                    i.putExtra("serviceCode", serviceCode);
+                    i.putExtra("villageCode", String.valueOf(villageCode));
+                    i.putExtra("option_Flag", option_Flag);
+                    i.putExtra("town_Name", town_Name);
+                    i.putExtra("town_code", town_code);
+                    i.putExtra("ward_Name", ward_Name);
+                    i.putExtra("ward_code", ward_code);
+                    startActivity(i);
+                    finish();
+                    dialog.dismiss();
+                    truncateDatabase_Docs();
+                    str = "Success";
+                } catch (Exception e){
+                    e.printStackTrace();
+                    str = "Failure";
+                }
             } else {
                 cursor.close();
                 dialog.dismiss();

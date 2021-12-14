@@ -325,10 +325,9 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
         return objects;
     }
 
-    List<AutoCompleteTextBox_Object> Get_BinCome(){
+    List<AutoCompleteTextBox_Object> Get_BinCome(String binCom_name){
         List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
         Log.d("Bincom_Name", "Get_BinCome enter");
-        String eng_str;
         try{
             database = this.getReadableDatabase();
             cursor = database.rawQuery("select * from "+Table_BINCOM_MASTER, null);
@@ -336,9 +335,8 @@ public class SQLiteAssetHelper_Masters extends SQLiteAssetHelper {
                 objects.add(new AutoCompleteTextBox_Object("0", "-- ಆಯ್ಕೆ --"));
                 if(cursor.moveToNext()) {
                     do {
-                        eng_str = cursor.getString(cursor.getColumnIndexOrThrow(BM_bincom_edesc));
                         objects.add(new AutoCompleteTextBox_Object(cursor.getString(cursor.getColumnIndex(BM_bincom_code)),
-                                cursor.getString(cursor.getColumnIndex(BM_bincom_kdesc))+"-"+eng_str));
+                                cursor.getString(cursor.getColumnIndex(binCom_name))));
                     } while (cursor.moveToNext());
                 }
             }

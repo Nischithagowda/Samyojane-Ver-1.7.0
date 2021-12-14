@@ -74,8 +74,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
         database = openHelper.getWritableDatabase();
 
         Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
-                + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + " is null and "
+                + " where "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code + "=" + villageCode + " and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code+"=9999 and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code+"=255", null);
@@ -133,8 +132,7 @@ public class RI_Applicant_wise_report extends AppCompatActivity {
         database = openHelper.getWritableDatabase();
 
         Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1
-                + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is not null and "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RI_DataUpdateFlag + " is null and "
+                + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + " is null and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Town_Code + "=" + townCode + " and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Ward_Code + "=" + wardCode + " and "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Village_Code + "=99999", null);

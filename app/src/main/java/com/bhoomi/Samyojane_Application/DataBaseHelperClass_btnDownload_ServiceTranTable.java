@@ -52,7 +52,7 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     public static String VA_Name = "VA_Name";
 
     //Updated ST Table Values
-    public static String UPD_GSCNo = "GscNo1";
+    public static String UPD_GSCNo = "GscNo";
     public static String UPD_LoginID = "LoginID";
     public static String UPD_Service_Code = "FacilityCode";
     public static String UPD_DesignationCode = "DesignationCode";

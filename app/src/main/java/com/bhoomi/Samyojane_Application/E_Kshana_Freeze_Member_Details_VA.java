@@ -611,7 +611,7 @@ public class E_Kshana_Freeze_Member_Details_VA extends AppCompatActivity {
     public void GetBincom(){
         sqLiteAssetHelper_masters = new SQLiteAssetHelper_Masters(this, activity);
         sqLiteAssetHelper_masters.open_Title_MASTER_Tbl();
-        objects_bincom = sqLiteAssetHelper_masters.Get_BinCome();
+        objects_bincom = sqLiteAssetHelper_masters.Get_BinCome(getString(R.string.bincom_desc_name));
         adapter_bincom = new ArrayAdapter<>(this, R.layout.spinner_item_color, objects_bincom);
         adapter_bincom.setDropDownViewResource(R.layout.spinner_item_dropdown);
         spBincom.setAdapter(adapter_bincom);

@@ -132,13 +132,16 @@ public class OtpVerify_New extends AppCompatActivity {
                         Log.d("statusCode",""+statusCode);
                         Log.d("MSG",""+MSG);
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
+                    onBackPressed();
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<OtpResponse> call, @NotNull Throwable throwable) {
                 Toast.makeText(getApplicationContext(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-
+                onBackPressed();
             }
 
         });

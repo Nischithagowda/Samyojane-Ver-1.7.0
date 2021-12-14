@@ -615,83 +615,88 @@ public class PushToAnotherVA extends AppCompatActivity {
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                Log.d("TAG",response.code()+"");
-                JsonObject response_server = response.body();
-                Log.d("response_server",response_server + "");
-                assert response_server != null;
-                JsonPrimitive jsonObject2 = response_server.getAsJsonPrimitive("StatusMessage");
-                String StatusMessage = jsonObject2.toString();
-                Log.d("StatusMessage",StatusMessage + "");
-                JsonPrimitive jsonObject3 = response_server.getAsJsonPrimitive("StatusCode");
-                String StatusCode = jsonObject3.toString();
-                Log.d("StatusCode",StatusCode + "");
-                if (StatusMessage.isEmpty()){
-                    p_dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
-                }  else if (StatusMessage.equals(getString(R.string.access_denied_msg))){
-                    p_dialog.dismiss();
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(PushToAnotherVA.this, R.style.MyDialogTheme);
-                    builder.setTitle(getString(R.string.alert))
-                            .setMessage(getString(R.string.access_denied_msg))
-                            .setIcon(R.drawable.ic_error_black_24dp)
-                            .setCancelable(false)
-                            .setPositiveButton(getString(R.string.ok), (dialog, id) -> dialog.cancel());
-                    final AlertDialog alert = builder.create();
-                    alert.show();
-                    alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(16);
-                    TextView msgTxt = alert.findViewById(android.R.id.message);
-                    msgTxt.setTextSize(16);
-                } else if (StatusCode.equalsIgnoreCase("0")){
-                    p_dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), ""+StatusMessage, Toast.LENGTH_SHORT).show();
-                } else {
-                    try {
+                if (response.isSuccessful()) {
+                    Log.d("TAG", response.code() + "");
+                    JsonObject response_server = response.body();
+                    Log.d("response_server", response_server + "");
+                    assert response_server != null;
+                    JsonPrimitive jsonObject2 = response_server.getAsJsonPrimitive("StatusMessage");
+                    String StatusMessage = jsonObject2.toString();
+                    Log.d("StatusMessage", StatusMessage + "");
+                    JsonPrimitive jsonObject3 = response_server.getAsJsonPrimitive("StatusCode");
+                    String StatusCode = jsonObject3.toString();
+                    Log.d("StatusCode", StatusCode + "");
+                    if (StatusMessage.isEmpty()) {
+                        p_dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
+                    } else if (StatusMessage.equals(getString(R.string.access_denied_msg))) {
+                        p_dialog.dismiss();
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(PushToAnotherVA.this, R.style.MyDialogTheme);
+                        builder.setTitle(getString(R.string.alert))
+                                .setMessage(getString(R.string.access_denied_msg))
+                                .setIcon(R.drawable.ic_error_black_24dp)
+                                .setCancelable(false)
+                                .setPositiveButton(getString(R.string.ok), (dialog, id) -> dialog.cancel());
+                        final AlertDialog alert = builder.create();
+                        alert.show();
+                        alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(16);
+                        TextView msgTxt = alert.findViewById(android.R.id.message);
+                        msgTxt.setTextSize(16);
+                    } else if (StatusCode.equalsIgnoreCase("0")) {
+                        p_dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "" + StatusMessage, Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
 //                        JSONObject jsonObject = new JSONObject(StatusMessage);
 //                        Log.d("jsonObject1", "" + jsonObject);
 //                        //jsonObject = jsonObject.getJSONObject("data");
 //                        int data = jsonObject.getInt("data");
 //                        Log.d("jsonObject2", "" + data);
 //                        response_server = String.valueOf(data);
-                        if (StatusMessage.equalsIgnoreCase("Updated")) {
-                            ser_count++;
-                            Log.d("ser_count", "" + ser_count);
-                            if (count == ser_count) {
-                                Toast.makeText(getApplicationContext(), getString(R.string.pushed_successfully), Toast.LENGTH_SHORT).show();
-                                database.close();
-                                database1.close();
-                                Intent i = new Intent(PushToAnotherVA.this, New_Request_FirstScreen.class);
-                                i.putExtra("applicant_Id", applicant_Id);
-                                i.putExtra("district_Code", district_Code);
-                                i.putExtra("taluk_Code", taluk_Code);
-                                i.putExtra("hobli_Code", hobli_Code);
-                                i.putExtra("districtCode", district);
-                                i.putExtra("taluk", taluk);
-                                i.putExtra("VA_Name", VA_Name);
-                                i.putExtra("hobli", hobli);
-                                i.putExtra("va_Circle_Code", va_Circle_Code);
-                                i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                                i.putExtra("strSearchServiceName", service_name);
-                                i.putExtra("strSearchVillageName", village_name);
-                                i.putExtra("serviceCode", serviceCode);
-                                i.putExtra("villageCode", String.valueOf(villageCode));
-                                i.putExtra("option_Flag", option_Flag);
-                                i.putExtra("town_Name", town_Name);
-                                i.putExtra("town_code", town_code);
-                                i.putExtra("ward_Name", ward_Name);
-                                i.putExtra("ward_code", ward_code);
-                                i.putExtra("pushedFlag", 1);
-                                startActivity(i);
-                                finish();
+                            if (StatusMessage.equalsIgnoreCase("Updated")) {
+                                ser_count++;
+                                Log.d("ser_count", "" + ser_count);
+                                if (count == ser_count) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.pushed_successfully), Toast.LENGTH_SHORT).show();
+                                    database.close();
+                                    database1.close();
+                                    Intent i = new Intent(PushToAnotherVA.this, New_Request_FirstScreen.class);
+                                    i.putExtra("applicant_Id", applicant_Id);
+                                    i.putExtra("district_Code", district_Code);
+                                    i.putExtra("taluk_Code", taluk_Code);
+                                    i.putExtra("hobli_Code", hobli_Code);
+                                    i.putExtra("districtCode", district);
+                                    i.putExtra("taluk", taluk);
+                                    i.putExtra("VA_Name", VA_Name);
+                                    i.putExtra("hobli", hobli);
+                                    i.putExtra("va_Circle_Code", va_Circle_Code);
+                                    i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                                    i.putExtra("strSearchServiceName", service_name);
+                                    i.putExtra("strSearchVillageName", village_name);
+                                    i.putExtra("serviceCode", serviceCode);
+                                    i.putExtra("villageCode", String.valueOf(villageCode));
+                                    i.putExtra("option_Flag", option_Flag);
+                                    i.putExtra("town_Name", town_Name);
+                                    i.putExtra("town_code", town_code);
+                                    i.putExtra("ward_Name", ward_Name);
+                                    i.putExtra("ward_code", ward_code);
+                                    i.putExtra("pushedFlag", 1);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            } else if (StatusMessage.equalsIgnoreCase("NOT Updated")) {
+                                p_dialog.dismiss();
+                                Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
                             }
-                        } else if (StatusMessage.equalsIgnoreCase("NOT Updated")) {
+                        } catch (Exception e) {
                             p_dialog.dismiss();
+                            Log.d("JSONException", "" + e.getMessage());
                             Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
                         }
-                    } catch (Exception e) {
-                        p_dialog.dismiss();
-                        Log.d("JSONException", "" + e.getMessage());
-                        Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
+                    p_dialog.dismiss();
                 }
             }
 

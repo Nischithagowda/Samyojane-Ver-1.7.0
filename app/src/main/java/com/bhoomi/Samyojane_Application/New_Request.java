@@ -897,6 +897,10 @@ public class New_Request extends AppCompatActivity {
             openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request.this);
             database = openHelper.getWritableDatabase();
 
+            Date date = Calendar.getInstance().getTime();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+            String currDate = dateFormat.format(date);
+
             if (latitude != 0.0 && longitude != 0.0) {
                 Log.d("value", "enter first if");
                 if (Objects.equals(optionA, getString(R.string.yes))) {
@@ -905,130 +909,135 @@ public class New_Request extends AppCompatActivity {
                         Log.d("value", "enter third if");
                     } else {
                         //dialog.show();
-                        Log.d("value", "Enter Else");
+                        try {
+                            Log.d("value", "Enter Else");
 
-                        if(optionA.equals(getString(R.string.no))){
-                            optionA="NO";
-                        }else if (optionA.equals(getString(R.string.yes))){
-                            optionA = "YES";
+                            if(optionA.equals(getString(R.string.no))){
+                                optionA="NO";
+                            }else if (optionA.equals(getString(R.string.yes))){
+                                optionA = "YES";
+                            }
+
+                            database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
+
+                            database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "("
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_LoginID + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Service_Code + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DesignationCode + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DifferFromAppinformation + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Report_No + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_ReportDate + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_AppTitle + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_BinCom + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatTitle + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatherName + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MotherName + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MobileNumber + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address1 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address2 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address3 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_PinCode + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Category + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Caste + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_CasteSl + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Total_No_Years_10 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_NO_Months_10 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Father_Category_8 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Mother_Category_8 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Father_Caste_8 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Mother_Caste_8 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Belongs_Creamy_Layer_6 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reason_for_Creamy_Layer_6 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reside_At_Stated_Address_10 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Place_Match_With_RationCard_10 + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLat + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLong + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_UploadedDate + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_IMEI + ","
+                                    + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_Name
+                                    + ") Values ('"
+                                    + applicant_Id + "','"
+                                    + uName_get + "',"
+                                    + serviceCode + ","
+                                    + DesiCode + ","
+                                    + "'N'" + "," //DifferFromAppinformation
+                                    + "'Y'" + ",'" //Can_Certificate_Given
+                                    + remarks + "','"
+                                    + report_no + "','"
+                                    + dateFormat.parse(currDate) + "',"
+                                    + appTitle_Code + ","
+                                    + binCom_Code + ","
+                                    + fatTitle_Code + ",'"
+                                    + fatherName + "','"
+                                    + motherName + "','"
+                                    + mobileNo + "','"
+                                    + address1 + "','"
+                                    + address2 + "','"
+                                    + address3 + "',"
+                                    + add_pin + ","
+                                    + category_code + ","
+                                    + caste_code + ","
+                                    + "0" + ",'"//CasteSl
+                                    + amount + "',"
+                                    + year + ","
+                                    + month + ","
+                                    + "0" + "," //App_Father_Category_8
+                                    + "0" + "," //App_Mother_Category_8
+                                    + "0" + "," //APP_Father_Caste_8
+                                    + "0" + "," //APP_Mother_Caste_8
+                                    + "'YES'" + "," //Belongs_Creamy_Layer_6
+                                    + "0" + "," //Reason_for_Creamy_Layer_6
+                                    + "''" + "," //Reside_At_Stated_Address_10
+                                    + "''" + "," //Place_Match_With_RationCard_10
+                                    + "''" + "," //Photo
+                                    + latitude + ","
+                                    + longitude + ",'"
+                                    + dateFormat.parse(currDate) + "',"
+                                    + "1" + ",'" //DataUpdateFlag
+                                    + VA_IMEI + "','" //Updated_By_VA_IMEI
+                                    + VA_Name  //Updated_By_VA_Name
+                                    + "')");
+
+                            Log.d("Database", DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "Database Inserted");
+                            Toast.makeText(getApplicationContext(), getString(R.string.data_saves_successfully), Toast.LENGTH_SHORT).show();
+
+                            truncateDatabase_Docs();
+
+                            Intent i1 = new Intent(New_Request.this, New_Request_FirstScreen.class);
+                            i1.putExtra("applicant_Id", applicant_Id);
+                            i1.putExtra("district_Code", district_Code);
+                            i1.putExtra("taluk_Code", taluk_Code);
+                            i1.putExtra("hobli_Code", hobli_Code);
+                            i1.putExtra("districtCode", district);
+                            i1.putExtra("taluk", taluk);
+                            i1.putExtra("VA_Name", VA_Name);
+                            i1.putExtra("hobli", hobli);
+                            i1.putExtra("va_Circle_Code", va_Circle_Code);
+                            i1.putExtra("VA_Circle_Name", VA_Circle_Name);
+                            i1.putExtra("strSearchServiceName", service_name);
+                            i1.putExtra("strSearchVillageName", village_name);
+                            i1.putExtra("serviceCode", serviceCode);
+                            i1.putExtra("villageCode", villageCode);
+                            i1.putExtra("option_Flag", option_Flag);
+                            i1.putExtra("town_Name", town_Name);
+                            i1.putExtra("town_code", town_code);
+                            i1.putExtra("ward_Name", ward_Name);
+                            i1.putExtra("ward_code", ward_code);
+
+                            startActivity(i1);
+                            finish();
+                        } catch (Exception e){
+                            e.printStackTrace();
                         }
 
-                        database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='"+ applicant_Id+"'");
-
-                        database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "("
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_LoginID + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Service_Code + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DesignationCode + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DifferFromAppinformation + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Report_No + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_ReportDate + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_AppTitle + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_BinCom + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatTitle + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatherName + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MotherName + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MobileNumber + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address1 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address2 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address3 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_PinCode + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Category + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Caste + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_CasteSl + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Total_No_Years_10 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_NO_Months_10 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Father_Category_8 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Mother_Category_8 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Father_Caste_8 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Mother_Caste_8 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Belongs_Creamy_Layer_6 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reason_for_Creamy_Layer_6 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reside_At_Stated_Address_10 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Place_Match_With_RationCard_10 + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLat + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLong + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_UploadedDate + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_IMEI + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_Name
-                                + ") Values ('"
-                                + applicant_Id + "','"
-                                + uName_get + "',"
-                                + serviceCode + ","
-                                + DesiCode + ","
-                                + "'N'" + "," //DifferFromAppinformation
-                                + "'Y'" + ",'" //Can_Certificate_Given
-                                + remarks + "','"
-                                + report_no + "','"
-                                + Calendar.getInstance().getTime() + "',"
-                                + appTitle_Code + ","
-                                + binCom_Code + ","
-                                + fatTitle_Code + ",'"
-                                + fatherName + "','"
-                                + motherName + "','"
-                                + mobileNo + "','"
-                                + address1 + "','"
-                                + address2 + "','"
-                                + address3 + "',"
-                                + add_pin + ","
-                                + category_code + ","
-                                + caste_code + ","
-                                + "0" + ",'"//CasteSl
-                                + amount + "',"
-                                + year + ","
-                                + month + ","
-                                + "0" + "," //App_Father_Category_8
-                                + "0" + "," //App_Mother_Category_8
-                                + "0" + "," //APP_Father_Caste_8
-                                + "0" + "," //APP_Mother_Caste_8
-                                + "'YES'" + "," //Belongs_Creamy_Layer_6
-                                + "0" + "," //Reason_for_Creamy_Layer_6
-                                + "''" + "," //Reside_At_Stated_Address_10
-                                + "''" + "," //Place_Match_With_RationCard_10
-                                + "''" + "," //Photo
-                                + latitude + ","
-                                + longitude + ",'"
-                                + Calendar.getInstance().getTime() + "',"
-                                + "1" + ",'" //DataUpdateFlag
-                                + VA_IMEI + "','" //Updated_By_VA_IMEI
-                                + VA_Name  //Updated_By_VA_Name
-                                + "')");
-
-                        Log.d("Database", DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "Database Inserted");
-                        Toast.makeText(getApplicationContext(), getString(R.string.data_saves_successfully), Toast.LENGTH_SHORT).show();
-
-                        truncateDatabase_Docs();
-
-                        Intent i1 = new Intent(New_Request.this, New_Request_FirstScreen.class);
-                        i1.putExtra("applicant_Id", applicant_Id);
-                        i1.putExtra("district_Code", district_Code);
-                        i1.putExtra("taluk_Code", taluk_Code);
-                        i1.putExtra("hobli_Code", hobli_Code);
-                        i1.putExtra("districtCode", district);
-                        i1.putExtra("taluk", taluk);
-                        i1.putExtra("VA_Name", VA_Name);
-                        i1.putExtra("hobli", hobli);
-                        i1.putExtra("va_Circle_Code", va_Circle_Code);
-                        i1.putExtra("VA_Circle_Name", VA_Circle_Name);
-                        i1.putExtra("strSearchServiceName", service_name);
-                        i1.putExtra("strSearchVillageName", village_name);
-                        i1.putExtra("serviceCode", serviceCode);
-                        i1.putExtra("villageCode", villageCode);
-                        i1.putExtra("option_Flag", option_Flag);
-                        i1.putExtra("town_Name", town_Name);
-                        i1.putExtra("town_code", town_code);
-                        i1.putExtra("ward_Name", ward_Name);
-                        i1.putExtra("ward_code", ward_code);
-
-                        startActivity(i1);
-                        finish();
                     }
 
                 }  else {
