@@ -913,10 +913,13 @@ public class New_Request extends AppCompatActivity {
                             Log.d("value", "Enter Else");
 
                             if(optionA.equals(getString(R.string.no))){
-                                optionA="NO";
+                                optionA="N";
                             }else if (optionA.equals(getString(R.string.yes))){
-                                optionA = "YES";
+                                optionA = "Y";
                             }
+
+                            database.execSQL("delete from "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
+                                    + " where "+ DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo+"='"+applicant_Id+"'");
 
                             database.execSQL("update "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME+" set "
                                     + DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag + "=1 where "
@@ -972,7 +975,7 @@ public class New_Request extends AppCompatActivity {
                                     + "'Y'" + ",'" //Can_Certificate_Given
                                     + remarks + "','"
                                     + report_no + "','"
-                                    + dateFormat.parse(currDate) + "',"
+                                    + currDate + "',"
                                     + appTitle_Code + ","
                                     + binCom_Code + ","
                                     + fatTitle_Code + ",'"
@@ -1000,7 +1003,7 @@ public class New_Request extends AppCompatActivity {
                                     + "''" + "," //Photo
                                     + latitude + ","
                                     + longitude + ",'"
-                                    + dateFormat.parse(currDate) + "',"
+                                    + currDate + "',"
                                     + "1" + ",'" //DataUpdateFlag
                                     + VA_IMEI + "','" //Updated_By_VA_IMEI
                                     + VA_Name  //Updated_By_VA_Name

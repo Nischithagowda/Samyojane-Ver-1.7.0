@@ -816,6 +816,9 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         Intent i;
         btnNext.setText(getString(R.string.loading_C));
 
+        database.execSQL("delete from "+DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1
+                + " where "+ DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo+"='"+applicant_Id+"'");
+
         set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
         set_and_get_service_parameter.setGSCNo1(applicant_Id);
         set_and_get_service_parameter.setLoginID(uName_get);

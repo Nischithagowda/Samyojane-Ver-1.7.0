@@ -7,12 +7,11 @@ import java.util.Date;
  **/
 public class UpdateStatusCLASS {
     String GscNo, LoginID, DifferFromApplicant, CanbeIssued, Remarks, ReportNo, ReportDate, FatherName, MotherName,
-            MobileNumber, Address1, Address2, Address3, CreamyLayer, ResAddress,
+            MobileNumber, Address1, Address2, Address3, CreamyLayer, ResAddress, UploadedDate,
             PlaceMatchWithRationCard, Photo, IMEI, VARIName;
     int FacilityCode, DesignationCode, AppTitle, BinCom, FatTitle, PinCode, ResCatCode, CasteCode, CasteSl,
             Income, NoofYears, NoofMonths, FatherCategory, MotherCategory, FatherCaste,
             MotherCaste, ReasonCreamyLayer, DataUpdateFlag;
-    Date UploadedDate;
     double vLat, vLong;
 
     public String getGscNo() {
@@ -311,11 +310,11 @@ public class UpdateStatusCLASS {
         ReportDate = reportDate;
     }
 
-    public Date getUploadedDate() {
+    public String getUploadedDate() {
         return UploadedDate;
     }
 
-    public void setUploadedDate(Date uploadedDate) {
+    public void setUploadedDate(String uploadedDate) {
         UploadedDate = uploadedDate;
     }
 

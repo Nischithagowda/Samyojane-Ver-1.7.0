@@ -902,7 +902,7 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo + "='" + store + "',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given + "='" + option1 + "',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks + "='" + strRemarks + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_ReportDate + "='" + dateFormat.parse(currDate) + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_ReportDate + "='" + currDate + "',"
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag + "=1" + " where "
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'");
 

@@ -563,7 +563,7 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
                             + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo + "='" + store + "',"
                             + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Can_Certificate_Given + "='" + option3 + "',"
                             + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks + "='" + strRemarks + "',"
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_ReportDate + "='" + dateFormat.parse(currDate) + "',"
+                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_ReportDate + "='" + currDate + "',"
                             + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag + "=1"
                             + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'");
 

@@ -214,7 +214,7 @@ public class UploadScreen extends AppCompatActivity {
                             updateStatusCLASS.setvLong(cursor.getDouble(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_vLong)));
                             updateStatusCLASS.setDataUpdateFlag(cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag)));
                             updateStatusCLASS.setReportDate(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_ReportDate)));
-                            updateStatusCLASS.setUploadedDate(df.parse(formattedDate));
+                            updateStatusCLASS.setUploadedDate(formattedDate);
                             updateStatusCLASS.setIMEI(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_IMEI)));
                             updateStatusCLASS.setVARIName(cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_Name)));
 

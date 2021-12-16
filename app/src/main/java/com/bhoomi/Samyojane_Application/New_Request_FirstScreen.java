@@ -31,6 +31,7 @@ import com.bhoomi.Samyojane_Application.api.APIClient;
 import com.bhoomi.Samyojane_Application.api.APIInterface_NIC;
 import com.bhoomi.Samyojane_Application.api.APIInterface_SamyojaneAPI;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,11 +53,11 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
 
     Button btnBack, btnPushToAnotherVA;
     TextView tvHobli, tvTaluk, tvVA_Name, tvVillageName, tvServiceName, tv_V_T_Name, txtListPushed;
-    String district, taluk, hobli, VA_Circle_Name, VA_Name;
+    String district, taluk, hobli, VA_Circle_Name, VA_Name, IMEI_Num;
     String applicant_Id, town_Name, ward_Name;
     int district_Code, taluk_Code, hobli_Code,va_Circle_Code, town_code, ward_code;
     SQLiteOpenHelper openHelper;
-    SQLiteDatabase database, database1, databaseFacility;
+    SQLiteDatabase database, database1, databaseFacility, databaseCredentials;
     ArrayList<String> SlNo = new ArrayList<>();
     ArrayList<String> Applicant_Name = new ArrayList<>();
     ArrayList<String> Applicant_ID = new ArrayList<>();
@@ -162,6 +163,23 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Desicode = sharedPreferences.getInt(Constants.DesiCode_VA, 22);
         uName_get = sharedPreferences.getString(Constants.uName_get, "");
+        IMEI_Num = sharedPreferences.getString(Constants.IMEI_NUMBER, "");
+
+        openHelper = new DataBaseHelperClass_Credentials(getApplicationContext());
+        databaseCredentials=openHelper.getWritableDatabase();
+
+        Cursor cursor = databaseCredentials.rawQuery("select * from "+DataBaseHelperClass_Credentials.TABLE_NAME+" where "+ DataBaseHelperClass_Credentials.District_Code+"="+district_Code+" and "
+                + DataBaseHelperClass_Credentials.Taluk_Code+"="+taluk_Code+" and "+DataBaseHelperClass_Credentials.Hobli_Code+"="+hobli_Code+" and "
+                + DataBaseHelperClass_Credentials.VA_circle_Code+"="+va_Circle_Code, null);
+
+        if (cursor.getCount()>0){
+            if (cursor.moveToNext()){
+                IMEI_Num = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.VA_IMEI_1));
+                Log.d("IMEI_Num:", IMEI_Num);
+            }
+        } else {
+            cursor.close();
+        }
 
         hashMap_village_name = new HashMap<>();
         hashMap_service_Tran_data = new HashMap<>();
@@ -180,14 +198,14 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
 
         database1.execSQL(DataBaseHelperClass_VillageNames_DTH.CREATE_TABLE);
 
-        Cursor cursor = databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
+        Cursor cursor_c = databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
                 +getString(R.string.facility_table_name)+"='"+service_name+"'", null);
-        if (cursor.getCount()>0){
-            if (cursor.moveToNext()){
-                serviceCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code));
+        if (cursor_c.getCount()>0){
+            if (cursor_c.moveToNext()){
+                serviceCode = cursor_c.getInt(cursor_c.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code));
             }
         } else {
-            cursor.close();
+            cursor_c.close();
         }
 
         Log.d("New_Request_FirstScreen", "district_Code: "+district_Code);
@@ -401,6 +419,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                     dialog.incrementProgressBy(10);
                     truncateDatabase_village_name();
 
+                    assert response_server != null;
                     JSONObject jsonObject = new JSONObject(response_server);
                     JSONArray array = jsonObject.getJSONArray("data");
 
@@ -580,6 +599,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+"=9999 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+"=255 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+" ='N' and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null", null);
 
         SlNo.clear();
@@ -700,6 +720,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code + "="+ward_code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + "=99999 and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+"="+serviceCode+" and "
+                +DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+" ='N' and "
                 +DataBaseHelperClass_btnDownload_ServiceTranTable.DataUpdateFlag+" is null)", null);
 
         SlNo.clear();
@@ -789,205 +810,223 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                JsonObject jsonObject1 = response.body();
-                Log.d("response_server",jsonObject1 + "");
-                assert jsonObject1 != null;
-                JsonObject jsonObject2 = jsonObject1.getAsJsonObject("StatusMessage");
-                Log.d("response_server",jsonObject2 + "");
-                String response_server = jsonObject2.toString();
-                try {
-                    //dialog.incrementProgressBy(30);
-                    openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_FirstScreen.this);
-                    database = openHelper.getWritableDatabase();
+                if (response.isSuccessful()) {
+                    JsonObject jsonObject1 = response.body();
+                    Log.d("response_server", jsonObject1 + "");
+                    assert jsonObject1 != null;
+                    JsonObject jsonObject2 = jsonObject1.getAsJsonObject("StatusMessage");
+                    JsonPrimitive jsonObject3 = jsonObject1.getAsJsonPrimitive("StatusCode");
+                    String StatusCode = jsonObject3.toString();
+                    Log.d("response_server", jsonObject2 + "");
+                    String response_server = jsonObject2.toString();
+                    if (response_server.contains("No Records to Process") || StatusCode.equalsIgnoreCase("2")) {
+                        Log.d("Values", "No records Exists");
+                        Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
+                            dialog.incrementProgressBy(10);
 
-                    JSONObject jsonObject = new JSONObject(response_server);
-                    JSONArray array = jsonObject.getJSONArray("Table");
+                            JSONObject jsonObject = new JSONObject(response_server);
+                            JSONArray array = jsonObject.getJSONArray("Table");
 
-                    int count = array.length();
-                    truncateDatabase_Service_Tran_data();
+                            int count = array.length();
+                            truncateDatabase_Service_Tran_data();
 
-                    for (int i = 0; i < count; i++) {
+                            for (int i = 0; i < count; i++) {
 
-                        JSONObject object = array.getJSONObject(i);
+                                JSONObject object = array.getJSONObject(i);
 
-                        set_and_get_service_tran_data = new Set_and_Get_Service_tran_data();
-                        set_and_get_service_tran_data.setDistrict_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code));
-                        set_and_get_service_tran_data.setTaluk_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code));
-                        set_and_get_service_tran_data.setHobli_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code));
-                        set_and_get_service_tran_data.setVillage_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code));
-                        set_and_get_service_tran_data.setTown_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code));
-                        set_and_get_service_tran_data.setWard_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
-                        set_and_get_service_tran_data.setService_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code));
-                        set_and_get_service_tran_data.setST_applicant_photo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
-                        set_and_get_service_tran_data.setGSCNo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo));
-                        set_and_get_service_tran_data.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
-                        set_and_get_service_tran_data.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date));
-                        set_and_get_service_tran_data.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
-                        set_and_get_service_tran_data.setFather_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName));
-                        set_and_get_service_tran_data.setMother(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName));
-                        set_and_get_service_tran_data.setIDNo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo));
-                        set_and_get_service_tran_data.setMobile_No(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No));
-                        set_and_get_service_tran_data.setAddress1(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1));
-                        set_and_get_service_tran_data.setAddress2(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address2));
-                        set_and_get_service_tran_data.setAddress3(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address3));
-                        set_and_get_service_tran_data.setAdd_Pin(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode));
-                        set_and_get_service_tran_data.setST_ID_TYPE(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE));
-                        set_and_get_service_tran_data.setEng_Certify(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
-                        set_and_get_service_tran_data.setApplicantTiitle(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ApplicantTiitle));
-                        set_and_get_service_tran_data.setBinCom(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom));
-                        set_and_get_service_tran_data.setRelationTitle(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle));
-                        set_and_get_service_tran_data.setReservationCategory(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
-                        set_and_get_service_tran_data.setCaste(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
-                        set_and_get_service_tran_data.setAnnualIncome(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
-                        set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
-                        set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
-                        set_and_get_service_tran_data.setPush_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag));
+                                set_and_get_service_tran_data = new Set_and_Get_Service_tran_data();
+                                set_and_get_service_tran_data.setDistrict_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code));
+                                set_and_get_service_tran_data.setTaluk_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code));
+                                set_and_get_service_tran_data.setHobli_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code));
+                                set_and_get_service_tran_data.setVillage_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code));
+                                set_and_get_service_tran_data.setTown_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code));
+                                set_and_get_service_tran_data.setWard_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code));
+                                set_and_get_service_tran_data.setService_Code(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code));
+                                set_and_get_service_tran_data.setST_applicant_photo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
+                                set_and_get_service_tran_data.setGSCNo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo));
+                                set_and_get_service_tran_data.setApplicant_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name));
+                                set_and_get_service_tran_data.setDue_Date(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date));
+                                set_and_get_service_tran_data.setRaised_Location(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location));
+                                set_and_get_service_tran_data.setFather_Name(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName));
+                                set_and_get_service_tran_data.setMother(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName));
+                                set_and_get_service_tran_data.setIDNo(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo));
+                                set_and_get_service_tran_data.setMobile_No(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No));
+                                set_and_get_service_tran_data.setAddress1(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address1));
+                                set_and_get_service_tran_data.setAddress2(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address2));
+                                set_and_get_service_tran_data.setAddress3(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Address3));
+                                set_and_get_service_tran_data.setAdd_Pin(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode));
+                                set_and_get_service_tran_data.setST_ID_TYPE(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE));
+                                set_and_get_service_tran_data.setEng_Certify(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate));
+                                set_and_get_service_tran_data.setApplicantTiitle(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ApplicantTiitle));
+                                set_and_get_service_tran_data.setBinCom(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom));
+                                set_and_get_service_tran_data.setRelationTitle(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle));
+                                set_and_get_service_tran_data.setReservationCategory(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
+                                set_and_get_service_tran_data.setCaste(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+                                set_and_get_service_tran_data.setAnnualIncome(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
+                                set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
+                                set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
+                                set_and_get_service_tran_data.setPush_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag));
+                                set_and_get_service_tran_data.setVA_IMEI_Num(IMEI_Num);
+                                set_and_get_service_tran_data.setVAName(VA_Name);
 
-                        serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
-                        Log.d("serviceCode", "" + serviceCode);
+                                serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
+                                Log.d("serviceCode", "" + serviceCode);
 
-                        Cursor cursor = databaseFacility.rawQuery("select * from "+DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME+" where "
-                                +DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code+"="+serviceCode, null);
-                        if (cursor.getCount()>0) {
-                            if (cursor.moveToNext()) {
-                                serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
-                                serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
-                                Log.d("serviceName", serviceName+", "+ serviceName_k);
+                                Cursor cursor = databaseFacility.rawQuery("select * from " + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.TABLE_NAME + " where "
+                                        + DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_code + "=" + serviceCode, null);
+                                if (cursor.getCount() > 0) {
+                                    if (cursor.moveToNext()) {
+                                        serviceName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_edesc));
+                                        serviceName_k = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_NewRequest_FacilityMaster.FM_facility_kdesc));
+                                        Log.d("serviceName", serviceName + ", " + serviceName_k);
+                                    }
+                                } else {
+                                    cursor.close();
+                                }
+
+                                set_and_get_service_tran_data.setService_Name(serviceName);
+                                set_and_get_service_tran_data.setService_Name_k(serviceName_k);
+
+                                database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
+                                        + "("
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name_k + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.ApplicantTiitle + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Caste + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_IMEI + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.VA_Name + ")"
+                                        + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
+                                        + set_and_get_service_tran_data.getTaluk_Code() + ","
+                                        + set_and_get_service_tran_data.getHobli_Code()
+                                        + "," + set_and_get_service_tran_data.getVillage_Code() + ","
+                                        + set_and_get_service_tran_data.getTown_Code() + ","
+                                        + set_and_get_service_tran_data.getWard_Code() + ","
+                                        + set_and_get_service_tran_data.getService_Code() + ",'"
+                                        + set_and_get_service_tran_data.getService_Name() + "','"
+                                        + set_and_get_service_tran_data.getService_Name_k() + "','"
+                                        + set_and_get_service_tran_data.getGSCNo() + "','"
+                                        + set_and_get_service_tran_data.getST_applicant_photo() + "','"
+                                        + set_and_get_service_tran_data.getApplicant_Name() + "','"
+                                        + set_and_get_service_tran_data.getDue_Date() + "','"
+                                        + set_and_get_service_tran_data.getRaised_Location() + "','"
+                                        + set_and_get_service_tran_data.getFather_Name() + "','"
+                                        + set_and_get_service_tran_data.getMother() + "','"
+                                        + set_and_get_service_tran_data.getIDNo() + "',"
+                                        + set_and_get_service_tran_data.getMobile_No() + ",'"
+                                        + set_and_get_service_tran_data.getAddress1() + "','"
+                                        + set_and_get_service_tran_data.getAddress2() + "','"
+                                        + set_and_get_service_tran_data.getAddress3() + "','"
+                                        + set_and_get_service_tran_data.getAdd_Pin() + "',"
+                                        + set_and_get_service_tran_data.getST_ID_TYPE() + ",'"
+                                        + set_and_get_service_tran_data.getEng_Certify() + "',"
+                                        + set_and_get_service_tran_data.getApplicantTiitle() + ","
+                                        + set_and_get_service_tran_data.getBinCom() + ","
+                                        + set_and_get_service_tran_data.getRelationTitle() + ","
+                                        + set_and_get_service_tran_data.getReservationCategory() + ","
+                                        + set_and_get_service_tran_data.getCaste() + ",'"
+                                        + set_and_get_service_tran_data.getAnnualIncome() + "',"
+                                        + set_and_get_service_tran_data.getGST_No_Mths_Applied() + ","
+                                        + set_and_get_service_tran_data.getGST_No_Years_Applied() + ",'"
+                                        + set_and_get_service_tran_data.getPush_Flag() + "','"
+                                        + set_and_get_service_tran_data.getVA_IMEI_Num() + "','"
+                                        + set_and_get_service_tran_data.getVAName() + "')");
+
+                                Log.d("Database", "ServiceTranTable Database Inserted " + j);
+                                j++;
+
                             }
-                        } else {
-                            cursor.close();
+
+                            runOnUiThread(() -> {
+                                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_FirstScreen.this);
+                                database = openHelper.getWritableDatabase();
+                                Cursor cursor3 = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
+                                if(cursor3.getCount()>0) {
+                                    dialog.dismiss();
+                                    radioButton_regular.setChecked(true);
+                                    radioButton_pushed.setChecked(false);
+                                    btnPushToAnotherVA.setVisibility(View.VISIBLE);
+                                    txtListPushed.setVisibility(View.GONE);
+                                    total_regular_Applicants.setVisibility(View.VISIBLE);
+                                    total_pushed_Applicants.setVisibility(View.GONE);
+                                    listView.setVisibility(View.VISIBLE);
+                                    list_pushed.setVisibility(View.GONE);
+                                    Log.d("radio_Flag:", "" + radio_Flag);
+                                    if(!Objects.equals(villageCode, "99999")){
+                                        Log.d("Data","Rural");
+                                        String str = getString(R.string.village_name)+" : ";
+                                        tv_V_T_Name.setText(str);
+                                        tvVillageName.setText(village_name);
+                                        displayData_AfterItemSelected();
+                                    }else if(!Objects.equals(town_code, "9999")){
+                                        Log.d("Data","Urban");
+                                        String str = getString(R.string.town_name)+"                : "
+                                                +"\n"+getString(R.string.ward_name_num)+"    : ";
+                                        String str1 = town_Name+"\n"+ward_Name;
+                                        tv_V_T_Name.setText(str);
+                                        tvVillageName.setText(str1);
+                                        display_Urban_Data_AfterItemSelected();
+                                    }
+                                }
+                                else {
+                                    cursor3.close();
+                                    Log.d("Values", "No records Exists");
+                                    Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            runOnUiThread(() -> {
+                                dialog.dismiss();
+                                Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
+                            });
+                        } catch (OutOfMemoryError e) {
+                            runOnUiThread(() -> {
+                                dialog.dismiss();
+                                buildAlertForOutOfMemory();
+                                //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
+                            });
+                            Log.e("OutOfMemoryError2", "" + e.toString());
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
+                            Log.e("NullPointerException2", "" + e.toString());
                         }
-
-                        set_and_get_service_tran_data.setService_Name(serviceName);
-                        set_and_get_service_tran_data.setService_Name_k(serviceName_k);
-
-                        database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME
-                                + "("
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.District_Code+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Taluk_Code+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Hobli_Code+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Village_Code+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Town_Code+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Ward_Code+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Name_k+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Applicant_Name+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Due_Date+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Raised_Location+","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.FatherName +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.MotherName +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.IDNo +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Mobile_No +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Address1 +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Address2 +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Address3 +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.PinCode +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ID_TYPE +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ST_Eng_Certificate +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ApplicantTiitle +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.BinCom +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.RelationTitle +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Caste +","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied + ","
-                                + DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag+")"
-                                + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
-                                + set_and_get_service_tran_data.getTaluk_Code() + ","
-                                + set_and_get_service_tran_data.getHobli_Code()
-                                + "," + set_and_get_service_tran_data.getVillage_Code() + ","
-                                + set_and_get_service_tran_data.getTown_Code()+","
-                                + set_and_get_service_tran_data.getWard_Code()+","
-                                + set_and_get_service_tran_data.getService_Code() + ",'"
-                                + set_and_get_service_tran_data.getService_Name() + "','"
-                                + set_and_get_service_tran_data.getService_Name_k() + "','"
-                                + set_and_get_service_tran_data.getGSCNo()+"','"
-                                +set_and_get_service_tran_data.getST_applicant_photo()+"','"
-                                + set_and_get_service_tran_data.getApplicant_Name() + "','"
-                                + set_and_get_service_tran_data.getDue_Date() + "','"
-                                + set_and_get_service_tran_data.getRaised_Location() + "','"
-                                + set_and_get_service_tran_data.getFather_Name() + "','"
-                                + set_and_get_service_tran_data.getMother() + "','"
-                                + set_and_get_service_tran_data.getIDNo() + "',"
-                                + set_and_get_service_tran_data.getMobile_No() + ",'"
-                                + set_and_get_service_tran_data.getAddress1() + "','"
-                                + set_and_get_service_tran_data.getAddress2() + "','"
-                                + set_and_get_service_tran_data.getAddress3() +"','"
-                                + set_and_get_service_tran_data.getAdd_Pin()+"',"
-                                + set_and_get_service_tran_data.getST_ID_TYPE()+",'"
-                                + set_and_get_service_tran_data.getEng_Certify()+"',"
-                                + set_and_get_service_tran_data.getApplicantTiitle()+","
-                                + set_and_get_service_tran_data.getBinCom() + ","
-                                + set_and_get_service_tran_data.getRelationTitle()+","
-                                + set_and_get_service_tran_data.getReservationCategory()+","
-                                + set_and_get_service_tran_data.getCaste() + ",'"
-                                + set_and_get_service_tran_data.getAnnualIncome()+ "',"
-                                + set_and_get_service_tran_data.getGST_No_Mths_Applied()+ ","
-                                + set_and_get_service_tran_data.getGST_No_Years_Applied()+ ",'"
-                                + set_and_get_service_tran_data.getPush_Flag()+"')");
-                        Log.d("Database", "ServiceTranTable Database Inserted " + j);
-                        j++;
-
                     }
-
-                    runOnUiThread(() -> {
-                        openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_FirstScreen.this);
-                        database = openHelper.getWritableDatabase();
-                        Cursor cursor3 = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
-                        if(cursor3.getCount()>0) {
-                            dialog.dismiss();
-                            radioButton_regular.setChecked(true);
-                            radioButton_pushed.setChecked(false);
-                            btnPushToAnotherVA.setVisibility(View.VISIBLE);
-                            txtListPushed.setVisibility(View.GONE);
-                            total_regular_Applicants.setVisibility(View.VISIBLE);
-                            total_pushed_Applicants.setVisibility(View.GONE);
-                            listView.setVisibility(View.VISIBLE);
-                            list_pushed.setVisibility(View.GONE);
-                            Log.d("radio_Flag:", "" + radio_Flag);
-                            if(!Objects.equals(villageCode, "99999")){
-                                Log.d("Data","Rural");
-                                String str = getString(R.string.village_name)+" : ";
-                                tv_V_T_Name.setText(str);
-                                tvVillageName.setText(village_name);
-                                displayData_AfterItemSelected();
-                            }else if(!Objects.equals(town_code, "9999")){
-                                Log.d("Data","Urban");
-                                String str = getString(R.string.town_name)+"                : "
-                                        +"\n"+getString(R.string.ward_name_num)+"    : ";
-                                String str1 = town_Name+"\n"+ward_Name;
-                                tv_V_T_Name.setText(str);
-                                tvVillageName.setText(str1);
-                                display_Urban_Data_AfterItemSelected();
-                            }
-                        }
-                        else {
-                            cursor3.close();
-                            Log.d("Values", "No records Exists");
-                            Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                    });
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                    runOnUiThread(() -> {
-                        dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
-                    });
-                }catch (OutOfMemoryError e){
-                    runOnUiThread(() -> {
-                        dialog.dismiss();
-                        buildAlertForOutOfMemory();
-                        //Toast.makeText(getApplicationContext(), "Out of Memory", Toast.LENGTH_SHORT).show();
-                    });
-                    Log.e("OutOfMemoryError2", ""+e.toString());
-                }catch (NullPointerException e){
-                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
-                    Log.e("NullPointerException2", ""+e.toString());
+                } else {
+                    Toast.makeText(getApplicationContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }
             }
 
