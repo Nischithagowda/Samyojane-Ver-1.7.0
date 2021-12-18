@@ -531,11 +531,18 @@ public class RI_SecondScreen extends AppCompatActivity {
                     JsonObject jsonObject1 = response.body();
                     Log.d("response_server", jsonObject1 + "");
                     assert jsonObject1 != null;
-                    JsonObject jsonObject2 = jsonObject1.getAsJsonObject("StatusMessage");
                     JsonPrimitive jsonObject3 = jsonObject1.getAsJsonPrimitive("StatusCode");
                     String StatusCode = jsonObject3.toString();
-                    Log.d("response_server", jsonObject2 + "");
-                    String response_server = jsonObject2.toString();
+                    String response_server;
+                    if (StatusCode.equalsIgnoreCase("2")){
+                        JsonPrimitive jsonPrimitive = jsonObject1.getAsJsonPrimitive("StatusMessage");
+                        Log.d("response_server", jsonPrimitive + "");
+                        response_server = jsonPrimitive.toString();
+                    } else {
+                        JsonObject jsonObject2 = jsonObject1.getAsJsonObject("StatusMessage");
+                        Log.d("response_server", jsonObject2 + "");
+                        response_server = jsonObject2.toString();
+                    }
                     if (response_server.contains("No Records to Process") || StatusCode.equalsIgnoreCase("2")) {
                         Log.d("Values", "No records Exists");
                         Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();

@@ -656,13 +656,19 @@ public class SecondScreen extends AppCompatActivity {
                     JsonObject jsonObject1 = response.body();
                     Log.d("response_server", jsonObject1 + "");
                     assert jsonObject1 != null;
-                    JsonObject jsonObject2 = jsonObject1.getAsJsonObject("StatusMessage");
                     JsonPrimitive jsonObject3 = jsonObject1.getAsJsonPrimitive("StatusCode");
                     String StatusCode = jsonObject3.toString();
-                    Log.d("response_server", jsonObject2 + "");
-                    String response_server = jsonObject2.toString();
+                    String response_server;
+                    if (StatusCode.equalsIgnoreCase("2")){
+                        JsonPrimitive jsonPrimitive = jsonObject1.getAsJsonPrimitive("StatusMessage");
+                        response_server = jsonPrimitive.toString();
+                    } else {
+                        JsonObject jsonObject2 = jsonObject1.getAsJsonObject("StatusMessage");
+                        response_server = jsonObject2.toString();
+                    }
                     if (response_server.contains("No Records to Process") || StatusCode.equalsIgnoreCase("2")) {
                         Log.d("Values", "No records Exists");
+                        dialog.dismiss();
                         Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();
                         btnDownload.setText(R.string.download);
                         btnProceed.setVisibility(View.GONE);
@@ -817,10 +823,42 @@ public class SecondScreen extends AppCompatActivity {
                                 Cursor cursor3 = databaseServTran.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME, null);
                                 if (cursor3.getCount() > 0) {
                                     tData = 1;
-                                    btnProceed.setVisibility(View.VISIBLE);
-                                    //btnPendency.setVisibility(View.VISIBLE);
-                                    btnDownload.setText(R.string.download);
-                                    //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
+                                    List<String> GSCNo_List = new ArrayList<>();
+                                    int i=0;
+                                    if (cursor3.moveToNext()){
+                                        do {
+                                            Log.d("Cursor_count", ""+cursor3.getCount()+", i:"+i);
+                                            GSCNo_List.add(i, cursor3.getString(cursor3.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo)));
+                                            if (cursor3.getCount()==i+1){
+                                                if (GSCNo_List.size()>0) {
+                                                    Set_and_Get_AckForData set_and_get_ackForData = new Set_and_Get_AckForData();
+                                                    set_and_get_ackForData.setGscNoList(GSCNo_List.toString().replaceAll("\\[", "").replaceAll("\\]",""));
+                                                    set_and_get_ackForData.setDesignationCode(DesiCode);
+                                                    Call<JsonObject> call1 = apiInterface_nic.AckForData(set_and_get_ackForData);
+                                                    call1.enqueue(new Callback<JsonObject>() {
+                                                        @Override
+                                                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                                            if (response.isSuccessful()){
+                                                                btnProceed.setVisibility(View.VISIBLE);
+                                                                btnDownload.setText(R.string.download);
+                                                                Log.d("response", ""+response.body());
+                                                                dialog.dismiss();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<JsonObject> call, Throwable t) {
+                                                            t.printStackTrace();
+                                                            Toast.makeText(getApplicationContext(), ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                                            dialog.dismiss();
+                                                        }
+                                                    });
+                                                }
+                                            } else {
+                                                i++;
+                                            }
+                                        } while (cursor3.moveToNext());
+                                    }
                                 } else {
                                     cursor3.close();
                                     tData = 0;
@@ -828,9 +866,8 @@ public class SecondScreen extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();
                                     btnDownload.setText(R.string.download);
                                     btnProceed.setVisibility(View.GONE);
-                                    //btnPendency.setVisibility(View.GONE);
+                                    dialog.dismiss();
                                 }
-                                dialog.dismiss();
                             });
                         } catch (JSONException e) {
                             e.printStackTrace();

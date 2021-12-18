@@ -1,6 +1,7 @@
 package com.bhoomi.Samyojane_Application.api;
 
 import com.bhoomi.Samyojane_Application.GetDocRequestClass;
+import com.bhoomi.Samyojane_Application.Set_and_Get_AckForData;
 import com.bhoomi.Samyojane_Application.UpdateStatusCLASS;
 import com.bhoomi.Samyojane_Application.UpdateVillageTownWardCLASS;
 import com.google.gson.JsonObject;
@@ -28,18 +29,23 @@ public interface APIInterface_NIC {
             @Path("VACircleCode") int VACircleCode
             );
 
+    @POST("AckForData/")
+    Call<JsonObject> AckForData(
+            @Body Set_and_Get_AckForData ackForData
+            );
+
     @Headers("Content-Type: application/json")
     @POST("GetDocs/")
     Call<JsonObject> GetDocs(
             @Body GetDocRequestClass getDocRequestClass
             );
 
-    @POST("UpdateVillageTownWard")
+    @POST("UpdateVillageTownWard/")
     Call<JsonObject> UpdateVillageTownWard(
             @Body UpdateVillageTownWardCLASS updateVillageTownWardCLASS
             );
 
-    @POST("UpdateStatus")
+    @POST("UpdateStatus/")
     Call<JsonObject> UpdateStatus(
             @Body UpdateStatusCLASS updateStatusCLASS
             );
