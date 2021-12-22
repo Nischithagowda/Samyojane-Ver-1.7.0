@@ -110,7 +110,7 @@ public class UR_List_Adapter extends BaseAdapter implements Filterable {
 
             Intent i = new Intent(context, New_Request_FirstScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("district_Code", district_Code);
-            i.putExtra("districtCode", district);
+            i.putExtra("district", district);
             i.putExtra("taluk_Code", taluk_Code);
             i.putExtra("taluk", taluk);
             i.putExtra("hobli_Code", hobli_Code);

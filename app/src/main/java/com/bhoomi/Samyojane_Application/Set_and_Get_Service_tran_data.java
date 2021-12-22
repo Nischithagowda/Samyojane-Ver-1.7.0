@@ -7,7 +7,8 @@ public class Set_and_Get_Service_tran_data {
     private String Address1, Address2, Address3, Add_Pin, Eng_Certify;
     private String ApplicantTiitle, BinCom, RelationTitle, ReservationCategory, Caste, AnnualIncome, GST_No_Mths_Applied, GST_No_Years_Applied;
     private String ST_applicant_photo, ST_ID_TYPE, Push_Flag;
-    private String VAName, VA_IMEI_Num;
+    private String VA_RI_Name, VA_RI_IMEI_Num;
+    private String VA_Remarks, CanbeIssued_VA;
 
     Set_and_Get_Service_tran_data(){}
 
@@ -258,19 +259,35 @@ public class Set_and_Get_Service_tran_data {
         Service_Name_k = service_Name_k;
     }
 
-    public String getVAName() {
-        return VAName;
+    public String getVA_RI_Name() {
+        return VA_RI_Name;
     }
 
-    public void setVAName(String VAName) {
-        this.VAName = VAName;
+    public void setVA_RI_Name(String VA_RI_Name) {
+        this.VA_RI_Name = VA_RI_Name;
     }
 
-    public String getVA_IMEI_Num() {
-        return VA_IMEI_Num;
+    public String getVA_RI_IMEI_Num() {
+        return VA_RI_IMEI_Num;
     }
 
-    public void setVA_IMEI_Num(String VA_IMEI_Num) {
-        this.VA_IMEI_Num = VA_IMEI_Num;
+    public void setVA_RI_IMEI_Num(String VA_RI_IMEI_Num) {
+        this.VA_RI_IMEI_Num = VA_RI_IMEI_Num;
+    }
+
+    public String getVA_Remarks() {
+        return VA_Remarks;
+    }
+
+    public void setVA_Remarks(String VA_Remarks) {
+        this.VA_Remarks = VA_Remarks;
+    }
+
+    public String getCanbeIssued_VA() {
+        return CanbeIssued_VA;
+    }
+
+    public void setCanbeIssued_VA(String canbeIssued_VA) {
+        this.CanbeIssued_VA = canbeIssued_VA;
     }
 }

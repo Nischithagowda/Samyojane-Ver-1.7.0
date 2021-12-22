@@ -124,7 +124,7 @@ public class SecondScreen extends AppCompatActivity {
                     }else {
                         Intent i = new Intent(SecondScreen.this, Field_Report.class);
                         i.putExtra("district_Code", district_Code);
-                        i.putExtra("districtCode", district);
+                        i.putExtra("district", district);
                         i.putExtra("taluk_Code", taluk_Code);
                         i.putExtra("taluk", taluk);
                         i.putExtra("hobli_Code", hobli_Code);
@@ -139,7 +139,7 @@ public class SecondScreen extends AppCompatActivity {
                 else {
                     Intent i = new Intent(SecondScreen.this, Field_Report.class);
                     i.putExtra("district_Code", district_Code);
-                    i.putExtra("districtCode", district);
+                    i.putExtra("district", district);
                     i.putExtra("taluk_Code", taluk_Code);
                     i.putExtra("taluk", taluk);
                     i.putExtra("hobli_Code", hobli_Code);
@@ -154,7 +154,7 @@ public class SecondScreen extends AppCompatActivity {
             btnPendency.setOnClickListener(view -> {
                 Intent i = new Intent(SecondScreen.this, Village_wise_report.class);
                 i.putExtra("district_Code", district_Code);
-                i.putExtra("districtCode", district);
+                i.putExtra("district", district);
                 i.putExtra("taluk_Code", taluk_Code);
                 i.putExtra("taluk", taluk);
                 i.putExtra("hobli_Code", hobli_Code);
@@ -718,8 +718,8 @@ public class SecondScreen extends AppCompatActivity {
                                 set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
                                 set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
                                 set_and_get_service_tran_data.setPush_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag));
-                                set_and_get_service_tran_data.setVA_IMEI_Num(IMEI_Num);
-                                set_and_get_service_tran_data.setVAName(VA_Name);
+                                set_and_get_service_tran_data.setVA_RI_IMEI_Num(IMEI_Num);
+                                set_and_get_service_tran_data.setVA_RI_Name(VA_Name);
 
                                 serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
                                 Log.d("serviceCode", "" + serviceCode);
@@ -809,8 +809,8 @@ public class SecondScreen extends AppCompatActivity {
                                         + set_and_get_service_tran_data.getGST_No_Mths_Applied() + ","
                                         + set_and_get_service_tran_data.getGST_No_Years_Applied() + ",'"
                                         + set_and_get_service_tran_data.getPush_Flag() + "','"
-                                        + set_and_get_service_tran_data.getVA_IMEI_Num() + "','"
-                                        + set_and_get_service_tran_data.getVAName() + "')");
+                                        + set_and_get_service_tran_data.getVA_RI_IMEI_Num() + "','"
+                                        + set_and_get_service_tran_data.getVA_RI_Name() + "')");
 
                                 Log.d("Database", "ServiceTranTable Database Inserted " + j);
                                 j++;
@@ -842,6 +842,10 @@ public class SecondScreen extends AppCompatActivity {
                                                                 btnProceed.setVisibility(View.VISIBLE);
                                                                 btnDownload.setText(R.string.download);
                                                                 Log.d("response", ""+response.body());
+                                                                dialog.dismiss();
+                                                            } else {
+                                                                btnProceed.setVisibility(View.GONE);
+                                                                Toast.makeText(getApplicationContext(), ""+response.message(), Toast.LENGTH_SHORT).show();
                                                                 dialog.dismiss();
                                                             }
                                                         }

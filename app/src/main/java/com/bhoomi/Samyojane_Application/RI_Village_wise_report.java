@@ -22,7 +22,7 @@ import java.util.Objects;
 
 public class RI_Village_wise_report extends AppCompatActivity {
     TextView pendencyReport;
-    static String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
+    static int district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database, database1, database_Asset;
     String villageName, villageCode, townCode, townName, wardCode, wardName;
@@ -74,10 +74,10 @@ public class RI_Village_wise_report extends AppCompatActivity {
         pendencyReport.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         Intent i = getIntent();
-        district_Code = i.getStringExtra("district_Code");
-        taluk_Code = i.getStringExtra("taluk_Code");
-        hobli_Code = i.getStringExtra("hobli_Code");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        district_Code = i.getIntExtra("district_Code", 0);
+        taluk_Code = i.getIntExtra("taluk_Code",0);
+        hobli_Code = i.getIntExtra("hobli_Code",0);
+        va_Circle_Code = i.getIntExtra("va_Circle_Code",0);
 
         Log.d("Second_Database_Value", ""+district_Code);
         Log.d("Second_Database_Value", ""+taluk_Code);

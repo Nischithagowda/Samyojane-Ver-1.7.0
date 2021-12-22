@@ -49,8 +49,8 @@ public class RI_SecondScreen extends AppCompatActivity {
     Button btnDownload, btnUpload, btnProceed, btnPendency;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase databaseServTran, databaseFacility, databaseCredential, databaseVilNames;
-    String district, taluk, hobli, VA_Circle_Name, RI_Name, VA_Name;
-    static int district_Code, taluk_Code, hobli_Code, va_Circle_Code;
+    String district, taluk, hobli, RI_Name;
+    static int district_Code, taluk_Code, hobli_Code;
     Set_and_Get_Facility_Services set_and_get_facility_services;
     Set_and_Get_Village_Name set_and_get_village_name;
     Set_and_Get_Service_tran_data set_and_get_service_tran_data;
@@ -98,14 +98,11 @@ public class RI_SecondScreen extends AppCompatActivity {
         btnProceed.setOnClickListener(v -> {
             Intent i = new Intent(RI_SecondScreen.this, RI_Field_Report.class);
             i.putExtra("district_Code", district_Code);
-            i.putExtra("districtCode", district);
+            i.putExtra("district", district);
             i.putExtra("taluk_Code", taluk_Code);
             i.putExtra("taluk", taluk);
             i.putExtra("hobli_Code", hobli_Code);
             i.putExtra("hobli", hobli);
-            i.putExtra("va_Circle_Code", va_Circle_Code);
-            i.putExtra("VA_Circle_Name",VA_Circle_Name);
-            i.putExtra("VA_Name", VA_Name);
             i.putExtra("RI_Name", RI_Name);
             startActivity(i);
         });
@@ -113,13 +110,11 @@ public class RI_SecondScreen extends AppCompatActivity {
         btnPendency.setOnClickListener(view -> {
             Intent i = new Intent(RI_SecondScreen.this, RI_VA_Circle_Wise_Report.class);
             i.putExtra("district_Code", district_Code);
-            i.putExtra("districtCode", district);
+            i.putExtra("district", district);
             i.putExtra("taluk_Code", taluk_Code);
             i.putExtra("taluk", taluk);
             i.putExtra("hobli_Code", hobli_Code);
             i.putExtra("hobli", hobli);
-            i.putExtra("va_Circle_Code", va_Circle_Code);
-            i.putExtra("VA_Circle_Name",VA_Circle_Name );
             i.putExtra("RI_Name", RI_Name);
             startActivity(i);
         });
@@ -140,7 +135,7 @@ public class RI_SecondScreen extends AppCompatActivity {
         }
 
         Intent i = getIntent();
-        district = i.getStringExtra("districtCode");
+        district = i.getStringExtra("district");
         taluk = i.getStringExtra("taluk");
         hobli = i.getStringExtra("hobli");
         RI_Name = i.getStringExtra("RI_Name");
@@ -194,13 +189,11 @@ public class RI_SecondScreen extends AppCompatActivity {
                 district_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_Credentials.District_Code));
                 taluk_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_Credentials.Taluk_Code));
                 hobli_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_Credentials.Hobli_Code));
-                va_Circle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_Credentials.VA_circle_Code));
             }
         } else {
             cursor.close();
         }
 
-        Log.d("VA_Circle_Code", ""+va_Circle_Code);
         Log.d("SecondScreen", ""+district_Code);
         Log.d("SecondScreen", ""+taluk_Code);
         Log.d("SecondScreen", ""+hobli_Code);
@@ -482,7 +475,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                         String app_name = "Samyojane";
 
                         String fieldVerify_api_flag2 = username + day_num + app_name + year_num;
-                        GetServiceTrandataFromServer(getString(R.string.fieldVerify_api_flag1), fieldVerify_api_flag2, district_Code, taluk_Code, hobli_Code, uName_get, DesiCode, va_Circle_Code);
+                        GetServiceTrandataFromServer(getString(R.string.fieldVerify_api_flag1), fieldVerify_api_flag2, district_Code, taluk_Code, hobli_Code, uName_get, DesiCode, 0);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
@@ -548,6 +541,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), R.string.no_data_to_verify, Toast.LENGTH_SHORT).show();
                         btnDownload.setText(R.string.download);
                         btnProceed.setVisibility(View.GONE);
+                        dialog.dismiss();
                     } else {
                         try {
                             dialog.incrementProgressBy(10);
@@ -591,11 +585,13 @@ public class RI_SecondScreen extends AppCompatActivity {
                                 set_and_get_service_tran_data.setReservationCategory(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
                                 set_and_get_service_tran_data.setCaste(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
                                 set_and_get_service_tran_data.setAnnualIncome(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
+                                set_and_get_service_tran_data.setCanbeIssued_VA(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
+                                set_and_get_service_tran_data.setVA_Remarks(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Remarks));
                                 set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Mths_Applied));
                                 set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Years_Applied));
-                                set_and_get_service_tran_data.setVA_IMEI_Num(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_IMEI));
-                                set_and_get_service_tran_data.setVAName(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Name));
                                 set_and_get_service_tran_data.setPush_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag));
+                                set_and_get_service_tran_data.setVA_RI_IMEI_Num(IMEI_Num);
+                                set_and_get_service_tran_data.setVA_RI_Name(RI_Name);
 
                                 serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Service_Code);
                                 Log.d("serviceCode", "" + serviceCode);
@@ -659,10 +655,12 @@ public class RI_SecondScreen extends AppCompatActivity {
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Remarks + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Mths_Applied + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Years_Applied + ","
-                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_IMEI + ","
-                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Name + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_RI_IMEI + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_RI_Name + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Push_Flag + ")"
                                         + " values (" + set_and_get_service_tran_data.getDistrict_Code() + ","
                                         + set_and_get_service_tran_data.getTaluk_Code() + ","
@@ -694,11 +692,13 @@ public class RI_SecondScreen extends AppCompatActivity {
                                         + set_and_get_service_tran_data.getRelationTitle() + ","
                                         + set_and_get_service_tran_data.getReservationCategory() + ","
                                         + set_and_get_service_tran_data.getCaste() + ",'"
-                                        + set_and_get_service_tran_data.getAnnualIncome() + "',"
+                                        + set_and_get_service_tran_data.getAnnualIncome() + "','"
+                                        + set_and_get_service_tran_data.getCanbeIssued_VA() + "','"
+                                        + set_and_get_service_tran_data.getVA_Remarks() + "',"
                                         + set_and_get_service_tran_data.getGST_No_Mths_Applied() + ","
                                         + set_and_get_service_tran_data.getGST_No_Years_Applied() + ",'"
-                                        + set_and_get_service_tran_data.getVA_IMEI_Num() + "','"
-                                        + set_and_get_service_tran_data.getVAName() + "','"
+                                        + set_and_get_service_tran_data.getVA_RI_IMEI_Num() + "','"
+                                        + set_and_get_service_tran_data.getVA_RI_Name() + "','"
                                         + set_and_get_service_tran_data.getPush_Flag() + "')");
 
                                 Log.d("Database", "ServiceTranTable Database Inserted " + j);

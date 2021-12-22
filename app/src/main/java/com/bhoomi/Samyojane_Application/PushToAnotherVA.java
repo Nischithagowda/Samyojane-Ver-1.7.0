@@ -118,7 +118,7 @@ public class PushToAnotherVA extends AppCompatActivity {
 
         Intent i = getIntent();
         arrayList = i.getStringArrayListExtra("selected_items");
-        district = i.getStringExtra("districtCode");
+        district = i.getStringExtra("district");
         taluk = i.getStringExtra("taluk");
         hobli = i.getStringExtra("hobli");
         VA_Name = i.getStringExtra("VA_Name");
@@ -665,7 +665,7 @@ public class PushToAnotherVA extends AppCompatActivity {
                                     i.putExtra("district_Code", district_Code);
                                     i.putExtra("taluk_Code", taluk_Code);
                                     i.putExtra("hobli_Code", hobli_Code);
-                                    i.putExtra("districtCode", district);
+                                    i.putExtra("district", district);
                                     i.putExtra("taluk", taluk);
                                     i.putExtra("VA_Name", VA_Name);
                                     i.putExtra("hobli", hobli);
@@ -720,7 +720,7 @@ public class PushToAnotherVA extends AppCompatActivity {
         i.putExtra("district_Code", district_Code);
         i.putExtra("taluk_Code", taluk_Code);
         i.putExtra("hobli_Code", hobli_Code);
-        i.putExtra("districtCode", district);
+        i.putExtra("district", district);
         i.putExtra("taluk", taluk);
         i.putExtra("VA_Name", VA_Name);
         i.putExtra("hobli", hobli);

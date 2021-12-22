@@ -923,16 +923,16 @@ public class MainActivity extends AppCompatActivity {
                             set_and_get_data.setIMEI_2(object.getString(DataBaseHelperClass_Credentials.VA_IMEI_2));
                             set_and_get_data.setUserName(object.getString(DataBaseHelperClass_Credentials.VA_UserName));
                             set_and_get_data.setPwd(object.getString(DataBaseHelperClass_Credentials.VA_Pwrd));
-                            set_and_get_data.setDistrict_Code(object.getString(DataBaseHelperClass_Credentials.District_Code));
+                            set_and_get_data.setDistrict_Code(object.getInt(DataBaseHelperClass_Credentials.District_Code));
                             set_and_get_data.setDistrict(object.getString(DataBaseHelperClass_Credentials.District_Name));
                             set_and_get_data.setDistrict_k(object.getString(DataBaseHelperClass_Credentials.District_Name_k));
-                            set_and_get_data.setTaluk_Code(object.getString(DataBaseHelperClass_Credentials.Taluk_Code));
+                            set_and_get_data.setTaluk_Code(object.getInt(DataBaseHelperClass_Credentials.Taluk_Code));
                             set_and_get_data.setTaluk(object.getString(DataBaseHelperClass_Credentials.Taluk_Name));
                             set_and_get_data.setTaluk_k(object.getString(DataBaseHelperClass_Credentials.Taluk_Name_k));
-                            set_and_get_data.setHobli_Code(object.getString(DataBaseHelperClass_Credentials.Hobli_Code));
+                            set_and_get_data.setHobli_Code(object.getInt(DataBaseHelperClass_Credentials.Hobli_Code));
                             set_and_get_data.setHobli(object.getString(DataBaseHelperClass_Credentials.Hobli_Name));
                             set_and_get_data.setHobli_k(object.getString(DataBaseHelperClass_Credentials.Hobli_Name_k));
-                            set_and_get_data.setVa_Circle_Code(object.getString(DataBaseHelperClass_Credentials.VA_circle_Code));
+                            set_and_get_data.setVa_Circle_Code(object.getInt(DataBaseHelperClass_Credentials.VA_circle_Code));
                             set_and_get_data.setVA_Circle_Name(object.getString(DataBaseHelperClass_Credentials.VA_Circle_Name));
                             set_and_get_data.setVA_Circle_Name_k(object.getString(DataBaseHelperClass_Credentials.VA_Circle_Name_k));
                             set_and_get_data.setVA_Name(object.getString(DataBaseHelperClass_Credentials.VA_Name));
@@ -1171,7 +1171,7 @@ public class MainActivity extends AppCompatActivity {
         if(localeName.equals("en")){
             Log.d("localeName1", "en");
             Intent i = new Intent(MainActivity.this, RI_SecondScreen.class);
-            i.putExtra("districtCode", district);
+            i.putExtra("district", district);
             i.putExtra("taluk", taluk);
             i.putExtra("hobli", hobli);
             i.putExtra("VA_Circle_Name", VA_Circle_Name);
@@ -1185,7 +1185,7 @@ public class MainActivity extends AppCompatActivity {
         }else if(localeName.equals("kn")){
             Log.d("localeName1", "kn");
             Intent i = new Intent(MainActivity.this, RI_SecondScreen.class);
-            i.putExtra("districtCode", district_k);
+            i.putExtra("district", district_k);
             i.putExtra("taluk", taluk_k);
             i.putExtra("hobli", hobli_k);
             i.putExtra("VA_Circle_Name", VA_Circle_Name_k);
@@ -1199,7 +1199,7 @@ public class MainActivity extends AppCompatActivity {
         }else {
             Log.d("localeName1", ""+localeName);
             Intent i = new Intent(MainActivity.this, RI_SecondScreen.class);
-            i.putExtra("districtCode", district);
+            i.putExtra("district", district);
             i.putExtra("taluk", taluk);
             i.putExtra("hobli", hobli);
             i.putExtra("VA_Circle_Name", VA_Circle_Name);

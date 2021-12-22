@@ -214,7 +214,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         applicant_infor.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         Intent i = getIntent();
-        district = i.getStringExtra("districtCode");
+        district = i.getStringExtra("district");
         taluk = i.getStringExtra("taluk");
         VA_Name = i.getStringExtra("VA_Name");
         applicant_name = i.getStringExtra("applicant_name");
@@ -749,7 +749,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                     i.putExtra("district_Code", district_Code);
                     i.putExtra("taluk_Code", taluk_Code);
                     i.putExtra("hobli_Code", hobli_Code);
-                    i.putExtra("districtCode", district);
+                    i.putExtra("district", district);
                     i.putExtra("taluk", taluk);
                     i.putExtra("RI_Name", VA_Name);
                     i.putExtra("hobli", hobli);
@@ -929,7 +929,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 } else {
                     i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_Income_Parameters_Kan.class);
                 }
-                i.putExtra("districtCode", district);
+                i.putExtra("district", district);
                 i.putExtra("taluk", taluk);
                 i.putExtra("applicant_Id", applicant_Id);
                 i.putExtra("VA_Name", VA_Name);
@@ -967,7 +967,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 }else {
                     i = new Intent(New_Request_SecondScreen.this, New_Request_Caste_sc_st_certi_Parameters_Kan.class);
                 }
-                i.putExtra("districtCode", district);
+                i.putExtra("district", district);
                 i.putExtra("taluk", taluk);
                 i.putExtra("applicant_Id", applicant_Id);
                 i.putExtra("VA_Name", VA_Name);
@@ -1003,7 +1003,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 }else {
                     i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
                 }
-                i.putExtra("districtCode", district);
+                i.putExtra("district", district);
                 i.putExtra("taluk", taluk);
                 i.putExtra("applicant_Id", applicant_Id);
                 i.putExtra("VA_Name", VA_Name);

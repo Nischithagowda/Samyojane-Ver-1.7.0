@@ -21,7 +21,7 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
 
     TextView pendencyReport;
     static String va_Circle_Name;
-    static String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
+    static int district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database, database1;
     ArrayList<String> SlNo = new ArrayList<>();
@@ -53,9 +53,9 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
         pendencyReport.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         Intent i = getIntent();
-        district_Code = i.getStringExtra("district_Code");
-        taluk_Code = i.getStringExtra("taluk_Code");
-        hobli_Code = i.getStringExtra("hobli_Code");
+        district_Code = i.getIntExtra("district_Code",0);
+        taluk_Code = i.getIntExtra("taluk_Code",0);
+        hobli_Code = i.getIntExtra("hobli_Code",0);
 
         displayData_AfterItemSelected();
 
@@ -97,7 +97,7 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
             if (cursor.moveToFirst()){
                 do {
                     va_Circle_Name = cursor.getString(cursor.getColumnIndexOrThrow(getString(R.string.cre_va_circle_name)));
-                    va_Circle_Code = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.VA_circle_Code));
+                    va_Circle_Code = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_Credentials.VA_circle_Code));
 
                     Cursor cursor1 = database1.rawQuery("select count(" + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo
                             + ") as TotalCount from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
@@ -117,10 +117,10 @@ public class RI_VA_Circle_Wise_Report  extends AppCompatActivity {
                                     SlNo.add(String.valueOf(i));
                                     VA_Circle_Name.add(va_Circle_Name);
                                     TotalCount.add(cursor1.getString(cursor1.getColumnIndex("TotalCount")));
-                                    VA_Circle_Code.add(va_Circle_Code);
-                                    Dist_Code.add(district_Code);
-                                    Tal_Code.add(taluk_Code);
-                                    Hob_Code.add(hobli_Code);
+                                    VA_Circle_Code.add(String.valueOf(va_Circle_Code));
+                                    Dist_Code.add(String.valueOf(district_Code));
+                                    Tal_Code.add(String.valueOf(taluk_Code));
+                                    Hob_Code.add(String.valueOf(hobli_Code));
                                     i++;
                                 }
                             } while (cursor1.moveToNext());

@@ -82,7 +82,7 @@ public class Village_wise_report extends AppCompatActivity {
 
         Intent i = getIntent();
         district_Code = i.getIntExtra("district_Code", 0);
-        district = i.getStringExtra("districtCode");
+        district = i.getStringExtra("district");
         taluk_Code = i.getIntExtra("taluk_Code", 0);
         taluk = i.getStringExtra("taluk");
         hobli_Code = i.getIntExtra("hobli_Code", 0);

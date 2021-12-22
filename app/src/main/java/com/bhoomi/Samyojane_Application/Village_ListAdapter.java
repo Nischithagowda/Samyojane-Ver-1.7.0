@@ -19,8 +19,8 @@ public class Village_ListAdapter extends BaseAdapter implements Filterable {
     ArrayList<String> TotalCount;
     ArrayList<String> VillageName;
     ArrayList<String> VillageCode;
-    String district, taluk, VA_Name, hobli,VA_Circle_Name, total;
-    String district_Code, taluk_Code, hobli_Code, villageName, villageCode;
+    String district, taluk, VA_Name, hobli,VA_Circle_Name, total, villageName, villageCode;
+    int district_Code, taluk_Code, hobli_Code;
 
     Village_ListAdapter(Context context, ArrayList<String> slNo, ArrayList<String> villageName,
                         ArrayList<String> totalCount, ArrayList<String> villageCode){

@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +22,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
     Button btnBack;
     TextView tvHobli, tvTaluk, tvRI_Name, tvVillageName, tvServiceName, tv_V_T_Name;
     String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_Code, villageCode, town_code, ward_code;
     private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     ArrayList<String> SlNo = new ArrayList<>();
@@ -45,11 +43,9 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
     RI_UR_Service_List_Adapter ri_ur_service_list_adapter;
     LinearLayout linearLayout;
     TextView emptyTxt;
-    String village_name, service_name, town_Name, ward_Name, town_code, ward_code,option_Flag;
-    String serviceCode, villageCode;
+    String village_name, service_name, town_Name, ward_Name,option_Flag;
+    String serviceCode;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @SuppressLint({"MissingPermission", "HardwareIds", "SetTextI18n", "ClickableViewAccessibility", "SdCardPath"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,22 +66,22 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         linearLayout.setVisibility(View.GONE);
 
         Intent i = getIntent();
-        district_Code = i.getStringExtra("district_Code");
-        district = i.getStringExtra("districtCode");
-        taluk_Code = i.getStringExtra("taluk_Code");
+        district_Code = i.getIntExtra("district_Code", 0);
+        district = i.getStringExtra("district");
+        taluk_Code = i.getIntExtra("taluk_Code", 0);
         taluk = i.getStringExtra("taluk");
-        hobli_Code = i.getStringExtra("hobli_Code");
+        hobli_Code = i.getIntExtra("hobli_Code", 0);
         hobli = i.getStringExtra("hobli");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        va_Circle_Code = i.getIntExtra("va_Circle_Code", 0);
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
         RI_Name = i.getStringExtra("RI_Name");
         VA_Name = i.getStringExtra("VA_Name");
-        villageCode = i.getStringExtra("villageCode");
+        villageCode = i.getIntExtra("villageCode", 0);
         village_name = i.getStringExtra("strSearchVillageName");
         service_name = i.getStringExtra("strSearchServiceName");
-        town_code = i.getStringExtra("town_code");
+        town_code = i.getIntExtra("town_code", 0);
         town_Name = i.getStringExtra("town_Name");
-        ward_code = i.getStringExtra("ward_code");
+        ward_code = i.getIntExtra("ward_code", 0);
         ward_Name = i.getStringExtra("ward_Name");
         option_Flag = i.getStringExtra("option_Flag");
 
@@ -116,17 +112,20 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         tvHobli.setText(hobli);
         tvRI_Name.setText(RI_Name);
         tvServiceName.setText(service_name);
-
+        String villageTownName;
         if(!Objects.equals(villageCode, "99999")){
             Log.d("Data","Rural");
-            tv_V_T_Name.setText(getString(R.string.village_name)+" : ");
+            villageTownName = getString(R.string.village_name)+" : ";
+            tv_V_T_Name.setText(villageTownName);
             tvVillageName.setText(village_name);
             displayData_AfterItemSelected();
         }else if(!Objects.equals(town_code, "9999")){
             Log.d("Data","Urban");
-            tv_V_T_Name.setText(getString(R.string.town_name)+"                : "
-                    +"\n"+getString(R.string.ward_name_num)+"    : ");
-            tvVillageName.setText(town_Name+"\n"+ward_Name);
+            villageTownName = getString(R.string.town_name)+"                : "
+                    +"\n"+getString(R.string.ward_name_num)+"    : ";
+            tv_V_T_Name.setText(villageTownName);
+            villageTownName = town_Name+"\n"+ward_Name;
+            tvVillageName.setText(villageTownName);
             display_Urban_Data_AfterItemSelected();
         }
 
@@ -143,7 +142,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         Cursor cursor = database.rawQuery("select "
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo+","
-                +" substr(ST_DueDate,0,11) as ST_DueDate from "
+                +" substr("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date+",0,11) as "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date+" from "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+"="+district_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code+"="+taluk_Code+" and "
@@ -209,7 +208,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
 
         Cursor cursor = database.rawQuery("select "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name+","
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo+","
-                +" substr(ST_DueDate,0,11) as ST_DueDate from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
+                +" substr("+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date+",0,11) as "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Due_Date+" from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.District_Code+"="+district_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Taluk_Code+"="+taluk_Code+" and "
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Hobli_Code+"="+hobli_Code+" and "
@@ -244,9 +243,9 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
                     ServiceCode.add(String.valueOf(serviceCode));
                     ServiceName.add(service_name);
                     TownName.add(town_Name);
-                    TownCode.add(town_code);
+                    TownCode.add(String.valueOf(town_code));
                     WardName.add(ward_Name);
-                    WardCode.add(ward_code);
+                    WardCode.add(String.valueOf(ward_code));
                     Option_Flag.add(option_Flag);
                     i++;
                 } while (cursor.moveToNext());
@@ -272,7 +271,7 @@ public class RI_Field_Report_FirstScreen extends AppCompatActivity {
         super.onBackPressed();
         Intent i = new Intent(RI_Field_Report_FirstScreen.this, RI_Field_Report.class);
         i.putExtra("district_Code", district_Code);
-        i.putExtra("districtCode", district);
+        i.putExtra("district", district);
         i.putExtra("taluk_Code", taluk_Code);
         i.putExtra("taluk", taluk);
         i.putExtra("hobli_Code", hobli_Code);

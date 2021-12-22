@@ -41,7 +41,6 @@ public class UploadScreen extends AppCompatActivity {
     ProgressDialog dialog;
     TextView tvTotalUpload, tvAlreadyUploaded, tvNotUploaded, tvAfterUploaded;
     int count_TotalCaptured=0, count_AfterUpload=0, count_BalanceRecord;
-    String resultFromServer;
 
     String Updated_By_VA_Name, Updated_By_VA_IMEI;
     APIInterface_NIC apiInterface_nic;
@@ -237,8 +236,7 @@ public class UploadScreen extends AppCompatActivity {
                                             String StatusCode = jsonObject3.toString();
                                             Log.d("StatusCode", StatusCode + ", StatusMessage: " + StatusMessage);
 
-                                            resultFromServer = StatusCode;
-                                            if (resultFromServer.equals("0")) {
+                                            if (StatusCode.equals("1")) {
                                                 runOnUiThread(() -> {
                                                     //Toast.makeText(getApplicationContext(), "Data Uploaded Successfully" , Toast.LENGTH_SHORT).show();
                                                     Log.d("Request_", "UpdateServiceParameterTable" + "Data Uploaded Successfully");
@@ -260,6 +258,8 @@ public class UploadScreen extends AppCompatActivity {
                                                         + " where " + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + finalApplicant_Id + "'");
                                                 Log.d("Local_Result", "A row deleted Successfully");
                                             } else {
+                                                dialog.dismiss();
+                                                Toast.makeText(UploadScreen.this, ""+StatusMessage, Toast.LENGTH_SHORT).show();
                                                 Log.d("Request_", "UpdateServiceParameterTable" + " Data not uploaded");
                                             }
                                         }

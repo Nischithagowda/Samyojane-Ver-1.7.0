@@ -217,7 +217,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         tvCaste.setVisibility(View.GONE);
 
         Intent i = getIntent();
-        district = i.getStringExtra("districtCode");
+        district = i.getStringExtra("district");
         taluk = i.getStringExtra("taluk");
         district_Code = i.getIntExtra("district_Code", 0);
         taluk_Code = i.getIntExtra("taluk_Code", 0);
@@ -905,7 +905,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                     i.putExtra("district_Code", district_Code);
                     i.putExtra("taluk_Code", taluk_Code);
                     i.putExtra("hobli_Code", hobli_Code);
-                    i.putExtra("districtCode", district);
+                    i.putExtra("district", district);
                     i.putExtra("taluk", taluk);
                     i.putExtra("VA_Name", VA_Name);
                     i.putExtra("hobli", hobli);
@@ -997,7 +997,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                     i.putExtra("district_Code", district_Code);
                     i.putExtra("taluk_Code", taluk_Code);
                     i.putExtra("hobli_Code", hobli_Code);
-                    i.putExtra("districtCode", district);
+                    i.putExtra("district", district);
                     i.putExtra("taluk", taluk);
                     i.putExtra("VA_Name", VA_Name);
                     i.putExtra("hobli", hobli);

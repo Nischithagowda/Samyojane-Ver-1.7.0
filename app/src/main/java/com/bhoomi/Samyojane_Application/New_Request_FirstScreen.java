@@ -142,7 +142,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         Intent i = getIntent();
         applicant_Id = i.getStringExtra("applicant_Id");
         district_Code = i.getIntExtra("district_Code", 0);
-        district = i.getStringExtra("districtCode");
+        district = i.getStringExtra("district");
         taluk_Code = i.getIntExtra("taluk_Code", 0);
         taluk = i.getStringExtra("taluk");
         hobli_Code = i.getIntExtra("hobli_Code", 0);
@@ -453,7 +453,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                             intent.putExtra("district_Code", district_Code);
                             intent.putExtra("taluk_Code", taluk_Code);
                             intent.putExtra("hobli_Code", hobli_Code);
-                            intent.putExtra("districtCode", district);
+                            intent.putExtra("district", district);
                             intent.putExtra("taluk", taluk);
                             intent.putExtra("hobli", hobli);
                             intent.putExtra("VA_Name", VA_Name);
@@ -776,7 +776,7 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
         super.onBackPressed();
         Intent i = new Intent(New_Request_FirstScreen.this, Field_Report.class);
         i.putExtra("district_Code", district_Code);
-        i.putExtra("districtCode", district);
+        i.putExtra("district", district);
         i.putExtra("taluk_Code", taluk_Code);
         i.putExtra("taluk", taluk);
         i.putExtra("hobli_Code", hobli_Code);
@@ -868,8 +868,8 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                                 set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
                                 set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
                                 set_and_get_service_tran_data.setPush_Flag(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Push_Flag));
-                                set_and_get_service_tran_data.setVA_IMEI_Num(IMEI_Num);
-                                set_and_get_service_tran_data.setVAName(VA_Name);
+                                set_and_get_service_tran_data.setVA_RI_IMEI_Num(IMEI_Num);
+                                set_and_get_service_tran_data.setVA_RI_Name(VA_Name);
 
                                 serviceCode = object.getInt(DataBaseHelperClass_btnDownload_ServiceTranTable.Service_Code);
                                 Log.d("serviceCode", "" + serviceCode);
@@ -959,8 +959,8 @@ public class New_Request_FirstScreen extends AppCompatActivity implements DataTr
                                         + set_and_get_service_tran_data.getGST_No_Mths_Applied() + ","
                                         + set_and_get_service_tran_data.getGST_No_Years_Applied() + ",'"
                                         + set_and_get_service_tran_data.getPush_Flag() + "','"
-                                        + set_and_get_service_tran_data.getVA_IMEI_Num() + "','"
-                                        + set_and_get_service_tran_data.getVAName() + "')");
+                                        + set_and_get_service_tran_data.getVA_RI_IMEI_Num() + "','"
+                                        + set_and_get_service_tran_data.getVA_RI_Name() + "')");
 
                                 Log.d("Database", "ServiceTranTable Database Inserted " + j);
                                 j++;

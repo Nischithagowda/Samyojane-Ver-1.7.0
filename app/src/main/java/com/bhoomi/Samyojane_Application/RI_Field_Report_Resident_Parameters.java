@@ -71,19 +71,19 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
     HashMap<String, String> hashMap_Down_Docs;
 
     TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName, tv_V_T_Name, txt_ReportNo;
-    String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_Code, applicant_Id, applicant_name;
+    String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name, applicant_Id, applicant_name;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_Code, villageCode, town_code, ward_code;
     String village_name, service_name;
-    String villageCode, serviceCode, habitationCode, town_Name, ward_Name, town_code, ward_code, option_Flag;
-    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, ResideAtStatedAddress, PlaceMatch, ReservationGiven, TotalYears, Remarks;
+    String serviceCode, habitationCode, town_Name, ward_Name, option_Flag;
+    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, ReservationGiven, TotalYears, Remarks;
     RadioGroup radioGroup1, radioGroup2, radioGroup3, radioGroup4;
     RadioButton radioButton1, radioButton11, radioButton2, radioButton22, radioButton3, radioButton33, radioButton4, radioButton44;
     Spinner spMonth;
     String option, option1, option2, option3;
-    TableRow lReservationGiven, layoutMonth;
+    TableRow lReservationGiven, layoutMonth, tr_res_address, tr_place_ration_card;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    String appID, appName, resideAtStatedAddress, appPlaceMatch, appReservationGiven, year, month, remarks;
+    String appID, appName, appReservationGiven, year, month, remarks;
     ArrayAdapter<CharSequence>adapter_Month;
     int Total_No_Years_10, NO_Months_10;
     GPSTracker gpsTracker;
@@ -212,8 +212,6 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         ApplicantID = findViewById(R.id.ApplicantID);
         ApplicantName = findViewById(R.id.ApplicantName);
         TotalYears = findViewById(R.id.TotalYears);
-        ResideAtStatedAddress = findViewById(R.id.ResideAtStatedAddress);
-        PlaceMatch = findViewById(R.id.placeMatch);
         ReservationGiven = findViewById(R.id.ReservationGiven);
         radioGroup1 = findViewById(R.id.radioGroup1);
         radioGroup2 = findViewById(R.id.radioGroup2);
@@ -243,6 +241,8 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         btnDownDocs = findViewById(R.id.btnDownDocs);
         btnViewDocs = findViewById(R.id.btnViewDocs);
         txt_ReportNo = findViewById(R.id.txt_ReportNo);
+        tr_res_address = findViewById(R.id.tr_res_address);
+        tr_place_ration_card = findViewById(R.id.tr_place_ration_card);
 
         hide.setVisibility(View.GONE);
         Remarks.setVisibility(View.VISIBLE);
@@ -263,13 +263,13 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         Log.d("report_no", "" + report_no);
 
         Intent i = getIntent();
-        district_Code = i.getStringExtra("district_Code");
-        district = i.getStringExtra("districtCode");
-        taluk_Code = i.getStringExtra("taluk_Code");
+        district_Code = i.getIntExtra("district_Code",0);
+        district = i.getStringExtra("district");
+        taluk_Code = i.getIntExtra("taluk_Code",0);
         taluk = i.getStringExtra("taluk");
-        hobli_Code = i.getStringExtra("hobli_Code");
+        hobli_Code = i.getIntExtra("hobli_Code",0);
         hobli = i.getStringExtra("hobli");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        va_Circle_Code = i.getIntExtra("va_Circle_Code",0);
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
         applicant_Id = i.getStringExtra("applicant_Id");
         applicant_name = i.getStringExtra("applicant_name");
@@ -277,12 +277,12 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         VA_Name = i.getStringExtra("VA_Name");
         village_name = i.getStringExtra("strSearchVillageName");
         service_name = i.getStringExtra("strSearchServiceName");
-        villageCode = i.getStringExtra("villageCode");
+        villageCode = i.getIntExtra("villageCode", 0);
         habitationCode = i.getStringExtra("habitationCode");
         serviceCode = i.getStringExtra("serviceCode");
-        town_code = i.getStringExtra("town_code");
+        town_code = i.getIntExtra("town_code", 0);
         town_Name = i.getStringExtra("town_Name");
-        ward_code = i.getStringExtra("ward_code");
+        ward_code = i.getIntExtra("ward_code", 0);
         ward_Name = i.getStringExtra("ward_Name");
         option_Flag = i.getStringExtra("option_Flag");
         eng_certi = i.getStringExtra("eng_certi");
@@ -363,8 +363,8 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         radioGroup1.setVisibility(View.GONE);
         radioGroup2.setVisibility(View.GONE);
         TotalYears.setVisibility(View.VISIBLE);
-        ResideAtStatedAddress.setVisibility(View.VISIBLE);
-        PlaceMatch.setVisibility(View.VISIBLE);
+        tr_res_address.setVisibility(View.VISIBLE);
+        tr_place_ration_card.setVisibility(View.GONE);
 
         gpsTracker = new GPSTracker(getApplicationContext(), this);
 
@@ -395,15 +395,13 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                 +DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo+"='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             if(cursor.moveToFirst()){
-                remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
+                remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Remarks));
                 eng_certi = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
                 appID = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo));
                 appName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
                 year = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Years_Applied));
                 month = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Mths_Applied));
-                resideAtStatedAddress = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reside_At_Stated_Address_10));
-                appPlaceMatch = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Place_Match_With_RationCard_10));
                 appReservationGiven = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
             }
         } else {
@@ -427,16 +425,12 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
 
         Log.d("dbValues", "App_ID "+appID);
         Log.d("dbValues", "appName "+appName);
-        Log.d("dbValues", "resideAtStatedAddress "+resideAtStatedAddress);
-        Log.d("dbValues", "appPlaceMatch "+appPlaceMatch);
         Log.d("dbValues", "appReservationGiven "+appReservationGiven);
         Log.d("dbValues", "remarks "+remarks);
 
         ApplicantID.setText(appID);
         ApplicantName.setText(appName);
         TotalYears.setText(year+" "+getString(R.string.year_name)+", "+month+" "+getString(R.string.month_name));
-        ResideAtStatedAddress.setText(resideAtStatedAddress);
-        PlaceMatch.setText(appPlaceMatch);
         ReservationGiven.setText(appReservationGiven);
         Remarks.setText(remarks);
 
@@ -465,8 +459,8 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
             if (checkedId == R.id.radioButton3) {
                 option2 = getString(R.string.yes);
                 TotalYears.setVisibility(View.VISIBLE);
-                ResideAtStatedAddress.setVisibility(View.VISIBLE);
-                PlaceMatch.setVisibility(View.VISIBLE);
+                tr_res_address.setVisibility(View.GONE);
+                tr_place_ration_card.setVisibility(View.GONE);
                 lReservationGiven.setVisibility(View.VISIBLE);
                 etYear.setVisibility(View.GONE);
                 layoutMonth.setVisibility(View.GONE);
@@ -483,8 +477,8 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
             } else if (checkedId == R.id.radioButton33) {
                 option2 = getString(R.string.no);
                 TotalYears.setVisibility(View.GONE);
-                ResideAtStatedAddress.setVisibility(View.GONE);
-                PlaceMatch.setVisibility(View.GONE);
+                tr_res_address.setVisibility(View.VISIBLE);
+                tr_place_ration_card.setVisibility(View.VISIBLE);
                 lReservationGiven.setVisibility(View.GONE);
                 etYear.setVisibility(View.VISIBLE);
                 layoutMonth.setVisibility(View.VISIBLE);
@@ -563,7 +557,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         btnViewDocs.setOnClickListener(v -> {
             Intent i12 = new Intent(RI_Field_Report_Resident_Parameters.this, View_Docs.class);
             i12.putExtra("district_Code", district_Code);
-            i12.putExtra("districtCode", district);
+            i12.putExtra("district", district);
             i12.putExtra("taluk_Code", taluk_Code);
             i12.putExtra("taluk", taluk);
             i12.putExtra("hobli_Code", hobli_Code);
@@ -824,30 +818,11 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             try {
-                if (cursor.moveToNext()) {
-                    strRemarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
-                    Total_No_Years_10 = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Years_Applied));
-                    NO_Months_10 = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Mths_Applied));
-                    option = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reside_At_Stated_Address_10));
-                    option1 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Place_Match_With_RationCard_10));
-                    Log.d("Data_Fetched", "StoreData_in_DB_When_Correct");
-                }
+                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " set "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 where "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + applicant_Id + "'");
 
                 database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Category + "=0,"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Caste + "=0,"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Belongs_Creamy_Layer_6 + "=null,"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reason_for_Creamy_Layer_6 + "=0,"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Father_Category_8 + "=0,"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Father_Caste_8 + "=0,"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Mother_Category_8 + "=0,"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Mother_Caste_8 + "=0,"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Total_No_Years_10 + "=" + Total_No_Years_10 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_NO_Months_10 + "=" + NO_Months_10 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reside_At_Stated_Address_10 + "='" + option + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Place_Match_With_RationCard_10 + "='" + option1 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Income + "=0,"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Remarks + "='" + strRemarks + "',"
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLat + "=" + latitude + ","
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLong + "=" + longitude + ","
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Can_Certificate_Given + "='" + option3 + "',"
@@ -865,7 +840,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                 i.putExtra("district_Code", district_Code);
                 i.putExtra("taluk_Code", taluk_Code);
                 i.putExtra("hobli_Code", hobli_Code);
-                i.putExtra("districtCode", district);
+                i.putExtra("district", district);
                 i.putExtra("taluk", taluk);
                 i.putExtra("RI_Name", RI_Name);
                 i.putExtra("VA_Name", VA_Name);
@@ -936,6 +911,10 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             try {
+                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " set "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 where "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + applicant_Id + "'");
+
                 database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Category + "=0,"
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Caste + "=0,"
@@ -968,7 +947,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                 i.putExtra("district_Code", district_Code);
                 i.putExtra("taluk_Code", taluk_Code);
                 i.putExtra("hobli_Code", hobli_Code);
-                i.putExtra("districtCode", district);
+                i.putExtra("district", district);
                 i.putExtra("taluk", taluk);
                 i.putExtra("hobli", hobli);
                 i.putExtra("va_Circle_Code", va_Circle_Code);
@@ -1137,7 +1116,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                     i.putExtra("district_Code", district_Code);
                     i.putExtra("taluk_Code", taluk_Code);
                     i.putExtra("hobli_Code", hobli_Code);
-                    i.putExtra("districtCode", district);
+                    i.putExtra("district", district);
                     i.putExtra("taluk", taluk);
                     i.putExtra("hobli", hobli);
                     i.putExtra("va_Circle_Code", va_Circle_Code);

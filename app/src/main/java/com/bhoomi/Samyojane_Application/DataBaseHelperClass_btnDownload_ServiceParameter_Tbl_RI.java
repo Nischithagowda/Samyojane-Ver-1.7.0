@@ -41,16 +41,8 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
     public static String ST_Eng_Certificate = "EnglishOrKannada";
     public static String ReservationCategory = "ReservationCategory";
     public static String Caste = "Caste";
-    public static String App_Father_Category_8 = "App_Father_Category_8";
-    public static String APP_Father_Caste_8 = "APP_Father_Caste_8";
-    public static String App_Mother_Category_8 = "App_Mother_Category_8";
-    public static String APP_Mother_Caste_8 = "APP_Mother_Caste_8";
-    public static String Reside_At_Stated_Address_10 = "Reside_At_Stated_Address_10";
-    public static String Place_Match_With_RationCard_10 = "Place_Match_With_RationCard_10";
-    public static String Belongs_Creamy_Layer_6 = "Belongs_Creamy_Layer_6";
-    public static String Reason_for_Creamy_Layer_6 = "Reason_for_Creamy_Layer_6";
-    public static String Can_Certificate_Given = "Can_Certificate_Given";
-    public static String Remarks = "Remarks";
+    public static String Can_Certificate_Given = "SSAT_VA_CanbeIssued";
+    public static String VA_Remarks = "SSAT_VA_Remarks";
     public static String AnnualIncome = "AnnualIncome";
     public static String Due_Date = "DueDate";
     public static String GST_No_Mths_Applied = "NoOfMonths_Applied";
@@ -59,8 +51,8 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
     public static String Service_Name_k = "Service_Name_k";
     public static String DataUpdateFlag = "DataUpdateFlag";
     public static String Push_Flag = "ST_Push_Flag";
-    public static String VA_IMEI = "VA_IMEI";
-    public static String VA_Name = "VA_Name";
+    public static String VA_RI_IMEI = "VA_IMEI";
+    public static String VA_RI_Name = "VA_Name";
 
     //Updated ST Table Values
     public static String UPD_GSCNo = "GscNo";
@@ -111,9 +103,10 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
             + Due_Date+" datetime,"+Raised_Location+" TEXT,"+ BinCom+ " int,"+ RelationTitle+ " int,"
             + FatherName +" TEXT,"+ MotherName +" TEXT,"+ ID_TYPE +" int,"+ IDNo +" TEXT," + Mobile_No+" decimal(10,0),"
             + Address1+" TEXT,"+Address2+" TEXT,"+Address3+" TEXT,"+ PinCode +" int,"+ ST_applicant_photo+" TEXT, "
-            + ST_Eng_Certificate+" TEXT," + ReservationCategory+ " int,"+ Caste+ " int,"+ GST_No_Mths_Applied+ " int,"
-            + GST_No_Years_Applied+ " int," + AnnualIncome + " TEXT," + Push_Flag + " TEXT,"+ VA_IMEI + " TEXT,"
-            + VA_Name + " TEXT," + DataUpdateFlag+" int)";
+            + ST_Eng_Certificate+" TEXT," + ReservationCategory+ " int,"+ Caste+ " int,"
+            + Can_Certificate_Given+ " TEXT,"+ VA_Remarks + " TEXT,"+ GST_No_Mths_Applied+ " int,"
+            + GST_No_Years_Applied+ " int," + AnnualIncome + " TEXT," + Push_Flag + " TEXT,"+ VA_RI_IMEI + " TEXT,"
+            + VA_RI_Name + " TEXT," + DataUpdateFlag+" int)";
 
     String CREATE_TABLE_1 ="CREATE TABLE " + TABLE_NAME_1 +"("
             + UPD_GSCNo +" TEXT," + UPD_LoginID+" TEXT," + UPD_Service_Code +" int," + UPD_DesignationCode +" int,"

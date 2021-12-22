@@ -138,7 +138,7 @@
                 android:textColor="@android:color/black"
                 tools:ignore="Autofill"
                 android:layout_weight="1"
-                android:text="Algur"/>
+                android:text="Jamkhandi"/>
 
             <EditText
                 android:id="@+id/pwd"

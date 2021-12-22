@@ -304,7 +304,7 @@ public class New_Request extends AppCompatActivity {
 //                + DataBaseHelperClass_RandomNum.RandomNum + ") values " + "('" + report_no + "')");
 
         Intent i = getIntent();
-        district = i.getStringExtra("districtCode");
+        district = i.getStringExtra("district");
         taluk = i.getStringExtra("taluk");
         district_Code = i.getIntExtra("district_Code", 0);
         taluk_Code = i.getIntExtra("taluk_Code", 0);
@@ -807,7 +807,7 @@ public class New_Request extends AppCompatActivity {
                 i13.putExtra("strSearchServiceName", service_name);
                 i13.putExtra("villageCode", villageCode);
                 i13.putExtra("district_Code", district_Code);
-                i13.putExtra("districtCode", district);
+                i13.putExtra("district", district);
                 i13.putExtra("taluk_Code", taluk_Code);
                 i13.putExtra("taluk", taluk);
                 i13.putExtra("hobli_Code", hobli_Code);
@@ -863,7 +863,7 @@ public class New_Request extends AppCompatActivity {
         btnViewDocs.setOnClickListener(v -> {
             Intent i12 = new Intent(New_Request.this, View_Docs.class);
             i12.putExtra("district_Code", district_Code);
-            i12.putExtra("districtCode", district);
+            i12.putExtra("district", district);
             i12.putExtra("taluk_Code", taluk_Code);
             i12.putExtra("taluk", taluk);
             i12.putExtra("hobli_Code", hobli_Code);
@@ -1019,7 +1019,7 @@ public class New_Request extends AppCompatActivity {
                             i1.putExtra("district_Code", district_Code);
                             i1.putExtra("taluk_Code", taluk_Code);
                             i1.putExtra("hobli_Code", hobli_Code);
-                            i1.putExtra("districtCode", district);
+                            i1.putExtra("district", district);
                             i1.putExtra("taluk", taluk);
                             i1.putExtra("VA_Name", VA_Name);
                             i1.putExtra("hobli", hobli);
@@ -1289,7 +1289,7 @@ public class New_Request extends AppCompatActivity {
         i.putExtra("district_Code", district_Code);
         i.putExtra("taluk_Code", taluk_Code);
         i.putExtra("hobli_Code", hobli_Code);
-        i.putExtra("districtCode", district);
+        i.putExtra("district", district);
         i.putExtra("taluk", taluk);
         i.putExtra("RI_Name", VA_Name);
         i.putExtra("hobli", hobli);

@@ -29,11 +29,12 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
     ArrayList<String> VA_Circle_Name;
     ArrayList<String> va_Circle_code;
     ArrayList<String> Option_Flag;
-    String villageCode, town_code, ward_code, option_Flag;
+    String option_Flag;
     String district, taluk, VA_Name, RI_Name, hobli;
-    String district_Code, taluk_Code, hobli_Code;
+    int district_Code, taluk_Code, hobli_Code;
     String item_position;
-    String serviceName, villageName, va_circle_Name, va_circle_Code;
+    String serviceName, villageName, va_circle_Name;
+    int va_circle_Code, villageCode, town_code, ward_code;
     private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
 
@@ -101,12 +102,12 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
             serviceName = ri_viewHolder.tvServiceName.getText().toString();
             item_position = String.valueOf(position);
             va_circle_Name = ri_viewHolder.tvVillageCircleName.getText().toString();
-            va_circle_Code = ri_viewHolder.tvVillageCircleCode.getText().toString();
+            va_circle_Code = Integer.parseInt(ri_viewHolder.tvVillageCircleCode.getText().toString());
             villageName = ri_viewHolder.tvVillageName.getText().toString();
-            villageCode = ri_viewHolder.tvVillageCode.getText().toString();
+            villageCode = Integer.parseInt(ri_viewHolder.tvVillageCode.getText().toString());
             option_Flag = ri_viewHolder.tvOption_Flag.getText().toString();
-            town_code = "9999";
-            ward_code = "255";
+            town_code = 9999;
+            ward_code = 255;
 
             Log.d("Item_Position", ""+item_position+" Service_Name :"+serviceName+" Village_Name: "+villageName);
             Log.d("district_Code", ""+district_Code+" taluk_Code :"+taluk_Code+" hobli_Code: "+hobli_Code);
@@ -129,7 +130,7 @@ public class RI_List_Adapter extends BaseAdapter implements Filterable {
             }
             Intent i = new Intent(context, RI_Field_Report_FirstScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("district_Code", district_Code);
-            i.putExtra("districtCode", district);
+            i.putExtra("district", district);
             i.putExtra("taluk_Code", taluk_Code);
             i.putExtra("taluk", taluk);
             i.putExtra("hobli_Code", hobli_Code);

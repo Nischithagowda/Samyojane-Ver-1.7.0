@@ -70,22 +70,22 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
     HashMap<String, String> hashMap_Down_Docs;
 
     TextView tvHobli, tvTaluk, tvRI_Name, tvServiceName, tv_V_T_Name, txt_ReportNo;
-    String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_Code, applicant_Id, applicant_name;
+    String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name, applicant_Id, applicant_name;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_Code, villageCode, town_code, ward_code;
     String village_name, service_name;
-    String villageCode, serviceCode, habitationCode, town_Name, ward_Name, town_code, ward_code, option_Flag;
-    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, ApplicantCategory, ApplicantCaste, CreamyLayer, ReasonForCreamyLayer, AnnualIncome, ReservationGiven, Remarks;
-    String appID, appName, appCategory, appCaste, appCreamyLayer, appReasonForCreamyLayer, appAnnualIncome, appReservationGiven, remarks;
+    String serviceCode, habitationCode, town_Name, ward_Name, option_Flag;
+    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, ApplicantCategory, ApplicantCaste, AnnualIncome, ReservationGiven, Remarks;
+    String appID, appName, appCategory, appCaste, appAnnualIncome, appReservationGiven, remarks;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    SqlLiteOpenHelper_Class sqlLiteOpenHelper_class, sqlLiteOpenHelper_class1;
-    String getCategory, getCaste, getReasonCreamyLayer;
+    SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
+    String getCategory, getCaste;
     RadioGroup radioGroup, radioGroup2, radioGroup3;
     RadioButton radioButton1, radioButton11, radioButton2, radioButton22, radioButton3, radioButton33;
-    String option, option2, option3, option5, option1;
+    String option, option2, option3;
     Spinner spCategory, spReasons;
     AutoCompleteTextView autoSearchCaste;
-    TableRow TableApplicantCategory, TableApplicantCaste, TableCasteReservation, TableReasonForCreamyLayer;
+    TableRow TableApplicantCategory, TableApplicantCaste, TableCasteReservation, tr_creamyLayer, tr_reasonForCreamyLayer;
     EditText tvIncome, tvRemarks;
     int income_len, income_Value;
     String strReason, strCategory, strSearchCaste;
@@ -101,7 +101,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
     String photo;
     TextView tvVillageName, tvAppCategory, tvAppCaste, tvCreamyLayer, tvReasonForCreamyLayer, tvAnnualIncome, tvRemarksColor;
     String strRemarks;
-    int FCategory, FCaste, MCategory, MCaste, Total_No_Years_10, NO_Months_10;
+    int Total_No_Years_10, NO_Months_10;
     boolean return_Value;
     InputMethodManager imm;
     InputMethodSubtype ims;
@@ -224,8 +224,6 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         ApplicantName = findViewById(R.id.ApplicantName);
         ApplicantCategory = findViewById(R.id.ApplicantCategory);
         ApplicantCaste = findViewById(R.id.ApplicantCaste);
-        CreamyLayer = findViewById(R.id.CreamyLayer);
-        ReasonForCreamyLayer = findViewById(R.id.ReasonForCreamyLayer);
         AnnualIncome = findViewById(R.id.AnnualIncome);
         ReservationGiven = findViewById(R.id.ReservationGiven);
         radioGroup = findViewById(R.id.radioGroup);
@@ -243,7 +241,8 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         TableApplicantCategory = findViewById(R.id.TableApplicantCategory);
         TableApplicantCaste = findViewById(R.id.TableApplicantCaste);
         TableCasteReservation = findViewById(R.id.TableCasteReservation);
-        TableReasonForCreamyLayer = findViewById(R.id.TableReasonForCreamyLayer);
+        tr_creamyLayer = findViewById(R.id.tr_creamyLayer);
+        tr_reasonForCreamyLayer = findViewById(R.id.tr_reasonForCreamyLayer);
         Remarks = findViewById(R.id.Remarks);
         tvIncome = findViewById(R.id.tvIncome);
         tvRemarks = findViewById(R.id.tvRemarks);
@@ -266,14 +265,13 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         radioGroup.setVisibility(View.GONE);
         ApplicantCategory.setVisibility(View.VISIBLE);
         ApplicantCaste.setVisibility(View.VISIBLE);
-        CreamyLayer.setVisibility(View.VISIBLE);
-        ReasonForCreamyLayer.setVisibility(View.VISIBLE);
         ReservationGiven.setVisibility(View.VISIBLE);
         AnnualIncome.setVisibility(View.VISIBLE);
         TableCasteReservation.setVisibility(View.VISIBLE);
         TableApplicantCategory.setVisibility(View.VISIBLE);
         TableApplicantCaste.setVisibility(View.VISIBLE);
-        TableReasonForCreamyLayer.setVisibility(View.GONE);
+        tr_creamyLayer.setVisibility(View.GONE);
+        tr_reasonForCreamyLayer.setVisibility(View.GONE);
         Remarks.setVisibility(View.VISIBLE);
         tvIncome.setVisibility(View.GONE);
         tvRemarks.setVisibility(View.GONE);
@@ -292,13 +290,13 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         Log.d("report_no", "" + report_no);
 
         Intent i = getIntent();
-        district_Code = i.getStringExtra("district_Code");
-        district = i.getStringExtra("districtCode");
-        taluk_Code = i.getStringExtra("taluk_Code");
+        district_Code = i.getIntExtra("district_Code",0);
+        district = i.getStringExtra("district");
+        taluk_Code = i.getIntExtra("taluk_Code",0);
         taluk = i.getStringExtra("taluk");
-        hobli_Code = i.getStringExtra("hobli_Code");
+        hobli_Code = i.getIntExtra("hobli_Code",0);
         hobli = i.getStringExtra("hobli");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        va_Circle_Code = i.getIntExtra("va_Circle_Code",0);
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
         applicant_Id = i.getStringExtra("applicant_Id");
         applicant_name = i.getStringExtra("applicant_name");
@@ -306,12 +304,12 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         VA_Name = i.getStringExtra("VA_Name");
         village_name = i.getStringExtra("strSearchVillageName");
         service_name = i.getStringExtra("strSearchServiceName");
-        villageCode = i.getStringExtra("villageCode");
+        villageCode = i.getIntExtra("villageCode", 0);
         habitationCode = i.getStringExtra("habitationCode");
         serviceCode = i.getStringExtra("serviceCode");
-        town_code = i.getStringExtra("town_code");
+        town_code = i.getIntExtra("town_code", 0);
         town_Name = i.getStringExtra("town_Name");
-        ward_code = i.getStringExtra("ward_code");
+        ward_code = i.getIntExtra("ward_code", 0);
         ward_Name = i.getStringExtra("ward_Name");
         option_Flag = i.getStringExtra("option_Flag");
         eng_certi = i.getStringExtra("eng_certi");
@@ -403,11 +401,9 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 appName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
                 appCategory = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
                 appCaste = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
-                appCreamyLayer = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Belongs_Creamy_Layer_6));
-                appReasonForCreamyLayer = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reason_for_Creamy_Layer_6));
                 appAnnualIncome = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
                 appReservationGiven = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
-                remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
+                remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Remarks));
             }
         } else {
             cursor.close();
@@ -434,8 +430,6 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         Log.d("dbValues", "appName "+appName);
         Log.d("dbValues", "appCategory "+appCategory);
         Log.d("dbValues", "appCaste "+appCaste);
-        Log.d("dbValues", "appCreamyLayer "+appCreamyLayer);
-        Log.d("dbValues", "appReasonForCreamyLayer "+appReasonForCreamyLayer);
         Log.d("dbValues", "appAnnualIncome "+appAnnualIncome);
         Log.d("dbValues", "appReservationGiven "+appReservationGiven);
         Log.d("dbValues", "remarks "+remarks);
@@ -457,10 +451,6 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setProgress(1);
 
-        sqlLiteOpenHelper_class1 = new SqlLiteOpenHelper_Class(this);
-        sqlLiteOpenHelper_class1.open_Reasons_Master_Tbl();
-        getReasonCreamyLayer = sqlLiteOpenHelper_class1.GetCreamyLayerReason_BY_Code(Integer.parseInt(appReasonForCreamyLayer), getString(R.string.reasons_tbl_reason_name));
-
         if(serviceCode.equals("9")){
             sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
             sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
@@ -473,21 +463,10 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
             getCaste = sqlLiteOpenHelper_class.GetCaste_BY_Code(Integer.parseInt(appCategory), Integer.parseInt(appCaste));
         }
 
-        if(appCreamyLayer.equals("NO")){
-            TableReasonForCreamyLayer.setVisibility(View.VISIBLE);
-            ReasonForCreamyLayer.setVisibility(View.VISIBLE);
-        }
-        else{
-            TableReasonForCreamyLayer.setVisibility(View.GONE);
-            ReasonForCreamyLayer.setVisibility(View.GONE);
-        }
-
         ApplicantID.setText(applicant_Id);
         ApplicantName.setText(appName);
         ApplicantCategory.setText(getCategory);
         ApplicantCaste.setText(getCaste);
-        CreamyLayer.setText(appCreamyLayer);
-        ReasonForCreamyLayer.setText(getReasonCreamyLayer);
         AnnualIncome.setText(appAnnualIncome);
         ReservationGiven.setText(appReservationGiven);
         Remarks.setText(remarks);
@@ -496,12 +475,12 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
             // find which radio button is selected
             if (checkedId == R.id.radioButton1) {
                 option = getString(R.string.yes);
-                TableReasonForCreamyLayer.setVisibility(View.GONE);
+                tr_reasonForCreamyLayer.setVisibility(View.GONE);
                 spReasons.setVisibility(View.GONE);
                 spReasons.setSelection(0);
             } else if (checkedId == R.id.radioButton11) {
                 option = getString(R.string.no);
-                TableReasonForCreamyLayer.setVisibility(View.VISIBLE);
+                tr_reasonForCreamyLayer.setVisibility(View.VISIBLE);
                 spReasons.setVisibility(View.VISIBLE);
             }
         });
@@ -521,18 +500,11 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 TableApplicantCaste.setVisibility(View.VISIBLE);
                 ApplicantCategory.setVisibility(View.VISIBLE);
                 ApplicantCaste.setVisibility(View.VISIBLE);
-                CreamyLayer.setVisibility(View.VISIBLE);
                 ReservationGiven.setVisibility(View.VISIBLE);
                 AnnualIncome.setVisibility(View.VISIBLE);
                 TableCasteReservation.setVisibility(View.VISIBLE);
-                if(appCreamyLayer.equals("NO")){
-                    TableReasonForCreamyLayer.setVisibility(View.VISIBLE);
-                    ReasonForCreamyLayer.setVisibility(View.VISIBLE);
-                }
-                else{
-                    TableReasonForCreamyLayer.setVisibility(View.GONE);
-                    ReasonForCreamyLayer.setVisibility(View.GONE);
-                }
+                tr_creamyLayer.setVisibility(View.GONE);
+                tr_reasonForCreamyLayer.setVisibility(View.GONE);
 
                 if (serviceCode.equals("11") || serviceCode.equals("34") || serviceCode.equals("37")){
                     TableApplicantCategory.setVisibility(View.GONE);
@@ -557,17 +529,17 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 TableApplicantCaste.setVisibility(View.GONE);
                 ApplicantCategory.setVisibility(View.GONE);
                 ApplicantCaste.setVisibility(View.GONE);
-                CreamyLayer.setVisibility(View.GONE);
                 ReservationGiven.setVisibility(View.GONE);
                 AnnualIncome.setVisibility(View.GONE);
-                TableReasonForCreamyLayer.setVisibility(View.GONE);
-                ReasonForCreamyLayer.setVisibility(View.GONE);
+                tr_creamyLayer.setVisibility(View.VISIBLE);
+                tr_reasonForCreamyLayer.setVisibility(View.GONE);
+
                 if(option.equals(getString(R.string.yes))){
-                    TableReasonForCreamyLayer.setVisibility(View.GONE);
+                    tr_reasonForCreamyLayer.setVisibility(View.GONE);
                     spReasons.setVisibility(View.GONE);
                 }
                 else{
-                    TableReasonForCreamyLayer.setVisibility(View.VISIBLE);
+                    tr_reasonForCreamyLayer.setVisibility(View.VISIBLE);
                     spReasons.setVisibility(View.VISIBLE);
                 }
 
@@ -693,7 +665,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         btnViewDocs.setOnClickListener(v -> {
             Intent i12 = new Intent(RI_Field_Report_caste_income_parameters.this, View_Docs.class);
             i12.putExtra("district_Code", district_Code);
-            i12.putExtra("districtCode", district);
+            i12.putExtra("district", district);
             i12.putExtra("taluk_Code", taluk_Code);
             i12.putExtra("taluk", taluk);
             i12.putExtra("hobli_Code", hobli_Code);
@@ -1101,40 +1073,13 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0) {
             try {
-                if (cursor.moveToNext()) {
-                    getCatCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
-                    getCasteCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
-                    option = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Belongs_Creamy_Layer_6));
-                    reason_Code_1 = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reason_for_Creamy_Layer_6));
-                    strIncome = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
-                    photo = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_applicant_photo));
-                    FCategory = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Father_Category_8));
-                    FCaste = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Father_Caste_8));
-                    MCategory = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Mother_Category_8));
-                    MCaste = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Mother_Caste_8));
-                    strRemarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Remarks));
-                    Total_No_Years_10 = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Years_Applied));
-                    NO_Months_10 = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Mths_Applied));
-                    option5 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reside_At_Stated_Address_10));
-                    option1 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Place_Match_With_RationCard_10));
-                    Log.d("getData", " " + FCategory + " " + FCaste + " " + MCategory + " " + MCaste + " " + strRemarks + " " + " " + Total_No_Years_10 + " " + NO_Months_10 + " " + option5 + " " + option1);
-                    Log.d("Data_Fetched", "StoreData_in_DB_When_Correct");
-                }
+
+                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " set "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 where "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + applicant_Id + "'");
+
                 database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Category + "='" + getCatCode + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Caste + "='" + getCasteCode + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Belongs_Creamy_Layer_6 + "='" + option + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reason_for_Creamy_Layer_6 + "='" + reason_Code_1 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Father_Category_8 + "=" + FCategory + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Father_Caste_8 + "=" + FCaste + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Mother_Category_8 + "=" + MCategory + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Mother_Caste_8 + "=" + MCaste + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Total_No_Years_10 + "=" + Total_No_Years_10 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_NO_Months_10 + "=" + NO_Months_10 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reside_At_Stated_Address_10 + "='" + option5 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Place_Match_With_RationCard_10 + "='" + option1 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Income + "='" + strIncome + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Remarks + "='" + strRemarks + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Belongs_Creamy_Layer_6 + "='Y',"
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLat + "=" + latitude + ","
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLong + "=" + longitude + ","
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Can_Certificate_Given + "='" + option3 + "',"
@@ -1149,7 +1094,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 i.putExtra("district_Code", district_Code);
                 i.putExtra("taluk_Code", taluk_Code);
                 i.putExtra("hobli_Code", hobli_Code);
-                i.putExtra("districtCode", district);
+                i.putExtra("district", district);
                 i.putExtra("taluk", taluk);
                 i.putExtra("RI_Name", RI_Name);
                 i.putExtra("VA_Name", VA_Name);
@@ -1216,32 +1161,22 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
         if(cursor.getCount()>0){
             try {
-                if (cursor.moveToNext()) {
-                    FCategory = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Father_Category_8));
-                    FCaste = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Father_Caste_8));
-                    MCategory = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.App_Mother_Category_8));
-                    MCaste = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.APP_Mother_Caste_8));
-                    Total_No_Years_10 = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Years_Applied));
-                    NO_Months_10 = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Mths_Applied));
-                    option5 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Reside_At_Stated_Address_10));
-                    option1 = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Place_Match_With_RationCard_10));
-                    photo = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_applicant_photo));
-                    Log.d("getData", "" + FCategory + " " + FCaste + " " + MCategory + " " + MCaste + " " + option5 + " " + option1);
-                }
+
+                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " set "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 where "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + applicant_Id + "'");
 
                 database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Category + "=" + getCatCode + ","
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Caste + "=" + getCasteCode + ","
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Belongs_Creamy_Layer_6 + "='" + option + "',"
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reason_for_Creamy_Layer_6 + "='" + reason_Code_1 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Father_Category_8 + "=" + FCategory + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Father_Caste_8 + "=" + FCaste + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Mother_Category_8 + "=" + MCategory + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Mother_Caste_8 + "=" + MCaste + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Father_Category_8 + "=" + 0 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Father_Caste_8 + "=" + 0 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Mother_Category_8 + "=" + 0 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Mother_Caste_8 + "=" + 0 + ","
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Total_No_Years_10 + "=" + Total_No_Years_10 + ","
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_NO_Months_10 + "=" + NO_Months_10 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reside_At_Stated_Address_10 + "='" + option5 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Place_Match_With_RationCard_10 + "='" + option1 + "',"
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Income + "='" + strIncome + "',"
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Remarks + "='" + strRemarks + "',"
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLat + "=" + latitude + ","
@@ -1258,7 +1193,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 i.putExtra("district_Code", district_Code);
                 i.putExtra("taluk_Code", taluk_Code);
                 i.putExtra("hobli_Code", hobli_Code);
-                i.putExtra("districtCode", district);
+                i.putExtra("district", district);
                 i.putExtra("taluk", taluk);
                 i.putExtra("RI_Name", RI_Name);
                 i.putExtra("VA_Name", VA_Name);
@@ -1574,7 +1509,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                     i.putExtra("district_Code", district_Code);
                     i.putExtra("taluk_Code", taluk_Code);
                     i.putExtra("hobli_Code", hobli_Code);
-                    i.putExtra("districtCode", district);
+                    i.putExtra("district", district);
                     i.putExtra("taluk", taluk);
                     i.putExtra("RI_Name", RI_Name);
                     i.putExtra("VA_Name", VA_Name);

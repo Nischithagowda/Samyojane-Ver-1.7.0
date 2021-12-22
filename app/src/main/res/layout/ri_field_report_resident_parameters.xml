@@ -313,6 +313,7 @@
                     </TableRow>
 
                     <TableRow
+                        android:id="@+id/tr_res_address"
                         android:layout_marginTop="5dp">
 
                         <TextView
@@ -332,15 +333,6 @@
                             android:textStyle="bold"
                             android:layout_gravity="center"
                             android:layout_marginStart="5dp" />
-
-                        <TextView
-                            android:id="@+id/ResideAtStatedAddress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_column="3"/>
 
                         <RadioGroup
                             android:id="@+id/radioGroup1"
@@ -377,6 +369,7 @@
                     </TableRow>
 
                     <TableRow
+                        android:id="@+id/tr_place_ration_card"
                         android:layout_marginTop="10dp">
 
                         <TextView
@@ -396,15 +389,6 @@
                             android:textStyle="bold"
                             android:layout_gravity="center"
                             android:layout_marginStart="5dp" />
-
-                        <TextView
-                            android:id="@+id/placeMatch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_column="3"/>
 
                         <RadioGroup
                             android:id="@+id/radioGroup2"
@@ -535,14 +519,6 @@
                             android:textSize="16sp"
                             android:layout_column="2"/>
 
-                        <TextView
-                            android:id="@+id/txt_ReportNo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
-                            android:layout_marginStart="5dp"
-                            android:layout_column="3" />
-
                     </TableRow>
 
                     <TableRow tools:ignore="UselessLeaf" />
@@ -582,6 +558,14 @@
                     android:layout_marginStart="40dp"
                     tools:ignore="ButtonStyle" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_ReportNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_marginStart="5dp"
+                android:textColor="@android:color/black" />
 
             <LinearLayout
             android:layout_width="match_parent"

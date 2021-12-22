@@ -5,7 +5,7 @@ public class Set_and_Get_data {
     private String  userName, pwd;
     private String district, taluk, hobli,VA_Circle_Name,  VA_Name, e_kshana;
     private String district_k, taluk_k, hobli_k, VA_Circle_Name_k;
-    private String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
+    private int district_Code, taluk_Code, hobli_Code, va_Circle_Code;
 
     private String RI_name;
     private String RI_IMEI_1, RI_IMEI_2;
@@ -46,11 +46,36 @@ public class Set_and_Get_data {
         return pwd;
     }
 
-    void setDistrict_Code(String district_Code) {
+    public int getDistrict_Code() {
+        return district_Code;
+    }
+
+    public void setDistrict_Code(int district_Code) {
         this.district_Code = district_Code;
     }
-    String getDistrict_Code() {
-        return district_Code;
+
+    public int getTaluk_Code() {
+        return taluk_Code;
+    }
+
+    public void setTaluk_Code(int taluk_Code) {
+        this.taluk_Code = taluk_Code;
+    }
+
+    public int getHobli_Code() {
+        return hobli_Code;
+    }
+
+    public void setHobli_Code(int hobli_Code) {
+        this.hobli_Code = hobli_Code;
+    }
+
+    public int getVa_Circle_Code() {
+        return va_Circle_Code;
+    }
+
+    public void setVa_Circle_Code(int va_Circle_Code) {
+        this.va_Circle_Code = va_Circle_Code;
     }
 
     void setDistrict_k(String district_k) {
@@ -67,13 +92,6 @@ public class Set_and_Get_data {
         return district;
     }
 
-    public void setTaluk_Code(String taluk_Code) {
-        this.taluk_Code = taluk_Code;
-    }
-    public String getTaluk_Code() {
-        return taluk_Code;
-    }
-
     void setTaluk_k(String taluk_k){
         this.taluk_k = taluk_k;
     }
@@ -88,13 +106,6 @@ public class Set_and_Get_data {
         return taluk;
     }
 
-    public void setHobli_Code(String hobli_Code) {
-        this.hobli_Code = hobli_Code;
-    }
-    public String getHobli_Code() {
-        return hobli_Code;
-    }
-
     public void setHobli(String hobli) {
         this.hobli = hobli;
     }
@@ -107,13 +118,6 @@ public class Set_and_Get_data {
     }
     String getHobli_k() {
         return hobli_k;
-    }
-
-    public void setVa_Circle_Code(String va_Circle_Code) {
-        this.va_Circle_Code = va_Circle_Code;
-    }
-    public String getVa_Circle_Code() {
-        return va_Circle_Code;
     }
 
     public void setVA_Circle_Name(String VA_Circle_Name) {

@@ -25,7 +25,7 @@ public class RI_VA_Circle_List_Adapter extends BaseAdapter implements Filterable
     ArrayList<String> Tal_Code;
     ArrayList<String> Hob_Code;
     String total;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_Code;
 
     RI_VA_Circle_List_Adapter(Context context, ArrayList<String> slNo, ArrayList<String> va_Circle_Name,
                               ArrayList<String> totalCount, ArrayList<String> va_Circle_Code, ArrayList<String> dist_Code,
@@ -80,10 +80,10 @@ public class RI_VA_Circle_List_Adapter extends BaseAdapter implements Filterable
         total = TotalCount.get(position);
 
         viewHolder.btnEdit.setOnClickListener(view -> {
-            district_Code = viewHolder.tvDistCode.getText().toString();
-            taluk_Code = viewHolder.tvTalukCode.getText().toString();
-            hobli_Code = viewHolder.tvHobliCode.getText().toString();
-            va_Circle_Code = viewHolder.tvVillageCircleCode.getText().toString();
+            district_Code = Integer.parseInt(viewHolder.tvDistCode.getText().toString());
+            taluk_Code = Integer.parseInt(viewHolder.tvTalukCode.getText().toString());
+            hobli_Code = Integer.parseInt(viewHolder.tvHobliCode.getText().toString());
+            va_Circle_Code = Integer.parseInt(viewHolder.tvVillageCircleCode.getText().toString());
 
             Intent i = new Intent(context, RI_Village_wise_report.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("district_Code", district_Code);

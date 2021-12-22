@@ -42,12 +42,12 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
     TextView app_Name;
     String applicant_name;
     String applicant_Id;
-    String villageCode, town_code, ward_code, option_Flag, eng_certi;
+    String option_Flag, eng_certi;
     String serviceCode;
     String district, taluk, RI_Name, hobli,VA_Circle_Name, VA_Name;
     private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    String district_Code, taluk_Code, hobli_Code, va_Circle_code;
+    int district_Code, taluk_Code, hobli_Code, va_Circle_code, villageCode, town_code, ward_code;
     String serviceName, village_name;
     String item_position;
     Intent i;
@@ -169,10 +169,10 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
             item_position = String.valueOf(position);
             serviceCode = ri_service_viewHolder.app_ServiceCode.getText().toString();
             serviceName = ri_service_viewHolder.app_ServiceName.getText().toString();
-            villageCode = ri_service_viewHolder.tvVillageCode.getText().toString();
+            villageCode = Integer.parseInt(ri_service_viewHolder.tvVillageCode.getText().toString());
             village_name = ri_service_viewHolder.tvVillageName.getText().toString();
-            town_code = "9999";
-            ward_code = "255";
+            town_code = 9999;
+            ward_code = 255;
             option_Flag = ri_service_viewHolder.tvOption_Flag.getText().toString();
 
             openHelper=new DataBaseHelperClass_Credentials(context);
@@ -202,13 +202,17 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
             Log.d("RI_va_Circle_code_ser",""+ va_Circle_code);
             Log.d("RI_VA_Circle_Name_ser", ""+VA_Circle_Name);
             Log.d("town_code", ""+town_code);
-            Log.d("ward_code", ward_code);
-            Log.d("option_Flag",option_Flag);
+            Log.d("ward_code", ""+ward_code);
+            Log.d("option_Flag",""+option_Flag);
 
             if(applicant_Id!=null) {
 
                 openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(context);
                 database = openHelper.getWritableDatabase();
+
+                int AppTitle=0, BinCom = 0, FatTitle=0, Pincode=0, appCat=0, appCaste=0, income = 0, year = 0, month = 0;
+                String FatherName = null, MotherName = null, Address1 = null, Address2 = null, Address3 = null, mobNum = null,
+                        photo = null, strRemarks = null;
 
                 Cursor cursor1 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME
                         + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + applicant_Id+"'", null);
@@ -216,6 +220,24 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                 if (cursor1.getCount() > 0) {
                     if (cursor1.moveToNext()) {
                         eng_certi = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_Eng_Certificate));
+                        AppTitle = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ApplicantTiitle));
+                        FatTitle = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RelationTitle));
+                        BinCom = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.BinCom));
+                        Pincode = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.PinCode));
+                        FatherName = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.FatherName));
+                        MotherName = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.MotherName));
+                        Address1 = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Address1));
+                        Address2 = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Address2));
+                        Address3 = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Address3));
+                        mobNum = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Mobile_No));
+                        income = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
+                        year = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Years_Applied));
+                        month = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Mths_Applied));
+                        appCat = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
+                        appCaste = cursor1.getInt(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
+                        photo = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ST_applicant_photo));
+                        strRemarks = cursor1.getString(cursor1.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Remarks));
+
                         Log.d("Service_List", "" + eng_certi);
                     }
                 } else {
@@ -229,94 +251,112 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                 Cursor cursor2 = database.rawQuery("Select * from "+DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1+" where "
                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_GSCNo+"='"+applicant_Id+"'", null);
                 if (cursor2.getCount()>0){
-                    database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'");
+                    if(cursor2.moveToNext()) {
 
-                    Log.d("Database", "ServiceParameterTable delete GSC_No:" + applicant_Id);
-                    cursor2.close();
-                } else {
-                    set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
-                    set_and_get_service_parameter.setGSCNo1(applicant_Id);
-                    set_and_get_service_parameter.setLoginID(uName_get);
-                    set_and_get_service_parameter.setDesignationCode(DesiCode);
-                    set_and_get_service_parameter.setService_Code(Integer.parseInt(serviceCode));
-                    set_and_get_service_parameter.setAppTitle(0);
-                    set_and_get_service_parameter.setBinCom(0);
-                    set_and_get_service_parameter.setFatTitle(0);
-                    set_and_get_service_parameter.setFatherName("");
-                    set_and_get_service_parameter.setMotherName("");
-                    set_and_get_service_parameter.setUpd_MobileNumber("0");
-                    set_and_get_service_parameter.setPinCode(0);
-                    set_and_get_service_parameter.setApplicant_Category(0);
-                    set_and_get_service_parameter.setApplicant_Caste(0);
-                    set_and_get_service_parameter.setCasteSl(0);
-                    set_and_get_service_parameter.setIncome(0);
-                    set_and_get_service_parameter.setTotal_No_Years_10(0);
-                    set_and_get_service_parameter.setNO_Months_10(0);
-                    set_and_get_service_parameter.setApp_Father_Category_8(0);
-                    set_and_get_service_parameter.setAPP_Father_Caste_8(0);
-                    set_and_get_service_parameter.setApp_Mother_Category_8(0);
-                    set_and_get_service_parameter.setAPP_Mother_Caste_8(0);
-                    set_and_get_service_parameter.setReason_for_Creamy_Layer_6(0);
-                    set_and_get_service_parameter.setUpdated_By_VA_IMEI(VA_IMEI);
-                    set_and_get_service_parameter.setUpdated_By_VA_Name(VA_Name);
-                    set_and_get_service_parameter.setDataUpdateFlag(0);
+                        database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
+                                + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'");
 
-                    database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "("
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_LoginID+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DesignationCode+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Service_Code+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_AppTitle+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_BinCom+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatTitle+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatherName+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MotherName+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MobileNumber +","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_PinCode+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Category+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Caste+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_CasteSl+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Total_No_Years_10+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_NO_Months_10+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Father_Category_8+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Mother_Category_8+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Father_Caste_8+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Mother_Caste_8+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reason_for_Creamy_Layer_6+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_IMEI+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_Name+","
-                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag
-                            +") values ('"
-                            + set_and_get_service_parameter.getGSCNo1() + "','"
-                            + set_and_get_service_parameter.getLoginID() + "',"
-                            + set_and_get_service_parameter.getDesignationCode() + ","
-                            + set_and_get_service_parameter.getService_Code() + ","
-                            + set_and_get_service_parameter.getAppTitle() + ","
-                            + set_and_get_service_parameter.getBinCom() + ","
-                            + set_and_get_service_parameter.getFatTitle() + ",'"
-                            + set_and_get_service_parameter.getFatherName() + "','"
-                            + set_and_get_service_parameter.getMotherName() + "','"
-                            + set_and_get_service_parameter.getUpd_MobileNumber() + "',"
-                            + set_and_get_service_parameter.getPinCode() + ","
-                            + set_and_get_service_parameter.getApplicant_Category() + ","
-                            + set_and_get_service_parameter.getApplicant_Caste() + ","
-                            + set_and_get_service_parameter.getCasteSl() + ","
-                            + set_and_get_service_parameter.getIncome() + ","
-                            + set_and_get_service_parameter.getTotal_No_Years_10() + ","
-                            + set_and_get_service_parameter.getNO_Months_10() + ","
-                            + set_and_get_service_parameter.getApp_Father_Category_8() + ","
-                            + set_and_get_service_parameter.getApp_Mother_Category_8() + ","
-                            + set_and_get_service_parameter.getAPP_Father_Caste_8() + ","
-                            + set_and_get_service_parameter.getAPP_Mother_Caste_8() + ","
-                            + set_and_get_service_parameter.getReason_for_Creamy_Layer_6() + ",'"
-                            + set_and_get_service_parameter.getUpdated_By_VA_IMEI() + "','"
-                            + set_and_get_service_parameter.getUpdated_By_VA_Name() + "',"
-                            + set_and_get_service_parameter.getDataUpdateFlag() + ")");
-
-                    Log.d("Database", "ServiceParameterTable Database Inserted");
+                        Log.d("Database", "ServiceParameterTable delete GSC_No:" + applicant_Id);
+                        cursor2.close();
+                    }
                 }
+
+                set_and_get_service_parameter = new Set_and_Get_Service_Parameter();
+                set_and_get_service_parameter.setGSCNo1(applicant_Id);
+                set_and_get_service_parameter.setLoginID(uName_get);
+                set_and_get_service_parameter.setDesignationCode(DesiCode);
+                set_and_get_service_parameter.setService_Code(Integer.parseInt(serviceCode));
+                set_and_get_service_parameter.setAppTitle(AppTitle);
+                set_and_get_service_parameter.setBinCom(BinCom);
+                set_and_get_service_parameter.setFatTitle(FatTitle);
+                set_and_get_service_parameter.setFatherName(FatherName);
+                set_and_get_service_parameter.setMotherName(MotherName);
+                set_and_get_service_parameter.setUpd_MobileNumber(mobNum);
+                set_and_get_service_parameter.setAddress1(Address1);
+                set_and_get_service_parameter.setAddress2(Address2);
+                set_and_get_service_parameter.setAddress3(Address3);
+                set_and_get_service_parameter.setPinCode(Pincode);
+                set_and_get_service_parameter.setApplicant_Category(appCat);
+                set_and_get_service_parameter.setApplicant_Caste(appCaste);
+                set_and_get_service_parameter.setCasteSl(0);
+                set_and_get_service_parameter.setIncome(income);
+                set_and_get_service_parameter.setPhoto(photo);
+                set_and_get_service_parameter.setRemarks(strRemarks);
+                set_and_get_service_parameter.setTotal_No_Years_10(year);
+                set_and_get_service_parameter.setNO_Months_10(month);
+                set_and_get_service_parameter.setApp_Father_Category_8(0);
+                set_and_get_service_parameter.setAPP_Father_Caste_8(0);
+                set_and_get_service_parameter.setApp_Mother_Category_8(0);
+                set_and_get_service_parameter.setAPP_Mother_Caste_8(0);
+                set_and_get_service_parameter.setReason_for_Creamy_Layer_6(0);
+                set_and_get_service_parameter.setUpdated_By_VA_IMEI(VA_IMEI);
+                set_and_get_service_parameter.setUpdated_By_VA_Name(VA_Name);
+                set_and_get_service_parameter.setDataUpdateFlag(0);
+
+                database.execSQL("insert into " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + "("
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_LoginID+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DesignationCode+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Service_Code+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_AppTitle+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_BinCom+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatTitle+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_FatherName+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MotherName+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_MobileNumber +","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address1 +","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address2 +","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Address3 +","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_PinCode+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Category+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Applicant_Caste+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_CasteSl+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Income+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Photo+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Remarks+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Total_No_Years_10+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_NO_Months_10+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Father_Category_8+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Mother_Category_8+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Father_Caste_8+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Mother_Caste_8+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reason_for_Creamy_Layer_6+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_IMEI+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_Name+","
+                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_DataUpdateFlag
+                        +") values ('"
+                        + set_and_get_service_parameter.getGSCNo1() + "','"
+                        + set_and_get_service_parameter.getLoginID() + "',"
+                        + set_and_get_service_parameter.getDesignationCode() + ","
+                        + set_and_get_service_parameter.getService_Code() + ","
+                        + set_and_get_service_parameter.getAppTitle() + ","
+                        + set_and_get_service_parameter.getBinCom() + ","
+                        + set_and_get_service_parameter.getFatTitle() + ",'"
+                        + set_and_get_service_parameter.getFatherName() + "','"
+                        + set_and_get_service_parameter.getMotherName() + "','"
+                        + set_and_get_service_parameter.getUpd_MobileNumber() + "','"
+                        + set_and_get_service_parameter.getAddress1() + "','"
+                        + set_and_get_service_parameter.getAddress2() + "','"
+                        + set_and_get_service_parameter.getAddress3() + "',"
+                        + set_and_get_service_parameter.getPinCode() + ","
+                        + set_and_get_service_parameter.getApplicant_Category() + ","
+                        + set_and_get_service_parameter.getApplicant_Caste() + ","
+                        + set_and_get_service_parameter.getCasteSl() + ","
+                        + set_and_get_service_parameter.getIncome() + ",'"
+                        + set_and_get_service_parameter.getPhoto() + "','"
+                        + set_and_get_service_parameter.getRemarks() + "',"
+                        + set_and_get_service_parameter.getTotal_No_Years_10() + ","
+                        + set_and_get_service_parameter.getNO_Months_10() + ","
+                        + set_and_get_service_parameter.getApp_Father_Category_8() + ","
+                        + set_and_get_service_parameter.getApp_Mother_Category_8() + ","
+                        + set_and_get_service_parameter.getAPP_Father_Caste_8() + ","
+                        + set_and_get_service_parameter.getAPP_Mother_Caste_8() + ","
+                        + set_and_get_service_parameter.getReason_for_Creamy_Layer_6() + ",'"
+                        + set_and_get_service_parameter.getUpdated_By_VA_IMEI() + "','"
+                        + set_and_get_service_parameter.getUpdated_By_VA_Name() + "',"
+                        + set_and_get_service_parameter.getDataUpdateFlag() + ")");
+
+                Log.d("Database", "ServiceParameterTable Database Inserted");
 
                 switch (serviceCode) {
                     case "6":
@@ -334,7 +374,7 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                         i.putExtra("applicant_name", applicant_name);
                         i.putExtra("applicant_Id", applicant_Id);
                         i.putExtra("district_Code", district_Code);
-                        i.putExtra("districtCode", district);
+                        i.putExtra("district", district);
                         i.putExtra("taluk_Code", taluk_Code);
                         i.putExtra("taluk", taluk);
                         i.putExtra("RI_Name", RI_Name);
@@ -368,7 +408,7 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                         i.putExtra("applicant_name", applicant_name);
                         i.putExtra("applicant_Id", applicant_Id);
                         i.putExtra("district_Code", district_Code);
-                        i.putExtra("districtCode", district);
+                        i.putExtra("district", district);
                         i.putExtra("taluk_Code", taluk_Code);
                         i.putExtra("taluk", taluk);
                         i.putExtra("RI_Name", RI_Name);
@@ -396,7 +436,7 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                         i.putExtra("applicant_name", applicant_name);
                         i.putExtra("applicant_Id", applicant_Id);
                         i.putExtra("district_Code", district_Code);
-                        i.putExtra("districtCode", district);
+                        i.putExtra("district", district);
                         i.putExtra("taluk_Code", taluk_Code);
                         i.putExtra("taluk", taluk);
                         i.putExtra("RI_Name", RI_Name);

@@ -209,7 +209,7 @@ public class Service_List_Adapter extends BaseAdapter implements Filterable {
                 i.putExtra("strSearchServiceName", serviceName);
                 i.putExtra("villageCode", villageCode);
                 i.putExtra("district_Code", district_Code);
-                i.putExtra("districtCode", district);
+                i.putExtra("district", district);
                 i.putExtra("taluk_Code", taluk_Code);
                 i.putExtra("taluk", taluk);
                 i.putExtra("hobli_Code", hobli_Code);

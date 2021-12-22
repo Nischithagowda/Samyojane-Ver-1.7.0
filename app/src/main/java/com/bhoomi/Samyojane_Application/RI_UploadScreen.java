@@ -26,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +39,6 @@ public class RI_UploadScreen extends AppCompatActivity {
     ProgressDialog dialog;
     TextView tvTotalUpload, tvAlreadyUploaded, tvNotUploaded, tvAfterUploaded;
     int count_TotalCaptured=0, count_AfterUpload=0, count_BalanceRecord;
-    String resultFromServer;
 
     String Updated_By_RI_Name, Updated_By_RI_IMEI;
     APIInterface_NIC apiInterface_nic;
@@ -227,7 +225,7 @@ public class RI_UploadScreen extends AppCompatActivity {
                                     if (response.isSuccessful()) {
                                         JsonObject jsonObject1 = response.body();
                                         Log.d("response_server", jsonObject1 + "");
-                                        if (Objects.requireNonNull(jsonObject1).isJsonNull()) {
+                                        if (jsonObject1.isJsonNull()) {
                                             Toast.makeText(getApplicationContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
                                             dialog.dismiss();
                                         } else {
@@ -237,8 +235,7 @@ public class RI_UploadScreen extends AppCompatActivity {
                                             String StatusCode = jsonObject3.toString();
                                             Log.d("StatusCode", StatusCode + ", StatusMessage: " + StatusMessage);
 
-                                            resultFromServer = StatusCode;
-                                            if (resultFromServer.equals("0")) {
+                                            if (StatusCode.equals("1")) {
                                                 runOnUiThread(() -> {
                                                     //Toast.makeText(getApplicationContext(), "Data Uploaded Successfully" , Toast.LENGTH_SHORT).show();
                                                     Log.d("Request_", "UpdateServiceParameterTable" + "Data Uploaded Successfully");
@@ -260,6 +257,8 @@ public class RI_UploadScreen extends AppCompatActivity {
                                                         + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + finalApplicant_Id + "'");
                                                 Log.d("Local_Result", "A row deleted Successfully");
                                             } else {
+                                                dialog.dismiss();
+                                                Toast.makeText(RI_UploadScreen.this, ""+StatusMessage, Toast.LENGTH_SHORT).show();
                                                 Log.d("Request_", "UpdateServiceParameterTable" + " Data not uploaded");
                                             }
                                         }

@@ -31,7 +31,7 @@ public class RI_Field_Report extends AppCompatActivity {
     Button btnBack;
     TextView tvHobli, tvTaluk, tvRI_Name;
     static String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name;
-    static String district_Code, taluk_Code, hobli_Code, va_Circle_Code;
+    static int district_Code, taluk_Code, hobli_Code, va_Circle_Code;
     AutoCompleteTextView autoSearchVillageCircle, autoSearchVillage, autoSearchTown, autoSearchWard;
     String village_name, service_name;
     List<AutoCompleteTextBox_Object> objects = new ArrayList<>();
@@ -39,8 +39,8 @@ public class RI_Field_Report extends AppCompatActivity {
     static String strSearchVillageCircleName, strSearchVillageName, strSearchTownName, strSearchWardName, town_Code_1, ward_Code_1;
     private SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    static String get_Village_Circle_Code;
-    static String get_village_code;
+    static int get_Village_Circle_Code;
+    static int get_village_code;
     List<AutoCompleteTextBox_Object> SearchVillageCircleName = new ArrayList<>();
     List<AutoCompleteTextBox_Object> SearchVillageName = new ArrayList<>();
     LinearLayout lLayoutVillage;
@@ -109,27 +109,27 @@ public class RI_Field_Report extends AppCompatActivity {
         l_Urban.setVisibility(View.GONE);
 
         Intent i = getIntent();
-        district_Code = i.getStringExtra("district_Code");
-        district = i.getStringExtra("districtCode");
-        taluk_Code = i.getStringExtra("taluk_Code");
+        district_Code = i.getIntExtra("district_Code", 0);
+        district = i.getStringExtra("district");
+        taluk_Code = i.getIntExtra("taluk_Code", 0);
         taluk = i.getStringExtra("taluk");
-        hobli_Code = i.getStringExtra("hobli_Code");
+        hobli_Code = i.getIntExtra("hobli_Code", 0);
         hobli = i.getStringExtra("hobli");
-        va_Circle_Code = i.getStringExtra("va_Circle_Code");
+        va_Circle_Code = i.getIntExtra("va_Circle_Code", 0);
         VA_Circle_Name = i.getStringExtra("VA_Circle_Name");
         RI_Name = i.getStringExtra("RI_Name");
         VA_Name = i.getStringExtra("VA_Name");
         village_name = i.getStringExtra("strSearchVillageName");
         service_name = i.getStringExtra("strSearchServiceName");
-        get_Village_Circle_Code = i.getStringExtra("va_Circle_Code");
-        get_village_code = i.getStringExtra("villageCode");
+        get_Village_Circle_Code = i.getIntExtra("va_Circle_Code",0);
+        get_village_code = i.getIntExtra("villageCode",0);
         town_Code_1 = i.getStringExtra("town_code");
         strSearchTownName = i.getStringExtra("town_Name");
         ward_Code_1 = i.getStringExtra("ward_code");
         strSearchWardName = i.getStringExtra("ward_Name");
         option_Flag = i.getStringExtra("option_Flag");
 
-        Log.d("RI_F_va_Circle_Code", va_Circle_Code);
+        Log.d("RI_F_va_Circle_Code", ""+va_Circle_Code);
 
         Global.district_Code1 =district_Code;
         Global.district_Name1 = district;
@@ -378,13 +378,13 @@ public class RI_Field_Report extends AppCompatActivity {
     }
 
     public static class Global{
-        static String district_Code1 = district_Code;
-        static String taluk_Code1 = taluk_Code;
-        static String hobli_Code1 = hobli_Code;
+        static int district_Code1 = district_Code;
+        static int taluk_Code1 = taluk_Code;
+        static int hobli_Code1 = hobli_Code;
         static String district_Name1 = district;
         static String taluk_Name1 = taluk;
         static String hobli_Name1 = hobli;
-        static String VA_Circle_Code1 = va_Circle_Code;
+        static int VA_Circle_Code1 = va_Circle_Code;
         static String VA_Circle_Name1 = VA_Circle_Name;
         static String RI_Name1 = RI_Name;
 
@@ -427,7 +427,7 @@ public class RI_Field_Report extends AppCompatActivity {
         return SearchVillageCircleName;
     }
 
-    public List<AutoCompleteTextBox_Object> getVillageList(String Village_Circle_Code){
+    public List<AutoCompleteTextBox_Object> getVillageList(int Village_Circle_Code){
         openHelper=new DataBaseHelperClass_VillageNames(RI_Field_Report.this);
         database=openHelper.getWritableDatabase();
 
@@ -483,14 +483,14 @@ public class RI_Field_Report extends AppCompatActivity {
             Log.d("item_Position", String.valueOf(item_Position));
             Log.d("strSearchVilCircleName", strSearchVillageCircleName);
 
-            get_Village_Circle_Code = ((SpinnerObject)parent.getItemAtPosition(position)).getId();
+            get_Village_Circle_Code = Integer.parseInt(((AutoCompleteTextBox_Object)parent.getItemAtPosition(position)).getId());
 
             lLayoutVillage.setVisibility(View.VISIBLE);
             GetVillageName(get_Village_Circle_Code);
 
             VA_Circle_Name = strSearchVillageCircleName;
             Global.VA_Circle_Name1 = VA_Circle_Name;
-            Global.VA_Circle_Code1 = String.valueOf(get_Village_Circle_Code);
+            Global.VA_Circle_Code1 = get_Village_Circle_Code;
             Log.d("RI_VA_Circle_Name",""+VA_Circle_Name);
             // create Toast with user selected value
             //Toast.makeText(New_Request_FirstScreen.this, "Selected Item is: \t" + strSearchVillageName, Toast.LENGTH_LONG).show();
@@ -498,7 +498,7 @@ public class RI_Field_Report extends AppCompatActivity {
     }
 
     @SuppressLint("ResourceType")
-    public void GetVillageName(String Village_Circle_Code){
+    public void GetVillageName(int Village_Circle_Code){
         objects = getVillageList(Village_Circle_Code);
         Log.d("adapterValue", ""+ objects);
         ArrayAdapter<AutoCompleteTextBox_Object> adapter = new ArrayAdapter<>(this, R.layout.list_item, objects);
@@ -519,7 +519,7 @@ public class RI_Field_Report extends AppCompatActivity {
             Log.d("item_Position", String.valueOf(item_Position));
             Log.d("strSearchVilCircleName", strSearchVillageName);
 
-            get_village_code = ((AutoCompleteTextBox_Object)parent.getItemAtPosition(position)).getId();
+            get_village_code = Integer.parseInt(((AutoCompleteTextBox_Object)parent.getItemAtPosition(position)).getId());
 
             Log.d("Village_Code3", ""+ get_village_code);
             listLayout.setVisibility(View.VISIBLE);
@@ -534,7 +534,7 @@ public class RI_Field_Report extends AppCompatActivity {
         objects_Town.clear();
         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(RI_Field_Report.this,"str","str");
         sqlLiteOpenHelper_class.open_Town_Ward_Tbl();
-        objects_Town = sqlLiteOpenHelper_class.Get_TownName_RI(Integer.parseInt(district_Code), Integer.parseInt(taluk_Code), getString(R.string.town_master_town_name));
+        objects_Town = sqlLiteOpenHelper_class.Get_TownName_RI(district_Code, taluk_Code, getString(R.string.town_master_town_name));
         Log.d("AdapterValue", String.valueOf(objects_Town));
         ArrayAdapter<AutoCompleteTextBox_Object> adapter = new ArrayAdapter<>(this, R.layout.list_item, objects_Town);
         adapter.setDropDownViewResource(R.layout.list_item);
@@ -552,7 +552,7 @@ public class RI_Field_Report extends AppCompatActivity {
             Log.d("item_Position", String.valueOf(item_Position));
             Log.d("strSearchTownName", strSearchTownName);
             //town_Code = sqlLiteOpenHelper_class.Get_TownCode(strSearchTownName);
-            town_Code = Integer.parseInt(((SpinnerObject)parent.getItemAtPosition(position)).getId());
+            town_Code = Integer.parseInt(((AutoCompleteTextBox_Object)parent.getItemAtPosition(position)).getId());
             Log.d("town_Code1",""+town_Code);
             l_ward.setVisibility(View.VISIBLE);
             GetWardName(town_Code);
@@ -562,7 +562,7 @@ public class RI_Field_Report extends AppCompatActivity {
     public void GetWardName(final int town_Code){
         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(RI_Field_Report.this,"str","str");
         sqlLiteOpenHelper_class.open_Town_Ward_Tbl();
-        objects_Town = sqlLiteOpenHelper_class.Get_WardName_RI(Integer.parseInt(district_Code), Integer.parseInt(taluk_Code), town_Code, getString(R.string.town_master_ward_name));
+        objects_Town = sqlLiteOpenHelper_class.Get_WardName_RI(district_Code, taluk_Code, town_Code, getString(R.string.town_master_ward_name));
 
         ArrayAdapter<AutoCompleteTextBox_Object> adapter = new ArrayAdapter<>(this, R.layout.list_item, objects_Town);
         adapter.setDropDownViewResource(R.layout.list_item);
@@ -589,7 +589,7 @@ public class RI_Field_Report extends AppCompatActivity {
         });
     }
 
-    public void displayData_AfterItemSelected(String village_Code) {
+    public void displayData_AfterItemSelected(int village_Code) {
         int i=1;
         Log.d("InDisplay", ""+ i);
         openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report.this);

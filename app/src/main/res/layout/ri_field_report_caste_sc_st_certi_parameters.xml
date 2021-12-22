@@ -223,6 +223,7 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/tr_father_category"
             android:layout_marginTop="10dp">
 
             <TextView
@@ -243,15 +244,6 @@
                 android:textStyle="bold"
                 android:layout_column="2"/>
 
-            <TextView
-                android:id="@+id/FatherCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_column="3"/>
-
             <Spinner
                 android:id="@+id/spFatherCategory"
                 android:layout_width="200dp"
@@ -264,7 +256,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/TableFatherCaste"
+            android:id="@+id/tr_father_caste"
             android:layout_marginTop="5dp">
 
             <TextView
@@ -286,15 +278,6 @@
                 android:textStyle="bold"
                 android:layout_column="2"/>
 
-            <TextView
-                android:id="@+id/FatherCaste"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_column="3"/>
-
             <AutoCompleteTextView
                 android:id="@+id/autoSearchFatherCaste"
                 android:layout_width="match_parent"
@@ -309,6 +292,7 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/tr_mother_category"
             android:layout_marginTop="10dp">
 
             <TextView
@@ -328,14 +312,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_column="2"/>
-            <TextView
-                android:id="@+id/MotherCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_column="3"/>
 
             <Spinner
                 android:id="@+id/spMotherCategory"
@@ -349,7 +325,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/TableMotherCaste"
+            android:id="@+id/tr_mother_caste"
             android:layout_marginTop="5dp">
 
             <TextView
@@ -370,15 +346,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_column="2"/>
-
-            <TextView
-                android:id="@+id/MotherCaste"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_column="3"/>
 
             <AutoCompleteTextView
                 android:id="@+id/autoSearchMotherCaste"
