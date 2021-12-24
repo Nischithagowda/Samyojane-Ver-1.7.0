@@ -855,10 +855,14 @@ public class MainActivity extends AppCompatActivity {
                     GetLoginDataFromServer(Mob_Num_Shared, deviceId);
                     Log.d("Get Version:", "Got the Application Version");
                 } catch (JSONException e) {
+                    dialog.dismiss();
                     e.printStackTrace();
+                    Toast.makeText(MainActivity.this, ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("JSON Parser", "Error parsing data " + e.toString());
                 } catch (NullPointerException e) {
+                    dialog.dismiss();
                     e.printStackTrace();
+                    Toast.makeText(MainActivity.this, ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("NullPointerException", "" + e.getMessage());
                 }
             }
@@ -868,6 +872,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("multipleResource",""+t.getMessage());
                 call.cancel();
                 t.printStackTrace();
+                dialog.dismiss();
                 Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -898,107 +903,109 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 String response_server = response.body();
                 Log.d("response_server",response_server + "");
+                if (response_server.contains("Exception")){
 
-                try {
+                } else {
+                    try {
 
-                    int n=1;
-                    openHelper = new DataBaseHelperClass_Credentials(MainActivity.this);
-                    database = openHelper.getWritableDatabase();
-                    JSONObject jsonObject = new JSONObject(response_server);
-                    JSONArray array = jsonObject.getJSONArray("data");
+                        int n = 1;
+                        openHelper = new DataBaseHelperClass_Credentials(MainActivity.this);
+                        database = openHelper.getWritableDatabase();
+                        JSONObject jsonObject = new JSONObject(response_server);
+                        JSONArray array = jsonObject.getJSONArray("data");
 
-                    int count = array.length();
-                    if(count!=0) {
-                        truncateDatabase();
-                        for (int i = 0; i < count; i++) {
+                        int count = array.length();
+                        if (count != 0) {
+                            truncateDatabase();
+                            for (int i = 0; i < count; i++) {
 
-                            JSONObject object = array.getJSONObject(i);
-                            set_and_get_data = new Set_and_Get_data();
-                            set_and_get_data.setRI_name(object.getString(DataBaseHelperClass_Credentials.RI_Name));
-                            set_and_get_data.setRI_IMEI_1(object.getString(DataBaseHelperClass_Credentials.RI_IMEI_1));
-                            set_and_get_data.setRI_IMEI_2(object.getString(DataBaseHelperClass_Credentials.RI_IMEI_2));
-                            set_and_get_data.setRI_UserName(object.getString(DataBaseHelperClass_Credentials.RI_UserName));
-                            set_and_get_data.setRI_Pwd(object.getString(DataBaseHelperClass_Credentials.RI_Pwrd));
-                            set_and_get_data.setIMEI_1(object.getString(DataBaseHelperClass_Credentials.VA_IMEI_1));
-                            set_and_get_data.setIMEI_2(object.getString(DataBaseHelperClass_Credentials.VA_IMEI_2));
-                            set_and_get_data.setUserName(object.getString(DataBaseHelperClass_Credentials.VA_UserName));
-                            set_and_get_data.setPwd(object.getString(DataBaseHelperClass_Credentials.VA_Pwrd));
-                            set_and_get_data.setDistrict_Code(object.getInt(DataBaseHelperClass_Credentials.District_Code));
-                            set_and_get_data.setDistrict(object.getString(DataBaseHelperClass_Credentials.District_Name));
-                            set_and_get_data.setDistrict_k(object.getString(DataBaseHelperClass_Credentials.District_Name_k));
-                            set_and_get_data.setTaluk_Code(object.getInt(DataBaseHelperClass_Credentials.Taluk_Code));
-                            set_and_get_data.setTaluk(object.getString(DataBaseHelperClass_Credentials.Taluk_Name));
-                            set_and_get_data.setTaluk_k(object.getString(DataBaseHelperClass_Credentials.Taluk_Name_k));
-                            set_and_get_data.setHobli_Code(object.getInt(DataBaseHelperClass_Credentials.Hobli_Code));
-                            set_and_get_data.setHobli(object.getString(DataBaseHelperClass_Credentials.Hobli_Name));
-                            set_and_get_data.setHobli_k(object.getString(DataBaseHelperClass_Credentials.Hobli_Name_k));
-                            set_and_get_data.setVa_Circle_Code(object.getInt(DataBaseHelperClass_Credentials.VA_circle_Code));
-                            set_and_get_data.setVA_Circle_Name(object.getString(DataBaseHelperClass_Credentials.VA_Circle_Name));
-                            set_and_get_data.setVA_Circle_Name_k(object.getString(DataBaseHelperClass_Credentials.VA_Circle_Name_k));
-                            set_and_get_data.setVA_Name(object.getString(DataBaseHelperClass_Credentials.VA_Name));
-                            set_and_get_data.setE_kshana(object.getString(DataBaseHelperClass_Credentials.e_kshana));
-                            set_and_get_data.setFlag(Integer.parseInt(object.getString(DataBaseHelperClass_Credentials.flag)));
+                                JSONObject object = array.getJSONObject(i);
+                                set_and_get_data = new Set_and_Get_data();
+                                set_and_get_data.setRI_name(object.getString(DataBaseHelperClass_Credentials.RI_Name));
+                                set_and_get_data.setRI_IMEI_1(object.getString(DataBaseHelperClass_Credentials.RI_IMEI_1));
+                                set_and_get_data.setRI_IMEI_2(object.getString(DataBaseHelperClass_Credentials.RI_IMEI_2));
+                                set_and_get_data.setRI_UserName(object.getString(DataBaseHelperClass_Credentials.RI_UserName));
+                                set_and_get_data.setRI_Pwd(object.getString(DataBaseHelperClass_Credentials.RI_Pwrd));
+                                set_and_get_data.setIMEI_1(object.getString(DataBaseHelperClass_Credentials.VA_IMEI_1));
+                                set_and_get_data.setIMEI_2(object.getString(DataBaseHelperClass_Credentials.VA_IMEI_2));
+                                set_and_get_data.setUserName(object.getString(DataBaseHelperClass_Credentials.VA_UserName));
+                                set_and_get_data.setPwd(object.getString(DataBaseHelperClass_Credentials.VA_Pwrd));
+                                set_and_get_data.setDistrict_Code(object.getInt(DataBaseHelperClass_Credentials.District_Code));
+                                set_and_get_data.setDistrict(object.getString(DataBaseHelperClass_Credentials.District_Name));
+                                set_and_get_data.setDistrict_k(object.getString(DataBaseHelperClass_Credentials.District_Name_k));
+                                set_and_get_data.setTaluk_Code(object.getInt(DataBaseHelperClass_Credentials.Taluk_Code));
+                                set_and_get_data.setTaluk(object.getString(DataBaseHelperClass_Credentials.Taluk_Name));
+                                set_and_get_data.setTaluk_k(object.getString(DataBaseHelperClass_Credentials.Taluk_Name_k));
+                                set_and_get_data.setHobli_Code(object.getInt(DataBaseHelperClass_Credentials.Hobli_Code));
+                                set_and_get_data.setHobli(object.getString(DataBaseHelperClass_Credentials.Hobli_Name));
+                                set_and_get_data.setHobli_k(object.getString(DataBaseHelperClass_Credentials.Hobli_Name_k));
+                                set_and_get_data.setVa_Circle_Code(object.getInt(DataBaseHelperClass_Credentials.VA_circle_Code));
+                                set_and_get_data.setVA_Circle_Name(object.getString(DataBaseHelperClass_Credentials.VA_Circle_Name));
+                                set_and_get_data.setVA_Circle_Name_k(object.getString(DataBaseHelperClass_Credentials.VA_Circle_Name_k));
+                                set_and_get_data.setVA_Name(object.getString(DataBaseHelperClass_Credentials.VA_Name));
+                                set_and_get_data.setE_kshana(object.getString(DataBaseHelperClass_Credentials.e_kshana));
+                                set_and_get_data.setFlag(Integer.parseInt(object.getString(DataBaseHelperClass_Credentials.flag)));
 
-                            database.execSQL("insert into " + DataBaseHelperClass_Credentials.TABLE_NAME
-                                    + "(RI_name, RI_IMEI_1, RI_IMEI_2, RI_UserName, RI_Pwrd, IMEI_1, IMEI_2, UserName, Pwrd, "
-                                    + "District_Code, District, District_k, Taluk_Code, Taluk, Taluk_k, Hobli_Code, Hobli, Hobli_k,"
-                                    + "VA_circle_Code, VA_circle_ename, VA_circle_kname, VA_name, e_kshana, flag) values ('"
-                                    + set_and_get_data.getRI_name() + "','" + set_and_get_data.getRI_IMEI_1() + "','" + set_and_get_data.getRI_IMEI_2() + "','" + set_and_get_data.getRI_UserName() + "','"
-                                    + set_and_get_data.getRI_Pwd() + "','"+ set_and_get_data.getIMEI_1() + "','" + set_and_get_data.getIMEI_2() + "','" + set_and_get_data.getUserName() + "','"
-                                    + set_and_get_data.getPwd() + "','" + set_and_get_data.getDistrict_Code() + "','" + set_and_get_data.getDistrict() + "','" + set_and_get_data.getDistrict_k() + "','" + set_and_get_data.getTaluk_Code() + "','"
-                                    + set_and_get_data.getTaluk() + "','"+ set_and_get_data.getTaluk_k() + "','"  + set_and_get_data.getHobli_Code() + "','" + set_and_get_data.getHobli() + "','" + set_and_get_data.getHobli_k() + "','" + set_and_get_data.getVa_Circle_Code() + "','"
-                                    + set_and_get_data.getVA_Circle_Name() + "','" + set_and_get_data.getVA_Circle_Name_k() + "','" + set_and_get_data.getVA_Name() + "','"+set_and_get_data.getE_kshana()+"','" + set_and_get_data.getFlag() + "')");
+                                database.execSQL("insert into " + DataBaseHelperClass_Credentials.TABLE_NAME
+                                        + "(RI_name, RI_IMEI_1, RI_IMEI_2, RI_UserName, RI_Pwrd, IMEI_1, IMEI_2, UserName, Pwrd, "
+                                        + "District_Code, District, District_k, Taluk_Code, Taluk, Taluk_k, Hobli_Code, Hobli, Hobli_k,"
+                                        + "VA_circle_Code, VA_circle_ename, VA_circle_kname, VA_name, e_kshana, flag) values ('"
+                                        + set_and_get_data.getRI_name() + "','" + set_and_get_data.getRI_IMEI_1() + "','" + set_and_get_data.getRI_IMEI_2() + "','" + set_and_get_data.getRI_UserName() + "','"
+                                        + set_and_get_data.getRI_Pwd() + "','" + set_and_get_data.getIMEI_1() + "','" + set_and_get_data.getIMEI_2() + "','" + set_and_get_data.getUserName() + "','"
+                                        + set_and_get_data.getPwd() + "','" + set_and_get_data.getDistrict_Code() + "','" + set_and_get_data.getDistrict() + "','" + set_and_get_data.getDistrict_k() + "','" + set_and_get_data.getTaluk_Code() + "','"
+                                        + set_and_get_data.getTaluk() + "','" + set_and_get_data.getTaluk_k() + "','" + set_and_get_data.getHobli_Code() + "','" + set_and_get_data.getHobli() + "','" + set_and_get_data.getHobli_k() + "','" + set_and_get_data.getVa_Circle_Code() + "','"
+                                        + set_and_get_data.getVA_Circle_Name() + "','" + set_and_get_data.getVA_Circle_Name_k() + "','" + set_and_get_data.getVA_Name() + "','" + set_and_get_data.getE_kshana() + "','" + set_and_get_data.getFlag() + "')");
 
-                            Log.d("Database", "Database Inserted "+n++);
-                        }
-                        database.close();
-                        dialog.dismiss();
-
-                        version_Result = check_Version_Code(version_Code);
-                        if(version_Result==0) {
-                            checkDatabase_new();
-                        }else {
-                            btnActivation.setVisibility(View.GONE);
-                            tvAlert.setVisibility(View.VISIBLE);
-                            tvAlert.setText(getString(R.string.version_does_not_match));
-                            linearLayout.setVisibility(View.GONE);
-                        }
-
-                        //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        version_Result = check_Version_Code(version_Code);
-                        dialog.dismiss();
-                        if(version_Result==0) {
-                            openHelper = new DataBaseHelperClass_Credentials(MainActivity.this);
-                            database = openHelper.getWritableDatabase();
-                            Cursor cursor = database.rawQuery("select * from "+DataBaseHelperClass_Credentials.TABLE_NAME, null);
-                            if(cursor.getCount()>0) {
-                                database.execSQL("delete from " + DataBaseHelperClass_Credentials.TABLE_NAME);
-                            }else {
-                                cursor.close();
-                                Log.d("Database", "No Data Found");
+                                Log.d("Database", "Database Inserted " + n++);
                             }
-                            Toast.makeText(getApplicationContext(), getString(R.string.invalid_user), Toast.LENGTH_SHORT).show();
-                            SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
-                            editor.clear();
-                            editor.apply();
-                            Intent intent = new Intent(MainActivity.this, MainActivity_Select.class);
-                            startActivity(intent);
-                            finish();
-                        }else {
-                            btnActivation.setVisibility(View.GONE);
-                            tvAlert.setVisibility(View.VISIBLE);
-                            tvAlert.setText(getString(R.string.version_does_not_match));
-                            linearLayout.setVisibility(View.GONE);
+                            database.close();
+                            dialog.dismiss();
+
+                            version_Result = check_Version_Code(version_Code);
+                            if (version_Result == 0) {
+                                checkDatabase_new();
+                            } else {
+                                btnActivation.setVisibility(View.GONE);
+                                tvAlert.setVisibility(View.VISIBLE);
+                                tvAlert.setText(getString(R.string.version_does_not_match));
+                                linearLayout.setVisibility(View.GONE);
+                            }
+
+                            //Toast.makeText(getApplicationContext(), "Data Retrieved Successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            version_Result = check_Version_Code(version_Code);
+                            dialog.dismiss();
+                            if (version_Result == 0) {
+                                openHelper = new DataBaseHelperClass_Credentials(MainActivity.this);
+                                database = openHelper.getWritableDatabase();
+                                Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_Credentials.TABLE_NAME, null);
+                                if (cursor.getCount() > 0) {
+                                    database.execSQL("delete from " + DataBaseHelperClass_Credentials.TABLE_NAME);
+                                } else {
+                                    cursor.close();
+                                    Log.d("Database", "No Data Found");
+                                }
+                                Toast.makeText(getApplicationContext(), getString(R.string.invalid_user), Toast.LENGTH_SHORT).show();
+                                SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+                                editor.clear();
+                                editor.apply();
+                                Intent intent = new Intent(MainActivity.this, MainActivity_Select.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                btnActivation.setVisibility(View.GONE);
+                                tvAlert.setVisibility(View.VISIBLE);
+                                tvAlert.setText(getString(R.string.version_does_not_match));
+                                linearLayout.setVisibility(View.GONE);
+                            }
                         }
+                    } catch (JSONException e) {
+                        Log.d("Error", String.valueOf(e));
+                        runOnUiThread(() -> {
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
+                        });
                     }
-                } catch (JSONException e) {
-                    Log.d("Error", String.valueOf(e));
-                    runOnUiThread(() -> {
-                        dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show();
-                    });
                 }
             }
 
@@ -1007,6 +1014,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("multipleResource",""+t.getMessage());
                 call.cancel();
                 t.printStackTrace();
+                dialog.dismiss();
                 Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
