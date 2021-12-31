@@ -429,6 +429,34 @@ public class SqlLiteOpenHelper_Class_Kan extends SQLiteAssetHelper {
         return num;
     }
 
+    public List<SpinnerObject> Get_Category_Service9999(String add){
+        List<SpinnerObject> objects = new ArrayList<>();
+        Log.d("Category1", "Get_Category enter");
+        try{
+            database = this.getReadableDatabase();
+            cursor = database.rawQuery("select * from "+Table_CAT_MASTER+" where "+RTM_res_category_code+" between 1 and 7", null);
+            objects.add ( new SpinnerObject( "0" , add) );
+            if (cursor.getCount()>0){
+                if(cursor.moveToNext()) {
+                    do {
+                        objects.add(new SpinnerObject(cursor.getString(cursor.getColumnIndex(RTM_res_category_code)), cursor.getString(cursor.getColumnIndex(RTM_res_category_kdesc))));
+                    } while (cursor.moveToNext());
+                }
+            }
+            else {
+                Log.d("Category1", "cursor count not greater than 0");
+            }
+            Log.d("Category1", String.valueOf(objects));
+            cursor.close();
+            database.close();
+
+
+        }catch(Exception e){
+            Log.d("Catch", String.valueOf(e));
+        }
+        return objects;
+    }
+
     public String GetID_Name(int Id_Code, String col_name){
         Log.d("ID_Code: ",""+Id_Code);
         String str=null;

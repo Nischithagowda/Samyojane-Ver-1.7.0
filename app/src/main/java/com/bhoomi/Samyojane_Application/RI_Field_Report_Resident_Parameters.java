@@ -56,7 +56,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -68,14 +67,12 @@ import retrofit2.Response;
 
 public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
 
-    HashMap<String, String> hashMap_Down_Docs;
-
     TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName, tv_V_T_Name, txt_ReportNo;
     String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name, applicant_Id, applicant_name;
     int district_Code, taluk_Code, hobli_Code, va_Circle_Code, villageCode, town_code, ward_code;
     String village_name, service_name;
     String serviceCode, habitationCode, town_Name, ward_Name, option_Flag;
-    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, ReservationGiven, TotalYears, Remarks;
+    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, txt_add1, txt_add2, txt_add3, txt_add_Pin, ReservationGiven, TotalYears, Remarks;
     RadioGroup radioGroup1, radioGroup2, radioGroup3, radioGroup4;
     RadioButton radioButton1, radioButton11, radioButton2, radioButton22, radioButton3, radioButton33, radioButton4, radioButton44;
     Spinner spMonth;
@@ -83,7 +80,8 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
     TableRow lReservationGiven, layoutMonth, tr_res_address, tr_place_ration_card;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
-    String appID, appName, appReservationGiven, year, month, remarks;
+    String appID, appName, address1, address2, address3, add_pin, appReservationGiven, year, month, remarks;
+    int appTitle_Code, binCom_Code, fatTitle_Code;
     ArrayAdapter<CharSequence>adapter_Month;
     int Total_No_Years_10, NO_Months_10;
     GPSTracker gpsTracker;
@@ -177,7 +175,7 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
 
         for (int i = start; i < end; i++) {
             Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
-            if (source != null && blockCharacterSet.contains(("" + source.charAt(i)))) {
+            if (blockCharacterSet.contains("" + source.charAt(i))) {
                 Log.d("Blocked",""+source);
                 return "";
             }
@@ -211,6 +209,10 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         tvVillageName = findViewById(R.id.tvVillageName);
         ApplicantID = findViewById(R.id.ApplicantID);
         ApplicantName = findViewById(R.id.ApplicantName);
+        txt_add1 = findViewById(R.id.txt_add1);
+        txt_add2 = findViewById(R.id.txt_add2);
+        txt_add3 = findViewById(R.id.txt_add3);
+        txt_add_Pin = findViewById(R.id.txt_add_Pin);
         TotalYears = findViewById(R.id.TotalYears);
         ReservationGiven = findViewById(R.id.ReservationGiven);
         radioGroup1 = findViewById(R.id.radioGroup1);
@@ -313,8 +315,6 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
         RI_Recommendation.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         etYear.setFilters(new InputFilter[] {new InputFilter.LengthFilter(3)}); // 14 is max digits
 
-        hashMap_Down_Docs  = new HashMap<>();
-
         if (eng_certi.equals("K")){
             tvRemarks.setFilters(new InputFilter[] { filter_Kan });
         }else if (eng_certi.equals("E")){
@@ -400,6 +400,13 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
                 appID = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo));
                 appName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
+                address1 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Address1));
+                address2 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Address2));
+                address3 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Address3));
+                add_pin = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.PinCode));
+                appTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ApplicantTiitle));
+                binCom_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.BinCom));
+                fatTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RelationTitle));
                 year = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Years_Applied));
                 month = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GST_No_Mths_Applied));
                 appReservationGiven = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
@@ -430,6 +437,10 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
 
         ApplicantID.setText(appID);
         ApplicantName.setText(appName);
+        txt_add1.setText(address1);
+        txt_add2.setText(address2);
+        txt_add3.setText(address3);
+        txt_add_Pin.setText(add_pin);
         TotalYears.setText(year+" "+getString(R.string.year_name)+", "+month+" "+getString(R.string.month_name));
         ReservationGiven.setText(appReservationGiven);
         Remarks.setText(remarks);

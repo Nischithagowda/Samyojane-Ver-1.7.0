@@ -25,14 +25,14 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
     public static String ApplicationDate = "ApplicationDate";
     public static String ApplicantTiitle = "ApplicantTiitle";
     public static String Applicant_Name = "ApplicantName";
-    public static String BinCom = "BinCom";
-    public static String RelationTitle = "RelationTitle";
-    public static String FatherName = "FatherName";
-    public static String MotherName = "MotherName";
-    public static String Address1 = "Address1";
-    public static String Address2 = "Address2";
-    public static String Address3 = "Address3";
-    public static String PinCode = "Pincode";
+    public static String BinCom = "BinCom_VA";
+    public static String RelationTitle = "RelationTitle_VA";
+    public static String FatherName = "FatherName_VA";
+    public static String MotherName = "MotherName_VA";
+    public static String Address1 = "Address1_VA";
+    public static String Address2 = "Address2_VA";
+    public static String Address3 = "Address3_VA";
+    public static String PinCode = "Pincode_VA";
     public static String Mobile_No = "MobileNo";
     public static String ID_TYPE = "IDType";
     public static String IDNo = "IDNo";
@@ -50,7 +50,7 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
     public static String Service_Name = "Service_Name";
     public static String Service_Name_k = "Service_Name_k";
     public static String DataUpdateFlag = "DataUpdateFlag";
-    public static String Push_Flag = "ST_Push_Flag";
+    public static String Push_Flag = "isVAModifiedVillage";
     public static String VA_RI_IMEI = "VA_IMEI";
     public static String VA_RI_Name = "VA_Name";
 

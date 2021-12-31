@@ -136,6 +136,16 @@
             tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".New_Request_CasteCertificate"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".New_Request_CasteCertificate_Kan"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".UploadScreen"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
@@ -175,6 +185,16 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RI_Field_Report_Resident_Parameters"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".RI_Field_Report_Caste_Certificate"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".RI_Field_Report_Caste_Certificate_Kan"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateHidden" />

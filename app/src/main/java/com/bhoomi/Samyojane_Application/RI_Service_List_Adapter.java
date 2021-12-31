@@ -459,6 +459,38 @@ public class RI_Service_List_Adapter extends BaseAdapter implements Filterable {
                         Log.d("villageCode", ""+ villageCode);
                         break;
                     }
+
+                    case "9999":
+                        if (Objects.equals(eng_certi, "E")) {
+                            i = new Intent(context, RI_Field_Report_Caste_Certificate.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        } else {
+                            i = new Intent(context, RI_Field_Report_Caste_Certificate_Kan.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        }
+                        i.putExtra("applicant_name", applicant_name);
+                        i.putExtra("applicant_Id", applicant_Id);
+                        i.putExtra("district_Code", district_Code);
+                        i.putExtra("district", district);
+                        i.putExtra("taluk_Code", taluk_Code);
+                        i.putExtra("taluk", taluk);
+                        i.putExtra("RI_Name", RI_Name);
+                        i.putExtra("VA_Name", VA_Name);
+                        i.putExtra("hobli", hobli);
+                        i.putExtra("hobli_Code", hobli_Code);
+                        i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                        i.putExtra("strSearchServiceName", serviceName);
+                        i.putExtra("strSearchVillageName", village_name);
+                        i.putExtra("serviceCode", serviceCode);
+                        i.putExtra("villageCode", villageCode);
+                        i.putExtra("va_Circle_Code", va_Circle_code);
+                        i.putExtra("town_code", town_code);
+                        i.putExtra("ward_code", ward_code);
+                        i.putExtra("option_Flag",option_Flag);
+                        i.putExtra("eng_certi",eng_certi);
+                        context.startActivity(i);
+                        ((Activity) context).finish();
+                        Log.d("Service", ""+serviceCode);
+                        Log.d("villageCode", ""+ villageCode);
+                        break;
                     default:
                         Toast.makeText(context, "Service not available for this Service", Toast.LENGTH_SHORT).show();
                         break;

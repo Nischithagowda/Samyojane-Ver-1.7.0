@@ -321,14 +321,15 @@
                 </TableRow>
                 <TableRow
                     android:layout_marginTop="5dp">
+
                     <TextView
                         android:id="@+id/txt5"
                         android:layout_width="120sp"
                         android:layout_height="wrap_content"
+                        android:layout_column="1"
                         android:text="@string/address"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_column="1"/>
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -456,6 +457,74 @@
                         android:layout_marginStart="5dp"
                         android:layout_column="3" />
 
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/trCatService9999">
+
+                    <TextView
+                        android:text="@string/category_of_applicant"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_column="1"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/colon"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="9dp"/>
+                    <Spinner
+                        android:id="@+id/spCategory"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@android:color/black"
+                        android:layout_column="3"
+                        android:layout_gravity="center_vertical"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tr_casteService9999">
+
+                    <TextView
+                        android:text="@string/caste"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_column="1"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:gravity="center_vertical"
+                        android:text="@string/colon"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="9dp"/>
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoSearchCaste"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:textCursorDrawable="@android:color/black"
+                        android:completionThreshold="1"
+                        android:backgroundTint="@android:color/black"
+                        android:hint="@string/select_caste"
+                        android:layout_column="3"
+                        android:gravity="center_vertical"/>
                 </TableRow>
                 <TableRow
                     android:id="@+id/Service678"

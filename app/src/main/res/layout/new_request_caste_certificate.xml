@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FDF4B9">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/taluk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/taluk"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/hobli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hobli"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:id="@+id/VA_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tvServiceName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_name"
+            android:textColor="#377691"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/applicant_Information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/field_report"
+            android:textColor="@color/MAROON"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/txt_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/editing_form"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1.2dp"
+                    android:background="#FFA34C"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/panel_new">
+                    <View
+                        android:layout_width="1.2dp"
+                        android:layout_height="match_parent"
+                        android:background="#FFA34C"
+                        tools:ignore="MissingConstraints"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="0dp" />
+
+                    <TableLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/panel_new"
+                        android:divider="@color/grey"
+                        android:showDividers="middle"
+                        android:layout_marginStart="5dp">
+
+                        <TableRow
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:text="@string/category_of_applicant"
+                                android:textColor="@android:color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:layout_column="1"
+                                android:gravity="center_vertical"
+                                android:layout_gravity="center_vertical"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/colon"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                            <Spinner
+                                android:id="@+id/spCategory"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@android:color/black"
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"/>
+
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/trCaste">
+
+                            <TextView
+                                android:text="@string/caste"
+                                android:textColor="@android:color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:layout_column="1"
+                                android:gravity="center_vertical"
+                                android:layout_gravity="center_vertical"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/colon"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <AutoCompleteTextView
+                                android:id="@+id/autoSearchCaste"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@android:color/black"
+                                android:textCursorDrawable="@android:color/black"
+                                android:completionThreshold="1"
+                                android:backgroundTint="@android:color/black"
+                                android:hint="@string/select_caste"
+                                android:layout_column="3"
+                                android:gravity="center_vertical"/>
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:text="@string/annual_income_of_napplicant_family_in_rs"
+                                android:textColor="@android:color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_column="1" />
+
+                            <TextView
+                                android:text="@string/colon"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_width="10dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:layout_column="2"/>
+                            <EditText
+                                android:id="@+id/tvIncome"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_annual_income"
+                                android:textColor="@android:color/black"
+                                android:textSize="14sp"
+                                android:inputType="number"
+                                android:maxLength="7"
+                                android:autofillHints="@string/enter_annual_income"
+                                android:layout_gravity="center_vertical"/>
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:text="@string/can_caste_reservation_nbe_given"
+                                android:textColor="@android:color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"/>
+
+                            <TextView
+                                android:layout_width="10dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="2"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/colon"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorPrimaryDark" />
+
+                            <RadioGroup
+                                android:id="@+id/radioGroup1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1"
+                                android:layout_gravity="center_vertical">
+
+                                <RadioButton
+                                    android:id="@+id/radioButton11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:checked="true"
+                                    android:scaleX="0.8"
+                                    android:scaleY="0.8"
+                                    android:text="@string/yes"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16sp" />
+
+                                <RadioButton
+                                    android:id="@+id/radioButton22"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:buttonTint="@color/colorPrimaryDark"
+                                    android:checked="false"
+                                    android:scaleX="0.8"
+                                    android:scaleY="0.8"
+                                    android:text="@string/no"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="16sp" />
+                            </RadioGroup>
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
+
+                            <TextView
+                                android:text="@string/remarks"
+                                android:textColor="@android:color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"/>
+
+                            <TextView
+                                android:text="@string/colon"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_width="10dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:layout_column="2"/>
+                            <EditText
+                                android:id="@+id/tvRemarks"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/enter_the_remarks"
+                                android:textColor="@android:color/black"
+                                android:textSize="14sp"
+                                android:imeOptions="actionDone"
+                                android:inputType="textImeMultiLine"
+                                android:layout_gravity="center_vertical"
+                                android:autofillHints="@string/enter_the_remarks"/>
+                        </TableRow>
+
+
+                        <TableRow tools:ignore="UselessLeaf" />
+
+                    </TableLayout>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.2dp"
+                    android:background="#FFA34C"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/store_image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/ic_person_24dp"
+                    android:scaleType="fitXY"
+                    tools:ignore="ContentDescription,RtlHardcoded"
+                    android:layout_marginEnd="20sp"
+                    android:layout_marginRight="20sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/btnCamera"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_photo_camera_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/capture_photo"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="110dp"
+                    android:layout_height="55dp"
+                    android:text="@string/back"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/button_background"
+                    tools:ignore="ButtonStyle" />
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="110dp"
+                    android:layout_height="55dp"
+                    android:text="@string/update_nchanges"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/button_background"
+                    android:layout_marginStart="40dp"
+                    tools:ignore="ButtonStyle" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

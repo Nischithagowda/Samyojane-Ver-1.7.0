@@ -227,7 +227,89 @@
                             android:layout_marginTop="5dp"
                             android:layout_column="3"/>
                     </TableRow>
+                    <TableRow
+                        android:layout_marginTop="5dp">
 
+                        <TextView
+                            android:id="@+id/txt5"
+                            android:layout_width="120sp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:text="@string/address"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/colon"
+                            android:textSize="20sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textStyle="bold"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_column="2"/>
+                        <TextView
+                            android:id="@+id/txt_add1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:layout_marginStart="5dp"
+                            android:layout_column="3" />
+
+                    </TableRow>
+                    <TableRow
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:id="@+id/txt_add2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:layout_marginStart="10dp"
+                            android:layout_column="3" />
+                    </TableRow>
+                    <TableRow
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:id="@+id/txt_add3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:layout_marginStart="10dp"
+                            android:layout_column="3" />
+
+                    </TableRow>
+                    <TableRow
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:id="@+id/txt6"
+                            android:layout_width="120sp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pin_code"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_column="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/colon"
+                            android:textSize="20sp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textStyle="bold"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_column="2"/>
+
+                        <TextView
+                            android:id="@+id/txt_add_Pin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:layout_marginStart="5dp"
+                            android:layout_column="3" />
+
+                    </TableRow>
                     <TableRow
                         android:layout_marginTop="5dp">
 
@@ -511,14 +593,23 @@
                             android:layout_column="1"/>
 
                         <TextView
+                            android:text="@string/colon"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:layout_column="2"
+                            android:layout_marginStart="5dp" />
+
+                        <TextView
+                            android:id="@+id/txt_ReportNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="9dp"
-                            android:text="@string/colon_space"
                             android:textColor="@android:color/black"
-                            android:textSize="16sp"
-                            android:layout_column="2"/>
-
+                            android:layout_marginStart="5dp"
+                            android:layout_column="3" />
                     </TableRow>
 
                     <TableRow tools:ignore="UselessLeaf" />
@@ -558,14 +649,6 @@
                     android:layout_marginStart="40dp"
                     tools:ignore="ButtonStyle" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/txt_ReportNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:layout_marginStart="5dp"
-                android:textColor="@android:color/black" />
 
             <LinearLayout
             android:layout_width="match_parent"

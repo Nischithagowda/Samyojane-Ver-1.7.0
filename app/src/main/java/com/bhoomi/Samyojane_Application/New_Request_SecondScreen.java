@@ -362,9 +362,16 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         }
 
 
-        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(this, str, str, str);
-        sqlLiteOpenHelper_class.open_ID_Type_Tbl();
-        Id_Name = sqlLiteOpenHelper_class.GetID_Name(Id_Code, getString(R.string.id_name));
+        if (Id_Code == 19 || Id_Code == 0 || rationCardNo.isEmpty()){
+            trID.setVisibility(View.GONE);
+        } else {
+            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(this, str, str, str);
+            sqlLiteOpenHelper_class.open_ID_Type_Tbl();
+            Id_Name = sqlLiteOpenHelper_class.GetID_Name(Id_Code, getString(R.string.id_name));
+
+            Log.d("ID_Name", ""+Id_Name);
+            trID.setVisibility(View.VISIBLE);
+        }
 
         Log.d("ID_Name: ", ""+Id_Name);
         Log.d("Eng_Certi", eng_certi);
@@ -401,24 +408,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         tvMotherName.setText(motherName);
         tv_IDName.setText(Id_Name);
 
-        if (Id_Code == 19){
-            trID.setVisibility(View.GONE);
-        } else {
-            trID.setVisibility(View.VISIBLE);
-        }
-
-        if (rationCardNo.isEmpty()){
-            trID.setVisibility(View.GONE);
-        } else {
-            trID.setVisibility(View.VISIBLE);
-            if (Id_Code == 19) {
-                tv_for_Aadhaar.setText(rationCardNo);
-                tv_for_Aadhaar.setVisibility(View.VISIBLE);
-            } else {
-                tv_for_Aadhaar.setText(rationCardNo);
-                tv_for_Aadhaar.setVisibility(View.VISIBLE);
-            }
-        }
         tvMobile.setText(mobileNo);
         tvAddress1.setText(address1);
         tvAddress2.setText(address2);
@@ -846,6 +835,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         set_and_get_service_parameter.setAPP_Father_Caste_8(0);
         set_and_get_service_parameter.setApp_Mother_Category_8(0);
         set_and_get_service_parameter.setAPP_Mother_Caste_8(0);
+        set_and_get_service_parameter.setBelongs_Creamy_Layer_6("");
         set_and_get_service_parameter.setReason_for_Creamy_Layer_6(0);
         set_and_get_service_parameter.setUpdated_By_VA_IMEI(VA_IMEI);
         set_and_get_service_parameter.setUpdated_By_VA_Name(VA_Name);
@@ -878,6 +868,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_App_Mother_Category_8+","
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Father_Caste_8+","
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_APP_Mother_Caste_8+","
+                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Belongs_Creamy_Layer_6+","
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_Reason_for_Creamy_Layer_6+","
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_IMEI+","
                 + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_VA_RI_Name+","
@@ -908,7 +899,8 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                 + set_and_get_service_parameter.getApp_Father_Category_8() + ","
                 + set_and_get_service_parameter.getApp_Mother_Category_8() + ","
                 + set_and_get_service_parameter.getAPP_Father_Caste_8() + ","
-                + set_and_get_service_parameter.getAPP_Mother_Caste_8() + ","
+                + set_and_get_service_parameter.getAPP_Mother_Caste_8() + ",'"
+                + set_and_get_service_parameter.getBelongs_Creamy_Layer_6() + "',"
                 + set_and_get_service_parameter.getReason_for_Creamy_Layer_6() + ",'"
                 + set_and_get_service_parameter.getUpdated_By_VA_IMEI() + "','"
                 + set_and_get_service_parameter.getUpdated_By_VA_Name() + "',"
@@ -1002,6 +994,42 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                     i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters.class);
                 }else {
                     i = new Intent(New_Request_SecondScreen.this, New_Request_Resident_Parameters_Kan.class);
+                }
+                i.putExtra("district", district);
+                i.putExtra("taluk", taluk);
+                i.putExtra("applicant_Id", applicant_Id);
+                i.putExtra("VA_Name", VA_Name);
+                i.putExtra("hobli", hobli);
+                i.putExtra("va_Circle_Code", va_Circle_Code);
+                i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                i.putExtra("district_Code", district_Code);
+                i.putExtra("taluk_Code", taluk_Code);
+                i.putExtra("hobli_Code", hobli_Code);
+                i.putExtra("rationCardNo", rationCardNo);
+                i.putExtra("aadharNo", aadharNo);
+                i.putExtra("mobileNo", mobileNo);
+                i.putExtra("address1", address1);
+                i.putExtra("item_position", item_position);
+                i.putExtra("strSearchServiceName", strSearchServiceName);
+                i.putExtra("strSearchVillageName", strSearchVillageName);
+                i.putExtra("serviceCode", service_Code);
+                i.putExtra("villageCode", village_Code);
+                i.putExtra("eng_certi", eng_certi);
+                i.putExtra("option_Flag", option_Flag);
+                i.putExtra("town_Name", town_Name);
+                i.putExtra("town_code", town_code);
+                i.putExtra("ward_Name", ward_Name);
+                i.putExtra("ward_code", ward_code);
+                startActivity(i);
+                finish();
+                break;
+            }
+            case "9999" :{
+                Log.d("Service:", "9999");
+                if(Objects.equals(eng_certi, "E")) {
+                    i = new Intent(New_Request_SecondScreen.this, New_Request_CasteCertificate.class);
+                }else {
+                    i = new Intent(New_Request_SecondScreen.this, New_Request_CasteCertificate_Kan.class);
                 }
                 i.putExtra("district", district);
                 i.putExtra("taluk", taluk);

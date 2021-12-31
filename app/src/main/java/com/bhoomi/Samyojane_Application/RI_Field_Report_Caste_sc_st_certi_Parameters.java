@@ -57,7 +57,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -69,8 +68,6 @@ import retrofit2.Response;
 
 public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActivity {
 
-    HashMap<String, String> hashMap_Down_Docs;
-
     TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName, tv_V_T_Name, txt_ReportNo;
     String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name, applicant_Id, applicant_name;
     int district_Code, taluk_Code, hobli_Code, va_Circle_Code, villageCode, town_code, ward_code;
@@ -78,13 +75,14 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
     String serviceCode, habitationCode, town_Name, ward_Name, option_Flag;
     EditText tvIncome, tvRemarks;
     Button btnSave, btnBack, btnDownDocs, btnViewDocs;
-    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, ApplicantCategory, ApplicantCaste, AnnualIncome, ReservationGiven, Remarks;
+    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, txt_add1, txt_add2, txt_add3, txt_add_Pin, ApplicantCategory, ApplicantCaste, AnnualIncome, ReservationGiven, Remarks;
     Spinner spFatherCategory, spMotherCategory, spAPPCategory_VA;
     AutoCompleteTextView autoSearchFatherCaste, autoSearchMotherCaste, autoSearchAPPCaste_VA;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
-    String appID, appName, appCategory, appCaste, appAnnualIncome, appReservationGiven, remarks;
+    String appID, appName, address1, address2, address3, add_pin, appCategory, appCaste, appAnnualIncome, appReservationGiven, remarks;
+    int appTitle_Code, binCom_Code, fatTitle_Code;
     String n_appCategory, n_appCaste;
     TextView tvVillageName, tvFatherCategory, tvFatherCaste, tvMotherCategory, tvMotherCaste, tvAppCategory, tvAppCaste, tvAnnualIncome, tvRemarksColor;
     int income_len, income_Value;
@@ -101,7 +99,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
     String strIncome, strRemarks;
     ProgressDialog dialog;
     int Total_No_Years_10, NO_Months_10;
-    String photo;
     String appImage;
     ImageView iv_scst;
     boolean return_Value;
@@ -229,6 +226,10 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         tvVillageName = findViewById(R.id.tvVillageName);
         ApplicantID = findViewById(R.id.ApplicantID);
         ApplicantName = findViewById(R.id.ApplicantName);
+        txt_add1 = findViewById(R.id.txt_add1);
+        txt_add2 = findViewById(R.id.txt_add2);
+        txt_add3 = findViewById(R.id.txt_add3);
+        txt_add_Pin = findViewById(R.id.txt_add_Pin);
         ApplicantCategory = findViewById(R.id.ApplicantCategory);
         ApplicantCaste = findViewById(R.id.ApplicantCaste);
         AnnualIncome = findViewById(R.id.AnnualIncome);
@@ -353,8 +354,6 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
 
         RI_Recommendation.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        hashMap_Down_Docs  = new HashMap<>();
-
         if (eng_certi.equals("K")){
             tvRemarks.setFilters(new InputFilter[] { filter_Kan });
         }else if (eng_certi.equals("E")){
@@ -412,6 +411,13 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
                 raisedLoc = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Raised_Location));
                 appID = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo));
                 appName = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Applicant_Name));
+                address1 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Address1));
+                address2 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Address2));
+                address3 = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Address3));
+                add_pin = cursor.getString(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.PinCode));
+                appTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ApplicantTiitle));
+                binCom_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.BinCom));
+                fatTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RelationTitle));
                 appCategory = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
                 appCaste = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
                 appAnnualIncome = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
@@ -474,6 +480,10 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
 
         ApplicantID.setText(appID);
         ApplicantName.setText(appName);
+        txt_add1.setText(address1);
+        txt_add2.setText(address2);
+        txt_add3.setText(address3);
+        txt_add_Pin.setText(add_pin);
         ApplicantCategory.setText(n_appCategory);
         ApplicantCaste.setText(n_appCaste);
         AnnualIncome.setText(appAnnualIncome);

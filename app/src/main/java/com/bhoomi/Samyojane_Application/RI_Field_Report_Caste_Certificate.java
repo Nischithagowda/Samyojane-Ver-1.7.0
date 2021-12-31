@@ -17,8 +17,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,6 +35,10 @@ import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bhoomi.Samyojane_Application.api.APIClient;
 import com.bhoomi.Samyojane_Application.api.APIInterface_NIC;
@@ -63,39 +65,39 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
+/**
+ * Created by Nischitha on 30,December,2021
+ **/
+public class RI_Field_Report_Caste_Certificate extends AppCompatActivity {
 
     TextView tvHobli, tvTaluk, tvRI_Name, tvServiceName, tv_V_T_Name, txt_ReportNo;
     String RI_Name,district, taluk, hobli, VA_Circle_Name, VA_Name, applicant_Id, applicant_name;
     int district_Code, taluk_Code, hobli_Code, va_Circle_Code, villageCode, town_code, ward_code;
     String village_name, service_name;
     String serviceCode, habitationCode, town_Name, ward_Name, option_Flag;
-    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, txt_add1, txt_add2, txt_add3, txt_add_Pin, ApplicantCategory, ApplicantCaste, AnnualIncome, ReservationGiven, Remarks;
-    String appID, appName, address1, address2, address3, add_pin, appCategory, appCaste, appAnnualIncome, appReservationGiven, remarks;
+    TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, txt_add1, txt_add2, txt_add3, txt_add_Pin, AnnualIncome, ReservationGiven, Remarks;
+    String appID, appName, address1, address2, address3, add_pin, appAnnualIncome, appReservationGiven, remarks;
     int appTitle_Code, binCom_Code, fatTitle_Code;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     SqlLiteOpenHelper_Class sqlLiteOpenHelper_class;
-    String getCategory, getCaste;
-    RadioGroup radioGroup, radioGroup2, radioGroup3;
-    RadioButton radioButton1, radioButton11, radioButton2, radioButton22, radioButton3, radioButton33;
-    String option, option2, option3;
-    Spinner spCategory, spReasons;
+    String categoryName, casteName;
+    RadioGroup radioGroup2, radioGroup3;
+    RadioButton radioButton2, radioButton22, radioButton3, radioButton33;
+    String option2, option3;
+    Spinner spCategory;
     AutoCompleteTextView autoSearchCaste;
-    TableRow TableApplicantCategory, TableApplicantCaste, TableCasteReservation, tr_creamyLayer, tr_reasonForCreamyLayer;
+    TableRow TableApplicantCaste, TableCasteReservation;
     EditText tvIncome, tvRemarks;
     int income_len, income_Value;
-    String strReason, strCategory, strSearchCaste;
+    String strCategory, strSearchCaste;
     int getCatCode=0, getCasteCode=0;
-    int reason_Code_1;
-    int posReason;
-    ArrayAdapter<CharSequence> adapter_reason;
     Button btnSave, btnBack, btnDownDocs, btnViewDocs;
     String strIncome;
     GPSTracker gpsTracker;
     double latitude, longitude;
     ProgressDialog dialog;
-    TextView tvVillageName, tvAppCategory, tvAppCaste, tvCreamyLayer, tvReasonForCreamyLayer, tvAnnualIncome, tvRemarksColor;
+    TextView tvVillageName, tvAppCategory, tvAppCaste, tvAnnualIncome, tvRemarksColor;
     String strRemarks;
     int Total_No_Years_10, NO_Months_10;
     boolean return_Value;
@@ -193,11 +195,10 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ri_field_report_caste_income_parameters);
+        setContentView(R.layout.ri_field_report_caste_certificate);
 
-        option=getString(R.string.yes);
         option2=getString(R.string.yes);
         option3=getString(R.string.yes);
         strSearchCaste=getString(R.string.select_caste_spinner);
@@ -219,35 +220,24 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         txt_add2 = findViewById(R.id.txt_add2);
         txt_add3 = findViewById(R.id.txt_add3);
         txt_add_Pin = findViewById(R.id.txt_add_Pin);
-        ApplicantCategory = findViewById(R.id.ApplicantCategory);
-        ApplicantCaste = findViewById(R.id.ApplicantCaste);
         AnnualIncome = findViewById(R.id.AnnualIncome);
         ReservationGiven = findViewById(R.id.ReservationGiven);
-        radioGroup = findViewById(R.id.radioGroup);
         radioGroup2 = findViewById(R.id.radioGroup2);
         radioGroup3 = findViewById(R.id.radioGroup3);
-        radioButton1 = findViewById(R.id.radioButton1);
-        radioButton11 = findViewById(R.id.radioButton11);
         radioButton2 = findViewById(R.id.radioButton2);
         radioButton22 = findViewById(R.id.radioButton22);
         radioButton3 = findViewById(R.id.radioButton3);
         radioButton33 = findViewById(R.id.radioButton33);
         autoSearchCaste = findViewById(R.id.autoSearchCaste);
         spCategory = findViewById(R.id.spCategory);
-        spReasons = findViewById(R.id.spReasons);
-        TableApplicantCategory = findViewById(R.id.TableApplicantCategory);
         TableApplicantCaste = findViewById(R.id.TableApplicantCaste);
         TableCasteReservation = findViewById(R.id.TableCasteReservation);
-        tr_creamyLayer = findViewById(R.id.tr_creamyLayer);
-        tr_reasonForCreamyLayer = findViewById(R.id.tr_reasonForCreamyLayer);
         Remarks = findViewById(R.id.Remarks);
         tvIncome = findViewById(R.id.tvIncome);
         tvRemarks = findViewById(R.id.tvRemarks);
         btnSave = findViewById(R.id.btnSave);
         tvAppCategory = findViewById(R.id.tvAppCategory);
         tvAppCaste = findViewById(R.id.tvAppCaste);
-        tvCreamyLayer = findViewById(R.id.tvCreamyLayer);
-        tvReasonForCreamyLayer = findViewById(R.id.tvReasonForCreamyLayer);
         tvAnnualIncome = findViewById(R.id.tvAnnualIncome);
         tv_V_T_Name = findViewById(R.id.tv_V_T_Name);
         tvRemarksColor = findViewById(R.id.tvRemarksColor);
@@ -255,20 +245,10 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         btnViewDocs = findViewById(R.id.btnViewDocs);
 
         btnViewDocs.setVisibility(View.GONE);
-
-        autoSearchCaste.setVisibility(View.GONE);
-        spCategory.setVisibility(View.GONE);
-        spReasons.setVisibility(View.GONE);
-        radioGroup.setVisibility(View.GONE);
-        ApplicantCategory.setVisibility(View.VISIBLE);
-        ApplicantCaste.setVisibility(View.VISIBLE);
         ReservationGiven.setVisibility(View.VISIBLE);
         AnnualIncome.setVisibility(View.VISIBLE);
         TableCasteReservation.setVisibility(View.VISIBLE);
-        TableApplicantCategory.setVisibility(View.VISIBLE);
-        TableApplicantCaste.setVisibility(View.VISIBLE);
-        tr_creamyLayer.setVisibility(View.GONE);
-        tr_reasonForCreamyLayer.setVisibility(View.GONE);
+        TableApplicantCaste.setVisibility(View.GONE);
         Remarks.setVisibility(View.VISIBLE);
         tvIncome.setVisibility(View.GONE);
         tvRemarks.setVisibility(View.GONE);
@@ -331,9 +311,8 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
             Log.d("report_no", "" + report_no);
         }
 
-        String VANameDis;
-        VANameDis = getString(R.string.shri_smt)+" "+VA_Name+", "+getString(R.string.village_accountant);
-        title.setText(VANameDis);
+        String strVAName = getString(R.string.shri_smt)+" "+VA_Name+", "+getString(R.string.village_accountant);
+        title.setText(strVAName);
         title.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         RI_Recommendation.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -373,6 +352,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         txt_ReportNo.setText(report_no);
 
         String villageTownName;
+
         if(!Objects.equals(villageCode, "99999")){
             Log.d("Data","Rural");
             villageTownName = getString(R.string.village_name)+" : ";
@@ -406,8 +386,8 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 appTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ApplicantTiitle));
                 binCom_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.BinCom));
                 fatTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RelationTitle));
-                appCategory = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
-                appCaste = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
+                getCatCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
+                getCasteCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
                 appAnnualIncome = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
                 appReservationGiven = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
                 remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Remarks));
@@ -435,8 +415,8 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
 //        getCasteCode = Integer.parseInt(appCaste);
         Log.d("dbValues", "App_ID "+appID);
         Log.d("dbValues", "appName "+appName);
-        Log.d("dbValues", "appCategory "+appCategory);
-        Log.d("dbValues", "appCaste "+appCaste);
+        Log.d("dbValues", "appCategory "+ getCatCode);
+        Log.d("dbValues", "appCaste "+ getCasteCode);
         Log.d("dbValues", "appAnnualIncome "+appAnnualIncome);
         Log.d("dbValues", "appReservationGiven "+appReservationGiven);
         Log.d("dbValues", "remarks "+remarks);
@@ -458,117 +438,58 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setProgress(1);
 
-        if(serviceCode.equals("9")){
-            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            getCategory = sqlLiteOpenHelper_class.GetCategory_BY_Code(Integer.parseInt(appCategory));
-            getCaste = sqlLiteOpenHelper_class.GetCaste_OBC_BY_Code(Integer.parseInt(appCaste));
-        } else {
-            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            getCategory = sqlLiteOpenHelper_class.GetCategory_BY_Code(Integer.parseInt(appCategory));
-            getCaste = sqlLiteOpenHelper_class.GetCaste_BY_Code(Integer.parseInt(appCategory), Integer.parseInt(appCaste));
+        GetCategory();
+        spCategory.setOnItemSelectedListener(new GetCategorySelected());
+        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+        sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+        categoryName = sqlLiteOpenHelper_class.GetCategory_BY_Code(getCatCode);
+        casteName = sqlLiteOpenHelper_class.GetCaste_BY_Code(getCatCode, getCasteCode);
+        if (getCatCode!=0){
+            GetCaste(getCatCode);
+            autoSearchCaste.setText(casteName);
+            strSearchCaste = casteName;
         }
-
+        spCategory.setSelection(getCatCode);
         ApplicantID.setText(applicant_Id);
         ApplicantName.setText(appName);
         txt_add1.setText(address1);
         txt_add2.setText(address2);
         txt_add3.setText(address3);
         txt_add_Pin.setText(add_pin);
-        ApplicantCategory.setText(getCategory);
-        ApplicantCaste.setText(getCaste);
         AnnualIncome.setText(appAnnualIncome);
         ReservationGiven.setText(appReservationGiven);
         Remarks.setText(remarks);
-
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            // find which radio button is selected
-            if (checkedId == R.id.radioButton1) {
-                option = getString(R.string.yes);
-                tr_reasonForCreamyLayer.setVisibility(View.GONE);
-                spReasons.setVisibility(View.GONE);
-                spReasons.setSelection(0);
-            } else if (checkedId == R.id.radioButton11) {
-                option = getString(R.string.no);
-                tr_reasonForCreamyLayer.setVisibility(View.VISIBLE);
-                spReasons.setVisibility(View.VISIBLE);
-            }
-        });
 
         radioGroup2.setOnCheckedChangeListener((group, checkedId) -> {
             // find which radio button is selected
             if (checkedId == R.id.radioButton3) {
                 option2 = getString(R.string.yes);
-                autoSearchCaste.setVisibility(View.GONE);
-                spCategory.setVisibility(View.GONE);
-                spReasons.setVisibility(View.GONE);
                 Remarks.setVisibility(View.VISIBLE);
                 tvIncome.setVisibility(View.GONE);
                 tvRemarks.setVisibility(View.GONE);
-                radioGroup.setVisibility(View.GONE);
-                TableApplicantCategory.setVisibility(View.VISIBLE);
-                TableApplicantCaste.setVisibility(View.VISIBLE);
-                ApplicantCategory.setVisibility(View.VISIBLE);
-                ApplicantCaste.setVisibility(View.VISIBLE);
                 ReservationGiven.setVisibility(View.VISIBLE);
                 AnnualIncome.setVisibility(View.VISIBLE);
                 TableCasteReservation.setVisibility(View.VISIBLE);
-                tr_creamyLayer.setVisibility(View.GONE);
-                tr_reasonForCreamyLayer.setVisibility(View.GONE);
 
-                if (serviceCode.equals("11") || serviceCode.equals("34") || serviceCode.equals("37")){
-                    TableApplicantCategory.setVisibility(View.GONE);
-                    TableApplicantCaste.setVisibility(View.GONE);
-                }
-                tvAppCategory.setTextColor(Color.parseColor("#000000"));
-                tvAppCaste.setTextColor(Color.parseColor("#000000"));
-                tvCreamyLayer.setTextColor(Color.parseColor("#000000"));
-                tvReasonForCreamyLayer.setTextColor(Color.parseColor("#000000"));
+                tvAppCategory.setTextColor(Color.parseColor("#0000ff"));
+                tvAppCaste.setTextColor(Color.parseColor("#0000ff"));
                 tvAnnualIncome.setTextColor(Color.parseColor("#000000"));
                 tvRemarksColor.setTextColor(Color.parseColor("#000000"));
             } else if (checkedId == R.id.radioButton33) {
                 option2 = getString(R.string.no);
-                autoSearchCaste.setVisibility(View.VISIBLE);
-                spCategory.setVisibility(View.VISIBLE);
-                spReasons.setVisibility(View.VISIBLE);
                 Remarks.setVisibility(View.GONE);
                 tvIncome.setVisibility(View.VISIBLE);
                 tvRemarks.setVisibility(View.VISIBLE);
-                radioGroup.setVisibility(View.VISIBLE);
                 TableCasteReservation.setVisibility(View.GONE);
-                TableApplicantCaste.setVisibility(View.GONE);
-                ApplicantCategory.setVisibility(View.GONE);
-                ApplicantCaste.setVisibility(View.GONE);
                 ReservationGiven.setVisibility(View.GONE);
                 AnnualIncome.setVisibility(View.GONE);
-                tr_creamyLayer.setVisibility(View.VISIBLE);
-                tr_reasonForCreamyLayer.setVisibility(View.GONE);
-
-                if(option.equals(getString(R.string.yes))){
-                    tr_reasonForCreamyLayer.setVisibility(View.GONE);
-                    spReasons.setVisibility(View.GONE);
-                }
-                else{
-                    tr_reasonForCreamyLayer.setVisibility(View.VISIBLE);
-                    spReasons.setVisibility(View.VISIBLE);
-                }
-
-                if (serviceCode.equals("43")){
-                    TableApplicantCategory.setVisibility(View.GONE);
-                    TableApplicantCaste.setVisibility(View.VISIBLE);
-                } else if (serviceCode.equals("11") || serviceCode.equals("34") || serviceCode.equals("37")){
-                    TableApplicantCategory.setVisibility(View.GONE);
-                    TableApplicantCaste.setVisibility(View.GONE);
-                }
 
                 tvAppCategory.setTextColor(Color.parseColor("#0000ff"));
                 tvAppCaste.setTextColor(Color.parseColor("#0000ff"));
-                tvCreamyLayer.setTextColor(Color.parseColor("#0000ff"));
-                tvReasonForCreamyLayer.setTextColor(Color.parseColor("#0000ff"));
                 tvAnnualIncome.setTextColor(Color.parseColor("#0000ff"));
                 tvRemarksColor.setTextColor(Color.parseColor("#0000ff"));
             }
+            Log.d("option", ""+option2);
         });
 
         radioGroup3.setOnCheckedChangeListener((group, checkedId) -> {
@@ -591,55 +512,12 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
             }
             return false;
         });
-        switch (serviceCode) {
-            case "6":
-                GetCategory();
-                spCategory.setOnItemSelectedListener(new GetCategorySelected());
-                break;
-            case "9":
-                GetCategory_OBC();
-                spCategory.setOnItemSelectedListener(new GetCategory_OBC_Selected());
-                break;
-            case "43":
-                GetCaste_EWS();
-                break;
-            case "11":
-            case "34":
-            case "37": {
-                TableApplicantCategory.setVisibility(View.GONE);
-                TableApplicantCaste.setVisibility(View.GONE);
-                break;
-            }
-        }
 
         spCategory.setOnTouchListener((v, event) -> {
             autoSearchCaste.setText("");
             autoSearchCaste.setError(null);
             autoSearchCaste.showDropDown();
             return false;
-        });
-
-        adapter_reason = ArrayAdapter.createFromResource(this, R.array.Reason_array, R.layout.spinner_item_color);
-        adapter_reason.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        spReasons.setAdapter(adapter_reason);
-
-        spReasons.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                strReason = String.valueOf(spReasons.getSelectedItem());
-                posReason = position;
-                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(RI_Field_Report_caste_income_parameters.this);
-                sqlLiteOpenHelper_class.open_Reasons_Master_Tbl();
-                reason_Code_1 = sqlLiteOpenHelper_class.Get_CreamyLayerReasons(strReason, getString(R.string.reasons_tbl_reason_name));
-                Log.d("Number", ""+ reason_Code_1);
-                Log.d("Item_Position", ""+ position);
-                Log.d("Spinner_Value", ""+strReason);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
 
         btnDownDocs.setOnClickListener(v -> {
@@ -649,7 +527,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 //dialog1.setProgress(0);
 
                 Log.d("Docs", "Applicant_ID:"+applicant_Id);
-                openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters.this);
+                openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_Caste_Certificate.this);
                 database = openHelper.getWritableDatabase();
 
                 String username = uName_get.substring(0, 3);//First three characters of username
@@ -676,7 +554,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         });
 
         btnViewDocs.setOnClickListener(v -> {
-            Intent i12 = new Intent(RI_Field_Report_caste_income_parameters.this, View_Docs.class);
+            Intent i12 = new Intent(RI_Field_Report_Caste_Certificate.this, View_Docs.class);
             i12.putExtra("district_Code", district_Code);
             i12.putExtra("district", district);
             i12.putExtra("taluk_Code", taluk_Code);
@@ -707,80 +585,74 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
             }
 
+            strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
+            Log.d("Selected_Item1", ""+strCategory);
+            Log.d("Category_Code1", ""+ getCatCode);
+            if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                String caste_name = autoSearchCaste.getText().toString();
+                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getCatCode);
+                Log.d("Caste_Code1",""+getCasteCode);
+            }
+
             if(latitude!=0.0 && longitude!=0.0) {
-
                 if (option2.equals(getString(R.string.no))){
-
                     strIncome = tvIncome.getText().toString();
                     strRemarks = tvRemarks.getText().toString();
                     Log.d("Income value", ""+strRemarks);
+                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                        if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
+                            if (getCasteCode!=0) {
+                                if (TextUtils.isEmpty(strIncome)) {
+                                    tvIncome.setError(getString(R.string.field_canno_null));
+                                } else {
 
-                    if(Objects.equals(serviceCode, "6")){
+                                    income_len = strIncome.length();
+                                    income_Value = Integer.parseInt(strIncome);
+                                    Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
 
-                        strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-                        Log.d("Selected_Item1", ""+strCategory);
-                        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                        sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                        getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
-                        Log.d("Category_Code1", ""+ getCatCode);
-                        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-
-                            String caste_name = autoSearchCaste.getText().toString();
-                            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                            getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getCatCode);
-                            Log.d("Caste_Code1",""+getCasteCode);
-
+                                    if (income_len >= 4 && income_Value>=1000) {
+                                        if (TextUtils.isEmpty(strRemarks)) {
+                                            tvRemarks.setError(getString(R.string.field_canno_null));
+                                        } else {
+                                            StoreData_in_DB_When_Wrong();
+                                        }
+                                    } else {
+                                        tvIncome.setError(getString(R.string.incorrect_value));
+                                    }
+                                }
+                            }else {
+                                autoSearchCaste.setError(getString(R.string.invalid_caste));
+                            }
+                        } else {
+                            autoSearchCaste.setError(getString(R.string.select_caste));
                         }
-
-                        saveService_6_and_9();
-
-                    }else if(Objects.equals(serviceCode, "9")) {
-
-                        strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-                        Log.d("Selected Item", ""+strCategory);
-                        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                        sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                        getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
-                        Log.d("Category_Code1", ""+ getCatCode);
-                        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-
-                            String caste_name = autoSearchCaste.getText().toString();
-                            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                            getCasteCode = sqlLiteOpenHelper_class.GetCasteCode_OBC(caste_name);
-                            Log.d("Caste_Code1",""+getCasteCode);
-
-                        }
-                        Log.d("Caste_Code1",""+getCasteCode);
-
-                        saveService_6_and_9();
-
-                    } else if (serviceCode.equals("43")){
-                        String caste_name = autoSearchCaste.getText().toString();
-                        if (!caste_name.equals(getString(R.string.select_caste_spinner))) {
-                            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                            getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchCaste, getCatCode);
-                            Log.d("Selected_casteCode", "getCatCode = "+ getCatCode +", getCasteCode = "+ getCasteCode);
-
-                        }
-
-                        saveService_43();
-                    } else if (serviceCode.equals("11") || serviceCode.equals("34") || serviceCode.equals("37")){
-                        saveService_11_34_and_37();
+                    } else {
+                        ((TextView) spCategory.getSelectedView()).setError(getString(R.string.select_category));
+                        Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
                     }
-
-                    Log.d("Caste_Code: ",""+getCasteCode);
-            }
-            else {
-                    StoreData_in_DB_When_Correct();
                 }
-            }
-            else {
+                else {
+                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                        if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
+                            if (getCasteCode != 0) {
+                                StoreData_in_DB_When_Correct();
+                            } else {
+                            autoSearchCaste.setError(getString(R.string.invalid_caste));
+                            }
+                        } else {
+                        autoSearchCaste.setError(getString(R.string.select_caste));
+                        }
+                    } else {
+                    ((TextView) spCategory.getSelectedView()).setError(getString(R.string.select_category));
+                    Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else {
                 runOnUiThread(() -> {
 
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(RI_Field_Report_caste_income_parameters.this);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(RI_Field_Report_Caste_Certificate.this);
                     dialog.setCancelable(false);
                     dialog.setTitle(getString(R.string.alert));
                     dialog.setMessage(getString(R.string.cannot_get_location) );
@@ -799,163 +671,178 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         btnBack.setOnClickListener(v -> onBackPressed());
     }
 
-    public void saveService_11_34_and_37(){
-        if (option.equals(getString(R.string.no))) {
-            if (!strReason.equals(getString(R.string.reason_spinner))) {
-                if (TextUtils.isEmpty(strIncome)) {
-                    tvIncome.setError(getString(R.string.field_canno_null));
-                } else {
+    public String StoreData_in_DB_When_Correct(){
 
-                    income_len = strIncome.length();
-                    income_Value = Integer.parseInt(strIncome);
-                    Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+        String currDate = dateFormat.format(date);
 
-                    if (income_len >= 4 && income_Value>=1000) {
-                        if (TextUtils.isEmpty(strRemarks)) {
-                            tvRemarks.setError(getString(R.string.field_canno_null));
-                        } else {
-                            StoreData_in_DB_When_Wrong();
-                        }
-                    } else {
-                        tvIncome.setError(getString(R.string.incorrect_value));
-                    }
-                }
-            } else {
-                ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
-                Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            if (TextUtils.isEmpty(strIncome)) {
-                tvIncome.setError(getString(R.string.field_canno_null));
-            } else {
+        if(option2.equals(getString(R.string.no))){
+            option2="Y";
+        }else if (option2.equals(getString(R.string.yes))){
+            option2 = "N";
+        }
 
-                income_len = strIncome.length();
-                income_Value = Integer.parseInt(strIncome);
-                Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+        if(option3.equals(getString(R.string.no))){
+            option3="N";
+        }else if (option3.equals(getString(R.string.yes))){
+            option3 = "Y";
+        }
 
-                if (income_len >= 4 && income_Value>=1000) {
-                    if (TextUtils.isEmpty(strRemarks)) {
-                        tvRemarks.setError(getString(R.string.field_canno_null));
-                    } else {
-                        StoreData_in_DB_When_Wrong();
-                    }
-                } else {
-                    tvIncome.setError(getString(R.string.incorrect_value));
-                }
+        openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_Caste_Certificate.this);
+        database = openHelper.getWritableDatabase();
+
+        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
+        if(cursor.getCount()>0) {
+            try {
+
+                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " set "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 where "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + applicant_Id + "'");
+
+                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Category + "=" + getCatCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Caste + "=" + getCasteCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLat + "=" + latitude + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLong + "=" + longitude + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Can_Certificate_Given + "='" + option3 + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DifferFromAppinformation + "='" + option2 + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Report_No + "='" + report_no + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_ReportDate + "='" + currDate + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DataUpdateFlag + "=1"
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_GSCNo + "='" + applicant_Id + "'");
+
+                Intent i = new Intent(RI_Field_Report_Caste_Certificate.this, RI_Field_Report_FirstScreen.class);
+                i.putExtra("applicant_Id", applicant_Id);
+                i.putExtra("district_Code", district_Code);
+                i.putExtra("taluk_Code", taluk_Code);
+                i.putExtra("hobli_Code", hobli_Code);
+                i.putExtra("district", district);
+                i.putExtra("taluk", taluk);
+                i.putExtra("RI_Name", RI_Name);
+                i.putExtra("VA_Name", VA_Name);
+                i.putExtra("hobli", hobli);
+                i.putExtra("va_Circle_Code", va_Circle_Code);
+                i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                i.putExtra("strSearchServiceName", service_name);
+                i.putExtra("strSearchVillageName", village_name);
+                i.putExtra("serviceCode", serviceCode);
+                i.putExtra("villageCode", villageCode);
+                i.putExtra("habitationCode", habitationCode);
+                i.putExtra("option_Flag", option_Flag);
+                i.putExtra("town_Name", town_Name);
+                i.putExtra("town_code", town_code);
+                i.putExtra("ward_Name", ward_Name);
+                i.putExtra("ward_code", ward_code);
+                startActivity(i);
+                finish();
+
+                Log.d("Database", "ServiceParameters Database Updated");
+                Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
+                Log.d("Data", "StoreData_in_DB_When_Correct : Update_success");
+                return "Update_success";
+            } catch (Exception e){
+                e.printStackTrace();
+                return "Update_failed";
             }
         }
-    }
-    public void saveService_43(){
-        if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
-            if (getCasteCode!=0) {
-                if (option.equals(getString(R.string.no))) {
-                    if (!strReason.equals(getString(R.string.reason_spinner))) {
-                        if (TextUtils.isEmpty(strIncome)) {
-                            tvIncome.setError(getString(R.string.field_canno_null));
-                        } else {
-
-                            income_len = strIncome.length();
-                            income_Value = Integer.parseInt(strIncome);
-                            Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
-
-                            if (income_len >= 4 && income_Value>=1000) {
-                                if (TextUtils.isEmpty(strRemarks)) {
-                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                } else {
-                                    StoreData_in_DB_When_Wrong();
-                                }
-                            } else {
-                                tvIncome.setError(getString(R.string.incorrect_value));
-                            }
-                        }
-                    } else {
-                        ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
-                        Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    if (TextUtils.isEmpty(strIncome)) {
-                        tvIncome.setError(getString(R.string.field_canno_null));
-                    } else {
-
-                        income_len = strIncome.length();
-                        income_Value = Integer.parseInt(strIncome);
-                        Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
-
-                        if (income_len >= 4 && income_Value>=1000) {
-                            if (TextUtils.isEmpty(strRemarks)) {
-                                tvRemarks.setError(getString(R.string.field_canno_null));
-                            } else {
-                                StoreData_in_DB_When_Wrong();
-                            }
-                        } else {
-                            tvIncome.setError(getString(R.string.incorrect_value));
-                        }
-                    }
-                }
-            }else {
-                autoSearchCaste.setError(getString(R.string.invalid_caste));
-            }
-        } else {
-            autoSearchCaste.setError(getString(R.string.select_caste));
+        else {
+            cursor.close();
+            Log.d("Data", "StoreData_in_DB_When_Correct : Update_Failed");
+            return "Update_Failed";
         }
     }
-    public void saveService_6_and_9(){
-        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-            if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
-                if (getCasteCode!=0) {
-                    if (option.equals(getString(R.string.no))) {
-                        if (!strReason.equals(getString(R.string.reason_spinner))) {
-                            if (TextUtils.isEmpty(strIncome)) {
-                                tvIncome.setError(getString(R.string.field_canno_null));
-                            } else {
 
-                                income_len = strIncome.length();
-                                income_Value = Integer.parseInt(strIncome);
-                                Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+    public String StoreData_in_DB_When_Wrong(){
 
-                                if (income_len >= 4 && income_Value>=1000) {
-                                    if (TextUtils.isEmpty(strRemarks)) {
-                                        tvRemarks.setError(getString(R.string.field_canno_null));
-                                    } else {
-                                        StoreData_in_DB_When_Wrong();
-                                    }
-                                } else {
-                                    tvIncome.setError(getString(R.string.incorrect_value));
-                                }
-                            }
-                        } else {
-                            ((TextView) spReasons.getSelectedView()).setError(getString(R.string.select_reason));
-                            Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        if (TextUtils.isEmpty(strIncome)) {
-                            tvIncome.setError(getString(R.string.field_canno_null));
-                        } else {
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+        String currDate = dateFormat.format(date);
 
-                            income_len = strIncome.length();
-                            income_Value = Integer.parseInt(strIncome);
-                            Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
+        if(option2.equals(getString(R.string.no))){
+            option2="Y";
+        }else if (option2.equals(getString(R.string.yes))){
+            option2 = "N";
+        }
 
-                            if (income_len >= 4 && income_Value>=1000) {
-                                if (TextUtils.isEmpty(strRemarks)) {
-                                    tvRemarks.setError(getString(R.string.field_canno_null));
-                                } else {
-                                    StoreData_in_DB_When_Wrong();
-                                }
-                            } else {
-                                tvIncome.setError(getString(R.string.incorrect_value));
-                            }
-                        }
-                    }
-                }else {
-                    autoSearchCaste.setError(getString(R.string.invalid_caste));
-                }
-            } else {
-                autoSearchCaste.setError(getString(R.string.select_caste));
+        if(option3.equals(getString(R.string.no))){
+            option3="N";
+        }else if (option3.equals(getString(R.string.yes))){
+            option3 = "Y";
+        }
+
+        openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_Caste_Certificate.this);
+        database = openHelper.getWritableDatabase();
+
+        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
+                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
+        if(cursor.getCount()>0){
+            try {
+
+                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " set "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 where "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + applicant_Id + "'");
+
+                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Category + "=" + getCatCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Caste + "=" + getCasteCode + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reason_for_Creamy_Layer_6 + "='" + 0 + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Father_Category_8 + "=" + 0 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Father_Caste_8 + "=" + 0 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Mother_Category_8 + "=" + 0 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Mother_Caste_8 + "=" + 0 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Total_No_Years_10 + "=" + Total_No_Years_10 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_NO_Months_10 + "=" + NO_Months_10 + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Income + "='" + strIncome + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Remarks + "='" + strRemarks + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLat + "=" + latitude + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLong + "=" + longitude + ","
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Can_Certificate_Given + "='" + option3 + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DifferFromAppinformation + "='" + option2 + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Report_No + "='" + report_no + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_ReportDate + "='" + currDate + "',"
+                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DataUpdateFlag + "=1"
+                        + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_GSCNo + "='" + applicant_Id + "'");
+
+                Intent i = new Intent(RI_Field_Report_Caste_Certificate.this, RI_Field_Report_FirstScreen.class);
+                i.putExtra("applicant_Id", applicant_Id);
+                i.putExtra("district_Code", district_Code);
+                i.putExtra("taluk_Code", taluk_Code);
+                i.putExtra("hobli_Code", hobli_Code);
+                i.putExtra("district", district);
+                i.putExtra("taluk", taluk);
+                i.putExtra("RI_Name", RI_Name);
+                i.putExtra("VA_Name", VA_Name);
+                i.putExtra("hobli", hobli);
+                i.putExtra("va_Circle_Code", va_Circle_Code);
+                i.putExtra("VA_Circle_Name", VA_Circle_Name);
+                i.putExtra("strSearchServiceName", service_name);
+                i.putExtra("strSearchVillageName", village_name);
+                i.putExtra("serviceCode", serviceCode);
+                i.putExtra("villageCode", villageCode);
+                i.putExtra("habitationCode", habitationCode);
+                i.putExtra("option_Flag", option_Flag);
+                i.putExtra("town_Name", town_Name);
+                i.putExtra("town_code", town_code);
+                i.putExtra("ward_Name", ward_Name);
+                i.putExtra("ward_code", ward_code);
+                startActivity(i);
+                finish();
+
+                Log.d("Database", "ServiceParameters Database Updated");
+                Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
+                Log.d("Data", "StoreData_in_DB_When_Wrong : Update_success");
+                return "Update_success";
+            }catch (Exception e){
+                e.printStackTrace();
+                return "Update_Failed";
             }
-        } else {
-            ((TextView) spCategory.getSelectedView()).setError(getString(R.string.select_category));
-            Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            cursor.close();
+            Log.d("Data", "StoreData_in_DB_When_Wrong : Update_Failed");
+            return "Update_Failed";
         }
     }
 
@@ -1055,193 +942,6 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         alert.show();
     }
 
-    public String StoreData_in_DB_When_Correct(){
-
-        Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
-        String currDate = dateFormat.format(date);
-
-        if(option.equals(getString(R.string.no))){
-            option="N";
-        }else if (option.equals(getString(R.string.yes))){
-            option = "Y";
-        }
-
-        if(option2.equals(getString(R.string.no))){
-            option2="Y";
-        }else if (option2.equals(getString(R.string.yes))){
-            option2 = "N";
-        }
-
-        if(option3.equals(getString(R.string.no))){
-            option3="N";
-        }else if (option3.equals(getString(R.string.yes))){
-            option3 = "Y";
-        }
-
-        openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_caste_income_parameters.this);
-        database = openHelper.getWritableDatabase();
-
-        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
-        if(cursor.getCount()>0) {
-            try {
-
-                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 where "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + applicant_Id + "'");
-
-                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Belongs_Creamy_Layer_6 + "='Y',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLat + "=" + latitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLong + "=" + longitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Can_Certificate_Given + "='" + option3 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DifferFromAppinformation + "='" + option2 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Report_No + "='" + report_no + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_ReportDate + "='" + currDate + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DataUpdateFlag + "=1"
-                        + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_GSCNo + "='" + applicant_Id + "'");
-
-                Intent i = new Intent(RI_Field_Report_caste_income_parameters.this, RI_Field_Report_FirstScreen.class);
-                i.putExtra("applicant_Id", applicant_Id);
-                i.putExtra("district_Code", district_Code);
-                i.putExtra("taluk_Code", taluk_Code);
-                i.putExtra("hobli_Code", hobli_Code);
-                i.putExtra("district", district);
-                i.putExtra("taluk", taluk);
-                i.putExtra("RI_Name", RI_Name);
-                i.putExtra("VA_Name", VA_Name);
-                i.putExtra("hobli", hobli);
-                i.putExtra("va_Circle_Code", va_Circle_Code);
-                i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                i.putExtra("strSearchServiceName", service_name);
-                i.putExtra("strSearchVillageName", village_name);
-                i.putExtra("serviceCode", serviceCode);
-                i.putExtra("villageCode", villageCode);
-                i.putExtra("habitationCode", habitationCode);
-                i.putExtra("option_Flag", option_Flag);
-                i.putExtra("town_Name", town_Name);
-                i.putExtra("town_code", town_code);
-                i.putExtra("ward_Name", ward_Name);
-                i.putExtra("ward_code", ward_code);
-                startActivity(i);
-                finish();
-
-                Log.d("Database", "ServiceParameters Database Updated");
-                Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
-                Log.d("Data", "StoreData_in_DB_When_Correct : Update_success");
-                return "Update_success";
-            } catch (Exception e){
-                e.printStackTrace();
-                return "Update_failed";
-            }
-        }
-        else {
-            cursor.close();
-            Log.d("Data", "StoreData_in_DB_When_Correct : Update_Failed");
-            return "Update_Failed";
-        }
-    }
-
-    public String StoreData_in_DB_When_Wrong(){
-
-        Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
-        String currDate = dateFormat.format(date);
-
-        if(option.equals(getString(R.string.no))){
-            option="N";
-        }else if (option.equals(getString(R.string.yes))){
-            option = "Y";
-        }
-
-        if(option2.equals(getString(R.string.no))){
-            option2="Y";
-        }else if (option2.equals(getString(R.string.yes))){
-            option2 = "N";
-        }
-
-        if(option3.equals(getString(R.string.no))){
-            option3="N";
-        }else if (option3.equals(getString(R.string.yes))){
-            option3 = "Y";
-        }
-
-        openHelper = new DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI(RI_Field_Report_caste_income_parameters.this);
-        database = openHelper.getWritableDatabase();
-
-        Cursor cursor = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " where "
-                + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='"+applicant_Id+"'", null);
-        if(cursor.getCount()>0){
-            try {
-
-                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.DataUpdateFlag + "=1 where "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo + "='" + applicant_Id + "'");
-
-                database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Category + "=" + getCatCode + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Caste + "=" + getCasteCode + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Belongs_Creamy_Layer_6 + "='" + option + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Reason_for_Creamy_Layer_6 + "='" + reason_Code_1 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Father_Category_8 + "=" + 0 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Father_Caste_8 + "=" + 0 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_App_Mother_Category_8 + "=" + 0 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_APP_Mother_Caste_8 + "=" + 0 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Total_No_Years_10 + "=" + Total_No_Years_10 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_NO_Months_10 + "=" + NO_Months_10 + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Income + "='" + strIncome + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Remarks + "='" + strRemarks + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLat + "=" + latitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_vLong + "=" + longitude + ","
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Can_Certificate_Given + "='" + option3 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DifferFromAppinformation + "='" + option2 + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Report_No + "='" + report_no + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_ReportDate + "='" + currDate + "',"
-                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_DataUpdateFlag + "=1"
-                        + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_GSCNo + "='" + applicant_Id + "'");
-
-                Intent i = new Intent(RI_Field_Report_caste_income_parameters.this, RI_Field_Report_FirstScreen.class);
-                i.putExtra("applicant_Id", applicant_Id);
-                i.putExtra("district_Code", district_Code);
-                i.putExtra("taluk_Code", taluk_Code);
-                i.putExtra("hobli_Code", hobli_Code);
-                i.putExtra("district", district);
-                i.putExtra("taluk", taluk);
-                i.putExtra("RI_Name", RI_Name);
-                i.putExtra("VA_Name", VA_Name);
-                i.putExtra("hobli", hobli);
-                i.putExtra("va_Circle_Code", va_Circle_Code);
-                i.putExtra("VA_Circle_Name", VA_Circle_Name);
-                i.putExtra("strSearchServiceName", service_name);
-                i.putExtra("strSearchVillageName", village_name);
-                i.putExtra("serviceCode", serviceCode);
-                i.putExtra("villageCode", villageCode);
-                i.putExtra("habitationCode", habitationCode);
-                i.putExtra("option_Flag", option_Flag);
-                i.putExtra("town_Name", town_Name);
-                i.putExtra("town_code", town_code);
-                i.putExtra("ward_Name", ward_Name);
-                i.putExtra("ward_code", ward_code);
-                startActivity(i);
-                finish();
-
-                Log.d("Database", "ServiceParameters Database Updated");
-                Toast.makeText(getApplicationContext(), getString(R.string.updated_successfully), Toast.LENGTH_SHORT).show();
-                Log.d("Data", "StoreData_in_DB_When_Wrong : Update_success");
-                return "Update_success";
-            }catch (Exception e){
-                e.printStackTrace();
-                return "Update_Failed";
-            }
-        }
-        else {
-            cursor.close();
-            Log.d("Data", "StoreData_in_DB_When_Wrong : Update_Failed");
-            return "Update_Failed";
-        }
-    }
-
     public void GetDocsFromServer(GetDocRequestClass getDocRequestClass){
         apiInterface_nic = APIClient.getClient(getString(R.string.MobAPI_New_NIC)).create(APIInterface_NIC.class);
 
@@ -1257,7 +957,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                     Log.d("response_server", jsonObject2 + "");
                     String response_server = jsonObject2.toString();
                     try {
-                        openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters.this);
+                        openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_Caste_Certificate.this);
                         database = openHelper.getWritableDatabase();
 
                         JSONObject jsonObject = new JSONObject(response_server);
@@ -1289,7 +989,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
                         database.close();
                         //dialog1.setProgress(10);
                         runOnUiThread(() -> {
-                            openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters.this);
+                            openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_Caste_Certificate.this);
                             database = openHelper.getWritableDatabase();
 
                             Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
@@ -1344,7 +1044,7 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
 
     public void truncateDatabase_Docs(){
         //dialog1.setProgress(20);
-        openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_caste_income_parameters.this);
+        openHelper = new DataBaseHelperClass_btnDownload_Docs(RI_Field_Report_Caste_Certificate.this);
         database = openHelper.getWritableDatabase();
 
         Cursor cursor = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_Docs.TABLE_NAME, null);
@@ -1367,12 +1067,10 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
 
     public void GetCategory() {
         try {
-            String str="CI";
             List<SpinnerObject> labels;
             sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
             sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            labels = sqlLiteOpenHelper_class.Get_Category(str, getString(R.string.select_category_spinner));
-
+            labels = sqlLiteOpenHelper_class.Get_Category_Service9999(getString(R.string.select_category_spinner));
             ArrayAdapter<SpinnerObject> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item_color, labels);
             dataAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
             spCategory.setAdapter(dataAdapter);
@@ -1382,23 +1080,32 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
         }
     }
-    public void GetCategory_OBC() {
-        try {
-            String str="OBC";
-            List<SpinnerObject> labels;
-            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            labels = sqlLiteOpenHelper_class.Get_Category_OBC(str, getString(R.string.select_category_spinner));
 
-            ArrayAdapter<SpinnerObject> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item_color, labels);
-            dataAdapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
-            spCategory.setAdapter(dataAdapter);
+    public class GetCategorySelected implements AdapterView.OnItemSelectedListener {
 
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
+            Log.d("Selected_Item1", ""+strCategory);
+            getCatCode = Integer.parseInt(((SpinnerObject) spCategory.getSelectedItem()).getId());
+            Log.d("Category_Code1", ""+ getCatCode);
+            if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                autoSearchCaste.setVisibility(View.VISIBLE);
+                TableApplicantCaste.setVisibility(View.VISIBLE);
+                GetCaste(getCatCode);
+            }
+            else {
+                autoSearchCaste.setVisibility(View.GONE);
+                TableApplicantCaste.setVisibility(View.GONE);
+            }
+        }
 
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), getString(R.string.error_creating_table), Toast.LENGTH_LONG).show();
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     }
+
     public void GetCaste(int num){
         List<SpinnerObject> labels;
         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
@@ -1418,106 +1125,13 @@ public class RI_Field_Report_caste_income_parameters extends AppCompatActivity {
         });
     }
 
-    public void GetCaste_EWS(){
-        List<SpinnerObject> labels;
-        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-        sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-        labels = sqlLiteOpenHelper_class.GetCaste_EWS();
-
-        ArrayAdapter<SpinnerObject> adapter = new ArrayAdapter<>(this, R.layout.list_item, labels);
-        adapter.setDropDownViewResource(R.layout.list_item);
-        autoSearchCaste.setAdapter(adapter);
-        autoSearchCaste.setOnItemClickListener((parent, view, position, id) -> {
-            String CatCode;
-            CatCode = ((SpinnerObject)parent.getItemAtPosition(position)).getId();
-            getCatCode = Integer.parseInt(CatCode);
-            strSearchCaste = parent.getItemAtPosition(position).toString();
-            Log.d("Selected_Item", ""+strSearchCaste);
-            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchCaste, getCatCode);
-            Log.d("Selected_casteCode", "getCatCode = "+ getCatCode +", getCasteCode = "+ getCasteCode);
-        });
-    }
-
-    public class GetCategorySelected implements AdapterView.OnItemSelectedListener {
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-            Log.d("Selected Item", ""+strCategory);
-            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
-            Log.d("Category_Code", ""+ getCatCode);
-            if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-                TableApplicantCaste.setVisibility(View.VISIBLE);
-                autoSearchCaste.setVisibility(View.VISIBLE);
-                GetCaste(getCatCode);
-            }
-            else {
-                TableApplicantCaste.setVisibility(View.GONE);
-                autoSearchCaste.setVisibility(View.GONE);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
-    public void GetCaste_OBC(int num){
-        List<SpinnerObject> labels;
-        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-        sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-        labels = sqlLiteOpenHelper_class.GetCaste_OBC(num);
-
-        ArrayAdapter<SpinnerObject> adapter = new ArrayAdapter<>(this, R.layout.list_item, labels);
-        adapter.setDropDownViewResource(R.layout.list_item);
-        autoSearchCaste.setAdapter(adapter);
-        autoSearchCaste.setOnItemClickListener((parent, view, position, id) -> {
-            strSearchCaste = parent.getItemAtPosition(position).toString();
-            Log.d("Selected_Item", ""+strSearchCaste);
-            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            getCasteCode = sqlLiteOpenHelper_class.GetCasteCode_OBC(strSearchCaste);
-            Log.d("Selected_casteCode", ""+ getCasteCode);
-        });
-    }
-    public class GetCategory_OBC_Selected implements AdapterView.OnItemSelectedListener {
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-            Log.d("Selected Item", ""+strCategory);
-            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-            getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
-            Log.d("Category_Code", ""+ getCatCode);
-            if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-                TableApplicantCaste.setVisibility(View.VISIBLE);
-                autoSearchCaste.setVisibility(View.VISIBLE);
-                GetCaste_OBC(getCatCode);
-            }
-            else {
-                TableApplicantCaste.setVisibility(View.GONE);
-                autoSearchCaste.setVisibility(View.GONE);
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
-
     private  void buildAlertMessageGoingBack() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getString(R.string.discard_changes))
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.yes), (dialog, id) -> {
-                    RI_Field_Report_caste_income_parameters.super.onBackPressed();
-                    Intent i = new Intent(RI_Field_Report_caste_income_parameters.this, RI_Field_Report_FirstScreen.class);
+                    super.onBackPressed();
+                    Intent i = new Intent(RI_Field_Report_Caste_Certificate.this, RI_Field_Report_FirstScreen.class);
                     i.putExtra("applicant_Id", applicant_Id);
                     i.putExtra("district_Code", district_Code);
                     i.putExtra("taluk_Code", taluk_Code);
