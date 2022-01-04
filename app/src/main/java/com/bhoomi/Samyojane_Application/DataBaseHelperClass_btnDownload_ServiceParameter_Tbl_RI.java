@@ -39,11 +39,11 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
     public static String Raised_Location = "RaisedLocation";
     public static String ST_applicant_photo = "ApplicantPhoto";
     public static String ST_Eng_Certificate = "EnglishOrKannada";
-    public static String ReservationCategory = "ReservationCategory";
-    public static String Caste = "Caste";
+    public static String ReservationCategory = "ReservationCategory_VA";
+    public static String Caste = "Caste_VA";
     public static String Can_Certificate_Given = "SSAT_VA_CanbeIssued";
     public static String VA_Remarks = "SSAT_VA_Remarks";
-    public static String AnnualIncome = "AnnualIncome";
+    public static String AnnualIncome = "Income_VA";
     public static String Due_Date = "DueDate";
     public static String GST_No_Mths_Applied = "NoOfMonths_Applied";
     public static String GST_No_Years_Applied = "NoOfYears_Applied";

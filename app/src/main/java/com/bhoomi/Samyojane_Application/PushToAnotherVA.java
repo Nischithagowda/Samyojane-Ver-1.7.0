@@ -653,13 +653,12 @@ public class PushToAnotherVA extends AppCompatActivity {
 //                        int data = jsonObject.getInt("data");
 //                        Log.d("jsonObject2", "" + data);
 //                        response_server = String.valueOf(data);
-                            if (StatusMessage.equalsIgnoreCase("Updated")) {
+                            if (StatusMessage.contains("Updated")) {
                                 ser_count++;
                                 Log.d("ser_count", "" + ser_count);
                                 if (count == ser_count) {
+                                    p_dialog.dismiss();
                                     Toast.makeText(getApplicationContext(), getString(R.string.pushed_successfully), Toast.LENGTH_SHORT).show();
-                                    database.close();
-                                    database1.close();
                                     Intent i = new Intent(PushToAnotherVA.this, New_Request_FirstScreen.class);
                                     i.putExtra("applicant_Id", applicant_Id);
                                     i.putExtra("district_Code", district_Code);
@@ -684,7 +683,7 @@ public class PushToAnotherVA extends AppCompatActivity {
                                     startActivity(i);
                                     finish();
                                 }
-                            } else if (StatusMessage.equalsIgnoreCase("NOT Updated")) {
+                            } else if (StatusMessage.contains("NOT Updated")) {
                                 p_dialog.dismiss();
                                 Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
                             }
@@ -705,7 +704,8 @@ public class PushToAnotherVA extends AppCompatActivity {
                 Log.d("multipleResource",""+t.getMessage());
                 p_dialog.dismiss();
                 call.cancel();
-                //Toast.makeText(getApplicationContext(), getString(R.string.coultnt_push_the_data_pls_try_again), Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

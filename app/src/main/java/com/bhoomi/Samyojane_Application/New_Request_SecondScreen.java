@@ -820,7 +820,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         set_and_get_service_parameter.setMotherName(motherName);
         set_and_get_service_parameter.setUpd_MobileNumber(mobileNo);
         set_and_get_service_parameter.setReport_No(report_No);
-        set_and_get_service_parameter.setDifferFromAppinformation("Y");
+        set_and_get_service_parameter.setDifferFromAppinformation("N");
         set_and_get_service_parameter.setAddress1(address1);
         set_and_get_service_parameter.setAddress2(address2);
         set_and_get_service_parameter.setAddress3(address3);

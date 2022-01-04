@@ -85,7 +85,7 @@ public class New_Request_CasteCertificate_Kan extends AppCompatActivity {
     int getCatCode=0, getCasteCode=0;
     ProgressDialog dialog;
     String service_name, village_name;
-    String amount, caste_name, category_name;
+    String amount;
     boolean return_Value;
     InputMethodManager imm;
     InputMethodSubtype ims;
@@ -304,6 +304,13 @@ public class New_Request_CasteCertificate_Kan extends AppCompatActivity {
             }
         });
 
+        spCategory.setOnTouchListener((v, event) -> {
+            autoSearchCaste.setText("");
+            autoSearchCaste.setError(null);
+            autoSearchCaste.showDropDown();
+            return false;
+        });
+
         openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_CasteCertificate_Kan.this);
         database = openHelper.getWritableDatabase();
         Log.d("serviceCode", "" + serviceCode);
@@ -327,10 +334,10 @@ public class New_Request_CasteCertificate_Kan extends AppCompatActivity {
             }
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            category_name = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(getCatCode);
-            caste_name = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(getCatCode, getCasteCode);
+            strCategory = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(getCatCode);
+            strSearchCaste = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(getCatCode, getCasteCode);
 
-            Log.d("get_Value", "" + category_name + "" + caste_name);
+            Log.d("get_Value", "" + strCategory + "" + strSearchCaste);
 
             tvIncome.setText(amount);
 
@@ -340,8 +347,7 @@ public class New_Request_CasteCertificate_Kan extends AppCompatActivity {
             }
 
             spCategory.setSelection(getCatCode);
-            autoSearchCaste.setText(caste_name);
-            strSearchCaste = caste_name;
+            autoSearchCaste.setText(strSearchCaste);
         }
 
         gpsTracker = new GPSTracker(getApplicationContext(), this);
@@ -376,21 +382,14 @@ public class New_Request_CasteCertificate_Kan extends AppCompatActivity {
             Log.d("Income value", ""+strRemarks);
 
             if ("9999".equals(serviceCode)) {
-                strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-                Log.d("Selected_Item1", "" + strCategory);
-                sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                getCatCode = sqlLiteOpenHelper_class_kan.GetCategoryCode(strCategory);
-                Log.d("Category_Code1", "" + getCatCode);
                 if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-
                     strSearchCaste = autoSearchCaste.getText().toString();
                     sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
                     sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                    getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getCatCode);
-                    Log.d("Caste_Code1", "" + getCasteCode);
-
+                    getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste, getCatCode);
                 }
+                Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
                 saveService_9_and_6();
             }
 

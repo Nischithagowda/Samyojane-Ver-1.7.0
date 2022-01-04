@@ -1197,7 +1197,7 @@ public class New_Request_Kan extends AppCompatActivity{
                     + uName_get + "',"
                     + serviceCode + ","
                     + DesiCode + ","
-                    + "'N'" + "," //DifferFromAppinformation
+                    + "'Y'" + "," //DifferFromAppinformation
                     + "'Y'" + ",'" //Can_Certificate_Given
                     + remarks + "','"
                     + report_no + "','"

@@ -86,7 +86,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
     int getCatCode=0, getCasteCode=0;
     ProgressDialog dialog;
     String service_name, village_name;
-    String amount, caste_name, category_name;
+    String amount;
     boolean return_Value;
     InputMethodManager imm;
     InputMethodSubtype ims;
@@ -366,18 +366,18 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 }
                 sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                 sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                category_name = sqlLiteOpenHelper_class.GetCategory_BY_Code(getCatCode);
-                caste_name = sqlLiteOpenHelper_class.GetCaste_BY_Code(getCatCode, getCasteCode);
+                strCategory = sqlLiteOpenHelper_class.GetCategory_BY_Code(getCatCode);
+                strSearchCaste = sqlLiteOpenHelper_class.GetCaste_BY_Code(getCatCode, getCasteCode);
 
-                Log.d("get_Value", "" + category_name + "" + caste_name);
+                Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
 
                 tvIncome.setText(amount);
 
                 GetCaste(getCatCode);
 
                 spCategory.setSelection(getCatCode - 1);
-                autoSearchCaste.setText(caste_name);
-                strSearchCaste = caste_name;
+                autoSearchCaste.setText(strSearchCaste);
                 break;
             }
             case "9": {
@@ -403,18 +403,18 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 }
                 sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                 sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                category_name = "OBC (Central)";
-                caste_name = sqlLiteOpenHelper_class.GetCaste_OBC_BY_Code(getCasteCode);
+                strCategory = "OBC (Central)";
+                strSearchCaste = sqlLiteOpenHelper_class.GetCaste_OBC_BY_Code(getCasteCode);
 
-                Log.d("get_Value", "" + category_name + "" + caste_name);
+                Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
 
                 tvIncome.setText(amount);
 
                 GetCaste_OBC(getCasteCode);
 
                 spCategory.setSelection(1);
-                autoSearchCaste.setText(caste_name);
-                strSearchCaste = caste_name;
+                autoSearchCaste.setText(strSearchCaste);
                 break;
             }
             case "11":
@@ -460,12 +460,12 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
                 sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                 sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                caste_name = sqlLiteOpenHelper_class.GetCaste_BY_Code(getCatCode, getCasteCode);
+                strSearchCaste = sqlLiteOpenHelper_class.GetCaste_BY_Code(getCatCode, getCasteCode);
 
-                Log.d("get_Value", "" + "" + caste_name);
+                Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
 
-                autoSearchCaste.setText(caste_name);
-                strSearchCaste = caste_name;
+                autoSearchCaste.setText(strSearchCaste);
                 GetCaste_EWS();
                 tvIncome.setText(amount);
                 break;
@@ -522,41 +522,25 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
 
             switch (serviceCode) {
                 case "6":
-
-                    strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-                    Log.d("Selected_Item1", "" + strCategory);
-                    sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                    sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                    getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
-                    Log.d("Category_Code1", "" + getCatCode);
                     if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-
-                        String caste_name = autoSearchCaste.getText().toString();
+                        strSearchCaste = autoSearchCaste.getText().toString();
                         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                         sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                        getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getCatCode);
-                        Log.d("Caste_Code1", "" + getCasteCode);
-
+                        getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchCaste, getCatCode);
                     }
+                    Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                    Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
                     saveService_9_and_6();
                     break;
                 case "9":
-
-                    strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-                    Log.d("Selected Item", "" + strCategory);
-                    sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                    sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                    getCatCode = sqlLiteOpenHelper_class.GetCategoryCode(strCategory);
-                    Log.d("Category_Code1", "" + getCatCode);
                     if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-
-                        String caste_name = autoSearchCaste.getText().toString();
+                        strSearchCaste = autoSearchCaste.getText().toString();
                         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                         sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                        getCasteCode = sqlLiteOpenHelper_class.GetCasteCode_OBC(caste_name);
-                        Log.d("Caste_Code1", "" + getCasteCode);
-
+                        getCasteCode = sqlLiteOpenHelper_class.GetCasteCode_OBC(strSearchCaste);
                     }
+                    Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                    Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
                     saveService_9_and_6();
                     break;
                 case "11":
@@ -565,11 +549,12 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                     saveService_11_34_and_37();
                     break;
                 case "43":
-                    String caste_name = autoSearchCaste.getText().toString();
+                    strSearchCaste = autoSearchCaste.getText().toString();
                     sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                     sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                    getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getCatCode);
-                    Log.d("Caste_Code1", "" + getCasteCode);
+                    getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchCaste, getCatCode);
+                    Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                    Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
                     saveService_43();
                     break;
             }
@@ -1112,8 +1097,6 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
             Log.d("Category_Code1", ""+ getCatCode);
             if (!strCategory.equals(getString(R.string.select_category_spinner))) {
                 autoSearchCaste.setVisibility(View.VISIBLE);
-                autoSearchCaste.setText("");
-                getCasteCode = 0;
                 GetCaste(getCatCode);
             }
             else {

@@ -678,9 +678,9 @@ public class RI_Field_Report_Caste_Certificate extends AppCompatActivity {
         String currDate = dateFormat.format(date);
 
         if(option2.equals(getString(R.string.no))){
-            option2="Y";
+            option2="N";
         }else if (option2.equals(getString(R.string.yes))){
-            option2 = "N";
+            option2 = "Y";
         }
 
         if(option3.equals(getString(R.string.no))){
@@ -761,9 +761,9 @@ public class RI_Field_Report_Caste_Certificate extends AppCompatActivity {
         String currDate = dateFormat.format(date);
 
         if(option2.equals(getString(R.string.no))){
-            option2="Y";
+            option2="N";
         }else if (option2.equals(getString(R.string.yes))){
-            option2 = "N";
+            option2 = "Y";
         }
 
         if(option3.equals(getString(R.string.no))){

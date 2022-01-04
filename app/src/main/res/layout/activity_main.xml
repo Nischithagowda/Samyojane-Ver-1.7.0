@@ -131,14 +131,14 @@
                 android:id="@+id/userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:ems="10"
-                android:textColorHint="@color/grey"
                 android:hint="@string/enter_your_username"
                 android:inputType="textPersonName"
+                android:text="rakeshva"
                 android:textColor="@android:color/black"
-                tools:ignore="Autofill"
-                android:layout_weight="1"
-                android:text="madhurva"/>
+                android:textColorHint="@color/grey"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/pwd"
