@@ -367,32 +367,35 @@ public class New_Request_CasteCertificate_Kan extends AppCompatActivity {
         });
 
         btnSave.setOnClickListener(v -> {
-
-            if (gpsTracker.canGetLocation()) {
-                latitude = gpsTracker.getLatitude();
-                longitude = gpsTracker.getLongitude();
-                Log.d("Location", ""+latitude+""+longitude);
-            } else {
-                //gpsTracker.showSettingsAlert();
-                Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
-            }
-
-            strIncome = tvIncome.getText().toString();
-            strRemarks = tvRemarks.getText().toString();
-            Log.d("Income value", ""+strRemarks);
-
-            if ("9999".equals(serviceCode)) {
-                if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-                    strSearchCaste = autoSearchCaste.getText().toString();
-                    sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                    sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                    getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste, getCatCode);
+            try {
+                if (gpsTracker.canGetLocation()) {
+                    latitude = gpsTracker.getLatitude();
+                    longitude = gpsTracker.getLongitude();
+                    Log.d("Location", "" + latitude + "" + longitude);
+                } else {
+                    //gpsTracker.showSettingsAlert();
+                    Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
                 }
-                Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
-                Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
-                saveService_9_and_6();
-            }
 
+                strIncome = tvIncome.getText().toString();
+                strRemarks = tvRemarks.getText().toString();
+                Log.d("Income value", "" + strRemarks);
+
+                if ("9999".equals(serviceCode)) {
+                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                        strSearchCaste = autoSearchCaste.getText().toString();
+                        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+                        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+                        getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste, getCatCode);
+                    }
+                    Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                    Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
+                    saveService_9_and_6();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
 
         btnBack.setOnClickListener(v -> onBackPressed());

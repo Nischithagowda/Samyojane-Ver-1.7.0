@@ -394,7 +394,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 if (cursor.getCount() > 0) {
                     if (cursor.moveToFirst()) {
                         getCatCode = 9;
-                        getCasteCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+                        getCasteCode = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_caste_app));
                         amount = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
                         Log.d("value1", "" + getCatCode + " " + getCasteCode + " " + amount);
                     }
@@ -506,57 +506,61 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
         });
         btnSave.setOnClickListener(v -> {
+            try {
+                if (gpsTracker.canGetLocation()) {
+                    latitude = gpsTracker.getLatitude();
+                    longitude = gpsTracker.getLongitude();
+                    Log.d("Location", "" + latitude + "" + longitude);
+                } else {
+                    //gpsTracker.showSettingsAlert();
+                    Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
+                }
 
-            if (gpsTracker.canGetLocation()) {
-                latitude = gpsTracker.getLatitude();
-                longitude = gpsTracker.getLongitude();
-                Log.d("Location", ""+latitude+""+longitude);
-            } else {
-                //gpsTracker.showSettingsAlert();
-                Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
-            }
+                strIncome = tvIncome.getText().toString();
+                strRemarks = tvRemarks.getText().toString();
+                Log.d("Income value", "" + strRemarks);
 
-            strIncome = tvIncome.getText().toString();
-            strRemarks = tvRemarks.getText().toString();
-            Log.d("Income value", ""+strRemarks);
-
-            switch (serviceCode) {
-                case "6":
-                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                switch (serviceCode) {
+                    case "6":
+                        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                            strSearchCaste = autoSearchCaste.getText().toString();
+                            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                            getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchCaste, getCatCode);
+                        }
+                        Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                        Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
+                        saveService_9_and_6();
+                        break;
+                    case "9":
+                        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                            strSearchCaste = autoSearchCaste.getText().toString();
+                            sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                            sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                            getCasteCode = sqlLiteOpenHelper_class.GetCasteCode_OBC(strSearchCaste);
+                        }
+                        Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                        Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
+                        saveService_9_and_6();
+                        break;
+                    case "11":
+                    case "34":
+                    case "37":
+                        saveService_11_34_and_37();
+                        break;
+                    case "43":
                         strSearchCaste = autoSearchCaste.getText().toString();
                         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
                         sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
                         getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchCaste, getCatCode);
-                    }
-                    Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
-                    Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
-                    saveService_9_and_6();
-                    break;
-                case "9":
-                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-                        strSearchCaste = autoSearchCaste.getText().toString();
-                        sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                        sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                        getCasteCode = sqlLiteOpenHelper_class.GetCasteCode_OBC(strSearchCaste);
-                    }
-                    Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
-                    Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
-                    saveService_9_and_6();
-                    break;
-                case "11":
-                case "34":
-                case "37":
-                    saveService_11_34_and_37();
-                    break;
-                case "43":
-                    strSearchCaste = autoSearchCaste.getText().toString();
-                    sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                    sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                    getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(strSearchCaste, getCatCode);
-                    Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
-                    Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
-                    saveService_43();
-                    break;
+                        Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                        Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
+                        saveService_43();
+                        break;
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -569,7 +573,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                 if (getCasteCode != 0) {
                     if (option.equals(getString(R.string.no))) {
                         if (!strReason.equals(getString(R.string.reason_spinner))) {
-                            if (TextUtils.isEmpty(strIncome)) {
+                            if (TextUtils.isEmpty(strIncome) || strIncome == null) {
                                 tvIncome.setError(getString(R.string.field_canno_null));
                             } else {
                                 income_len = strIncome.length();
@@ -591,7 +595,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                             Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        if (TextUtils.isEmpty(strIncome)) {
+                        if (TextUtils.isEmpty(strIncome) || strIncome == null) {
                             tvIncome.setError(getString(R.string.field_canno_null));
                         } else {
 
@@ -638,7 +642,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
         if(latitude!=0.0 && longitude!=0.0) {
             if (option.equals(getString(R.string.no))) {
                 if (!strReason.equals(getString(R.string.reason_spinner))) {
-                    if (TextUtils.isEmpty(strIncome)) {
+                    if (TextUtils.isEmpty(strIncome) || strIncome == null) {
                         tvIncome.setError(getString(R.string.field_canno_null));
                     } else {
                         income_len = strIncome.length();
@@ -660,7 +664,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                     Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
                 }
             } else {
-                if (TextUtils.isEmpty(strIncome)) {
+                if (TextUtils.isEmpty(strIncome) || strIncome == null) {
                     tvIncome.setError(getString(R.string.field_canno_null));
                 } else {
 
@@ -705,7 +709,7 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                     if (getCasteCode != 0) {
                         if (option.equals(getString(R.string.no))) {
                             if (!strReason.equals(getString(R.string.reason_spinner))) {
-                                if (TextUtils.isEmpty(strIncome)) {
+                                if (TextUtils.isEmpty(strIncome) || strIncome == null) {
                                     tvIncome.setError(getString(R.string.field_canno_null));
                                 } else {
                                     income_len = strIncome.length();
@@ -727,10 +731,9 @@ public class New_Request_Caste_Income_Parameters extends AppCompatActivity{
                                 Toast.makeText(getApplicationContext(), getString(R.string.select_reason), Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            if (TextUtils.isEmpty(strIncome)) {
+                            if (TextUtils.isEmpty(strIncome) || strIncome == null) {
                                 tvIncome.setError(getString(R.string.field_canno_null));
                             } else {
-
                                 income_len = strIncome.length();
                                 income_Value = Integer.parseInt(strIncome);
                                 Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);

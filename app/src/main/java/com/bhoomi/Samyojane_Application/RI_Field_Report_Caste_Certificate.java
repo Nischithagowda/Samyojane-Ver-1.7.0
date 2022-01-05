@@ -575,96 +575,99 @@ public class RI_Field_Report_Caste_Certificate extends AppCompatActivity {
         });
 
         btnSave.setOnClickListener(v -> {
+            try {
+                if (gpsTracker.canGetLocation()) {
+                    latitude = gpsTracker.getLatitude();
+                    longitude = gpsTracker.getLongitude();
+                    Log.d("Location", latitude + "" + longitude);
+                } else {
+                    //gpsTracker.showSettingsAlert();
+                    Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
+                }
 
-            if (gpsTracker.canGetLocation()) {
-                latitude = gpsTracker.getLatitude();
-                longitude = gpsTracker.getLongitude();
-                Log.d("Location", latitude+""+longitude);
-            } else {
-                //gpsTracker.showSettingsAlert();
-                Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
-            }
+                strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
+                Log.d("Selected_Item1", "" + strCategory);
+                Log.d("Category_Code1", "" + getCatCode);
+                if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                    String caste_name = autoSearchCaste.getText().toString();
+                    sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
+                    sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
+                    getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getCatCode);
+                    Log.d("Caste_Code1", "" + getCasteCode);
+                }
 
-            strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-            Log.d("Selected_Item1", ""+strCategory);
-            Log.d("Category_Code1", ""+ getCatCode);
-            if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-                String caste_name = autoSearchCaste.getText().toString();
-                sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class();
-                sqlLiteOpenHelper_class.open_Cat_Caste_Tbl();
-                getCasteCode = sqlLiteOpenHelper_class.GetCasteCode(caste_name, getCatCode);
-                Log.d("Caste_Code1",""+getCasteCode);
-            }
-
-            if(latitude!=0.0 && longitude!=0.0) {
-                if (option2.equals(getString(R.string.no))){
-                    strIncome = tvIncome.getText().toString();
-                    strRemarks = tvRemarks.getText().toString();
-                    Log.d("Income value", ""+strRemarks);
-                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-                        if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
-                            if (getCasteCode!=0) {
-                                if (TextUtils.isEmpty(strIncome)) {
-                                    tvIncome.setError(getString(R.string.field_canno_null));
-                                } else {
-
-                                    income_len = strIncome.length();
-                                    income_Value = Integer.parseInt(strIncome);
-                                    Log.d("Income value", ""+strIncome+", Length: "+income_len+", Value: "+ income_Value);
-
-                                    if (income_len >= 4 && income_Value>=1000) {
-                                        if (TextUtils.isEmpty(strRemarks)) {
-                                            tvRemarks.setError(getString(R.string.field_canno_null));
-                                        } else {
-                                            StoreData_in_DB_When_Wrong();
-                                        }
+                if (latitude != 0.0 && longitude != 0.0) {
+                    if (option2.equals(getString(R.string.no))) {
+                        strIncome = tvIncome.getText().toString();
+                        strRemarks = tvRemarks.getText().toString();
+                        Log.d("Income value", "" + strRemarks);
+                        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                            if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
+                                if (getCasteCode != 0) {
+                                    if (TextUtils.isEmpty(strIncome)) {
+                                        tvIncome.setError(getString(R.string.field_canno_null));
                                     } else {
-                                        tvIncome.setError(getString(R.string.incorrect_value));
+
+                                        income_len = strIncome.length();
+                                        income_Value = Integer.parseInt(strIncome);
+                                        Log.d("Income value", "" + strIncome + ", Length: " + income_len + ", Value: " + income_Value);
+
+                                        if (income_len >= 4 && income_Value >= 1000) {
+                                            if (TextUtils.isEmpty(strRemarks)) {
+                                                tvRemarks.setError(getString(R.string.field_canno_null));
+                                            } else {
+                                                StoreData_in_DB_When_Wrong();
+                                            }
+                                        } else {
+                                            tvIncome.setError(getString(R.string.incorrect_value));
+                                        }
                                     }
+                                } else {
+                                    autoSearchCaste.setError(getString(R.string.invalid_caste));
                                 }
-                            }else {
-                                autoSearchCaste.setError(getString(R.string.invalid_caste));
-                            }
-                        } else {
-                            autoSearchCaste.setError(getString(R.string.select_caste));
-                        }
-                    } else {
-                        ((TextView) spCategory.getSelectedView()).setError(getString(R.string.select_category));
-                        Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else {
-                    if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-                        if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
-                            if (getCasteCode != 0) {
-                                StoreData_in_DB_When_Correct();
                             } else {
-                            autoSearchCaste.setError(getString(R.string.invalid_caste));
+                                autoSearchCaste.setError(getString(R.string.select_caste));
                             }
                         } else {
-                        autoSearchCaste.setError(getString(R.string.select_caste));
+                            ((TextView) spCategory.getSelectedView()).setError(getString(R.string.select_category));
+                            Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                    ((TextView) spCategory.getSelectedView()).setError(getString(R.string.select_category));
-                    Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+                        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                            if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
+                                if (getCasteCode != 0) {
+                                    StoreData_in_DB_When_Correct();
+                                } else {
+                                    autoSearchCaste.setError(getString(R.string.invalid_caste));
+                                }
+                            } else {
+                                autoSearchCaste.setError(getString(R.string.select_caste));
+                            }
+                        } else {
+                            ((TextView) spCategory.getSelectedView()).setError(getString(R.string.select_category));
+                            Toast.makeText(getApplicationContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            } else {
-                runOnUiThread(() -> {
+                } else {
+                    runOnUiThread(() -> {
 
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(RI_Field_Report_Caste_Certificate.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.alert));
-                    dialog.setMessage(getString(R.string.cannot_get_location) );
-                    dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
-                        //Action for "Cancel".
-                        dialog1.cancel();
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RI_Field_Report_Caste_Certificate.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle(getString(R.string.alert));
+                        dialog.setMessage(getString(R.string.cannot_get_location));
+                        dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
+                            //Action for "Cancel".
+                            dialog1.cancel();
+                        });
+
+                        final AlertDialog alert = dialog.create();
+                        alert.show();
                     });
-
-                    final AlertDialog alert = dialog.create();
-                    alert.show();
-                });
-                //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

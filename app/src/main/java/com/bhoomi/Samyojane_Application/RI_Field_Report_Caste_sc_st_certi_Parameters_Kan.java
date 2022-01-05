@@ -768,49 +768,51 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters_Kan extends AppCompatA
 
 
         btnSave.setOnClickListener(v -> {
+            try {
+                if (gpsTracker.canGetLocation()) {
+                    latitude = gpsTracker.getLatitude();
+                    longitude = gpsTracker.getLongitude();
+                    Log.d("Location", latitude + "" + longitude);
+                } else {
+                    //gpsTracker.showSettingsAlert();
+                    Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
+                }
 
-            if (gpsTracker.canGetLocation()) {
-                latitude = gpsTracker.getLatitude();
-                longitude = gpsTracker.getLongitude();
-                Log.d("Location", latitude+""+longitude);
-            } else {
-                //gpsTracker.showSettingsAlert();
-                Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
-            }
+                if (latitude != 0.0 && longitude != 0.0) {
+                    if (option2.equals(getString(R.string.no))) {
 
-            if(latitude!=0.0 && longitude!=0.0) {
-                if(option2.equals(getString(R.string.no))){
+                        strIncome = tvIncome.getText().toString();
+                        strRemarks = tvRemarks.getText().toString();
+                        Log.d("Income value", "" + strRemarks);
 
-                    strIncome = tvIncome.getText().toString();
-                    strRemarks = tvRemarks.getText().toString();
-                    Log.d("Income value", ""+strRemarks);
-
-                    if (serviceCode.equals("7") || serviceCode.equals("8")){
-                        saveService_7_and_8();
-                    } else if(serviceCode.equals("42")){
-                        saveService_42();
+                        if (serviceCode.equals("7") || serviceCode.equals("8")) {
+                            saveService_7_and_8();
+                        } else if (serviceCode.equals("42")) {
+                            saveService_42();
+                        }
+                    } else {
+                        StoreData_in_DB_When_Correct();
                     }
-                }
-                else {
-                    StoreData_in_DB_When_Correct();
-                }
-            }
-            else {
-                runOnUiThread(() -> {
+                } else {
+                    runOnUiThread(() -> {
 
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.alert));
-                    dialog.setMessage(getString(R.string.cannot_get_location) );
-                    dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
-                        //Action for "Cancel".
-                        dialog1.cancel();
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RI_Field_Report_Caste_sc_st_certi_Parameters_Kan.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle(getString(R.string.alert));
+                        dialog.setMessage(getString(R.string.cannot_get_location));
+                        dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
+                            //Action for "Cancel".
+                            dialog1.cancel();
+                        });
+
+                        final AlertDialog alert = dialog.create();
+                        alert.show();
                     });
-
-                    final AlertDialog alert = dialog.create();
-                    alert.show();
-                });
-                //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

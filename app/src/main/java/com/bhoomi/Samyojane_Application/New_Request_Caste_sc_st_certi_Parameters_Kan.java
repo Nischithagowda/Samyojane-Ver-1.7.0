@@ -481,23 +481,27 @@ public class New_Request_Caste_sc_st_certi_Parameters_Kan extends AppCompatActiv
 //        });
 
         btnSave.setOnClickListener(v -> {
+            try {
+                if (gpsTracker.canGetLocation()) {
+                    latitude = gpsTracker.getLatitude();
+                    longitude = gpsTracker.getLongitude();
+                    Log.d("Location", latitude + "" + longitude);
+                } else {
+                    //gpsTracker.showSettingsAlert();
+                    Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
+                }
+                strIncome = tvIncome.getText().toString();
+                strRemarks = tvRemarks.getText().toString();
+                Log.d("Income_value", "" + strIncome + ", strRemarks: " + strRemarks);
 
-            if (gpsTracker.canGetLocation()) {
-                latitude = gpsTracker.getLatitude();
-                longitude = gpsTracker.getLongitude();
-                Log.d("Location", latitude+""+longitude);
-            } else {
-                //gpsTracker.showSettingsAlert();
-                Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
-            }
-            strIncome = tvIncome.getText().toString();
-            strRemarks = tvRemarks.getText().toString();
-            Log.d("Income_value", ""+strIncome+", strRemarks: "+strRemarks);
-
-            if (serviceCode == 7 || serviceCode == 8){
-                saveService7_and_8();
-            } else if (serviceCode == 42){
-                saveService42();
+                if (serviceCode == 7 || serviceCode == 8) {
+                    saveService7_and_8();
+                } else if (serviceCode == 42) {
+                    saveService42();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -27,7 +27,6 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -88,7 +87,7 @@ public class New_Request_Kan extends AppCompatActivity{
     TextView txt1, txt2,txt3, txt4, txt5, txt6, txt7, txt8, txt9, tv_IDName;
     SqlLiteOpenHelper_Class_Kan sqlLiteOpenHelper_class_kan;
     SQLiteAssetHelper_Masters sqLiteAssetHelper_masters;
-    String amount, caste_code, caste_name, category_code, category_name;
+    String amount, caste_name, category_name;
     TableRow Service6, Service67, Service678, trService10, Service10, trCatService9999, tr_casteService9999;
     TextView tvHobli, tvTaluk, tvVA_Name, tvServiceName;
     String district, taluk, hobli, VA_IMEI, VA_Name,VA_Circle_Name, applicant_Id, rationCardNo, aadharNo, mobileNo, address1;
@@ -596,18 +595,18 @@ public class New_Request_Kan extends AppCompatActivity{
                             + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
                     if (cursor2.getCount() > 0) {
                         if (cursor2.moveToFirst()) {
-                            category_code = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
-                            caste_code = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+                            getCatCode = cursor2.getInt(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
+                            getCasteCode = cursor2.getInt(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
                             amount = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
-                            Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
+                            Log.d("value1", "" + getCatCode + " " + getCasteCode + " " + amount);
                         }
                     } else {
                         cursor2.close();
                     }
                     sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
                     sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                    category_name = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(Integer.parseInt(category_code));
-                    caste_name = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(Integer.parseInt(category_code), Integer.parseInt(caste_code));
+                    category_name = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(getCatCode);
+                    caste_name = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(getCatCode, getCasteCode);
 
                     Log.d("get_Value", "" + category_name + "" + caste_name);
                     tvCategory.setText(category_name);
@@ -650,10 +649,10 @@ public class New_Request_Kan extends AppCompatActivity{
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
                 if (cursor4.getCount() > 0) {
                     if (cursor4.moveToFirst()) {
-                        category_code = "9";
-                        caste_code = cursor4.getString(cursor4.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+                        getCatCode = 9;
+                        getCasteCode = cursor4.getInt(cursor4.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_caste_app));
                         amount = cursor4.getString(cursor4.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
-                        Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
+                        Log.d("value1", "" + getCatCode + " " + getCasteCode + " " + amount);
                     }
                 } else {
                     cursor4.close();
@@ -662,7 +661,7 @@ public class New_Request_Kan extends AppCompatActivity{
                 sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
                 sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
                 category_name = "OBC (Central)";
-                caste_name = sqlLiteOpenHelper_class_kan.GetCaste_OBC_BY_Code(Integer.parseInt(caste_code));
+                caste_name = sqlLiteOpenHelper_class_kan.GetCaste_OBC_BY_Code(getCasteCode);
 
                 Log.d("get_Value", "" + category_name + "" + caste_name);
                 tvCategory.setText(category_name);
@@ -686,11 +685,11 @@ public class New_Request_Kan extends AppCompatActivity{
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
                 if (cursor5.getCount() > 0) {
                     if (cursor5.moveToFirst()) {
-                        category_code = cursor5.getString(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
-                        caste_code = cursor5.getString(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+                        getCatCode = cursor5.getInt(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
+                        getCasteCode = cursor5.getInt(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
                         amount = cursor5.getString(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
                         appImage = cursor5.getString(cursor5.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
-                        Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
+                        Log.d("value1", "" + getCatCode + " " + getCasteCode + " " + amount);
                     }
                 } else {
                     cursor5.close();
@@ -707,8 +706,8 @@ public class New_Request_Kan extends AppCompatActivity{
 
                 sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
                 sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                category_name = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(Integer.parseInt(category_code));
-                caste_name = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(Integer.parseInt(category_code), Integer.parseInt(caste_code));
+                category_name = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(getCatCode);
+                caste_name = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(getCatCode, getCasteCode);
 
                 Log.d("get_Value", "" + category_name + "" + caste_name);
                 tvCategory.setText(category_name);
@@ -739,11 +738,11 @@ public class New_Request_Kan extends AppCompatActivity{
                         + DataBaseHelperClass_btnDownload_ServiceTranTable.GSCNo + "='" + applicant_Id + "'", null);
                 if (cursor2.getCount() > 0) {
                     if (cursor2.moveToFirst()) {
-                        category_code = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
-                        caste_code = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
+                        getCatCode = cursor2.getInt(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
+                        getCasteCode = cursor2.getInt(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
                         amount = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
                         appImage = cursor2.getString(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.ST_applicant_photo));
-                        Log.d("value1", "" + category_code + " " + caste_code + " " + amount);
+                        Log.d("value1", "" + getCatCode + " " + getCasteCode + " " + amount);
                     }
                 } else {
                     cursor2.close();
@@ -765,8 +764,8 @@ public class New_Request_Kan extends AppCompatActivity{
                 }
                 sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
                 sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                category_name = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(Integer.parseInt(category_code));
-                caste_name = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(Integer.parseInt(category_code), Integer.parseInt(caste_code));
+                category_name = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(getCatCode);
+                caste_name = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(getCatCode, getCasteCode);
 
                 Log.d("get_Value", "" + category_name + "" + caste_name);
                 tvCategory.setText(category_name);
@@ -987,10 +986,8 @@ public class New_Request_Kan extends AppCompatActivity{
                         Log.d("Cat_Code1", "" + getCatCode);
                         Log.d("Caste_Code1", "" + getCasteCode);
                         if (getCatCode!=0) {
-                            category_code = String.valueOf(getCatCode);
                             if (!strSearchCaste.equals(getString(R.string.select_caste_spinner))) {
                                 if (getCasteCode != 0) {
-                                    caste_code = String.valueOf(getCasteCode);
                                     if (Objects.equals(optionA, getString(R.string.yes))) {
                                         if (TextUtils.isEmpty(remarks)) {
                                             tvRemarks.setError(getString(R.string.field_canno_null));
@@ -1212,8 +1209,8 @@ public class New_Request_Kan extends AppCompatActivity{
                     + address2 + "','"
                     + address3 + "',"
                     + add_pin + ","
-                    + category_code + ","
-                    + caste_code + ","
+                    + getCatCode + ","
+                    + getCasteCode + ","
                     + "0" + ",'"//CasteSl
                     + amount + "',"
                     + year + ","

@@ -360,51 +360,54 @@ public class New_Request_Resident_Parameters_Kan extends AppCompatActivity {
         });
 
         btnSave.setOnClickListener(v -> {
+            try {
+                strYear = etYear.getText().toString();
 
-            strYear = etYear.getText().toString();
+                strRemarks = tvRemarks.getText().toString();
+                Log.d("Income value", "" + strRemarks);
 
-            strRemarks = tvRemarks.getText().toString();
-            Log.d("Income value", ""+strRemarks);
-
-            if (gpsTracker.canGetLocation()) {
-                latitude = gpsTracker.getLatitude();
-                longitude = gpsTracker.getLongitude();
-                Log.d("Location", latitude+""+longitude);
-            } else {
-                //gpsTracker.showSettingsAlert();
-                Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
-            }
-            if(latitude!=0.0 && longitude!=0.0) {
-                if(!TextUtils.isEmpty(strYear) && Integer.parseInt(strYear)<=129) {
-                    if(!strMonth.equals(getString(R.string.month_spinner))) {
-                        if (TextUtils.isEmpty(strRemarks)) {
-                            tvRemarks.setError(getString(R.string.field_canno_null));
+                if (gpsTracker.canGetLocation()) {
+                    latitude = gpsTracker.getLatitude();
+                    longitude = gpsTracker.getLongitude();
+                    Log.d("Location", latitude + "" + longitude);
+                } else {
+                    //gpsTracker.showSettingsAlert();
+                    Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
+                }
+                if (latitude != 0.0 && longitude != 0.0) {
+                    if (!TextUtils.isEmpty(strYear) && Integer.parseInt(strYear) <= 129) {
+                        if (!strMonth.equals(getString(R.string.month_spinner))) {
+                            if (TextUtils.isEmpty(strRemarks)) {
+                                tvRemarks.setError(getString(R.string.field_canno_null));
+                            } else {
+                                StoreData_in_DB();
+                            }
                         } else {
-                            StoreData_in_DB();
+                            ((TextView) spMonth.getSelectedView()).setError(getString(R.string.select_month));
                         }
-                    }else {
-                        ((TextView) spMonth.getSelectedView()).setError(getString(R.string.select_month));
+                    } else {
+                        etYear.setError(getString(R.string.incorrect_value));
                     }
                 } else {
-                    etYear.setError(getString(R.string.incorrect_value));
-                }
-            }
-            else {
-                runOnUiThread(() -> {
+                    runOnUiThread(() -> {
 
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_Resident_Parameters_Kan.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.alert));
-                    dialog.setMessage(getString(R.string.cannot_get_location) );
-                    dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
-                        //Action for "Cancel".
-                        dialog1.cancel();
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(New_Request_Resident_Parameters_Kan.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle(getString(R.string.alert));
+                        dialog.setMessage(getString(R.string.cannot_get_location));
+                        dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
+                            //Action for "Cancel".
+                            dialog1.cancel();
+                        });
+
+                        final AlertDialog alert = dialog.create();
+                        alert.show();
                     });
-
-                    final AlertDialog alert = dialog.create();
-                    alert.show();
-                });
-                //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

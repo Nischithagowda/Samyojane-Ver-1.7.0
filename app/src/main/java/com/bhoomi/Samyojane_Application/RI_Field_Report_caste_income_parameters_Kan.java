@@ -76,12 +76,13 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
     String village_name, service_name;
     String serviceCode, habitationCode, town_Name, ward_Name, option_Flag;
     TextView txt_raiseLoc, title, RI_Recommendation, ApplicantID, ApplicantName, txt_add1, txt_add2, txt_add3, txt_add_Pin, ApplicantCategory, ApplicantCaste, AnnualIncome, ReservationGiven, Remarks;
-    String appID, appName, address1, address2, address3, add_pin, appCategory, appCaste, appAnnualIncome, appReservationGiven, remarks;
+    String appID, appName, address1, address2, address3, add_pin, appAnnualIncome, appReservationGiven, remarks;
+    int appCategory, appCaste;
     int appTitle_Code, binCom_Code, fatTitle_Code;
     SQLiteOpenHelper openHelper;
     SQLiteDatabase database;
     SqlLiteOpenHelper_Class_Kan sqlLiteOpenHelper_class_kan;
-    String getCategory, getCaste;
+    String CategoryName, CasteName;
     RadioGroup radioGroup, radioGroup2, radioGroup3;
     RadioButton radioButton1, radioButton11, radioButton2, radioButton22, radioButton3, radioButton33;
     String option, option2, option3;
@@ -407,8 +408,8 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
                 appTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ApplicantTiitle));
                 binCom_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.BinCom));
                 fatTitle_Code = cursor.getInt(cursor.getColumnIndex(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.RelationTitle));
-                appCategory = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
-                appCaste = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
+                appCategory = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
+                appCaste = cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
                 appAnnualIncome = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
                 appReservationGiven = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
                 remarks = cursor.getString(cursor.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Remarks));
@@ -460,15 +461,29 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         dialog.setProgress(1);
 
         if(serviceCode.equals("9")){
+            Cursor cursor2 = database.rawQuery("select * from "+ DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME+" where "
+                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.GSCNo+"='"+applicant_Id+"'", null);
+            if(cursor2.getCount()>0){
+                if(cursor2.moveToFirst()){
+                    appCategory = 9;
+                    appCaste = cursor2.getInt(cursor2.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.SCOT_caste_app));
+                }
+            } else {
+                cursor2.close();
+            }
+            database.execSQL("update " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.TABLE_NAME_1 + " set "
+                    + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_Applicant_Caste + "="+appCaste
+                    + " where " + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.UPD_GSCNo + "='" + applicant_Id + "'");
+
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            getCategory = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(Integer.parseInt(appCategory));
-            getCaste = sqlLiteOpenHelper_class_kan.GetCaste_OBC_BY_Code(Integer.parseInt(appCaste));
+            CategoryName = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(appCategory);
+            CasteName = sqlLiteOpenHelper_class_kan.GetCaste_OBC_BY_Code(appCaste);
         } else {
             sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
             sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-            getCategory = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(Integer.parseInt(appCategory));
-            getCaste = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(Integer.parseInt(appCategory), Integer.parseInt(appCaste));
+            CategoryName = sqlLiteOpenHelper_class_kan.GetCategory_BY_Code(appCategory);
+            CasteName = sqlLiteOpenHelper_class_kan.GetCaste_BY_Code(appCategory, appCaste);
         }
 
         ApplicantID.setText(applicant_Id);
@@ -477,8 +492,8 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
         txt_add2.setText(address2);
         txt_add3.setText(address3);
         txt_add_Pin.setText(add_pin);
-        ApplicantCategory.setText(getCategory);
-        ApplicantCaste.setText(getCaste);
+        ApplicantCategory.setText(CategoryName);
+        ApplicantCaste.setText(CasteName);
         AnnualIncome.setText(appAnnualIncome);
         ReservationGiven.setText(appReservationGiven);
         Remarks.setText(remarks);
@@ -698,100 +713,80 @@ public class RI_Field_Report_caste_income_parameters_Kan  extends AppCompatActiv
 
 
         btnSave.setOnClickListener(v -> {
+            try {
+                if (gpsTracker.canGetLocation()) {
+                    latitude = gpsTracker.getLatitude();
+                    longitude = gpsTracker.getLongitude();
+                    Log.d("Location", latitude + "" + longitude);
+                } else {
+                    //gpsTracker.showSettingsAlert();
+                    Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
+                }
 
-            if (gpsTracker.canGetLocation()) {
-                latitude = gpsTracker.getLatitude();
-                longitude = gpsTracker.getLongitude();
-                Log.d("Location", latitude+""+longitude);
-            } else {
-                //gpsTracker.showSettingsAlert();
-                Toast.makeText(getApplicationContext(), getString(R.string.switch_on_gps), Toast.LENGTH_SHORT).show();
-            }
+                if (latitude != 0.0 && longitude != 0.0) {
 
-            if(latitude!=0.0 && longitude!=0.0) {
+                    if (option2.equals(getString(R.string.no))) {
 
-                if (option2.equals(getString(R.string.no))){
+                        strIncome = tvIncome.getText().toString();
+                        strRemarks = tvRemarks.getText().toString();
+                        Log.d("Income value", "" + strRemarks);
 
-                    strIncome = tvIncome.getText().toString();
-                    strRemarks = tvRemarks.getText().toString();
-                    Log.d("Income value", ""+strRemarks);
-
-                    if(Objects.equals(serviceCode, "6")){
-
-                        strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-                        Log.d("Selected_Item1", ""+strCategory);
-                        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                        getCatCode = sqlLiteOpenHelper_class_kan.GetCategoryCode(strCategory);
-                        Log.d("Category_Code1", ""+ getCatCode);
-                        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-
-                            String caste_name = autoSearchCaste.getText().toString();
-                            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getCatCode);
-                            Log.d("Caste_Code1",""+getCasteCode);
-
+                        if (Objects.equals(serviceCode, "6")) {
+                            if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                                strSearchCaste = autoSearchCaste.getText().toString();
+                                sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+                                sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+                                getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste, getCatCode);
+                            }
+                            Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                            Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
+                            saveService_6_and_9();
+                        } else if (Objects.equals(serviceCode, "9")) {
+                            if (!strCategory.equals(getString(R.string.select_category_spinner))) {
+                                strSearchCaste = autoSearchCaste.getText().toString();
+                                sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+                                sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+                                getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode_OBC(strSearchCaste);
+                            }
+                            Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                            Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
+                            saveService_6_and_9();
+                        } else if (serviceCode.equals("43")) {
+                            strSearchCaste = autoSearchCaste.getText().toString();
+                            if (!strSearchCaste.equals(getString(R.string.select_caste_spinner)) || !strSearchCaste.isEmpty()) {
+                                sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
+                                sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
+                                getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(strSearchCaste, getCatCode);
+                            }
+                            Log.d("casteCategoryCode", "" + getCatCode + ", " + getCasteCode);
+                            Log.d("casteCategoryName", "" + strCategory + ", " + strSearchCaste);
+                            saveService_43();
+                        } else if (serviceCode.equals("11") || serviceCode.equals("34") || serviceCode.equals("37")) {
+                            saveService_11_34_and_37();
                         }
-
-                        saveService_6_and_9();
-
-                    }else if(Objects.equals(serviceCode, "9")) {
-
-                        strCategory = ((SpinnerObject) spCategory.getSelectedItem()).getValue();
-                        Log.d("Selected Item", ""+strCategory);
-                        sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                        sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                        getCatCode = sqlLiteOpenHelper_class_kan.GetCategoryCode(strCategory);
-                        Log.d("Category_Code1", ""+ getCatCode);
-                        if (!strCategory.equals(getString(R.string.select_category_spinner))) {
-
-                            String caste_name = autoSearchCaste.getText().toString();
-                            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode_OBC(caste_name);
-                            Log.d("Caste_Code1",""+getCasteCode);
-
-                        }
-                        Log.d("Caste_Code1",""+getCasteCode);
-
-                        saveService_6_and_9();
-
-                    } else if (serviceCode.equals("43")){
-                        String caste_name = autoSearchCaste.getText().toString();
-                        if (!caste_name.equals(getString(R.string.select_caste_spinner))) {
-                            sqlLiteOpenHelper_class_kan = new SqlLiteOpenHelper_Class_Kan();
-                            sqlLiteOpenHelper_class_kan.open_Cat_Caste_Tbl();
-                            getCasteCode = sqlLiteOpenHelper_class_kan.GetCasteCode(caste_name, getCatCode);
-                            Log.d("Caste_Code1", "" + getCasteCode);
-
-                        }
-
-                        saveService_43();
-                    } else if (serviceCode.equals("11") || serviceCode.equals("34") || serviceCode.equals("37")){
-                        saveService_11_34_and_37();
+                    } else {
+                        StoreData_in_DB_When_Correct();
                     }
-                }
-                else {
-                    StoreData_in_DB_When_Correct();
-                }
-            }
-            else {
-                runOnUiThread(() -> {
+                } else {
+                    runOnUiThread(() -> {
 
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(RI_Field_Report_caste_income_parameters_Kan.this);
-                    dialog.setCancelable(false);
-                    dialog.setTitle(getString(R.string.alert));
-                    dialog.setMessage(getString(R.string.cannot_get_location) );
-                    dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
-                        //Action for "Cancel".
-                        dialog1.cancel();
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RI_Field_Report_caste_income_parameters_Kan.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle(getString(R.string.alert));
+                        dialog.setMessage(getString(R.string.cannot_get_location));
+                        dialog.setNegativeButton(getString(R.string.ok), (dialog1, which) -> {
+                            //Action for "Cancel".
+                            dialog1.cancel();
+                        });
+
+                        final AlertDialog alert = dialog.create();
+                        alert.show();
                     });
-
-                    final AlertDialog alert = dialog.create();
-                    alert.show();
-                });
-                //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Please Switch on the GPS", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
