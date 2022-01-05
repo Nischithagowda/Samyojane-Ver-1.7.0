@@ -135,7 +135,7 @@
                 android:ems="10"
                 android:hint="@string/enter_your_username"
                 android:inputType="textPersonName"
-                android:text="rakeshva"
+                android:text=""
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/grey"
                 tools:ignore="Autofill" />
@@ -151,7 +151,7 @@
                 android:textColor="@android:color/black"
                 tools:ignore="Autofill"
                 android:layout_weight="1"
-                android:text="pass"/>
+                android:text=""/>
 
             <Button
                 android:id="@+id/btnSubmit"

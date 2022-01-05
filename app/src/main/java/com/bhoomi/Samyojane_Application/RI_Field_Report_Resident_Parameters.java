@@ -604,24 +604,25 @@ public class RI_Field_Report_Resident_Parameters extends AppCompatActivity {
 
             if(latitude!=0.0 && longitude!=0.0) {
                 if (option2.equals(getString(R.string.no))){
-                    if(!TextUtils.isEmpty(strYear)  && Integer.parseInt(strYear)<=129) {
-                        if(!strMonth.equals(getString(R.string.month_spinner))) {
-                            if (TextUtils.isEmpty(strRemarks)) {
-                                tvRemarks.setError(getString(R.string.field_canno_null));
+                    if(!TextUtils.isEmpty(strYear)) {
+                        if (Integer.parseInt(strYear)<=129) {
+                            if (!strMonth.equals(getString(R.string.month_spinner))) {
+                                if (TextUtils.isEmpty(strRemarks)) {
+                                    tvRemarks.setError(getString(R.string.field_canno_null));
+                                } else {
+                                    StoreData_in_DB_When_Wrong();
+                                }
                             } else {
-                                StoreData_in_DB_When_Wrong();
+                                ((TextView) spMonth.getSelectedView()).setError(getString(R.string.select_month));
+                                Toast.makeText(getApplicationContext(), getString(R.string.select_month), Toast.LENGTH_SHORT).show();
                             }
+                        } else {
+                            etYear.setError(getString(R.string.incorrect_value));
                         }
-                        else {
-                            ((TextView) spMonth.getSelectedView()).setError(getString(R.string.select_month));
-                            Toast.makeText(getApplicationContext(), getString(R.string.select_month), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    else {
+                    } else {
                         etYear.setError(getString(R.string.field_canno_null));
                     }
-                }
-                else {
+                } else {
                     StoreData_in_DB_When_Correct();
                 }
             }
