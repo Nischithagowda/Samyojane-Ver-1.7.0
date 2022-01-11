@@ -365,17 +365,12 @@
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
-                <EditText
+                <TextView
                     android:id="@+id/tvMobile"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
-                    android:hint="@string/enter_mobile_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp"
-                    android:inputType="phone"
-                    android:backgroundTint="@android:color/black"
-                    android:digits="0123456789"
-                    tools:ignore="Autofill" />
+                    android:layout_marginStart="5dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -407,39 +402,47 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-
-                        <TextView
+                        <EditText
                             android:id="@+id/tvAddress1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:hint="@string/enter_your_address"
                             android:textColor="@android:color/black"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="8dp"/>
+                            android:textSize="14sp"
+                            android:inputType="textMultiLine"
+                            android:backgroundTint="@android:color/black"
+                            android:autofillHints="@string/enter_your_address"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <TextView
+                        <EditText
                             android:id="@+id/tvAddress2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:hint="@string/enter_your_address"
                             android:textColor="@android:color/black"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="5dp"/>
+                            android:textSize="14sp"
+                            android:inputType="textMultiLine"
+                            android:backgroundTint="@android:color/black"
+                            android:autofillHints="@string/enter_your_address"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <TextView
+                        <EditText
                             android:id="@+id/tvAddress3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:hint="@string/enter_your_address"
                             android:textColor="@android:color/black"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="5dp"/>
+                            android:textSize="14sp"
+                            android:inputType="textMultiLine"
+                            android:backgroundTint="@android:color/black"
+                            android:autofillHints="@string/enter_your_address"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -465,12 +468,16 @@
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
-                <TextView
+                <EditText
                     android:id="@+id/tvPinCode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:hint="@string/enter_pin_code"
                     android:textColor="@android:color/black"
-                    android:layout_marginStart="5dp" />
+                    android:textSize="14sp"
+                    android:inputType="phone"
+                    android:backgroundTint="@android:color/black"
+                    android:autofillHints="@string/enter_pin_code" />
 
             </LinearLayout>
 

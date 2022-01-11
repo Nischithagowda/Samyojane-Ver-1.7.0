@@ -1,7 +1,5 @@
 package com.bhoomi.Samyojane_Application;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -58,12 +56,6 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.INTERNET;
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.READ_PHONE_STATE;
-import static android.Manifest.permission.READ_SMS;
-import static android.Manifest.permission.RECEIVE_SMS;
-import static android.Manifest.permission.SEND_SMS;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity_Select extends AppCompatActivity {
     CardView card_view;
@@ -96,7 +88,6 @@ public class MainActivity_Select extends AppCompatActivity {
     int service_Flag=0, broadcast_Flag=0;
     char [] c1;
 
-    @SuppressLint("InflateParams")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -434,10 +425,10 @@ public class MainActivity_Select extends AppCompatActivity {
                         Log.d("jsonArray_output", "" + jsonArray);
 
                         int count = jsonArray.length();
+                        dialog.dismiss();
                         if (count != 0) {
                             //Toast.makeText(getApplicationContext(), "calling sendOtpFromServer", Toast.LENGTH_SHORT).show();
                             //sendOtpFromServer(MobNum);
-                            dialog.dismiss();
                             alertDialog.dismiss();
                             if (view.getParent() != null) {
                                 ((ViewGroup) view.getParent()).removeView(view);
@@ -455,7 +446,6 @@ public class MainActivity_Select extends AppCompatActivity {
                             startActivity(i);
                             finish();
                         } else{
-                            dialog.dismiss();
                             final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity_Select.this, R.style.MyDialogTheme);
                             builder.setTitle(getString(R.string.alert))
                                     .setMessage(getString(R.string.invalid_user))
@@ -724,8 +714,6 @@ public class MainActivity_Select extends AppCompatActivity {
         finish();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private boolean hasPermissions() {
 
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), INTERNET);
@@ -733,39 +721,20 @@ public class MainActivity_Select extends AppCompatActivity {
         int result3 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_COARSE_LOCATION);
         int result4 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
         int result5 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_NETWORK_STATE);
-        int result6 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_PHONE_STATE);
-        int result7 = ContextCompat.checkSelfPermission(getApplicationContext(), RECEIVE_SMS);
-        int result8 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_SMS);
-        int result9 = ContextCompat.checkSelfPermission(getApplicationContext(), SEND_SMS);
-        int result10 = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int result11 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
 
         return result1 == PackageManager.PERMISSION_GRANTED &&
                 result2 == PackageManager.PERMISSION_GRANTED &&
                 result3 == PackageManager.PERMISSION_GRANTED &&
                 result4 == PackageManager.PERMISSION_GRANTED &&
-                result5 == PackageManager.PERMISSION_GRANTED &&
-                result6 == PackageManager.PERMISSION_GRANTED &&
-                result7 == PackageManager.PERMISSION_GRANTED &&
-                result8 == PackageManager.PERMISSION_GRANTED &&
-                result9 == PackageManager.PERMISSION_GRANTED &&
-                result10 == PackageManager.PERMISSION_GRANTED &&
-                result11 == PackageManager.PERMISSION_GRANTED;
+                result5 == PackageManager.PERMISSION_GRANTED ;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void requestPerms() {
 
         ActivityCompat.requestPermissions(this, new String[]
                 {INTERNET,CAMERA,ACCESS_COARSE_LOCATION,
                         ACCESS_FINE_LOCATION,
-                        ACCESS_NETWORK_STATE,
-                        READ_PHONE_STATE,
-                        RECEIVE_SMS,
-                        READ_SMS,
-                        SEND_SMS,
-                        READ_EXTERNAL_STORAGE,
-                        WRITE_EXTERNAL_STORAGE
+                        ACCESS_NETWORK_STATE
                 }, PERMISSION_REQUEST_CODE_WRITE_STORAGE);
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -14,8 +15,8 @@
         android:textColor="@color/MAROON"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:drawableStart="@drawable/ic_vpn_key_black_24dp"
-        android:drawablePadding="10dp"/>
+        android:drawablePadding="10dp"
+        app:drawableStartCompat="@drawable/ic_vpn_key_black_24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,7 +63,7 @@
                 android:layout_weight="1"
                 android:digits="1234567890"
                 android:maxLength="10"
-                android:text="8277862882"
+                android:text=""
                 android:textCursorDrawable="@android:color/black"
                 android:backgroundTint="@android:color/black"/>
         </LinearLayout>
@@ -105,7 +106,7 @@
                 android:layout_weight="1"
                 android:digits="1234567890"
                 android:maxLength="15"
-                android:text="867287034166335"
+                android:text=""
                 android:textCursorDrawable="@android:color/black"
                 android:backgroundTint="@android:color/black"/>
         </LinearLayout>

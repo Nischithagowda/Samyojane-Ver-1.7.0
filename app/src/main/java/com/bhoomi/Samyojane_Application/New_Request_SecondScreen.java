@@ -58,8 +58,8 @@ public class New_Request_SecondScreen extends AppCompatActivity{
     String appTitle_Name, binCom_Name, fatTitle_Name;
     AutoCompleteTextView autoSearchAppTitle, autoSearchBinCom, autoSearchFatTitle;
     EditText tvFatherName, tvMotherName;
-    TextView tvName, tvAddress1, tvAddress2, tvAddress3, tvPinCode;
-    EditText tvMobile;
+    TextView tvName, tvMobile;
+    EditText tvAddress1, tvAddress2, tvAddress3, tvPinCode;
     TextView txt_raiseLoc, tvHobli, tvTaluk, tvVA_Name, tv_IDName;
     String district, taluk,hobli,VA_Circle_Name, VA_Name, VA_IMEI;
     int district_Code, taluk_Code, hobli_Code, va_Circle_Code, town_code, ward_code;
@@ -207,11 +207,11 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         tv_for_Aadhaar = findViewById(R.id.tv_for_Aadhaar);
         trID = findViewById(R.id.trID);
 
-        PhoneNumberUtils.formatNumber(tvMobile.getText().toString());
-        tvMobile.setFilters(new InputFilter[] {new InputFilter.LengthFilter(10)}); // 10 is max digits
-
         applicant_infor= findViewById(R.id.applicant_Information);
         applicant_infor.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+        PhoneNumberUtils.formatNumber(tvPinCode.getText().toString());
+        tvPinCode.setFilters(new InputFilter[] {new InputFilter.LengthFilter(6)});
 
         Intent i = getIntent();
         district = i.getStringExtra("district");
@@ -418,9 +418,15 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         if (eng_certi.equals("K")){
             tvFatherName.setFilters(new InputFilter[] { filter_Kan });
             tvMotherName.setFilters(new InputFilter[] { filter_Kan });
+            tvAddress1.setFilters(new InputFilter[] { filter_Kan });
+            tvAddress2.setFilters(new InputFilter[] { filter_Kan });
+            tvAddress3.setFilters(new InputFilter[] { filter_Kan });
         }else if (eng_certi.equals("E")){
             tvFatherName.setFilters(new InputFilter[] { filter_Eng });
             tvMotherName.setFilters(new InputFilter[] { filter_Eng });
+            tvAddress1.setFilters(new InputFilter[] { filter_Eng });
+            tvAddress2.setFilters(new InputFilter[] { filter_Eng });
+            tvAddress3.setFilters(new InputFilter[] { filter_Eng });
         }
 
         tvFatherName.setOnTouchListener((v, event) -> {
@@ -434,6 +440,36 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         });
 
         tvMotherName.setOnTouchListener((v, event) -> {
+            if(Objects.equals(eng_certi, "K")){
+                check_Kannada_Key_lang();
+            }
+            else if(Objects.equals(eng_certi, "E")) {
+                check_English_Key_lang();
+            }
+            return false;
+        });
+
+        tvAddress1.setOnTouchListener((v, event) -> {
+            if(Objects.equals(eng_certi, "K")){
+                check_Kannada_Key_lang();
+            }
+            else if(Objects.equals(eng_certi, "E")) {
+                check_English_Key_lang();
+            }
+            return false;
+        });
+
+        tvAddress2.setOnTouchListener((v, event) -> {
+            if(Objects.equals(eng_certi, "K")){
+                check_Kannada_Key_lang();
+            }
+            else if(Objects.equals(eng_certi, "E")) {
+                check_English_Key_lang();
+            }
+            return false;
+        });
+
+        tvAddress3.setOnTouchListener((v, event) -> {
             if(Objects.equals(eng_certi, "K")){
                 check_Kannada_Key_lang();
             }
@@ -525,13 +561,20 @@ public class New_Request_SecondScreen extends AppCompatActivity{
             fatTitle_Name = autoSearchFatTitle.getText().toString();
             fatherName = tvFatherName.getText().toString();
             motherName = tvMotherName.getText().toString();
-            mobileNo = tvMobile.getText().toString();
+            address1 = tvAddress1.getText().toString();
+            address2 = tvAddress2.getText().toString();
+            address3 = tvAddress3.getText().toString();
+            add_pin = tvPinCode.getText().toString();
 
             Log.d("appTitle_Name", ""+appTitle_Name);
             Log.d("binCom_Name", ""+binCom_Name);
             Log.d("fatTitle_Name", ""+fatTitle_Name);
             Log.d("fatherName", ""+fatherName);
             Log.d("motherName", ""+motherName);
+            Log.d("add1", ""+address1);
+            Log.d("add2", ""+address2);
+            Log.d("add3", ""+address3);
+            Log.d("add_pin", ""+add_pin);
             Log.d("mobileNo", ""+mobileNo);
             Log.d("report_No", ""+report_No);
 
@@ -565,25 +608,37 @@ public class New_Request_SecondScreen extends AppCompatActivity{
                                     if (fatTitle_Code != 0) {
                                         if (!fatherName.isEmpty()) {
                                             if (!motherName.isEmpty()) {
-                                                if (isValidMobile(mobileNo)) {
-                                                    openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
-                                                    database = openHelper.getWritableDatabase();
+                                                if (!address1.isEmpty()) {
+                                                    if (!address2.isEmpty()) {
+                                                        if (!address3.isEmpty()) {
+                                                            if (!add_pin.isEmpty()) {
+                                                                openHelper = new DataBaseHelperClass_btnDownload_ServiceTranTable(New_Request_SecondScreen.this);
+                                                                database = openHelper.getWritableDatabase();
 
-                                                    Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
-                                                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'", null);
-                                                    if (cursor3.getCount() > 0) {
+                                                                Cursor cursor3 = database.rawQuery("select * from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
+                                                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'", null);
+                                                                if (cursor3.getCount() > 0) {
 
-                                                        database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
-                                                                + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'");
+                                                                    database.execSQL("delete from " + DataBaseHelperClass_btnDownload_ServiceTranTable.TABLE_NAME_1 + " where "
+                                                                            + DataBaseHelperClass_btnDownload_ServiceTranTable.UPD_GSCNo + "='" + applicant_Id + "'");
 
-                                                        Log.d("Database", "ServiceParameterTable delete GSC_No:" + applicant_Id);
+                                                                    Log.d("Database", "ServiceParameterTable delete GSC_No:" + applicant_Id);
 
+                                                                } else {
+                                                                    cursor3.close();
+                                                                }
+                                                                Insert_ServiceParameterTbl();
+                                                            } else {
+                                                                tvPinCode.setError(getString(R.string.enter_address));
+                                                            }
+                                                        } else {
+                                                            tvAddress3.setError(getString(R.string.enter_address));
+                                                        }
                                                     } else {
-                                                        cursor3.close();
+                                                        tvAddress2.setError(getString(R.string.enter_address));
                                                     }
-                                                    Insert_ServiceParameterTbl();
                                                 } else {
-                                                    tvMobile.setError(getString(R.string.inavlid_mobile_nnum));
+                                                    tvAddress1.setError(getString(R.string.enter_address));
                                                 }
                                             } else {
                                                 tvMotherName.setError(getString(R.string.enter_mother_name));
