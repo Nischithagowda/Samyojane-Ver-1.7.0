@@ -143,7 +143,6 @@ public class E_Kshana_Freeze_Member_Details_VA_Second extends AppCompatActivity 
         PhoneNumberUtils.formatNumber(etYear.getText().toString());
         etDOB.setFilters(new InputFilter[] {new InputFilter.LengthFilter(3)}); // 3 is max digits
 
-        PhoneNumberUtils.formatNumber(tvRemarks.getText().toString());
         tvRemarks.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
         tvRemarks.setFilters(new InputFilter[] { filter_Kan });
 

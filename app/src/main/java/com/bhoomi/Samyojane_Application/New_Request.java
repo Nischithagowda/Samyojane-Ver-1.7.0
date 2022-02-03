@@ -23,7 +23,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.Settings;
-import android.telephony.PhoneNumberUtils;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -138,6 +137,8 @@ public class New_Request extends AppCompatActivity {
 
     InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
+        String num = "1234567890೧೨೩೪೫೬೭೮೯೦";
+        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
         String l3 = "ಖಖಾಖಿಖೀಖುಖೂಖೃಖೆಖೇಖೈಖೊಖೋಖೌಖಂಖಃಖ್";
@@ -174,26 +175,19 @@ public class New_Request extends AppCompatActivity {
         String l34 = "ಸಸಾಸಿಸೀಸುಸೂಸೃಸೆಸೇಸೈಸೊಸೋಸೌಸಂಸಃಸ್";
         String l35 = "ಹಹಾಹಿಹೀಹುಹೂಹೃಹೆಹೇಹೈಹೊಹೋಹೌಹಂಹಃಹ್";
         String l36 = "ಳಳಾಳಿಳೀಳುಳೂಳೃಳೆಳೇಳೈಳೊಳೋಳೌಳಂಳಃಳ್";
-        String l37 = "ೞೞಾೞಿೞೀೞುೞೂೞೃೞೆೞೇೞೈೞೊೞೋೞೌೞಂೞಃೞ್";
-        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶1234567890೧೨೩೪೫೬೭೮೯೦";
 
-        String blockCharacterSet = l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
-                +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36+l37+op1;
-        if (source != null && blockCharacterSet.contains(("" + source))) {
-            Log.d("Blocked",""+source);
-            return "";
+        String blockCharacterSet = num+op1+l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
+                +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36;
+
+        for (int i = start; i < end; i++) {
+            Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
+            if (blockCharacterSet.contains(("" + source.charAt(i)))) {
+                Log.d("Blocked",""+source);
+                return "";
+            }
         }
-//        for ( int i = start ; i < end ; i++) {
-//            String checkMe = String. valueOf (source.charAt(i));
-//            //Pattern pattern = Pattern.compile("[\\u0C80-\\u0CFF]");
-//            Pattern pattern = Pattern.compile("a-zA-Z");
-//            Matcher re = pattern.matcher(checkMe);
-//            if (!re.matches()) {
-//                Log.d("Filter_valid","blocked");
-//                return "";
-//            }
-//        }
         Log.d("Filter_valid","Not blocked");
+
         return null;
     };
 
@@ -285,7 +279,6 @@ public class New_Request extends AppCompatActivity {
         applicant_infor = findViewById(R.id.applicant_Information);
         applicant_infor.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        PhoneNumberUtils.formatNumber(tvRemarks.getText().toString());
         tvRemarks.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
 
         sqlLiteOpenHelper_class = new SqlLiteOpenHelper_Class(this);
@@ -657,7 +650,7 @@ public class New_Request extends AppCompatActivity {
                     if (cursor4.moveToFirst()) {
                         getCatCode = 9;
                         getCasteCode = cursor4.getInt(cursor4.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_caste_app));
-                        amount = cursor4.getString(cursor4.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
+                        amount = cursor4.getString(cursor4.getColumnIndexOrThrow(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_annual_income));
                         Log.d("value1", "" + getCatCode + " " + getCasteCode + " " + amount);
                     }
                 } else {

@@ -42,6 +42,7 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
     public static String ReservationCategory = "ReservationCategory_VA";
     public static String Caste = "Caste_VA";
     public static String SCOT_caste_app = "SCOT_caste_va";
+    public static String SCOT_annual_income_va = "SCOT_annual_income_va";
     public static String Can_Certificate_Given = "SSAT_VA_CanbeIssued";
     public static String VA_Remarks = "SSAT_VA_Remarks";
     public static String AnnualIncome = "Income_VA";
@@ -104,7 +105,7 @@ public class DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI extends SQL
             + Due_Date+" datetime,"+Raised_Location+" TEXT,"+ BinCom+ " int,"+ RelationTitle+ " int,"
             + FatherName +" TEXT,"+ MotherName +" TEXT,"+ ID_TYPE +" int,"+ IDNo +" TEXT," + Mobile_No+" decimal(10,0),"
             + Address1+" TEXT,"+Address2+" TEXT,"+Address3+" TEXT,"+ PinCode +" int,"+ ST_applicant_photo+" TEXT, "
-            + ST_Eng_Certificate+" TEXT," + ReservationCategory+ " int,"+ Caste+ " int,"+ SCOT_caste_app+ " int,"
+            + ST_Eng_Certificate+" TEXT," + ReservationCategory+ " int,"+ Caste+ " int,"+ SCOT_caste_app+ " int,"+ SCOT_annual_income_va+ " TEXT,"
             + Can_Certificate_Given+ " TEXT,"+ VA_Remarks + " TEXT,"+ GST_No_Mths_Applied+ " int,"
             + GST_No_Years_Applied+ " int," + AnnualIncome + " TEXT," + Push_Flag + " TEXT,"+ VA_RI_IMEI + " TEXT,"
             + VA_RI_Name + " TEXT," + DataUpdateFlag+" int)";

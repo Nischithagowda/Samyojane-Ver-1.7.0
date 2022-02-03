@@ -84,6 +84,8 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
 
     InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
+        String num = "1234567890೧೨೩೪೫೬೭೮೯೦";
+        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
         String l3 = "ಖಖಾಖಿಖೀಖುಖೂಖೃಖೆಖೇಖೈಖೊಖೋಖೌಖಂಖಃಖ್";
@@ -120,26 +122,19 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
         String l34 = "ಸಸಾಸಿಸೀಸುಸೂಸೃಸೆಸೇಸೈಸೊಸೋಸೌಸಂಸಃಸ್";
         String l35 = "ಹಹಾಹಿಹೀಹುಹೂಹೃಹೆಹೇಹೈಹೊಹೋಹೌಹಂಹಃಹ್";
         String l36 = "ಳಳಾಳಿಳೀಳುಳೂಳೃಳೆಳೇಳೈಳೊಳೋಳೌಳಂಳಃಳ್";
-        String l37 = "ೞೞಾೞಿೞೀೞುೞೂೞೃೞೆೞೇೞೈೞೊೞೋೞೌೞಂೞಃೞ್";
-        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶1234567890೧೨೩೪೫೬೭೮೯೦";
 
-        String blockCharacterSet = l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
-                +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36+l37+op1;
-        if (source != null && blockCharacterSet.contains(("" + source))) {
-            Log.d("Blocked",""+source);
-            return "";
+        String blockCharacterSet = num+op1+l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
+                +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36;
+
+        for (int i = start; i < end; i++) {
+            Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
+            if (blockCharacterSet.contains(("" + source.charAt(i)))) {
+                Log.d("Blocked",""+source);
+                return "";
+            }
         }
-//        for ( int i = start ; i < end ; i++) {
-//            String checkMe = String. valueOf (source.charAt(i));
-//            //Pattern pattern = Pattern.compile("[\\u0C80-\\u0CFF]");
-//            Pattern pattern = Pattern.compile("a-zA-Z");
-//            Matcher re = pattern.matcher(checkMe);
-//            if (!re.matches()) {
-//                Log.d("Filter_valid","blocked");
-//                return "";
-//            }
-//        }
         Log.d("Filter_valid","Not blocked");
+
         return null;
     };
 
@@ -246,7 +241,6 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
         dialog.setIndeterminate(true);
         dialog.setProgress(1);
 
-        PhoneNumberUtils.formatNumber(tvRemarks.getText().toString());
         tvRemarks.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
 
         if (eng_certi.equals("K")){
@@ -337,7 +331,7 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 strMonth = String.valueOf(spMonth.getSelectedItem());
-                Log.d("Spinner_Value", ""+ strMonth);
+                Log.d("Selected_Months", ""+ strMonth);
             }
 
             @Override
@@ -365,7 +359,7 @@ public class New_Request_Resident_Parameters extends AppCompatActivity {
         btnSave.setOnClickListener(v -> {
             try {
                 strYear = etYear.getText().toString();
-
+                Log.d("Entered Year", "" + strRemarks);
                 strRemarks = tvRemarks.getText().toString();
                 Log.d("Income value", "" + strRemarks);
 

@@ -715,6 +715,7 @@ public class SecondScreen extends AppCompatActivity {
                                 set_and_get_service_tran_data.setReservationCategory(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory));
                                 set_and_get_service_tran_data.setCaste(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.Caste));
                                 set_and_get_service_tran_data.setSCOT_caste_app(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_caste_app));
+                                set_and_get_service_tran_data.setSCOT_annual_income_va(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_annual_income));
                                 set_and_get_service_tran_data.setAnnualIncome(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome));
                                 set_and_get_service_tran_data.setGST_No_Mths_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied));
                                 set_and_get_service_tran_data.setGST_No_Years_Applied(object.getString(DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied));
@@ -772,6 +773,7 @@ public class SecondScreen extends AppCompatActivity {
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.ReservationCategory + ","
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.Caste + ","
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_caste_app + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceTranTable.SCOT_annual_income + ","
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.AnnualIncome + ","
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Mths_Applied + ","
                                         + DataBaseHelperClass_btnDownload_ServiceTranTable.GST_No_Years_Applied + ","
@@ -808,6 +810,7 @@ public class SecondScreen extends AppCompatActivity {
                                         + set_and_get_service_tran_data.getReservationCategory() + ","
                                         + set_and_get_service_tran_data.getCaste() + ","
                                         + set_and_get_service_tran_data.getSCOT_caste_app() + ",'"
+                                        + set_and_get_service_tran_data.getSCOT_annual_income_va() + "','"
                                         + set_and_get_service_tran_data.getAnnualIncome() + "',"
                                         + set_and_get_service_tran_data.getGST_No_Mths_Applied() + ","
                                         + set_and_get_service_tran_data.getGST_No_Years_Applied() + ",'"

@@ -41,6 +41,7 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
     public static String ReservationCategory = "ReservationCategory";
     public static String Caste = "Caste";
     public static String SCOT_caste_app = "SCOT_caste_app";
+    public static String SCOT_annual_income = "SCOT_annual_income";
     public static String AnnualIncome = "AnnualIncome";
     public static String Due_Date = "DueDate";
     public static String GST_No_Mths_Applied = "NoOfMonths_Applied";
@@ -101,7 +102,7 @@ public class DataBaseHelperClass_btnDownload_ServiceTranTable extends SQLiteOpen
             + Due_Date+" datetime,"+Raised_Location+" TEXT,"+ BinCom+ " int,"+ RelationTitle+ " int,"
             + FatherName +" TEXT,"+ MotherName +" TEXT,"+ ID_TYPE +" int,"+ IDNo +" TEXT," + Mobile_No+" decimal(10,0),"
             + Address1+" TEXT,"+Address2+" TEXT,"+Address3+" TEXT,"+ PinCode +" int,"+ ST_applicant_photo+" TEXT, "
-            + ST_Eng_Certificate+" TEXT," + ReservationCategory+ " int,"+ Caste+ " int,"+ SCOT_caste_app+ " int,"+ GST_No_Mths_Applied+ " int,"
+            + ST_Eng_Certificate+" TEXT," + ReservationCategory+ " int,"+ Caste+ " int,"+ SCOT_caste_app+ " int,"+ SCOT_annual_income + " TEXT,"+ GST_No_Mths_Applied+ " int,"
             + GST_No_Years_Applied+ " int," + AnnualIncome + " TEXT," + Push_Flag + " TEXT,"+ VA_IMEI + " TEXT,"
             + VA_Name + " TEXT," + DataUpdateFlag+" int)";
 

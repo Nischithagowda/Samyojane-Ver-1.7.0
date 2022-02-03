@@ -123,7 +123,6 @@ public class E_Kshana_Freeze_Details_FOR_VA extends AppCompatActivity {
         tvRemarks = findViewById(R.id.tvRemarks);
         btnEdit = findViewById(R.id.btnEdit);
 
-        PhoneNumberUtils.formatNumber(tvRemarks.getText().toString());
         tvRemarks.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
         tvRemarks.setFilters(new InputFilter[] { filter_Kan });
 

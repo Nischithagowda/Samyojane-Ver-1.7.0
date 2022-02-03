@@ -100,6 +100,8 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
     InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
+        String num = "1234567890೧೨೩೪೫೬೭೮೯೦";
+        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
         String l3 = "ಖಖಾಖಿಖೀಖುಖೂಖೃಖೆಖೇಖೈಖೊಖೋಖೌಖಂಖಃಖ್";
@@ -136,35 +138,104 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         String l34 = "ಸಸಾಸಿಸೀಸುಸೂಸೃಸೆಸೇಸೈಸೊಸೋಸೌಸಂಸಃಸ್";
         String l35 = "ಹಹಾಹಿಹೀಹುಹೂಹೃಹೆಹೇಹೈಹೊಹೋಹೌಹಂಹಃಹ್";
         String l36 = "ಳಳಾಳಿಳೀಳುಳೂಳೃಳೆಳೇಳೈಳೊಳೋಳೌಳಂಳಃಳ್";
-        String l37 = "ೞೞಾೞಿೞೀೞುೞೂೞೃೞೆೞೇೞೈೞೊೞೋೞೌೞಂೞಃೞ್";
-        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶1234567890೧೨೩೪೫೬೭೮೯೦";
 
-        String blockCharacterSet = l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
-                +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36+l37+op1;
-        if (source != null && blockCharacterSet.contains(("" + source))) {
-            Log.d("Blocked",""+source);
-            return "";
+        String blockCharacterSet = num+op1+l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
+                +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36;
+
+        for (int i = start; i < end; i++) {
+            Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
+            if (blockCharacterSet.contains(("" + source.charAt(i)))) {
+                Log.d("Blocked",""+source);
+                return "";
+            }
         }
-//        for ( int i = start ; i < end ; i++) {
-//            String checkMe = String. valueOf (source.charAt(i));
-//            //Pattern pattern = Pattern.compile("[\\u0C80-\\u0CFF]");
-//            Pattern pattern = Pattern.compile("a-zA-Z");
-//            Matcher re = pattern.matcher(checkMe);
-//            if (!re.matches()) {
-//                Log.d("Filter_valid","blocked");
-//                return "";
-//            }
-//        }
         Log.d("Filter_valid","Not blocked");
+
         return null;
     };
 
     InputFilter filter_Kan = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
+        String num = "1234567890೧೨೩೪೫೬೭೮೯೦";
         String l1 = "abcdefghijklmnopqrstuvwxyz";
         String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶1234567890೧೨೩೪೫೬೭೮೯೦";
-        String blockCharacterSet = l1+l2+op1;
+        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
+        String blockCharacterSet = num+l1+l2+op1;
+
+        for (int i = start; i < end; i++) {
+            Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
+            if (blockCharacterSet.contains(("" + source.charAt(i)))) {
+                Log.d("Blocked",""+source);
+                return "";
+            }
+        }
+        Log.d("Filter_valid","Not blocked");
+        return null;
+    };
+
+    InputFilter address_filter_Eng = (source, start, end, dest, dstart, dend) -> {
+        Log.d("Source",""+source);
+        String num = "1234567890೧೨೩೪೫೬೭೮೯೦";
+        String op1 = "~`!@$%^&*()_-''+={}[]:/?><.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
+        String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
+        String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
+        String l3 = "ಖಖಾಖಿಖೀಖುಖೂಖೃಖೆಖೇಖೈಖೊಖೋಖೌಖಂಖಃಖ್";
+        String l4 = "ಗಗಾಗಿಗೀಗುಗೂಗೃಗೆಗೇಗೈಗೊಗೋಗೌಗಂಗಃಗ್";
+        String l5 = "ಘಘಾಘಿಘೀಘುಘೂಘೃಘೆಘೇಘೈಘೊಘೋಘೌಘಂಘಃಘ್";
+        String l6 = "ಙಙಾಙಿಙೀಙುಙೂಙೃಙೆಙೇಙೈಙೊಙೋಙೌಙಂಙಃಙ್";
+        String l7 = "ಚಚಾಚಿಚೀಚುಚೂಚೃಚೆಚೇಚೈಚೊಚೋಚೌಚಂಚಃಚ್";
+        String l8 = "ಛಛಾಛಿಛೀಛುಛೂಛೃಛೆಛೇಛೈಛೊಛೋಛೌಛಂಛಃಛ್";
+        String l9 = "ಜಜಾಜಿಜೀಜುಜೂಜೃಜೆಜೇಜೈಜೊಜೋಜೌಜಂಜಃಜ್";
+        String l10 = "ಝಝಾಝಿಝೀಝುಝೂಝೃಝೆಝೇಝೈಝೊಝೋಝೌಝಂಝಃಝ್";
+        String l11 = "ಞಞಾಞಿಞೀಞುಞೂಞೃಞೆಞೇಞೈಞೊಞೋಞೌಞಂಞಃಞ್";
+        String l12 = "ಟಟಾಟಿಟೀಟುಟೂಟೃಟೆಟೇಟೈಟೊಟೋಟೌಟಂಟಃಟ್";
+        String l13 = "ಠಠಾಠಿಠೀಠುಠೂಠೃಠೆಠೇಠೈಠೊಠೋಠೌಠಂಠಃಠ್";
+        String l14 = "ಡಡಾಡಿಡೀಡುಡೂಡೃಡೆಡೇಡೈಡೊಡೋಡೌಡಂಡಃಡ್";
+        String l15 = "ಢಢಾಢಿಢೀಢುಢೂಢೃಢೆಢೇಢೈಢೊಢೋಢೌಢಂಢಃಢ್";
+        String l16 = "ಣಣಾಣಿಣೀಣುಣೂಣೃಣೆಣೇಣೈಣೊಣೋಣೌಣಂಣಃಣ್";
+        String l17 = "ತತಾತಿತೀತುತೂತೃತೆತೇತೈತೊತೋತೌತಂತಃತ್";
+        String l18 = "ಥಥಾಥಿಥೀಥುಥೂಥೃಥೆಥೇಥೈಥೊಥೋಥೌಥಂಥಃಥ್";
+        String l19 = "ದದಾದಿದೀದುದೂದೃದೆದೇದೈದೊದೋದೌದಂದಃದ್";
+        String l20 = "ಧಧಾಧಿಧೀಧುಧೂಧೃಧೆಧೇಧೈಧೊಧೋಧೌಧಂಧಃಧ್";
+        String l21 = "ನನಾನಿನೀನುನೂನೃನೆನೇನೈನೊನೋನೌನಂನಃನ್";
+        String l22 = "ಪಪಾಪಿಪೀಪುಪೂಪೃಪೆಪೇಪೈಪೊಪೋಪೌಪಂಪಃಪ್";
+        String l23 = "ಫಫಾಫಿಫೀಫುಫೂಫೃಫೆಫೇಫೈಫೊಫೋಫೌಫಂಫಃಫ್";
+        String l24 = "ಬಬಾಬಿಬೀಬುಬೂಬೃಬೆಬೇಬೈಬೊಬೋಬೌಬಂಬಃಬ್";
+        String l25 = "ಭಭಾಭಿಭೀಭುಭೂಭೃಭೆಭೇಭೈಭೊಭೋಭೌಭಂಭಃಭ್";
+        String l26 = "ಮಮಾಮಿಮೀಮುಮೂಮೃಮೆಮೇಮೈಮೊಮೋಮೌಮಂಮಃಮ್";
+        String l27 = "ಯಯಾಯಿಯೀಯುಯೂಯೃಯೆಯೇಯೈಯೊಯೋಯೌಯಂಯಃಯ್";
+        String l28 = "ರರಾರಿರೀರುರೂರೃರೆರೇರೈರೊರೋರೌರಂರಃರ್";
+        String l29 = "ಱಱಾಱಿಱೀಱುಱೂಱೃಱೆಱೇಱೈಱೊಱೋಱೌಱಂಱಃಱ್";
+        String l30 = "ಲಲಾಲಿಲೀಲುಲೂಲೃಲೆಲೇಲೈಲೊಲೋಲೌಲಂಲಃಲ್";
+        String l31 = "ವವಾವಿವೀವುವೂವೃವೆವೇವೈವೊವೋವೌವಂವಃವ್";
+        String l32 = "ಶಶಾಶಿಶೀಶುಶೂಶೃಶೆಶೇಶೈಶೊಶೋಶೌಶಂಶಃಶ್";
+        String l33 = "ಷಷಾಷಿಷೀಷುಷೂಷೃಷೆಷೇಷೈಷೊಷೋಷೌಷಂಷಃಷ್";
+        String l34 = "ಸಸಾಸಿಸೀಸುಸೂಸೃಸೆಸೇಸೈಸೊಸೋಸೌಸಂಸಃಸ್";
+        String l35 = "ಹಹಾಹಿಹೀಹುಹೂಹೃಹೆಹೇಹೈಹೊಹೋಹೌಹಂಹಃಹ್";
+        String l36 = "ಳಳಾಳಿಳೀಳುಳೂಳೃಳೆಳೇಳೈಳೊಳೋಳೌಳಂಳಃಳ್";
+
+        String blockCharacterSet = num+op1+l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
+                +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36;
+
+        for (int i = start; i < end; i++) {
+            Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
+            if (blockCharacterSet.contains(("" + source.charAt(i)))) {
+                Log.d("Blocked",""+source);
+                return "";
+            }
+        }
+        Log.d("Filter_valid","Not blocked");
+
+        return null;
+    };
+
+    InputFilter address_filter_Kan = (source, start, end, dest, dstart, dend) -> {
+        Log.d("Source",""+source);
+        String num = "1234567890೧೨೩೪೫೬೭೮೯೦";
+        String l1 = "abcdefghijklmnopqrstuvwxyz";
+        String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String op1 = "~`!@$%^&*()_-''+={}[]:/?><.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
+        String blockCharacterSet = num+l1+l2+op1;
 
         for (int i = start; i < end; i++) {
             Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
@@ -418,15 +489,15 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         if (eng_certi.equals("K")){
             tvFatherName.setFilters(new InputFilter[] { filter_Kan });
             tvMotherName.setFilters(new InputFilter[] { filter_Kan });
-            tvAddress1.setFilters(new InputFilter[] { filter_Kan });
-            tvAddress2.setFilters(new InputFilter[] { filter_Kan });
-            tvAddress3.setFilters(new InputFilter[] { filter_Kan });
+            tvAddress1.setFilters(new InputFilter[] { address_filter_Kan });
+            tvAddress2.setFilters(new InputFilter[] { address_filter_Kan });
+            tvAddress3.setFilters(new InputFilter[] { address_filter_Kan });
         }else if (eng_certi.equals("E")){
             tvFatherName.setFilters(new InputFilter[] { filter_Eng });
             tvMotherName.setFilters(new InputFilter[] { filter_Eng });
-            tvAddress1.setFilters(new InputFilter[] { filter_Eng });
-            tvAddress2.setFilters(new InputFilter[] { filter_Eng });
-            tvAddress3.setFilters(new InputFilter[] { filter_Eng });
+            tvAddress1.setFilters(new InputFilter[] { address_filter_Eng });
+            tvAddress2.setFilters(new InputFilter[] { address_filter_Eng });
+            tvAddress3.setFilters(new InputFilter[] { address_filter_Eng });
         }
 
         tvFatherName.setOnTouchListener((v, event) -> {

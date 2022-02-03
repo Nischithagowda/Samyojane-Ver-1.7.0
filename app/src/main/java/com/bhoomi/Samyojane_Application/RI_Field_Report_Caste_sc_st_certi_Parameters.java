@@ -120,6 +120,8 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
 
     InputFilter filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
+        String num = "1234567890೧೨೩೪೫೬೭೮೯೦";
+        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
         String l3 = "ಖಖಾಖಿಖೀಖುಖೂಖೃಖೆಖೇಖೈಖೊಖೋಖೌಖಂಖಃಖ್";
@@ -156,26 +158,19 @@ public class RI_Field_Report_Caste_sc_st_certi_Parameters extends AppCompatActiv
         String l34 = "ಸಸಾಸಿಸೀಸುಸೂಸೃಸೆಸೇಸೈಸೊಸೋಸೌಸಂಸಃಸ್";
         String l35 = "ಹಹಾಹಿಹೀಹುಹೂಹೃಹೆಹೇಹೈಹೊಹೋಹೌಹಂಹಃಹ್";
         String l36 = "ಳಳಾಳಿಳೀಳುಳೂಳೃಳೆಳೇಳೈಳೊಳೋಳೌಳಂಳಃಳ್";
-        String l37 = "ೞೞಾೞಿೞೀೞುೞೂೞೃೞೆೞೇೞೈೞೊೞೋೞೌೞಂೞಃೞ್";
-        String op1 = "~`!@#$%^&*()_-''+={}[]:/?><,.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶1234567890೧೨೩೪೫೬೭೮೯೦";
 
-        String blockCharacterSet = l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
-                +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36+l37+op1;
-        if (source != null && blockCharacterSet.contains(("" + source))) {
-            Log.d("Blocked",""+source);
-            return "";
+        String blockCharacterSet = num+op1+l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
+                +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36;
+
+        for (int i = start; i < end; i++) {
+            Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
+            if (blockCharacterSet.contains(("" + source.charAt(i)))) {
+                Log.d("Blocked",""+source);
+                return "";
+            }
         }
-//        for ( int i = start ; i < end ; i++) {
-//            String checkMe = String. valueOf (source.charAt(i));
-//            //Pattern pattern = Pattern.compile("[\\u0C80-\\u0CFF]");
-//            Pattern pattern = Pattern.compile("a-zA-Z");
-//            Matcher re = pattern.matcher(checkMe);
-//            if (!re.matches()) {
-//                Log.d("Filter_valid","blocked");
-//                return "";
-//            }
-//        }
         Log.d("Filter_valid","Not blocked");
+
         return null;
     };
 

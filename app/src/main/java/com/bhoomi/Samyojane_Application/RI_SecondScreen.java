@@ -585,6 +585,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                                 set_and_get_service_tran_data.setReservationCategory(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory));
                                 set_and_get_service_tran_data.setCaste(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste));
                                 set_and_get_service_tran_data.setSCOT_caste_app(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.SCOT_caste_app));
+                                set_and_get_service_tran_data.setSCOT_annual_income_va(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.SCOT_annual_income_va));
                                 set_and_get_service_tran_data.setAnnualIncome(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome));
                                 set_and_get_service_tran_data.setCanbeIssued_VA(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given));
                                 set_and_get_service_tran_data.setVA_Remarks(object.getString(DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Remarks));
@@ -656,6 +657,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.ReservationCategory + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Caste + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.SCOT_caste_app + ","
+                                        + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.SCOT_annual_income_va + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.AnnualIncome + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.Can_Certificate_Given + ","
                                         + DataBaseHelperClass_btnDownload_ServiceParameter_Tbl_RI.VA_Remarks + ","
@@ -695,6 +697,7 @@ public class RI_SecondScreen extends AppCompatActivity {
                                         + set_and_get_service_tran_data.getReservationCategory() + ","
                                         + set_and_get_service_tran_data.getCaste() + ","
                                         + set_and_get_service_tran_data.getSCOT_caste_app() + ",'"
+                                        + set_and_get_service_tran_data.getSCOT_annual_income_va() + "','"
                                         + set_and_get_service_tran_data.getAnnualIncome() + "','"
                                         + set_and_get_service_tran_data.getCanbeIssued_VA() + "','"
                                         + set_and_get_service_tran_data.getVA_Remarks() + "',"

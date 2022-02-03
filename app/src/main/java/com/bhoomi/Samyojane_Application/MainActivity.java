@@ -739,19 +739,23 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         dialog.dismiss();
                         e.printStackTrace();
+                        onErrorGoBack();
                         runOnUiThread(() -> Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
                     } catch (OutOfMemoryError e) {
                         dialog.dismiss();
                         e.printStackTrace();
+                        onErrorGoBack();
                         runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                         Log.e("OutOfMemoryError", "" + e.toString());
                     } catch (NullPointerException e) {
                         dialog.dismiss();
                         e.printStackTrace();
+                        onErrorGoBack();
                         runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                         Log.e("NullPointerException", "" + e.toString());
                     }
                 } else {
+                    onErrorGoBack();
                     Toast.makeText(getApplicationContext(), "" + response.message(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
@@ -761,6 +765,8 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<String> call, Throwable t) {
                 Log.d("multipleResource",""+t.getMessage());
                 call.cancel();
+                dialog.dismiss();
+                onErrorGoBack();
                 t.printStackTrace();
                 Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -790,15 +796,18 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     dialog.dismiss();
                     e.printStackTrace();
+                    onErrorGoBack();
                     runOnUiThread(() -> Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
                 }catch (OutOfMemoryError e){
                     dialog.dismiss();
                     e.printStackTrace();
+                    onErrorGoBack();
                     runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     Log.e("OutOfMemoryError", ""+e.toString());
                 }catch (NullPointerException e){
                     dialog.dismiss();
                     e.printStackTrace();
+                    onErrorGoBack();
                     runOnUiThread(() -> Toast.makeText(getApplicationContext(), getString(R.string.server_exception), Toast.LENGTH_SHORT).show());
                     Log.e("NullPointerException", ""+e.toString());
                 }
@@ -808,6 +817,8 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<String> call, Throwable t) {
                 Log.d("multipleResource",""+t.getMessage());
                 call.cancel();
+                dialog.dismiss();
+                onErrorGoBack();
                 t.printStackTrace();
                 Toast.makeText(getApplicationContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -1228,6 +1239,14 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+    public void onErrorGoBack(){
+        SharedPreferences.Editor editor = getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.apply();
+        Intent intent = new Intent(MainActivity.this, MainActivity_Select.class);
+        startActivity(intent);
+        finish();
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
