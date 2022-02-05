@@ -175,7 +175,6 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
     InputFilter address_filter_Eng = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
-        String num = "1234567890೧೨೩೪೫೬೭೮೯೦";
         String op1 = "~`!@$%^&*()_-''+={}[]:/?><.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
         String l1 = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
         String l2 = "ಕಕಾಕಿಕೀಕುಕೂಕೃಕೆಕೇಕೈಕೊಕೋಕೌಕಂಕಃಕ್";
@@ -214,7 +213,7 @@ public class New_Request_SecondScreen extends AppCompatActivity{
         String l35 = "ಹಹಾಹಿಹೀಹುಹೂಹೃಹೆಹೇಹೈಹೊಹೋಹೌಹಂಹಃಹ್";
         String l36 = "ಳಳಾಳಿಳೀಳುಳೂಳೃಳೆಳೇಳೈಳೊಳೋಳೌಳಂಳಃಳ್";
 
-        String blockCharacterSet = num+op1+l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
+        String blockCharacterSet = op1+l1+l2+l3+l4+l5+l6+l7+l8+l9+l10+l11+l12+l13+l14+l15+l16+l17+l18+l19+l20
                 +l21+l22+l23+l24+l25+l26+l27+l28+l29+l30+l31+l32+l33+l34+l35+l36;
 
         for (int i = start; i < end; i++) {
@@ -231,11 +230,10 @@ public class New_Request_SecondScreen extends AppCompatActivity{
 
     InputFilter address_filter_Kan = (source, start, end, dest, dstart, dend) -> {
         Log.d("Source",""+source);
-        String num = "1234567890೧೨೩೪೫೬೭೮೯೦";
         String l1 = "abcdefghijklmnopqrstuvwxyz";
         String l2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String op1 = "~`!@$%^&*()_-''+={}[]:/?><.\\\"\";£€¢¥₩§|×÷¿■□♤♡◇♧°•○●☆▪¤《》¡₹Π℅®©™∆√¶";
-        String blockCharacterSet = num+l1+l2+op1;
+        String blockCharacterSet = l1+l2+op1;
 
         for (int i = start; i < end; i++) {
             Log.d("source.charAt(i)",""+i+" : "+source.charAt(i));
